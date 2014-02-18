@@ -9,3 +9,5 @@
 *.vcxproj
 *.opensdf
 *.ipch
+/tlp-gp/tlp-gp/Debug
+/tlp-gp/Debug
