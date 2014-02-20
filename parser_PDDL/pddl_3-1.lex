@@ -1,0 +1,31 @@
+/* Mini Calculator */
+/* pddl_3-1.lex */
+
+%{
+#include "heading.h"
+#include "tok.h"
+int yyerror(char *s);
+/*int yylineno = 1;*/ /* the flex generator duplicate this line, which generate an error when compiling with make */
+%}
+
+digit		[0-9]
+int_const	{digit}+
+
+%%
+
+{int_const}	{ yylval.int_val = atoi(yytext); return INTEGER_LITERAL; }
+"+"		{ yylval.op_val = new std::string(yytext); return PLUS; }
+"*"		{ yylval.op_val = new std::string(yytext); return MULT; }
+
+/* terminaux ici */
+"("		{return L_P;}
+")"		{return R_P;}
+":"		{return DD;}
+"requirements" {return REQ;}
+"types"	{return TYP;}
+
+[ \t]*		{}
+[\n]		{ yylineno++;	}
+
+.		{ std::cerr << "SCANNER "; yyerror(""); exit(1);	}
+
