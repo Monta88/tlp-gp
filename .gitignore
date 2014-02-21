@@ -17,3 +17,6 @@
 /tlp-gp/ipch
 /tlp-gp/tlp-gp/*.rc
 /tlp-gp/tlp-gp/*.aps
+/parser_2/my.tab.c
+/parser_2/my.tab.h
+/parser_2/lex.yy.c
