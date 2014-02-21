@@ -17,6 +17,6 @@ problem { return PROBLEM; }
 :predicates		{ return PREDICATES; }
 :functions		{ return FUNCTIONS; }
 :action			{ return ACTION; }
-:durative-action{ return DURATIVEACTION; }
+:durative-action { return DURATIVEACTION; }
 [a-zA-Z0-9]+ { yylval.sval=yytext; return NAME; }
 .		;
