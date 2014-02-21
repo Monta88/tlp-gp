@@ -183,18 +183,13 @@ pre-GD:
 		;
 		
 list_pre-GD:
-		pre-GD list_pre-GD
-		;
+	pre-GD list_pre-GD
+	;
 	
 pref-GD:
-		GD
-		| L_P PREFERENCE /* choix */ GD R_P
-		;
-	
-pref-name:
-		name
-		;
-	
+	GD
+	| L_P PREFERENCE /* choix */ GD R_P
+	;
 		
 /***************************************************/
 /************** Problem Description ****************/

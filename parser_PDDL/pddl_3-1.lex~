@@ -36,7 +36,7 @@ int_const	{digit}+
 "parameters"		{return PARAMETERS;}
 "and"				{return AND;}
 "forall"			{return FORALL;}
-"preference"		{return PREFERENCE;}
+
 
 
 [ \t]*		{}
