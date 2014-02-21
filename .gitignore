@@ -13,3 +13,7 @@
 /tlp-gp/Debug
 /tlp-gp/tlp-gp/*.vcxproj
 *.filters
+/tlp-gp/tlp-gp/*.filters
+/tlp-gp/ipch
+/tlp-gp/tlp-gp/*.rc
+/tlp-gp/tlp-gp/*.aps
