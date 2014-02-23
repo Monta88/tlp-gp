@@ -1,24 +1,19 @@
-/* Mini Calculator */
+/* Parser PDDL */
 /* pddl_3-1.y */
 
 %{
-#include "heading.h"
-int yyerror(char *s);
-int yylex(void);
+	#include "heading.h"
+	int yyerror(char *s);
+	int yylex(void);
 %}
 
-%union{
-  int		int_val;
-  string*	op_val;
+%union {
+	char *sval;
 }
 
-%start	input 
+%start begin
 
-%token	<int_val>	INTEGER_LITERAL
-%type	<int_val>	exp
-%left	PLUS
-%left	MULT
-
+%token SP
 %token L_P
 %token R_P
 %token Q_M
@@ -37,6 +32,7 @@ int yylex(void);
 %token DOT
 %token LETTER
 %token DIGIT
+%token NUMBER
 %token DEFINE
 %token DOMAIN
 %token REQUIREMENTS
@@ -44,7 +40,7 @@ int yylex(void);
 %token CONSTANTS
 %token PREDICATES
 %token FUNCTIONS
-%token NUMBER
+%token NUM
 %token CONSTRAINTS
 %token OBJECT
 %token EITHER
@@ -81,7 +77,6 @@ int yylex(void);
 %token OBJECTS
 %token INIT
 %token GOAL
-%token END
 %token ALWAYS
 %token SOMETIME
 %token WITHIN
@@ -99,21 +94,16 @@ int yylex(void);
 %token LENGTH
 %token SERIAL
 %token PARALLEL
+%token <sval> NAME
 
 %%
 
-/* completer ici */
-input:
-		/* empty */
-		| exp	{ cout << "Result: " << $1 << endl; }
+begin:
+		domain {YYACCEPT;}
+		| problem {YYACCEPT;}
 		;
 
-exp:
-		INTEGER_LITERAL	{ $$ = $1; }
-		| exp PLUS exp	{ $$ = $1 + $3; }
-		| exp MULT exp	{ $$ = $1 * $3; }
-		;
-		
+
 /***************************************************/
 /************** Domain Description *****************/
 /***************************************************/		
@@ -123,35 +113,39 @@ exp:
 domain:
 		L_P DEFINE L_P DOMAIN name R_P option_require-def option_types-def option_constants-def option_predicates-def option_functions-def option_constraints list_structure-def R_P
 		;
-		
+
+name:
+		NAME
+		;
+
 option_require-def:
 		/* empty */
-		| require-def
+		| N_L TAB require-def
 		;
 		
 option_types-def:
 		/* empty */
-		| types-def
+		| N_L TAB types-def
 		;
 		
 option_constants-def:
 		/* empty */
-		| constants-def
+		| N_L TAB constants-def
 		;
 
 option_predicates-def:
 		/* empty */
-		| predicates-def
+		| N_L TAB predicates-def
 		;
 		
 option_functions-def:
 		/* empty */
-		| functions-def
+		| N_L TAB functions-def
 		;
 		
 option_constraints:
 		/* empty */
-		| contraints
+		| N_L TAB constraints
 		;
 		
 list_structure-def:
@@ -171,7 +165,7 @@ nvList_require-key:
 		
 list_require-key:
 		/* empty */
-		| require-key list_require_key
+		| require-key list_require-key
 		;
 		
 /* <require-key> */
@@ -182,13 +176,13 @@ require-key: /* section 1.3 */
 		
 /* <types-def> */
 types-def:
-		L_P TYPES typed-list L_P x R_P R_P //fn
+		L_P TYPES L_P typed-list R_P R_P //fn
 		;
 		
 /* <contants-def> */
 
-constantes-def:
-		L_P CONSTANTS typed-list L_P name R_P R_P //fn
+constants-def:
+		L_P CONSTANTS L_P typed-list R_P R_P //fn
 		;
 
 /* <predicates-def> */
@@ -209,7 +203,7 @@ list_atomic-formula-skeleton:
 /* <atomic formula skeleton> */
 		
 atomic-formula-skeleton:
-		L_P predicate typed-list L_P variable R_P R_P //fn
+		L_P predicate L_P typed-list R_P R_P //fn
 		;
 		
 /* <predicate> */
@@ -227,7 +221,7 @@ variable:
 /* <atomic function skeleton> */
 
 atomic-function-skeleton:
-		L_P function-symbol typed-list L_P variable R_P R_P //fn
+		L_P function-symbol L_P typed-list R_P R_P //fn
 		;
 		
 /* <function-symbol> */
@@ -236,18 +230,22 @@ function-symbol:
 		name
 		;
 		
-/* <function-def> */
+/* <functions-def> */
 
-function-def:
-		L_P FUNCTIONS function-typed-list L_P atomic-function_skeleton R_P R_P
+functions-def:
+		L_P FUNCTIONS function-typed-list L_P atomic-function-skeleton R_P R_P
 		;
 		
 /* <function typed list (x)> */
 
 function-typed-list:
 		/* empty */
-		| /* x+ */
-		| /* x+ */ MINUS type typed-list L_P /* x */ R_P //fn
+		| nvList_name
+		| nvList_name MINUS type typed-list L_P name R_P //fn
+		;
+
+nvList_name:
+		name list_name
 		;
 
 /* <function type> */
@@ -271,11 +269,11 @@ structure-def:
 		| derived-def
 		;
 		
-/* <ryped list (x)> */
+/* <typed list (x)> */
 
 typed-list: //fn
-		/* x* */
-		| /* x* */ MINUS type typed-list L_P /* x */ R_P
+		list_name
+		| list_name MINUS type typed-list L_P name R_P
 		;
 		
 /* <primitive-type> */
@@ -305,13 +303,13 @@ list_primitive-type:
 
 emptyOr: //fn
 		L_P R_P
-		| /* x */
+		| name
 		;
 		
 /* <action-def> */
 
 action-def:
-		L_P ACTION action-symbol N_L TAB PARAMETERS L_P typed-list L_P /* variable */ R_P R_P N_L TAB action-def-body R_P //fn
+		L_P ACTION action-symbol N_L TAB PARAMETERS L_P L_P typed-list R_P R_P N_L TAB action-def-body R_P //fn
 		;
 		
 /* <action-symbol> */
@@ -328,12 +326,12 @@ action-def-body:
 		
 option_precondition:
 		/* empty */
-		| PRECONDITION emptyOr //fn
+		| PRECONDITION L_P emptyOr R_P //fn
 		;
 
 option_effect:
 		/* empty */
-		| EFFECT emptyOr //fn
+		| EFFECT L_P emptyOr R_P //fn
 		;
 		
 /* <pre-GD> */
@@ -341,7 +339,7 @@ option_effect:
 pre-GD:
 		pref-GD
 		| L_P AND list_pre-GD R_P
-		| L_P FORALL L_P typed-list L_P /* variable */ R_P R_P pre-GD R_P //fn
+		| L_P FORALL L_P L_P typed-list R_P R_P pre-GD R_P //fn
 		;
 		
 list_pre-GD:
@@ -352,7 +350,12 @@ list_pre-GD:
 	
 pref-GD:
 		GD
-		| L_P PREFERENCE /* choix */ GD R_P
+		| L_P PREFERENCE option_pref-name GD R_P
+		;
+
+option_pref-name:
+		/* empty */
+		| pref-name
 		;
 
 /* <pref-name> */
@@ -364,14 +367,14 @@ pref-name:
 /* <GD> */
 
 GD:
-		atomic forumla L_P term R_P //fn
-		| litteral L_P term R_P //fn
+		L_P atomic-formula R_P //fn
+		| L_P literal R_P //fn
 		| L_P AND list_GD R_P
 		| L_P OR list_GD R_P
 		| L_P NOT GD R_P
 		| L_P IMPLY GD GD R_P
-		| L_P EXISTS L_P typed-list L_P variable R_P R_P GD R_P //fn
-		| L_P FORALL L_P typed-list L_P variable R_P R_P GD R_P //fn
+		| L_P EXISTS L_P L_P typed-list R_P R_P GD R_P //fn
+		| L_P FORALL L_P L_P typed-list R_P R_P GD R_P //fn
 		| f-comp
 		;
 		
@@ -388,16 +391,16 @@ f-comp:
 
 /* <litteral (t)> */
 
-litteral: //fn
-		atomic-formula L_P t R_P //fn
-		| L_P NOT atomic-formula L_P t R_P //fn
+literal: //fn
+		L_P atomic-formula R_P //fn
+		| L_P NOT L_P atomic-formula R_P //fn
 		;
 
 /* <atomic formula (t)> */
 
 atomic-formula: //fn
-		L_P predicate t* R_P //fn
-		| L_P EQ t t R_P //fn
+		L_P predicate list_name R_P //fn
+		| L_P EQ name name R_P //fn
 		;
 
 /* <term> */
@@ -429,6 +432,10 @@ f-exp:
 		| f-head
 		;
 
+number:
+		NUM
+		;
+
 nvList_f-exp:
 		f-exp list_f-exp
 		;
@@ -442,7 +449,7 @@ list_f-exp:
 
 f-head:
 		L_P function-symbol list_term R_P
-		| funciton-symbol
+		| function-symbol
 		;
 
 /* <binary-op> */
@@ -532,24 +539,24 @@ list_c-effect:
 /* <c-effect> */
 
 c-effect:
-		L_P FORALL L_P typed-list L_P variable R_P R_P effect R_P //fn
-		| L_P WHEN GD const-effect R_P
+		L_P FORALL L_P L_P typed-list R_P R_P effect R_P //fn
+		| L_P WHEN GD cond-effect R_P
 		| p-effect
 		;
 
 /* <p-effect> */
 
 p-effect:
-		L_P NOT atomic-formula L_P term R_P R_P //fn
-		| atomic-formula L_P term R_P //fn
+		L_P NOT L_P atomic-formula R_P R_P //fn
+		| L_P atomic-formula R_P //fn
 		| L_P assign-op f-head f-exp
 		| L_P ASSIGN function-term term R_P
 		| L_P ASSIGN function-term UNDEFINED R_P
 		;
 
-/* <const-effect> */
+/* <cond-effect> */
 
-const-effect:
+cond-effect:
 		L_P AND list_p-effect R_P
 		| p-effect
 		;
@@ -572,7 +579,7 @@ assign-op:
 /* <durative-action-def> */
 
 durative-action-def:
-		L_P DURATIVE_ACTION da-symbol N_L TAB PARAMETERS L_P typed-list L_P variable R_P R_P da-def-body R_P //fn
+		L_P DURATIVE_ACTION da-symbol N_L TAB PARAMETERS L_P L_P typed-list R_P R_P da-def-body R_P //fn
 		;
 
 /* <da-symbol> */
@@ -584,7 +591,7 @@ da-symbol:
 /* <da-def body> */
 
 da-def-body:
-		DURATION duration-constraint N_L CONDITION  emptyOr L_P da-GD R_P N_L EFFECT emptyOr L_P da-effect R_P //fn
+		DURATION duration-constraint N_L CONDITION L_P emptyOr R_P N_L EFFECT L_P  emptyOr R_P //fn
 		;
 
 /* <da-GD> */
@@ -592,7 +599,7 @@ da-def-body:
 da-GD:
 		pref-timed-GD
 		| L_P AND list_da-GD R_P
-		| L_P FORALL L_P typed-list L_P variable R_P R_P da-GD R_P //fn
+		| L_P FORALL L_P L_P typed-list R_P R_P da-GD R_P //fn
 		;
 
 list_da-GD:
@@ -600,7 +607,7 @@ list_da-GD:
 		| da-GD list_da-GD
 		;
 
-/* <oref-timed-GD> */
+/* <pref-timed-GD> */
 
 pref-timed-GD:
 		timed-GD
@@ -676,7 +683,7 @@ d-value:
 da-effect:
 		L_P AND list_da-effect R_P
 		| timed-effect
-		| L_P FORALL L_P typed-list L_P variable R_P R_P da-effect R_P //fn
+		| L_P FORALL L_P L_P typed-list R_P R_P da-effect R_P //fn
 		| L_P WHEN da-GD timed-effect R_P
 		;
 
@@ -747,28 +754,28 @@ derived-def:
 /* <problem> */
 
 problem:
-		L_P DEFINE L_P PROBLEM name R_P N_L TAB L_P DD_DOMAIN name R_P N_L TAB option_require-def N_L TAB option_object-declaration N_L TAB init N_L TAB goal N_L TAB option_constraints N_L TAB option_metric-spec N_L TAB option_length-spec R_P
+		L_P DEFINE L_P PROBLEM name R_P N_L TAB L_P DD_DOMAIN name R_P option_require-def option_object-declaration N_L TAB init N_L TAB goal option_constraints option_metric-spec option_length-spec R_P
 		;
 
 option_object-declaration:
 		/* empty */
-		| object-declaration
+		| N_L TAB object-declaration
 		;
 
 option_metric-spec:
 		/* empty */
-		| metric-spec
+		| N_L TAB metric-spec
 		;
 
 option_length-spec:
 		/* empty */
-		| length-spec
+		| N_L TAB length-spec
 		;
 
 /* <object declaration> */
 
 object-declaration:
-		L_P OBJECTS typed-list L_P name R_P R_P //fn
+		L_P OBJECTS L_P typed-list R_P R_P //fn
 		;
 
 /* <init> */
@@ -785,8 +792,8 @@ list_init-el:
 /* <init-el> */
 
 init-el:
-		literal L_P name R_P //fn
-		| L_P AT nuber literal L_P name R_P R_P //fn
+		L_P literal R_P //fn
+		| L_P AT number L_P literal R_P R_P //fn
 		| L_P EQ basic-function-term number R_P
 		| L_P EQ basic-function-term name R_P
 		;
@@ -830,7 +837,7 @@ list_pref-con-GD:
 
 con-GD:
 		L_P AND list_con-GD R_P
-		| L_P FORALL L_P typed-list L_P variable R_P R_P con-GD R_P //fn
+		| L_P FORALL L_P L_P typed-list R_P R_P con-GD R_P //fn
 		| L_P AT END GD R_P
 		| L_P ALWAYS con2-GD R_P
 		| L_P SOMETIME con2-GD R_P
@@ -904,6 +911,11 @@ option_serial:
 option_parallel:
 		/* empty */
 		| L_P PARALLEL integer R_P
+		;
+
+integer:
+		NUM
+		;
 
 
 /***************************************************/
@@ -914,17 +926,17 @@ option_parallel:
 
 int yyerror(string s)
 {
-  extern int yylineno;	// defined and maintained in lex.c
-  extern char *yytext;	// defined and maintained in lex.c
-  
-  cerr << "ERROR: " << s << " at symbol \"" << yytext;
-  cerr << "\" on line " << yylineno << endl;
-  exit(1);
+	extern int yylineno;	// defined and maintained in lex.c
+	extern char *yytext;	// defined and maintained in lex.c
+
+	cerr << "ERROR: " << s << " at symbol \"" << yytext;
+	cerr << "\" on line " << yylineno << endl;
+	exit(1);
 }
 
 int yyerror(char *s)
 {
-  return yyerror(string(s));
+	return yyerror(string(s));
 }
 
 
