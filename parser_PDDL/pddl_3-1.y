@@ -3,6 +3,7 @@
 
 %{
 	#include "heading.h"
+	#define YYSTYPE std::string
 	int yyerror(char *s);
 	int yylex(void);
 %}
@@ -13,13 +14,10 @@
 
 %start begin
 
-%token SP
 %token L_P
 %token R_P
 %token Q_M
 %token EQ
-%token N_L
-%token TAB
 %token MINUS
 %token SLASH
 %token STAR
@@ -36,12 +34,31 @@
 %token DEFINE
 %token DOMAIN
 %token REQUIREMENTS
+%token STRIPS
+%token TYPING
+%token NEGATIVE_PRECONDITIONS
+%token DISJUNCTIVE_PRECONDITIONS
+%token EQUALITY
+%token EXISTENTIAL_PRECONDITIONS
+%token UNIVERSAL_PRECONDITIONS
+%token QUANTIFIED_PRECONDITIONS
+%token CONDITIONAL_EFFECTS
+%token FLUENTS
+%token NUMERIC_FLUENTS
+%token ADL
+%token DURACTIVE_ACTIONS
+%token DURATION_INEQUALITIES
+%token CONTINUOUS_EFFECTS
+%token DERIVED_PREDICATES
+%token TIMED_INITIAL_LITERALS
+%token PREFERENCES
+%token CONSTRAINTS
+%token ACTION_COSTS
 %token TYPES
 %token CONSTANTS
 %token PREDICATES
 %token FUNCTIONS
 %token NUM
-%token CONSTRAINTS
 %token OBJECT
 %token EITHER
 %token ACTION
@@ -111,46 +128,50 @@ begin:
 /* <domain> */
 
 domain:
-		L_P DEFINE L_P DOMAIN name R_P option_require-def option_types-def option_constants-def option_predicates-def option_functions-def option_constraints list_structure-def R_P
+		L_P DEFINE L_P DOMAIN name R_P domain_option1
+		;
+
+domain_option1:
+		domain_option2
+		| require-def
+		;
+
+domain_option2:
+		domain_option3
+		| types-def
+		;
+
+domain_option3:
+		domain_option4
+		| constants-def
+		;
+
+domain_option4:
+		domain_option5
+		| predicates-def
+		;
+
+domain_option5:
+		domain_option6
+		| functions-def
+		;
+
+domain_option6:
+		domain_option7
+		| constraints
+		;
+
+domain_option7:
+		list_structure-def R_P
+		;
+
+list_structure-def:
+		/* empty */
+		| structure-def list_structure-def
 		;
 
 name:
 		NAME
-		;
-
-option_require-def:
-		/* empty */
-		| N_L TAB require-def
-		;
-		
-option_types-def:
-		/* empty */
-		| N_L TAB types-def
-		;
-		
-option_constants-def:
-		/* empty */
-		| N_L TAB constants-def
-		;
-
-option_predicates-def:
-		/* empty */
-		| N_L TAB predicates-def
-		;
-		
-option_functions-def:
-		/* empty */
-		| N_L TAB functions-def
-		;
-		
-option_constraints:
-		/* empty */
-		| N_L TAB constraints
-		;
-		
-list_structure-def:
-		/* empty */
-		| structure-def list_structure-def
 		;
 
 /* <require-def> */
@@ -170,19 +191,38 @@ list_require-key:
 		
 /* <require-key> */
 
-require-key: /* section 1.3 */
-		/* empty */
+require-key:
+		STRIPS
+		| TYPING
+		| NEGATIVE_PRECONDITIONS
+		| DISJUNCTIVE_PRECONDITIONS
+		| EQUALITY
+		| EXISTENTIAL_PRECONDITIONS
+		| UNIVERSAL_PRECONDITIONS
+		| QUANTIFIED_PRECONDITIONS
+		| CONDITIONAL_EFFECTS
+		| FLUENTS
+		| NUMERIC_FLUENTS
+		| ADL
+		| DURACTIVE_ACTIONS
+		| DURATION_INEQUALITIES
+		| CONTINUOUS_EFFECTS
+		| DERIVED_PREDICATES
+		| TIMED_INITIAL_LITERALS
+		| PREFERENCES
+		| CONSTRAINTS
+		| ACTION_COSTS
 		;
 		
 /* <types-def> */
 types-def:
-		L_P TYPES L_P typed-list R_P R_P //fn
+		L_P TYPES typed-list R_P //fn
 		;
 		
 /* <contants-def> */
 
 constants-def:
-		L_P CONSTANTS L_P typed-list R_P R_P //fn
+		L_P CONSTANTS typed-list R_P //fn
 		;
 
 /* <predicates-def> */
@@ -203,7 +243,7 @@ list_atomic-formula-skeleton:
 /* <atomic formula skeleton> */
 		
 atomic-formula-skeleton:
-		L_P predicate L_P typed-list R_P R_P //fn
+		L_P predicate typed-list R_P //fn
 		;
 		
 /* <predicate> */
@@ -221,7 +261,7 @@ variable:
 /* <atomic function skeleton> */
 
 atomic-function-skeleton:
-		L_P function-symbol L_P typed-list R_P R_P //fn
+		L_P function-symbol typed-list R_P //fn
 		;
 		
 /* <function-symbol> */
@@ -309,7 +349,7 @@ emptyOr: //fn
 /* <action-def> */
 
 action-def:
-		L_P ACTION action-symbol N_L TAB PARAMETERS L_P L_P typed-list R_P R_P N_L TAB action-def-body R_P //fn
+		L_P ACTION action-symbol PARAMETERS L_P typed-list R_P action-def-body R_P //fn
 		;
 		
 /* <action-symbol> */
@@ -321,17 +361,17 @@ action-symbol:
 /* <action-def body> */
 
 action-def-body:
-		option_precondition option_effect
+		action-def-body_option1
 		;
 		
-option_precondition:
-		/* empty */
-		| PRECONDITION L_P emptyOr R_P //fn
+action-def-body_option1:
+		action-def-body_option2
+		| PRECONDITION emptyOr action-def-body_option2 //fn
 		;
 
-option_effect:
+action-def-body_option2:
 		/* empty */
-		| EFFECT L_P emptyOr R_P //fn
+		| EFFECT emptyOr //fn
 		;
 		
 /* <pre-GD> */
@@ -339,7 +379,7 @@ option_effect:
 pre-GD:
 		pref-GD
 		| L_P AND list_pre-GD R_P
-		| L_P FORALL L_P L_P typed-list R_P R_P pre-GD R_P //fn
+		| L_P FORALL L_P typed-list R_P pre-GD R_P //fn
 		;
 		
 list_pre-GD:
@@ -350,12 +390,12 @@ list_pre-GD:
 	
 pref-GD:
 		GD
-		| L_P PREFERENCE option_pref-name GD R_P
+		| L_P PREFERENCE pref-GD_option1
 		;
 
-option_pref-name:
-		/* empty */
-		| pref-name
+pref-GD_option1:
+		 GD R_P
+		| pref-name GD R_P
 		;
 
 /* <pref-name> */
@@ -367,8 +407,8 @@ pref-name:
 /* <GD> */
 
 GD:
-		L_P atomic-formula R_P //fn
-		| L_P literal R_P //fn
+		atomic-formula //fn
+		| literal //fn
 		| L_P AND list_GD R_P
 		| L_P OR list_GD R_P
 		| L_P NOT GD R_P
@@ -392,15 +432,15 @@ f-comp:
 /* <litteral (t)> */
 
 literal: //fn
-		L_P atomic-formula R_P //fn
-		| L_P NOT L_P atomic-formula R_P //fn
+		atomic-formula //fn
+		| L_P NOT atomic-formula //fn
 		;
 
 /* <atomic formula (t)> */
 
 atomic-formula: //fn
-		L_P predicate list_name R_P //fn
-		| L_P EQ name name R_P //fn
+		L_P predicate list_name R_P
+		| L_P EQ name name R_P
 		;
 
 /* <term> */
@@ -539,7 +579,7 @@ list_c-effect:
 /* <c-effect> */
 
 c-effect:
-		L_P FORALL L_P L_P typed-list R_P R_P effect R_P //fn
+		L_P FORALL L_P typed-list R_P effect R_P //fn
 		| L_P WHEN GD cond-effect R_P
 		| p-effect
 		;
@@ -547,8 +587,8 @@ c-effect:
 /* <p-effect> */
 
 p-effect:
-		L_P NOT L_P atomic-formula R_P R_P //fn
-		| L_P atomic-formula R_P //fn
+		L_P NOT atomic-formula R_P //fn
+		| atomic-formula //fn
 		| L_P assign-op f-head f-exp
 		| L_P ASSIGN function-term term R_P
 		| L_P ASSIGN function-term UNDEFINED R_P
@@ -579,7 +619,7 @@ assign-op:
 /* <durative-action-def> */
 
 durative-action-def:
-		L_P DURATIVE_ACTION da-symbol N_L TAB PARAMETERS L_P L_P typed-list R_P R_P da-def-body R_P //fn
+		L_P DURATIVE_ACTION da-symbol PARAMETERS L_P typed-list R_P da-def-body R_P //fn
 		;
 
 /* <da-symbol> */
@@ -591,7 +631,7 @@ da-symbol:
 /* <da-def body> */
 
 da-def-body:
-		DURATION duration-constraint N_L CONDITION L_P emptyOr R_P N_L EFFECT L_P  emptyOr R_P //fn
+		DURATION duration-constraint CONDITION emptyOr EFFECT emptyOr //fn
 		;
 
 /* <da-GD> */
@@ -599,7 +639,7 @@ da-def-body:
 da-GD:
 		pref-timed-GD
 		| L_P AND list_da-GD R_P
-		| L_P FORALL L_P L_P typed-list R_P R_P da-GD R_P //fn
+		| L_P FORALL L_P typed-list R_P da-GD R_P //fn
 		;
 
 list_da-GD:
@@ -611,12 +651,12 @@ list_da-GD:
 
 pref-timed-GD:
 		timed-GD
-		| L_P PREFERENCE option_pref-name timed-GD R_P
+		| L_P PREFERENCE pref-name_option1
 		;
 
-option_pref-name:
-		/* empty */
-		| pref-name
+pref-name_option1:
+		timed-GD R_P
+		| pref-name timed-GD R_P
 		;
 
 /* <timed-GD> */
@@ -683,7 +723,7 @@ d-value:
 da-effect:
 		L_P AND list_da-effect R_P
 		| timed-effect
-		| L_P FORALL L_P L_P typed-list R_P R_P da-effect R_P //fn
+		| L_P FORALL L_P typed-list R_P da-effect R_P //fn
 		| L_P WHEN da-GD timed-effect R_P
 		;
 
@@ -754,28 +794,37 @@ derived-def:
 /* <problem> */
 
 problem:
-		L_P DEFINE L_P PROBLEM name R_P N_L TAB L_P DD_DOMAIN name R_P option_require-def option_object-declaration N_L TAB init N_L TAB goal option_constraints option_metric-spec option_length-spec R_P
+		L_P DEFINE L_P PROBLEM name R_P L_P DD_DOMAIN name R_P problem_option1
 		;
 
-option_object-declaration:
-		/* empty */
-		| N_L TAB object-declaration
+problem_option1:
+		problem_option2
+		| require-def problem_option2
 		;
 
-option_metric-spec:
-		/* empty */
-		| N_L TAB metric-spec
+problem_option2:
+		problem_option3
+		| object-declaration problem_option3
 		;
 
-option_length-spec:
-		/* empty */
-		| N_L TAB length-spec
+problem_option3:
+		init goal problem_option4
+		| init goal constraints problem_option4
 		;
+
+problem_option4:
+		problem_option5
+		| metric-spec problem_option5
+		;
+
+problem_option5:
+		R_P
+		| length-spec R_P
 
 /* <object declaration> */
 
 object-declaration:
-		L_P OBJECTS L_P typed-list R_P R_P //fn
+		L_P OBJECTS typed-list R_P //fn
 		;
 
 /* <init> */
@@ -792,8 +841,8 @@ list_init-el:
 /* <init-el> */
 
 init-el:
-		L_P literal R_P //fn
-		| L_P AT number L_P literal R_P R_P //fn
+		literal //fn
+		| L_P AT number literal R_P //fn
 		| L_P EQ basic-function-term number R_P
 		| L_P EQ basic-function-term name R_P
 		;
@@ -824,8 +873,13 @@ goal:
 pref-con-GD:
 		L_P AND list_pref-con-GD R_P
 		| L_P FORALL L_P typed-list L_P variable R_P R_P pref-con-GD R_P
-		| L_P PREFERENCE option_pref-name con-GD R_P
+		| L_P PREFERENCE pref-con-GD_option1
 		| con-GD
+		;
+
+pref-con-GD_option1:
+		con-GD R_P
+		| pref-name con-GD R_P
 		;
 
 list_pref-con-GD:
@@ -837,7 +891,7 @@ list_pref-con-GD:
 
 con-GD:
 		L_P AND list_con-GD R_P
-		| L_P FORALL L_P L_P typed-list R_P R_P con-GD R_P //fn
+		| L_P FORALL L_P typed-list R_P con-GD R_P //fn
 		| L_P AT END GD R_P
 		| L_P ALWAYS con2-GD R_P
 		| L_P SOMETIME con2-GD R_P
@@ -900,17 +954,17 @@ list_metric-f-exp:
 /* <length-spec> */
 
 length-spec:
-		L_P LENGTH option_serial option_parallel R_P
+		L_P LENGTH length-spec_option1
 		;
 
-option_serial:
-		/* empty */
-		| L_P SERIAL integer R_P
+length-spec_option1:
+		length-spec_option2
+		| L_P SERIAL integer R_P length-spec_option2
 		;
 
-option_parallel:
-		/* empty */
-		| L_P PARALLEL integer R_P
+length-spec_option2:
+		R_P
+		| L_P PARALLEL integer R_P R_P
 		;
 
 integer:

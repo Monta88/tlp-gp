@@ -1,1 +1,2 @@
-(define (domain lol))
+(define (domain lol)
+	)
