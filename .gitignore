@@ -20,3 +20,4 @@
 /parser_2/my.tab.c
 /parser_2/my.tab.h
 /parser_2/lex.yy.c
+/parser_PDDL/lex.yy.c
