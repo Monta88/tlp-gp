@@ -16,5 +16,6 @@ private:
 	bool isDurative;
 	string preconditions; //TODO change type
 	string effect; //TODO change type
+	int duration = 0;
 };
 
