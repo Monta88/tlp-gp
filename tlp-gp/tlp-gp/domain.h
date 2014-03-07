@@ -1,21 +1,25 @@
 #pragma once
 
-#include <list> 
+#ifndef DOMAIN_H
+#define DOMAIN_H
+
+#include <iostream> 
 #include <string> 
-
-
+#include <vector>
+#include "type.hpp"
+#include "fluent.h"
+#include "action.h"
 using namespace std;
 
-class domain
+class Domain
 {
 public:
-	domain();
-	~domain();
+	Domain();
+	virtual~Domain();
 private:
 	string name;
-	list<string> requirements;
-	list<pair<list<string>, string>> types; // list of pair of ([obj1,obj2...],type)
-	string predicates; //TODO list of predicates
-	string actions; //TODO structure(map?) of actions
+	vector<Type> types; 
+	vector<Fluent> predicates; 
+	vector<Action> actions; 
 };
-
+#endif // DOMAIN_H

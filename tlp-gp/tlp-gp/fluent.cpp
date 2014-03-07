@@ -1,11 +1,11 @@
 #include "fluent.h"
 
 
-fluent::fluent()
+Fluent::Fluent()
 {
 }
 
 
-fluent::~fluent()
+Fluent::~Fluent()
 {
 }

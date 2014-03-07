@@ -1,11 +1,11 @@
 #include "domain.h"
 
 
-domain::domain()
+Domain::Domain()
 {
 }
 
 
-domain::~domain()
+Domain::~Domain()
 {
 }

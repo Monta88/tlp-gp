@@ -1,11 +1,20 @@
 #pragma once
-class fluent
+
+#ifndef FLUENT_H
+#define FLUENT_H
+
+#include <string>
+#include <vector>
+#include "type.hpp"
+using namespace std;
+
+class Fluent
 {
 public:
-	fluent();
-	~fluent();
+	Fluent();
+	virtual ~Fluent();
 private:
-	bool isGoal;
-	bool isInit;
+	string name;
+	vector<Type> types;
 };
-
+#endif // FLUENT_H
