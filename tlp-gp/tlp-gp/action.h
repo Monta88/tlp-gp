@@ -1,21 +1,27 @@
 #pragma once
 
+
+#ifndef ACTION_H
+#define ACTION_H
+
 #include <iostream> 
 #include <string> 
-
+#include <vector>
+#include "variable.hpp"
+#include "intervalle.hpp"
+#include "fluent.h"
 using namespace std;
 
-class action
+
+class Action
 {
 public:
-	action();
-	~action();
+	Action(string name);
+	virtual ~Action();
 private:
 	string name;
-	pair<string, string> parameters;
-	bool isDurative;
-	string preconditions; //TODO change type
-	string effect; //TODO change type
-	int duration = 0;
+	vector<Variable > parameters;
+	vector< pair<Intervalle,Fluent> > preconditions; 
+	vector< pair<Intervalle,Fluent> > effects; 
 };
-
+#endif // ACTION_H

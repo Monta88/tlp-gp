@@ -1,11 +1,11 @@
 #include "action.h"
 
 
-action::action()
+Action::Action(string name):name(name)
 {
 }
 
 
-action::~action()
+Action::~Action()
 {
 }
