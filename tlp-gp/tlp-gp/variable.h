@@ -3,7 +3,7 @@
 #define VARIABLE_H
 #include <iostream> 
 #include <string> 
-#include "type.hpp"
+#include "type.h"
 using namespace std;
 
 class Variable

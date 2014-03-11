@@ -6,7 +6,7 @@
 #include <iostream> 
 #include <string> 
 #include <vector>
-#include "type.hpp"
+#include "type.h"
 #include "fluent.h"
 #include "action.h"
 using namespace std;

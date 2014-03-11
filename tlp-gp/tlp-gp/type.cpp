@@ -1,4 +1,4 @@
-#include "type.hpp"
+#include "type.h"
 
 Type::Type(string name):name(name)
 {

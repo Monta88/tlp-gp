@@ -1,4 +1,4 @@
-#include "durative_action.hpp"
+#include "durative_action.h"
 
 Duractive_Action::Duractive_Action(string name,float duration):Action(name),duration(duration)
 {

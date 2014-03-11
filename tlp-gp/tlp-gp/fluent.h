@@ -5,7 +5,7 @@
 
 #include <string>
 #include <vector>
-#include "type.hpp"
+#include "type.h"
 using namespace std;
 
 class Fluent

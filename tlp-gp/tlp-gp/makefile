@@ -1,35 +1,21 @@
 CC=g++
 CFLAGS=-W -Wall -ansi -pedantic
 EXEC=prog
+LDFLAGS=
+SRC= $(wildcard *.cpp)
+OBJ= $(SRC:.c=.o)
 
 all: $(EXEC)
 
-prog: domain.o type.o fluent.o action.o durative_action.o intervalle.o variable.o main.o
-	$(CC) -o prog domain.o main.o $(LDFLAGS)
+prog: $(OBJ)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
-main.o: main.cpp 
-	gcc -o main.o -c main.cpp -W -Wall -ansi -pedantic
+main.o: main.h 
 
-domain.o: domain.cpp type.hpp fluent.h action.h
-	$(CC) -o domain.o -c domain.cpp $(LDFLAGS)
+%.o: %.c
+	$(CC) -o $@ -c $< $(CFLAGS)
 
-type.o: type.cpp type.hpp
-	$(CC) -o type.o -c type.cpp $(LDFLAGS)
-
-fluent.o: fluent.cpp fluent.h
-	$(CC) -o fluent.o -c fluent.cpp $(LDFLAGS)
-
-action.o: action.cpp action.h
-	$(CC) -o action.o -c action.cpp $(LDFLAGS)
-
-durative_action.o: durative_action.cpp durative_action.hpp
-	$(CC) -o action.o -c durative_action.cpp $(LDFLAGS)
-
-intervalle.o: intervalle.cpp intervalle.hpp variable.hpp
-	$(CC) -o intervalle.o -c intervalle.cpp $(LDFLAGS)
-
-variable.o: variable.cpp variable.hpp
-	$(CC) -o variable.o -c variable.cpp $(LDFLAGS)
+.PHONY: clean mrproper
 
 clean:
 	rm -rf *.o

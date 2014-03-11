@@ -1,4 +1,4 @@
-#include "intervalle.hpp"
+#include "intervalle.h"
 
 Intervalle::Intervalle(float start,float end):start(start),end(end)
 {

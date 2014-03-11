@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "variable.hpp"
+#include "variable.h"
 
 //Si le fluent est produit au moment a alor start=a et end=a
 using namespace std;
