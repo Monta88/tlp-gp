@@ -22,3 +22,8 @@
 /parser_2/lex.yy.c
 /parser_PDDL/lex.yy.c
 /tlp-gp/tlp-gp/ClassDiagram.cd
+*.*~
+*~
+.project
+prog
+
