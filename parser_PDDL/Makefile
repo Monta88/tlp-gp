@@ -5,7 +5,7 @@ OBJS	= bison.o lex.o main.o
 CC	= g++
 CFLAGS	= -g -Wall -ansi
 
-pddl_3-1:	$(OBJS)
+pddl_3-1-te:	$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o pddl_3-1-te -lfl
 
 lex.o:		lex.c

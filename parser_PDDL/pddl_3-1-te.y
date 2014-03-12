@@ -143,32 +143,32 @@ domain:
 
 domain_option1:
 	domain_option2
-	| require-def
+	| require-def domain_option2
 	;
 
 domain_option2:
 	domain_option3
-	| types-def // require :typing
+	| types-def domain_option3 // require :typing
 	;
 
 domain_option3:
 	domain_option4
-	| constants-def
+	| constants-def domain_option4
 	;
 
 domain_option4:
 	domain_option5
-	| predicates-def
+	| predicates-def domain_option5
 	;
 
 domain_option5:
 	domain_option6
-	| functions-def // require :fluents
+	| functions-def domain_option6 // require :fluents
 	;
 
 domain_option6:
 	domain_option7
-	| constraints-domain
+	| constraints-domain domain_option7
 	;
 
 domain_option7:
