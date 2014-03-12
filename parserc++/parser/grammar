@@ -1,0 +1,1109 @@
+/* Parser PDDL */
+/* pddl_3_1.y */
+/* Authors : BENIER Alan, PRAT Nathan, LAGLEIZE Martin, JOMAA Montassar */
+
+%scanner                ../scanner/Scanner.h
+%scanner-token-function d_scanner.lex()
+
+%start begin
+
+%token L_P
+R_P
+L_B
+Q_M
+NS_T
+EQ
+MINUS
+SLASH
+STAR
+PLUS
+GT
+LT
+GOE
+LOE
+UNSC
+DOT
+LETTER
+DIGIT
+NUMBER
+DEFINE
+DOMAIN
+REQUIREMENTS
+STRIPS
+TYPING
+NEGATIVE_PRECONDITIONS
+DISJUNCTIVE_PRECONDITIONS
+EQUALITY
+EXISTENTIAL_PRECONDITIONS
+UNIVERSAL_PRECONDITIONS
+QUANTIFIED_PRECONDITIONS
+CONDITIONAL_EFFECTS
+FLUENTS
+NUMERIC_FLUENTS
+ADL
+DURACTIVE_ACTIONS
+DURATION_INEQUALITIES
+CONTINUOUS_EFFECTS
+DERIVED_PREDICATES
+TIMED_INITIAL_LITERALS
+PREFERENCES
+CONSTRAINTS
+ACTION_COSTS
+TEMPORALLY_EXTENDED
+TYPES
+CONSTANTS
+PREDICATES
+FUNCTIONS
+NUM
+OBJECT
+EITHER
+ACTION
+PARAMETERS
+PRECONDITION
+EFFECT
+AND
+FORALL
+PREFERENCE
+OR
+NOT
+IMPLY
+EXISTS
+WHEN
+ASSIGN
+UNDEFINED
+SCALE_UP
+SCALE_DOWN
+INCREASE
+DECREASE
+DURATIVE_ACTION
+DURATION
+CONDITION
+AT
+OVER
+START
+END
+ALL
+Q_M_DURATION
+DERIVED
+PROBLEM
+DD_DOMAIN
+OBJECTS
+INIT
+GOAL
+ALWAYS
+SOMETIME
+WITHIN
+AT_MOST_ONCE
+SOMETIME_AFTER
+SOMETIME_BEFORE
+ALWAYS_WITHIN
+HOLD_DURING
+HOLD_AFTER
+METRIC
+MINIMIZE
+MAXIMIZE
+TOTAL_TIME
+IS_VIOLATED
+LENGTH
+SERIAL
+PARALLEL
+TIMEPOINTS
+TIMEALIASES
+TIMECONSTRAINTS
+NAME
+
+
+%%
+
+begin:
+	domain {}
+	| problem {}
+	;
+
+
+/***************************************************/
+/************** Domain Description *****************/
+/***************************************************/		
+
+
+/* <domain> */
+
+domain:
+	L_P DEFINE L_P DOMAIN name R_P domain_option1
+	;
+
+domain_option1:
+	domain_option2
+	| require_def
+	;
+
+domain_option2:
+	domain_option3
+	| types_def // require :typing
+	;
+
+domain_option3:
+	domain_option4
+	| constants_def
+	;
+
+domain_option4:
+	domain_option5
+	| predicates_def
+	;
+
+domain_option5:
+	domain_option6
+	| functions_def // require :fluents
+	;
+
+domain_option6:
+	domain_option7
+	| constraints_domain
+	;
+
+domain_option7:
+	list_structure_def R_P
+	;
+
+/* <name> */
+
+name:
+	NAME
+	;
+
+/* <require_def> */
+
+require_def:
+	L_P REQUIREMENTS nvList_require_key R_P
+	;
+
+/* <require_key> */
+
+require_key:
+	STRIPS
+	| TYPING
+	| NEGATIVE_PRECONDITIONS
+	| DISJUNCTIVE_PRECONDITIONS
+	| EQUALITY
+	| EXISTENTIAL_PRECONDITIONS
+	| UNIVERSAL_PRECONDITIONS
+	| QUANTIFIED_PRECONDITIONS
+	| CONDITIONAL_EFFECTS
+	| FLUENTS
+	| NUMERIC_FLUENTS
+	| ADL
+	| DURACTIVE_ACTIONS
+	| DURATION_INEQUALITIES
+	| CONTINUOUS_EFFECTS
+	| DERIVED_PREDICATES
+	| TIMED_INITIAL_LITERALS
+	| PREFERENCES
+	| CONSTRAINTS
+	| ACTION_COSTS
+	| TEMPORALLY_EXTENDED
+	;
+
+/* <types_def> */
+types_def:
+	L_P TYPES typed_list_name R_P
+	;
+
+/* <contants_def> */
+
+constants_def:
+	L_P CONSTANTS typed_list_name R_P
+	;
+
+/* <predicates_def> */
+
+predicates_def:
+	L_P PREDICATES nvList_atomic_formula_skeleton R_P
+	;
+
+/* <atomic formula skeleton> */
+
+atomic_formula_skeleton:
+	L_P predicate typed_list_variable R_P
+	;
+
+/* <predicate> */
+
+predicate:
+	name
+	;
+
+/* <variable> */
+
+variable:
+	Q_M name
+	;
+
+/* <atomic function skeleton> */
+
+atomic_function_skeleton:
+	L_P function_symbol typed_list_variable R_P
+	;
+
+/* <function_symbol> */
+
+function_symbol:
+	name
+	;
+
+/* <functions_def> */
+
+functions_def:
+	L_P FUNCTIONS function_typed_list_atomic_function_skeleton R_P // require :fluents
+	;
+
+/* <function type> */
+
+function_type:
+	NUMBER // require :numeric_fluents
+	| type // require :typing + :object_fluents
+	;
+
+/* <constraints> */
+
+constraints_domain:
+	L_P CONSTRAINTS con_GD R_P // require :constraints
+	;
+
+/* <structure_def> */
+
+structure_def:
+	action_def
+	| durative_action_def // require :durative_actions
+	| te_durative_action_def // require :temporally_extended
+	| derived_def // require :derived_predicates
+	;
+
+/* <primitive_type> */
+
+primitive_type:
+	name
+	| OBJECT
+	;
+
+/* <type> */
+
+type:
+	primitive_type
+	| L_P EITHER nvList_primitive_type R_P
+	;
+
+/* <action_def> */
+
+action_def:
+	L_P ACTION action_symbol PARAMETERS L_P typed_list_variable R_P action_def_body R_P
+	;
+
+/* <action_symbol> */
+
+action_symbol:
+	name
+	;
+
+/* <action_def body> */
+
+action_def_body:
+	action_def_body_option1
+	;
+
+action_def_body_option1:
+	action_def_body_option2
+	| PRECONDITION emptyOr_pre_GD action_def_body_option2
+	;
+
+action_def_body_option2:
+	/* empty */
+	| EFFECT emptyOr_effect
+	;
+
+/* <pre_GD> */
+
+pre_GD:
+	pref_GD
+	| L_P AND list_pre_GD R_P
+	| L_P FORALL L_P typed_list_variable R_P pre_GD R_P // require :universal_preconditions
+	;
+
+/* <pref_GD> */
+
+pref_GD:
+	GD
+	| L_P PREFERENCE pref_GD_option1 // require :preferences
+	;
+
+pref_GD_option1:
+	 GD R_P
+	| pref_name GD R_P
+	;
+
+/* <pref_name> */
+
+pref_name:
+	name
+	;
+
+/* <GD> */
+
+GD:
+	atomic_formula_term
+	| literal_term // require :negative_preconditions
+	| L_P AND list_GD R_P
+	| L_P OR list_GD R_P // require :disjunctive_preconditions
+	| L_P NOT GD R_P // require :disjunctive_preconditions
+	| L_P IMPLY GD GD R_P // require :disjunctive_preconditions
+	| L_P EXISTS L_P L_P typed_list_variable R_P R_P GD R_P // require :existential_preconditions
+	| L_P FORALL L_P L_P typed_list_variable R_P R_P GD R_P // require :universal_preconditions
+	| f_comp // require :numeric_fluents
+	;
+
+/* <f_comp> */
+
+f_comp:
+	L_P binary_comp f_exp f_exp R_P
+	;
+
+/* <term> */
+
+term:
+	name
+	| variable
+	| function_term // require :object_fluents
+	;
+
+/* <function_term> */
+
+function_term:
+	L_P function_symbol list_term R_P // require :object_fluents
+	;
+
+/* <f_exp> */
+
+f_exp:
+	number // require :numeric_fluents
+	| L_P binary_op f_exp f_exp R_P // require :numeric_fluents
+	| L_P multi_op f_exp nvList_f_exp R_P // require :numeric_fluents
+	| L_P MINUS f_exp R_P // require :numeric_fluents
+	| f_head // require :numeric_fluents
+	;
+
+/* <number> */
+
+number:
+	NUM
+	;
+
+/* <f_head> */
+
+f_head:
+	L_P function_symbol list_term R_P
+	| function_symbol
+	;
+
+/* <binary_op> */
+
+binary_op:
+	multi_op
+	| MINUS
+	| SLASH
+	;
+
+/* <multi_op> */
+
+multi_op:
+	STAR
+	| PLUS
+	;
+
+/* <binary_comp> */
+
+binary_comp:
+	GT
+	| LT
+	| EQ
+	| GOE
+	| LOE
+	;
+
+/* <name> */
+
+name:
+	letter list_any_char
+	;
+
+/* <letter> */
+
+letter:
+	LETTER
+	;
+
+/* <any char> */
+
+any_char:
+	letter
+	| digit
+	| MINUS
+	| UNSC
+	;
+
+/* <digit> */
+
+digit:
+	DIGIT
+	;
+
+/* <decimal> */
+
+decimal:
+	DOT nvList_digit
+	;
+
+/* <effect> */
+
+effect:
+	L_P AND list_c_effect R_P
+	| c_effect
+	;
+
+/* <c_effect> */
+
+c_effect:
+	L_P FORALL L_P typed_list_variable R_P effect R_P// require :conditional_effects
+	| L_P WHEN GD cond_effect R_P // require :conditional_effects
+	| p_effect
+	;
+
+/* <p_effect> */
+
+p_effect:
+	L_P NOT atomic_formula_term R_P
+	| atomic_formula_term
+	| L_P assign_op f_head f_exp // require :numeric_fluents
+	| L_P ASSIGN function_term term R_P // require :object_fluents
+	| L_P ASSIGN function_term UNDEFINED R_P // require :object_fluents
+	;
+
+/* <cond_effect> */
+
+cond_effect:
+	L_P AND list_p_effect R_P
+	| p_effect
+	;
+
+/* <assign_op> */
+
+assign_op:
+	ASSIGN
+	| SCALE_UP
+	| SCALE_DOWN
+	| INCREASE
+	| DECREASE
+	;
+
+/* <durative_action_def> */
+
+durative_action_def:
+	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P da_def_body R_P
+	;
+
+/* <da_symbol> */
+
+da_symbol:
+	name
+	;
+
+/* <da_def body> */
+
+da_def_body:
+	DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect
+	;
+
+/* <da_GD> */
+
+da_GD:
+	pref_timed_GD
+	| L_P AND list_da_GD R_P
+	| L_P FORALL L_P typed_list_variable R_P da_GD R_P // require :universal_preconditions
+	;
+
+/* <pref_timed_GD> */
+
+pref_timed_GD:
+	timed_GD
+	| L_P PREFERENCE pref_name_option1 // require :preferences
+	;
+
+pref_name_option1:
+	timed_GD R_P
+	| pref_name timed_GD R_P
+	;
+
+/* <timed_GD> */
+
+timed_GD:
+	L_P AT time_specifier GD R_P
+	| L_P OVER interval GD R_P
+	;
+
+/* <time_specifier> */
+
+time_specifier:
+	START
+	| END
+	;
+
+/* <interval> */
+
+interval:
+	ALL
+	;
+
+/* <duration_constraint> */
+
+duration_constraint:
+	L_P AND nvList_simple_duration_constraint R_P // require :duration_inequalities
+	| L_P R_P
+	| simple_duration_constraint
+	;
+
+/* <simple_duration_constraint> */
+
+simple_duration_constraint:
+	L_P d_op Q_M_DURATION d_value R_P
+	| L_P AT time_specifier simple_duration_constraint R_P
+	;
+
+/* <d_op> */
+
+d_op:
+	LOE // require :duration_inequalities
+	| GOE // require :duration_inequalities
+	| EQ
+	;
+
+/* <d_value> */
+
+d_value:
+	NUMBER
+	| f_exp // require :numeric_fluents
+	;
+
+/* <da_effect> */
+
+da_effect:
+	L_P AND list_da_effect R_P
+	| timed_effect
+	| L_P FORALL L_P typed_list_variable R_P da_effect R_P // require :conditional_effects
+	| L_P WHEN da_GD timed_effect R_P // require :conditional_effects
+	;
+
+list_da_effect:
+	/* empty */
+	| da_effect list_da_effect
+	;
+
+/* <timed_effect> */
+
+timed_effect:
+	L_P AT time_specifier cond_effect R_P
+	| L_P AT time_specifier f_assign_da R_P // require :numeric_fluents
+	| L_P assign_op_t f_head f_exp_t R_P  // require :continuous_effects + :numeric_fluents
+	;
+
+/* <f_assign_da> */
+
+f_assign_da:
+	L_P assign_op f_head f_exp_da R_P
+	;
+
+/* <f_exp_da> */
+
+f_exp_da:
+	L_P binary_op f_exp_da f_exp_da R_P
+	| L_P multi_op f_exp_da nvList_f_exp_da R_P
+	| L_P MINUS f_exp_da R_P
+	| Q_M_DURATION  // require :duration_inequalities
+	| f_exp
+	;
+
+/* <assign_op_t> */
+
+assign_op_t:
+	INCREASE
+	| DECREASE
+	;
+
+/* <f_exp_t> */
+
+f_exp_t:
+	L_P STAR f_exp NS_T R_P
+	| L_P STAR NS_T f_exp R_P
+	| NS_T
+	;
+
+/* <derived_def> */
+
+derived_def:
+	L_P DERIVED atomic_formula_skeleton GD R_P
+	;
+
+
+/***************************************************/
+/************** Problem Description ****************/
+/***************************************************/
+
+
+/* <problem> */
+
+problem:
+	L_P DEFINE L_P PROBLEM name R_P L_P DD_DOMAIN name R_P problem_option1
+	;
+
+problem_option1:
+	problem_option2
+	| require_def problem_option2
+	;
+
+problem_option2:
+	problem_option3
+	| object_declaration problem_option3
+	;
+
+problem_option3:
+	init goal problem_option4
+	| init goal constraints_problem problem_option4 // require :constraints
+	;
+
+problem_option4:
+	problem_option5
+	| metric_spec problem_option5 // require :numeric_fluents
+	;
+
+problem_option5:
+	R_P
+	| length_spec R_P
+	;
+
+/* <object declaration> */
+
+object_declaration:
+	L_P OBJECTS typed_list_name R_P
+	;
+
+/* <init> */
+
+init:
+	L_P INIT list_init_el R_P
+	;
+
+/* <init_el> */
+
+init_el:
+	literal_name
+	| L_P AT number literal_name R_P // require :timed_initial_literals
+	| L_P EQ basic_function_term number R_P // require :numeric_fluents
+	| L_P EQ basic_function_term name R_P // require :object_fluents
+	;
+
+/* <basic_function_term> */
+
+basic_function_term:
+	function_symbol
+	| L_P function_symbol list_name R_P
+	;
+
+/* <goal> */
+
+goal:
+	L_P GOAL pre_GD
+	;
+
+/* <contraints> */
+
+constraints_problem:
+	L_P CONSTRAINTS pref_con_GD R_P // require :constraints
+	;
+
+/* <pref_con_GD> */
+
+pref_con_GD:
+	L_P AND list_pref_con_GD R_P
+	| L_P FORALL L_P typed_list_variable R_P pref_con_GD R_P // require :universal_preconditions
+	| L_P PREFERENCE pref_con_GD_option1 // require :preferences
+	| con_GD
+	;
+
+pref_con_GD_option1:
+	con_GD R_P
+	| pref_name con_GD R_P
+	;
+
+/* <con_GD> */
+
+con_GD:
+	L_P AND list_con_GD R_P
+	| L_P FORALL L_P typed_list_variable R_P con_GD R_P
+	| L_P AT END GD R_P
+	| L_P ALWAYS con2_GD R_P
+	| L_P SOMETIME con2_GD R_P
+	| L_P WITHIN number con2_GD R_P
+	| L_P AT_MOST_ONCE con2_GD con2_GD R_P
+	| L_P SOMETIME_AFTER con2_GD con2_GD R_P
+	| L_P SOMETIME_BEFORE con2_GD con2_GD R_P
+	| L_P ALWAYS_WITHIN number con2_GD con2_GD R_P
+	| L_P HOLD_DURING number number con2_GD R_P
+	| L_P HOLD_AFTER number con2_GD R_P
+	;
+
+/* <con2_GD> */
+
+con2_GD:
+	con_GD
+	| GD
+	;
+
+/* <metric_spec> */
+
+metric_spec:
+	L_P METRIC optimization metric_f_exp R_P // require :numeric_fluents
+	;
+
+/* <optimization> */
+
+optimization:
+	MINIMIZE
+	| MAXIMIZE
+	;
+
+/* <metric_f_exp> */
+
+metric_f_exp:
+	L_P binary_op metric_f_exp metric_f_exp R_P
+	| L_P multi_op metric_f_exp nvList_metric_f_exp R_P
+	| L_P MINUS metric_f_exp R_P
+	| number
+	| L_P function_symbol list_name R_P
+	| function_symbol
+	| TOTAL_TIME
+	| L_P IS_VIOLATED pref_name R_P // require :preferences
+	;
+
+/* <length_spec> */
+
+length_spec:
+	L_P LENGTH length_spec_option1
+	;
+
+length_spec_option1:
+	length_spec_option2
+	| L_P SERIAL integer R_P length_spec_option2
+	;
+
+length_spec_option2:
+	R_P
+	| L_P PARALLEL integer R_P R_P
+	;
+
+/* <integer> */
+
+integer:
+	NUM
+	;
+
+
+/***************************************************/
+/*************** Temporally_Extended ***************/
+/***************************************************/
+
+
+/* <te_durative_action_def> */
+
+te_durative_action_def:
+	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P te_da_def_body R_P
+	;
+
+/* <te_da_def body> */
+
+te_da_def_body:
+	DURATION duration_constraint TIMEPOINTS L_P START END list_te_time_specifier R_P TIMEALIASES L_P ALL L_B START END L_B list_te_time_interval R_P TIMECONSTRAINTS L_P L_P EQ L_P MINUS END START R_P Q_M_DURATION R_P list_te_time_constraints R_P CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect
+	;
+
+/* <te_time_specifier> */
+
+te_time_specifier:
+	time_specifier
+	| name // allow to define flypoints
+	;
+
+/* <te_time_interval> */
+
+te_time_interval:
+	interval L_B te_time_specifier te_time_specifier L_B
+	;
+
+/* <te_time_constraints> */
+
+te_time_constraints:
+	L_P binary_comp te_time_specifier te_time_specifier R_P // do we need to do operations on flypoints ?
+	;
+
+
+/***************************************************/
+/****************** Miscellaneous ******************/
+/***************************************************/
+
+/* <function typed list (x)> */
+
+function_typed_list_atomic_function_skeleton:
+	/* empty */
+	| nvList_atomic_function_skeleton MINUS function_type function_typed_list_atomic_function_skeleton
+	| nvList_atomic_function_skeleton // require :numeric_fluents
+	;
+
+
+/* <typed list (x)> */
+
+typed_list_name:
+	list_name
+	| nvList_name MINUS type typed_list_name // require :typing
+	;
+
+typed_list_variable:
+	list_variable
+	| nvList_variable MINUS type typed_list_variable // require :typing
+	;
+
+/* <emptyOr (x)> */
+
+emptyOr_pre_GD:
+	L_P R_P
+	| pre_GD
+	;
+
+emptyOr_effect:
+	L_P R_P
+	| effect
+	;
+
+emptyOr_da_GD:
+	L_P R_P
+	| da_GD
+	;
+
+emptyOr_da_effect:
+	L_P R_P
+	| da_effect
+	;
+
+/* <litteral (t)> */
+
+literal_term:
+	atomic_formula_term
+	| L_P NOT atomic_formula_term R_P
+	;
+
+literal_name:
+	atomic_formula_name
+	| L_P NOT atomic_formula_name R_P
+	;
+
+/* <atomic formula (t)> */
+
+atomic_formula_term:
+	L_P predicate list_term R_P
+	| L_P EQ term term R_P // require :equality
+	;
+
+atomic_formula_name:
+	L_P predicate list_name R_P
+	| L_P EQ name name R_P // require :equality
+	;
+
+/* nvList_A (for non void list) _> A+ */
+
+nvList_require_key:
+	require_key list_require_key
+	;
+
+nvList_name:
+	name list_name
+	;
+
+nvList_atomic_formula_skeleton:
+	atomic_formula_skeleton list_atomic_formula_skeleton
+	;
+
+nvList_variable:
+	variable list_variable
+	;
+	
+nvList_atomic_function_skeleton:
+	atomic_function_skeleton list_atomic_function_skeleton
+	;
+
+nvList_primitive_type:
+	primitive_type list_primitive_type
+	;
+
+nvList_f_exp:
+	f_exp list_f_exp
+	;
+
+nvList_digit:
+	digit list_digit
+	;
+
+nvList_te_time_specifier:
+	te_time_specifier list_te_time_specifier
+	;
+
+nvList_te_time_interval:
+	te_time_interval list_te_time_interval
+	;
+
+nvList_simple_duration_constraint:
+	simple_duration_constraint list_simple_duration_constraint
+	;
+
+nvList_f_exp_da:
+	f_exp_da list_f_exp_da
+	;
+
+nvList_metric_f_exp:
+	metric_f_exp list_metric_f_exp
+	;
+
+/* list_A _> A* */
+
+list_structure_def:
+	/* empty */
+	| structure_def list_structure_def
+	;
+
+list_require_key:
+	/* empty */
+	| require_key list_require_key
+	;
+
+list_name:
+	/* empty */
+	| name list_name
+	;
+
+list_atomic_formula_skeleton:
+	/* empty */		
+	| atomic_formula_skeleton list_atomic_formula_skeleton
+	;
+
+list_variable:
+	/* empty */
+	| variable list_variable
+	;
+
+list_atomic_function_skeleton:
+	/* empty */
+	| atomic_function_skeleton list_atomic_function_skeleton
+	;
+
+list_primitive_type:
+	/* empty */
+	| primitive_type list_primitive_type
+	;
+
+list_pre_GD:
+	pre_GD list_pre_GD
+	;
+
+list_term:
+	/* empty */
+	| term list_term
+	;
+
+list_GD:
+	/* empty */
+	| GD list_GD
+	;
+
+list_f_exp:
+	/* empty */
+	| f_exp list_f_exp
+	;
+
+list_any_char:
+	/* empty */
+	| any_char list_any_char
+	;
+
+list_digit:
+	/* empty */
+	| digit list_digit
+	;
+
+list_c_effect:
+	/* empty */
+	| c_effect list_c_effect
+	;
+
+list_p_effect:
+	/* empty */
+	| p_effect list_p_effect
+	;
+
+list_te_time_specifier:
+	/* empty */
+	| te_time_specifier list_te_time_specifier
+	;
+
+list_te_time_interval:
+	/* empty */
+	| te_time_interval list_te_time_interval
+	;
+
+list_te_time_constraints:
+	/* empty */
+	| te_time_constraints list_te_time_constraints
+	;
+
+list_da_GD:
+	/* empty */
+	| da_GD list_da_GD
+	;
+
+list_simple_duration_constraint:
+	/* empty */
+	| simple_duration_constraint list_simple_duration_constraint
+	;
+
+list_f_exp_da:
+	/* empty */
+	| f_exp_da list_f_exp_da
+	;
+
+list_init_el:
+	/* empty */
+	| init_el list_init_el
+	;
+
+list_pref_con_GD:
+	/* empty */
+	| pref_con_GD list_pref_con_GD
+	;
+
+list_con_GD:
+	/* empty */
+	| con_GD list_con_GD
+	;
+
+list_metric_f_exp:
+	/* empty */
+	| metric_f_exp list_metric_f_exp
+	;
+
+/***************************************************/
+/*********************** End ***********************/
+/***************************************************/
+
