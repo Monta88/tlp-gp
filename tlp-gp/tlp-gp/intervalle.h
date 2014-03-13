@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "variable.h"
+#include "variable.hpp"
 
 //Si le fluent est produit au moment a alor start=a et end=a
 using namespace std;
@@ -12,7 +12,7 @@ class Intervalle
 {
     public:
         Intervalle(float start,float end);     
-	void add_argu(Variable const * argu);
+	void add_argu(Variable * argu);
         virtual ~Intervalle();
     protected:
         float start;

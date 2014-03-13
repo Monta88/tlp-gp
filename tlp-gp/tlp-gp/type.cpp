@@ -1,10 +1,10 @@
-#include "type.h"
+#include "type.hpp"
 
 Type::Type(string name):name(name)
 {
 }
        
-string Type::getType()
+string Type::get_Name()
 {
 	return name;
 }

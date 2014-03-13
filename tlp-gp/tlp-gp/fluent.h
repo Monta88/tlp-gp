@@ -5,16 +5,17 @@
 
 #include <string>
 #include <vector>
-#include "type.h"
+#include "type.hpp"
 using namespace std;
 
 class Fluent
 {
 public:
-	Fluent();
+	Fluent(string name);
+	string get_Name();
 	virtual ~Fluent();
 private:
 	string name;
-	vector<Type> types;
+	vector<Type *> types;
 };
 #endif // FLUENT_H

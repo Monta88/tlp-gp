@@ -1,11 +1,16 @@
-#include "fluent.h"
+#include "fluent.hpp"
 
 
-Fluent::Fluent()
+Fluent::Fluent(string name):name(name)
 {
 }
 
 
 Fluent::~Fluent()
 {
+}
+
+string Fluent::get_Name()
+{
+	return name;
 }
