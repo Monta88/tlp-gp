@@ -11,7 +11,7 @@
 class Scanner: public ScannerBase
 {
     public:
-		enum Tokens__
+		enum Tokens
 		{
 		    L_P = 257,
 		    R_P,
