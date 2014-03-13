@@ -26,8 +26,6 @@
 "<="							{return LOE;}
 "_"								{return UNSC;}
 "."								{return DOT;}
-[a-zA-Z]						{return LETTER;}
-[0-9]							{return DIGIT;}
 [0-9]+							{return NUM;}
 "define"						{return DEFINE;}
 "domain"						{return DOMAIN;}
@@ -81,6 +79,7 @@
 ":durative-action"				{return DURATIVE_ACTION;}
 ":duration"						{return DURATION;}
 ":condition"					{return CONDITION;}
+"at"							{return AT;} // must be under NAME if "at" can be a predicate for example
 "over"							{return OVER;}
 "start"							{return START;}
 "end"							{return END;}
@@ -113,7 +112,6 @@
 ":timealiases"					{return TIMEALIASES;}
 ":timeconstraints"				{return TIMECONSTRAINTS;}
 [a-zA-Z][a-zA-Z0-9_^-]*			{yylval.sval=strdup(yytext); return NAME;}
-"at"							{return AT;} // must be under NAME if "at" can be a predicate for example
 [;]+.*[\n]						{++yylineno;} /* ignore comments */
 [\n]							{++yylineno;} /* ignore excessive new lines */
 [\t]+							/* ignore excessive tabulations */

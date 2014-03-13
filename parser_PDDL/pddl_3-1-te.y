@@ -32,8 +32,6 @@
 %token LOE
 %token UNSC
 %token DOT
-%token LETTER
-%token DIGIT
 %token NUMBER
 %token DEFINE
 %token DOMAIN
@@ -240,6 +238,7 @@ atomic-formula-skeleton:
 
 predicate:
 	name
+	| AT
 	;
 
 /* <variable> */
@@ -438,37 +437,10 @@ binary-comp:
 	| LOE
 	;
 
-/* <name> */
-
-name:
-	letter list_any-char
-	;
-
-/* <letter> */
-
-letter:
-	LETTER
-	;
-
-/* <any char> */
-
-any-char:
-	letter
-	| digit
-	| MINUS
-	| UNSC
-	;
-
-/* <digit> */
-
-digit:
-	DIGIT
-	;
-
 /* <decimal> */
 
 decimal:
-	DOT nvList_digit
+	DOT NUM
 	;
 
 /* <effect> */
@@ -961,10 +933,6 @@ nvList_f-exp:
 	f-exp list_f-exp
 	;
 
-nvList_digit:
-	digit list_digit
-	;
-
 nvList_te-time-specifier:
 	te-time-specifier list_te-time-specifier
 	;
@@ -1023,7 +991,8 @@ list_primitive-type:
 	;
 
 list_pre-GD:
-	pre-GD list_pre-GD
+	/* empty */
+	| pre-GD list_pre-GD
 	;
 
 list_term:
@@ -1039,16 +1008,6 @@ list_GD:
 list_f-exp:
 	/* empty */
 	| f-exp list_f-exp
-	;
-
-list_any-char:
-	/* empty */
-	| any-char list_any-char
-	;
-
-list_digit:
-	/* empty */
-	| digit list_digit
 	;
 
 list_c-effect:
