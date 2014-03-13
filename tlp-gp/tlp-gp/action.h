@@ -7,9 +7,9 @@
 #include <iostream> 
 #include <string> 
 #include <vector>
-#include "variable.hpp"
-#include "intervalle.hpp"
-#include "fluent.hpp"
+#include "variable.h"
+#include "intervalle.h"
+#include "fluent.h"
 using namespace std;
 
 

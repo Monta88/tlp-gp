@@ -10,6 +10,7 @@ class Type
         Type(string name);        
 	string getType();
         virtual ~Type();
+	string get_Name();
     protected:
         string name;
     private:

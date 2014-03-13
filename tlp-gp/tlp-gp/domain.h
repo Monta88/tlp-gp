@@ -6,9 +6,9 @@
 #include <iostream> 
 #include <string> 
 #include <vector>
-#include "type.hpp"
-#include "fluent.hpp"
-#include "action.hpp"
+#include "type.h"
+#include "fluent.h"
+#include "action.h"
 using namespace std;
 
 class Domain

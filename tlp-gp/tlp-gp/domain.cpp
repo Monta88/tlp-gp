@@ -1,4 +1,4 @@
-#include "domain.hpp"
+#include "domain.h"
 
 
 Domain::Domain(string name):name(name)

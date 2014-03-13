@@ -1,4 +1,4 @@
-#include "action.hpp"
+#include "action.h"
 
 
 Action::Action(string name):name(name)
