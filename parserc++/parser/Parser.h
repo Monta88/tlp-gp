@@ -3,6 +3,9 @@
 #ifndef Parser_h_included
 #define Parser_h_included
 
+#include <iostream>
+#include <string>
+
 // $insert baseclass
 #include "Parserbase.h"
 // $insert scanner.h

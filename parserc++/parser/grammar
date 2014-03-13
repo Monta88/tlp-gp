@@ -167,7 +167,7 @@ domain_option7:
 /* <name> */
 
 name:
-	NAME
+	NAME { std::cout << "name "+std::to_string($1) << std::endl ;}
 	| AT
 	| OVER
 	| OBJECT
@@ -231,13 +231,13 @@ atomic_formula_skeleton:
 /* <predicate> */
 
 predicate:
-	name
+	name { std::cout << " predicate "+std::to_string($1) << std::endl ;}
 	;
 
 /* <variable> */
 
 variable:
-	Q_M name
+	Q_M name { std::cout << " variable "+std::to_string($2) << std::endl ;}
 	;
 
 /* <atomic function skeleton> */

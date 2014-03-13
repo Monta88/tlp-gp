@@ -106,7 +106,7 @@
 ":timepoints"				return Parser::TIMEPOINTS;
 ":timealiases"				return Parser::TIMEALIASES;
 ":timeconstraints"			return Parser::TIMECONSTRAINTS;
-[a-zA-Z][a-zA-Z0-9_^-]*			return Parser::NAME;
+[[:alpha:]][a-zA-Z0-9_^-]*			return Parser::NAME;
 [;]+.*[\n]						/* ignore comments */
 [\n]							/* ignore excessive new lines */
 [\t]+							/* ignore excessive tabulations */
