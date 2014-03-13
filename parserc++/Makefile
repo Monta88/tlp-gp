@@ -26,8 +26,8 @@ cleanall:	mrproper
 	rm -f parser/parse.cc parser/Parser.h parser/Parser.ih parser/Parserbase.h scanner/lex.cc scanner/Scanner.h scanner/Scanner.ih scanner/Scannerbase.h
 
 bison:
-	cd parser && bisonc++ grammar && cd ..
+	cd parser && bisonc++ --debug grammar && cd ..
 
 flex:
-	cd scanner && flexc++ lexer && cd ..
+	cd scanner && flexc++ -t lexer && cd ..
 
