@@ -23,8 +23,6 @@ GOE
 LOE
 UNSC
 DOT
-LETTER
-DIGIT
 NUMBER
 DEFINE
 DOMAIN
@@ -170,15 +168,18 @@ domain_option7:
 
 name:
 	NAME
+	| AT
+	| OVER
+	| OBJECT
 	;
 
-/* <require_def> */
+/* <require-def> */
 
 require_def:
 	L_P REQUIREMENTS nvList_require_key R_P
 	;
 
-/* <require_key> */
+/* <require-key> */
 
 require_key:
 	STRIPS
@@ -204,18 +205,18 @@ require_key:
 	| TEMPORALLY_EXTENDED
 	;
 
-/* <types_def> */
+/* <types-def> */
 types_def:
 	L_P TYPES typed_list_name R_P
 	;
 
-/* <contants_def> */
+/* <contants-def> */
 
 constants_def:
 	L_P CONSTANTS typed_list_name R_P
 	;
 
-/* <predicates_def> */
+/* <predicates-def> */
 
 predicates_def:
 	L_P PREDICATES nvList_atomic_formula_skeleton R_P
@@ -245,13 +246,13 @@ atomic_function_skeleton:
 	L_P function_symbol typed_list_variable R_P
 	;
 
-/* <function_symbol> */
+/* <function-symbol> */
 
 function_symbol:
 	name
 	;
 
-/* <functions_def> */
+/* <functions-def> */
 
 functions_def:
 	L_P FUNCTIONS function_typed_list_atomic_function_skeleton R_P // require :fluents
@@ -260,8 +261,8 @@ functions_def:
 /* <function type> */
 
 function_type:
-	NUMBER // require :numeric_fluents
-	| type // require :typing + :object_fluents
+	NUMBER // require :numeric-fluents
+	| type // require :typing + :object-fluents
 	;
 
 /* <constraints> */
@@ -270,16 +271,16 @@ constraints_domain:
 	L_P CONSTRAINTS con_GD R_P // require :constraints
 	;
 
-/* <structure_def> */
+/* <structure-def> */
 
 structure_def:
 	action_def
-	| durative_action_def // require :durative_actions
-	| te_durative_action_def // require :temporally_extended
-	| derived_def // require :derived_predicates
+	| durative_action_def // require :durative-actions
+	| te_durative_action_def // require :temporally-extended
+	| derived_def // require :derived-predicates
 	;
 
-/* <primitive_type> */
+/* <primitive-type> */
 
 primitive_type:
 	name
@@ -305,7 +306,7 @@ action_symbol:
 	name
 	;
 
-/* <action_def body> */
+/* <action-def body> */
 
 action_def_body:
 	action_def_body_option1
@@ -321,15 +322,15 @@ action_def_body_option2:
 	| EFFECT emptyOr_effect
 	;
 
-/* <pre_GD> */
+/* <pre-GD> */
 
 pre_GD:
 	pref_GD
 	| L_P AND list_pre_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P pre_GD R_P // require :universal_preconditions
+	| L_P FORALL L_P typed_list_variable R_P pre_GD R_P // require :universal-preconditions
 	;
 
-/* <pref_GD> */
+/* <pref-GD> */
 
 pref_GD:
 	GD
@@ -341,7 +342,7 @@ pref_GD_option1:
 	| pref_name GD R_P
 	;
 
-/* <pref_name> */
+/* <pref-name> */
 
 pref_name:
 	name
@@ -351,17 +352,17 @@ pref_name:
 
 GD:
 	atomic_formula_term
-	| literal_term // require :negative_preconditions
+	| literal_term // require :negative-preconditions
 	| L_P AND list_GD R_P
-	| L_P OR list_GD R_P // require :disjunctive_preconditions
-	| L_P NOT GD R_P // require :disjunctive_preconditions
-	| L_P IMPLY GD GD R_P // require :disjunctive_preconditions
-	| L_P EXISTS L_P L_P typed_list_variable R_P R_P GD R_P // require :existential_preconditions
-	| L_P FORALL L_P L_P typed_list_variable R_P R_P GD R_P // require :universal_preconditions
-	| f_comp // require :numeric_fluents
+	| L_P OR list_GD R_P // require :disjunctive-preconditions
+	| L_P NOT GD R_P // require :disjunctive-preconditions
+	| L_P IMPLY GD GD R_P // require :disjunctive-preconditions
+	| L_P EXISTS L_P L_P typed_list_variable R_P R_P GD R_P // require :existential-preconditions
+	| L_P FORALL L_P L_P typed_list_variable R_P R_P GD R_P // require :universal-preconditions
+	| f_comp // require :numeric-fluents
 	;
 
-/* <f_comp> */
+/* <f-comp> */
 
 f_comp:
 	L_P binary_comp f_exp f_exp R_P
@@ -372,23 +373,23 @@ f_comp:
 term:
 	name
 	| variable
-	| function_term // require :object_fluents
+	| function_term // require :object-fluents
 	;
 
-/* <function_term> */
+/* <function-term> */
 
 function_term:
-	L_P function_symbol list_term R_P // require :object_fluents
+	L_P function_symbol list_term R_P // require :object-fluents
 	;
 
-/* <f_exp> */
+/* <f-exp> */
 
 f_exp:
-	number // require :numeric_fluents
-	| L_P binary_op f_exp f_exp R_P // require :numeric_fluents
-	| L_P multi_op f_exp nvList_f_exp R_P // require :numeric_fluents
-	| L_P MINUS f_exp R_P // require :numeric_fluents
-	| f_head // require :numeric_fluents
+	number // require :numeric-fluents
+	| L_P binary_op f_exp f_exp R_P // require :numeric-fluents
+	| L_P multi_op f_exp nvList_f_exp R_P // require :numeric-fluents
+	| L_P MINUS f_exp R_P // require :numeric-fluents
+	| f_head // require :numeric-fluents
 	;
 
 /* <number> */
@@ -397,14 +398,14 @@ number:
 	NUM
 	;
 
-/* <f_head> */
+/* <f-head> */
 
 f_head:
 	L_P function_symbol list_term R_P
 	| function_symbol
 	;
 
-/* <binary_op> */
+/* <binary-op> */
 
 binary_op:
 	multi_op
@@ -412,14 +413,14 @@ binary_op:
 	| SLASH
 	;
 
-/* <multi_op> */
+/* <multi-op> */
 
 multi_op:
 	STAR
 	| PLUS
 	;
 
-/* <binary_comp> */
+/* <binary-comp> */
 
 binary_comp:
 	GT
@@ -429,37 +430,10 @@ binary_comp:
 	| LOE
 	;
 
-/* <name> */
-
-name:
-	letter list_any_char
-	;
-
-/* <letter> */
-
-letter:
-	LETTER
-	;
-
-/* <any char> */
-
-any_char:
-	letter
-	| digit
-	| MINUS
-	| UNSC
-	;
-
-/* <digit> */
-
-digit:
-	DIGIT
-	;
-
 /* <decimal> */
 
 decimal:
-	DOT nvList_digit
+	DOT NUM
 	;
 
 /* <effect> */
@@ -469,32 +443,32 @@ effect:
 	| c_effect
 	;
 
-/* <c_effect> */
+/* <c-effect> */
 
 c_effect:
-	L_P FORALL L_P typed_list_variable R_P effect R_P// require :conditional_effects
-	| L_P WHEN GD cond_effect R_P // require :conditional_effects
+	L_P FORALL L_P typed_list_variable R_P effect R_P// require :conditional-effects
+	| L_P WHEN GD cond_effect R_P // require :conditional-effects
 	| p_effect
 	;
 
-/* <p_effect> */
+/* <p-effect> */
 
 p_effect:
 	L_P NOT atomic_formula_term R_P
 	| atomic_formula_term
-	| L_P assign_op f_head f_exp // require :numeric_fluents
-	| L_P ASSIGN function_term term R_P // require :object_fluents
-	| L_P ASSIGN function_term UNDEFINED R_P // require :object_fluents
+	| L_P assign_op f_head f_exp // require :numeric-fluents
+	| L_P ASSIGN function_term term R_P // require :object-fluents
+	| L_P ASSIGN function_term UNDEFINED R_P // require :object-fluents
 	;
 
-/* <cond_effect> */
+/* <cond-effect> */
 
 cond_effect:
 	L_P AND list_p_effect R_P
 	| p_effect
 	;
 
-/* <assign_op> */
+/* <assign-op> */
 
 assign_op:
 	ASSIGN
@@ -504,33 +478,33 @@ assign_op:
 	| DECREASE
 	;
 
-/* <durative_action_def> */
+/* <durative-action-def> */
 
 durative_action_def:
 	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P da_def_body R_P
 	;
 
-/* <da_symbol> */
+/* <da-symbol> */
 
 da_symbol:
 	name
 	;
 
-/* <da_def body> */
+/* <da-def body> */
 
 da_def_body:
 	DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect
 	;
 
-/* <da_GD> */
+/* <da-GD> */
 
 da_GD:
 	pref_timed_GD
 	| L_P AND list_da_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P da_GD R_P // require :universal_preconditions
+	| L_P FORALL L_P typed_list_variable R_P da_GD R_P // require :universal-preconditions
 	;
 
-/* <pref_timed_GD> */
+/* <pref-timed-GD> */
 
 pref_timed_GD:
 	timed_GD
@@ -542,14 +516,14 @@ pref_name_option1:
 	| pref_name timed_GD R_P
 	;
 
-/* <timed_GD> */
+/* <timed-GD> */
 
 timed_GD:
 	L_P AT time_specifier GD R_P
 	| L_P OVER interval GD R_P
 	;
 
-/* <time_specifier> */
+/* <time-specifier> */
 
 time_specifier:
 	START
@@ -562,43 +536,43 @@ interval:
 	ALL
 	;
 
-/* <duration_constraint> */
+/* <duration-constraint> */
 
 duration_constraint:
-	L_P AND nvList_simple_duration_constraint R_P // require :duration_inequalities
+	L_P AND nvList_simple_duration_constraint R_P // require :duration-inequalities
 	| L_P R_P
 	| simple_duration_constraint
 	;
 
-/* <simple_duration_constraint> */
+/* <simple-duration-constraint> */
 
 simple_duration_constraint:
 	L_P d_op Q_M_DURATION d_value R_P
 	| L_P AT time_specifier simple_duration_constraint R_P
 	;
 
-/* <d_op> */
+/* <d-op> */
 
 d_op:
-	LOE // require :duration_inequalities
-	| GOE // require :duration_inequalities
+	LOE // require :duration-inequalities
+	| GOE // require :duration-inequalities
 	| EQ
 	;
 
-/* <d_value> */
+/* <d-value> */
 
 d_value:
 	NUMBER
-	| f_exp // require :numeric_fluents
+	| f_exp // require :numeric-fluents
 	;
 
-/* <da_effect> */
+/* <da-effect> */
 
 da_effect:
 	L_P AND list_da_effect R_P
 	| timed_effect
-	| L_P FORALL L_P typed_list_variable R_P da_effect R_P // require :conditional_effects
-	| L_P WHEN da_GD timed_effect R_P // require :conditional_effects
+	| L_P FORALL L_P typed_list_variable R_P da_effect R_P // require :conditional-effects
+	| L_P WHEN da_GD timed_effect R_P // require :conditional-effects
 	;
 
 list_da_effect:
@@ -606,38 +580,38 @@ list_da_effect:
 	| da_effect list_da_effect
 	;
 
-/* <timed_effect> */
+/* <timed-effect> */
 
 timed_effect:
 	L_P AT time_specifier cond_effect R_P
-	| L_P AT time_specifier f_assign_da R_P // require :numeric_fluents
-	| L_P assign_op_t f_head f_exp_t R_P  // require :continuous_effects + :numeric_fluents
+	| L_P AT time_specifier f_assign_da R_P // require :numeric-fluents
+	| L_P assign_op_t f_head f_exp_t R_P  // require :continuous-effects + :numeric-fluents
 	;
 
-/* <f_assign_da> */
+/* <f-assign-da> */
 
 f_assign_da:
 	L_P assign_op f_head f_exp_da R_P
 	;
 
-/* <f_exp_da> */
+/* <f-exp-da> */
 
 f_exp_da:
 	L_P binary_op f_exp_da f_exp_da R_P
 	| L_P multi_op f_exp_da nvList_f_exp_da R_P
 	| L_P MINUS f_exp_da R_P
-	| Q_M_DURATION  // require :duration_inequalities
+	| Q_M_DURATION  // require :duration-inequalities
 	| f_exp
 	;
 
-/* <assign_op_t> */
+/* <assign-op-t> */
 
 assign_op_t:
 	INCREASE
 	| DECREASE
 	;
 
-/* <f_exp_t> */
+/* <f-exp-t> */
 
 f_exp_t:
 	L_P STAR f_exp NS_T R_P
@@ -645,7 +619,7 @@ f_exp_t:
 	| NS_T
 	;
 
-/* <derived_def> */
+/* <derived-def> */
 
 derived_def:
 	L_P DERIVED atomic_formula_skeleton GD R_P
@@ -680,7 +654,7 @@ problem_option3:
 
 problem_option4:
 	problem_option5
-	| metric_spec problem_option5 // require :numeric_fluents
+	| metric_spec problem_option5 // require :numeric-fluents
 	;
 
 problem_option5:
@@ -700,16 +674,16 @@ init:
 	L_P INIT list_init_el R_P
 	;
 
-/* <init_el> */
+/* <init-el> */
 
 init_el:
 	literal_name
-	| L_P AT number literal_name R_P // require :timed_initial_literals
-	| L_P EQ basic_function_term number R_P // require :numeric_fluents
-	| L_P EQ basic_function_term name R_P // require :object_fluents
+	| L_P AT number literal_name R_P // require :timed_initial-literals
+	| L_P EQ basic_function_term number R_P // require :numeric-fluents
+	| L_P EQ basic_function_term name R_P // require :object-fluents
 	;
 
-/* <basic_function_term> */
+/* <basic-function-term> */
 
 basic_function_term:
 	function_symbol
@@ -719,7 +693,7 @@ basic_function_term:
 /* <goal> */
 
 goal:
-	L_P GOAL pre_GD
+	L_P GOAL pre_GD R_P
 	;
 
 /* <contraints> */
@@ -728,11 +702,11 @@ constraints_problem:
 	L_P CONSTRAINTS pref_con_GD R_P // require :constraints
 	;
 
-/* <pref_con_GD> */
+/* <pref-con-GD> */
 
 pref_con_GD:
 	L_P AND list_pref_con_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P pref_con_GD R_P // require :universal_preconditions
+	| L_P FORALL L_P typed_list_variable R_P pref_con_GD R_P // require :universal-preconditions
 	| L_P PREFERENCE pref_con_GD_option1 // require :preferences
 	| con_GD
 	;
@@ -742,7 +716,7 @@ pref_con_GD_option1:
 	| pref_name con_GD R_P
 	;
 
-/* <con_GD> */
+/* <con-GD> */
 
 con_GD:
 	L_P AND list_con_GD R_P
@@ -759,17 +733,17 @@ con_GD:
 	| L_P HOLD_AFTER number con2_GD R_P
 	;
 
-/* <con2_GD> */
+/* <con2-GD> */
 
 con2_GD:
 	con_GD
 	| GD
 	;
 
-/* <metric_spec> */
+/* <metric-spec> */
 
 metric_spec:
-	L_P METRIC optimization metric_f_exp R_P // require :numeric_fluents
+	L_P METRIC optimization metric_f_exp R_P // require :numeric-fluents
 	;
 
 /* <optimization> */
@@ -779,7 +753,7 @@ optimization:
 	| MAXIMIZE
 	;
 
-/* <metric_f_exp> */
+/* <metric-f-exp> */
 
 metric_f_exp:
 	L_P binary_op metric_f_exp metric_f_exp R_P
@@ -789,10 +763,11 @@ metric_f_exp:
 	| L_P function_symbol list_name R_P
 	| function_symbol
 	| TOTAL_TIME
+	| L_P TOTAL_TIME R_P
 	| L_P IS_VIOLATED pref_name R_P // require :preferences
 	;
 
-/* <length_spec> */
+/* <length-spec> */
 
 length_spec:
 	L_P LENGTH length_spec_option1
@@ -820,32 +795,32 @@ integer:
 /***************************************************/
 
 
-/* <te_durative_action_def> */
+/* <te-durative-action-def> */
 
 te_durative_action_def:
 	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P te_da_def_body R_P
 	;
 
-/* <te_da_def body> */
+/* <te-da-def body> */
 
 te_da_def_body:
 	DURATION duration_constraint TIMEPOINTS L_P START END list_te_time_specifier R_P TIMEALIASES L_P ALL L_B START END L_B list_te_time_interval R_P TIMECONSTRAINTS L_P L_P EQ L_P MINUS END START R_P Q_M_DURATION R_P list_te_time_constraints R_P CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect
 	;
 
-/* <te_time_specifier> */
+/* <te-time-specifier> */
 
 te_time_specifier:
 	time_specifier
 	| name // allow to define flypoints
 	;
 
-/* <te_time_interval> */
+/* <te-time-interval> */
 
 te_time_interval:
 	interval L_B te_time_specifier te_time_specifier L_B
 	;
 
-/* <te_time_constraints> */
+/* <te-time-constraints> */
 
 te_time_constraints:
 	L_P binary_comp te_time_specifier te_time_specifier R_P // do we need to do operations on flypoints ?
@@ -861,7 +836,7 @@ te_time_constraints:
 function_typed_list_atomic_function_skeleton:
 	/* empty */
 	| nvList_atomic_function_skeleton MINUS function_type function_typed_list_atomic_function_skeleton
-	| nvList_atomic_function_skeleton // require :numeric_fluents
+	| nvList_atomic_function_skeleton // require :numeric-fluents
 	;
 
 
@@ -923,7 +898,7 @@ atomic_formula_name:
 	| L_P EQ name name R_P // require :equality
 	;
 
-/* nvList_A (for non void list) _> A+ */
+/* nvList_A (for non void list) -> A+ */
 
 nvList_require_key:
 	require_key list_require_key
@@ -953,10 +928,6 @@ nvList_f_exp:
 	f_exp list_f_exp
 	;
 
-nvList_digit:
-	digit list_digit
-	;
-
 nvList_te_time_specifier:
 	te_time_specifier list_te_time_specifier
 	;
@@ -977,7 +948,7 @@ nvList_metric_f_exp:
 	metric_f_exp list_metric_f_exp
 	;
 
-/* list_A _> A* */
+/* list_A -> A* */
 
 list_structure_def:
 	/* empty */
@@ -1015,7 +986,8 @@ list_primitive_type:
 	;
 
 list_pre_GD:
-	pre_GD list_pre_GD
+	/* empty */
+	| pre_GD list_pre_GD
 	;
 
 list_term:
@@ -1031,16 +1003,6 @@ list_GD:
 list_f_exp:
 	/* empty */
 	| f_exp list_f_exp
-	;
-
-list_any_char:
-	/* empty */
-	| any_char list_any_char
-	;
-
-list_digit:
-	/* empty */
-	| digit list_digit
 	;
 
 list_c_effect:
