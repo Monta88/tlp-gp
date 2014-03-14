@@ -113,7 +113,6 @@
 	TIMECONSTRAINTS
 	NAME
 
-
 %%
 
 begin:
@@ -170,11 +169,18 @@ domain_option7:
 /* <name> */
 
 name:
-	NAME { std::cout << "name "+std::to_string($1) << std::endl ;}
+	NAME 
+	{
+		std::string a = d_scanner.matched();
+		std::cout << "name "+a << std::endl ;
+        //$$ = stoul(a);
+    }
+    ;
+	/*NAME { std::cout << "name "+$1 << std::endl ;}
 	| AT
 	| OVER
 	| OBJECT
-	;
+	;*/
 
 /* <require-def> */
 
@@ -234,13 +240,13 @@ atomic_formula_skeleton:
 /* <predicate> */
 
 predicate:
-	name { std::cout << " predicate "+std::to_string($1) << std::endl ;}
+	name
 	;
 
 /* <variable> */
 
 variable:
-	Q_M name { std::cout << " variable "+std::to_string($2) << std::endl ;}
+	Q_M name
 	;
 
 /* <atomic function skeleton> */
