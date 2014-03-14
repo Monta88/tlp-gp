@@ -7,6 +7,11 @@
 
 %start begin
 
+%union
+{
+	std::string * str;
+}
+
 %token 	L_P
 	R_P
 	L_B
@@ -169,18 +174,14 @@ domain_option7:
 /* <name> */
 
 name:
-	NAME 
-	{
+	NAME {
 		std::string a = d_scanner.matched();
-		std::cout << "name "+a << std::endl ;
-        //$$ = stoul(a);
-    }
-    ;
-	/*NAME { std::cout << "name "+$1 << std::endl ;}
+        $$.str = new std::string(a);
+        std::cout << "name "+ *($$.str) << std::endl ;}
 	| AT
 	| OVER
 	| OBJECT
-	;*/
+	;
 
 /* <require-def> */
 

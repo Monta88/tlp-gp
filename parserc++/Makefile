@@ -4,6 +4,8 @@ OBJS	= lex.o parse.o main.o
 CC		= g++
 CFLAGS	= -std=c++11 -Wall
 
+all: pddl_3-1-te
+
 pddl_3-1-te:	$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o pddl_3-1-te
 
@@ -23,11 +25,15 @@ mrproper:	clean
 	rm -f pddl_3-1-te
 
 cleanall:	mrproper
-	rm -f parser/parse.cc scanner/lex.cc
+	rm -f parser/parse.cc parser/Parser.h parser/Parser.ih parser/Parserbase.h  scanner/lex.cc scanner/Scanner.h scanner/Scanner.ih scanner/Scannerbase.h
 
 bison:
-	cd parser && bisonc++ grammar && cd ..
+	cd parser && bisonc++ -H'../headers.h' grammar && cd ..
 
 flex:
-	cd scanner && flexc++ --print lexer && cd ..
+	cd scanner && flexc++ lexer && cd ..
 
+addFlexLib:
+	echo '#include "../parser/Parserbase.h"' >> scanner/Scanner.ih
+
+reset: cleanall bison flex addFlexLib pddl_3-1-te
