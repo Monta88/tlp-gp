@@ -29,5 +29,5 @@ bison:
 	cd parser && bisonc++ grammar && cd ..
 
 flex:
-	cd scanner && flexc++ --print lexer && cd ..
+	cd scanner && flexc++ lexer && cd ..
 

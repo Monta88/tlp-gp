@@ -9,13 +9,23 @@
 	     (in ?x - (either storearea crate) ?p - place)
 	     (connected ?a1 ?a2 - area))
 
-(:durative-action go-in 
- :parameters (?h - hoist ?from - transitarea ?to - storearea)
- :duration (= ?duration 1)
- :condition (and (at start (at ?h ?from)) (at start (clear ?to))
-		 (over all (connected ?from ?to)))
- :effect (and (at start (not (at ?h ?from))) (at start (not (clear ?to)))
-	      (at end (at ?h ?to))))
-)
+(:durative-action skyjet-fly
+	:parameters (?s - skyjet ?b - skybase)
+	:duration
+		(= ?duration (flying-timewindow ?s))
+	:timepoints (start end flypoint)
+	:timealiases (all [start end[)
+	:timeconstraints
+		(
+		(= (- end start) ?duration)
+		(< start flypoint)
+		(> end flypoint)
+		)
+	:condition (over all (ready ?s))
+	:effect
+		(and
+		(over all (reserved-skybase ?b))
+		(over [flypoint (+ flypoint (flying-time ?s))] (flying ?s))
+		(at end (not (reserved-skybase ?b))))))
 
 
