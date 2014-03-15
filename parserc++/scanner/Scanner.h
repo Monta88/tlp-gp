@@ -117,7 +117,7 @@ class Scanner: public ScannerBase
 		    TIMEALIASES,
 		    TIMEMODALITY,
 		    TIMECONSTRAINTS,
-		    NAME,
+		    NAME
 		};
         explicit Scanner(std::istream &in = std::cin,
                                 std::ostream &out = std::cout);
