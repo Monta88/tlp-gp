@@ -24,8 +24,9 @@ clean:
 mrproper:	clean
 	rm -f pddl_3-1-te
 
+#do not remove Scanner.h !
 cleanall:	mrproper
-	rm -f parser/parse.cc parser/Parser.h parser/Parser.ih parser/Parserbase.h  scanner/lex.cc scanner/Scanner.h scanner/Scanner.ih scanner/Scannerbase.h
+	rm -f parser/parse.cc parser/Parser.h parser/Parser.ih parser/Parserbase.h  scanner/lex.cc scanner/Scanner.ih scanner/Scannerbase.h
 
 bison:
 	cd parser && bisonc++ -H'../headers.h' grammar && cd ..
