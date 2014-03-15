@@ -2,7 +2,7 @@
 
 OBJS	= lex.o parse.o main.o
 CC		= g++
-CFLAGS	= -std=c++11 -Wall
+CFLAGS	= -std=c++11
 
 all: pddl_3-1-te
 
@@ -26,7 +26,7 @@ mrproper:	clean
 
 #do not remove Scanner.h !
 cleanall:	mrproper
-	rm -f parser/parse.cc parser/Parser.h parser/Parser.ih parser/Parserbase.h  scanner/lex.cc scanner/Scanner.ih scanner/Scannerbase.h
+	rm -f parser/parse.cc parser/Parserbase.h  scanner/lex.cc scanner/Scannerbase.h
 
 bison:
 	cd parser && bisonc++ -H'../headers.h' grammar && cd ..

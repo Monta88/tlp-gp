@@ -25,8 +25,12 @@ int main(int argc, char **argv)
 	
 	dup2(fileno(file), STDIN_FILENO);
 	
+	parser.init();
+
 	if (parser.parse() == 0)
-		printf("Parsing surccessful\n");
+		printf("\nParsing successful\n");
+
+	parser.display();
 
 	return 0;
 }
