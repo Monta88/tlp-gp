@@ -34,7 +34,4 @@ bison:
 flex:
 	cd scanner && flexc++ lexer && cd ..
 
-addFlexLib:
-	echo '#include "../parser/Parserbase.h"' >> scanner/Scanner.ih
-
-reset: cleanall bison flex addFlexLib pddl_3-1-te
+reset: cleanall bison flex pddl_3-1-te
