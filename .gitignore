@@ -26,5 +26,14 @@
 *~
 .project
 prog
-
+/PDDL3.1-TE_Parser/parser/Parserbase.h
+/PDDL3.1-TE_Parser/scanner/Scannerbase.h
+/parserc++/parser/Parserbase.h
+/parserc++/scanner/Scannerbase.h
+*.mk
+/PDDL3.1-TE_Parser/pddl_3-1-te
+/PDDL3.1-TE_Parser/parser/parse.cc
+/PDDL3.1-TE_Parser/scanner/lex.cc
+/parserc++/parser/parse.cc
+/parserc++/scanner/lex.cc
 /Debug
