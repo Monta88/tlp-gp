@@ -8,8 +8,8 @@
 #include <string> 
 #include <vector>
 #include "variable.h"
-#include "intervalle.h"
 #include "fluent.h"
+#include "attribut.h"
 using namespace std;
 
 
@@ -19,13 +19,13 @@ public:
 	Action(string name);
 	string get_Name();
 	void add_Parameters(Variable * parameter);
-	void add_condition(Intervalle inter,Fluent *fluent);
-	void add_effect(Intervalle inter,Fluent *fluent);
+	void add_condition(Attributs att,Fluent *fluent);
+	void add_effect(Attributs att,Fluent *fluent);
 	virtual ~Action();
 private:
 	string name;
 	vector<Variable *> parameters;
-	vector< pair<Intervalle,Fluent *> > preconditions; 
-	vector< pair<Intervalle,Fluent *> > effects; 
+	vector< pair<Attributs,Fluent *> > preconditions; 
+	vector< pair<Attributs,Fluent *> > effects; 
 };
 #endif // ACTION_H

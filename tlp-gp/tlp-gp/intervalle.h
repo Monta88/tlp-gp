@@ -15,7 +15,7 @@ class Intervalle
 	void add_argu(Variable * argu);
         virtual ~Intervalle();
     protected:
-        float start;
+    float start;
 	float end;
 	vector <Variable*> arguments;
     private:
