@@ -21,15 +21,15 @@ class Parser: public ParserBase
         int parse();
         
         void init() {
-        	this->data = new Data();
+        	this->m_data = new Data();
         }
         
         void add(std::string str) {
-        	this->data->Add(str);
+        	this->m_data->Add(str);
         }
         
         void display() {
-        	this->data->Display();
+        	this->m_data->Display();
         }
 
     private:
@@ -47,7 +47,7 @@ class Parser: public ParserBase
         void exceptionHandler__(std::exception const &exc);
 
     // our stuff:
-        Data * data;
+        Data * m_data;
 };
 
 

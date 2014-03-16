@@ -21,7 +21,7 @@ public:
 	void Add(std::string str);
 	void Display();
 private:
-	std::vector<string> data ;
+	std::vector<string> m_data ;
 };
 
 #endif /* DATA_H_ */
