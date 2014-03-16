@@ -33,8 +33,9 @@
 ":conditional-effects"							return Parser::CONDITIONAL_EFFECTS;
 ":fluents"										return Parser::FLUENTS;
 ":numeric-fluents"								return Parser::NUMERIC_FLUENTS;
+":object-fluents"								return Parser::OBJECT_FLUENTS;
 ":adl"											return Parser::ADL;
-":durative-actions"								return Parser::DURACTIVE_ACTIONS;
+":durative-actions"								return Parser::DURATIVE_ACTIONS;
 ":duration-inequalities"						return Parser::DURATION_INEQUALITIES;
 ":continuous-effects"							return Parser::CONTINUOUS_EFFECTS;
 ":derived-predicates"							return Parser::DERIVED_PREDICATES;

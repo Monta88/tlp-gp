@@ -32,8 +32,20 @@ class Parser: public ParserBase
         	this->m_data->Add_Domain(str);
         }
         
+		void add_requirement(int req) {
+			this->m_data->Add_Requirement(req);
+		}
+
+		bool is_requirement(int req) {
+			return this->m_data->Is_Requirement(req);
+		}
+
         void display() {
         	this->m_data->Display();
+        }
+        
+        void lexical_error(char const *msg) {
+        	std::cerr << msg << std::endl;
         }
 
     private:

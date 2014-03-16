@@ -40,8 +40,9 @@
 	CONDITIONAL_EFFECTS
 	FLUENTS
 	NUMERIC_FLUENTS
+	OBJECT_FLUENTS
 	ADL
-	DURACTIVE_ACTIONS
+	DURATIVE_ACTIONS
 	DURATION_INEQUALITIES
 	CONTINUOUS_EFFECTS
 	DERIVED_PREDICATES
@@ -146,7 +147,9 @@ domain_option1:
 
 domain_option2:
 	domain_option3
-	| types_def domain_option3 // require :typing
+	| types_def domain_option3 {
+		if (!Parser::is_requirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
+	}
 	;
 
 domain_option3:
@@ -161,7 +164,9 @@ domain_option4:
 
 domain_option5:
 	domain_option6
-	| functions_def domain_option6 // require :fluents
+	| functions_def domain_option6 {
+		if (!Parser::is_requirement(FLUENTS)) Parser::lexical_error("Requirement :fluents is needed");
+	}
 	;
 
 domain_option6:
@@ -194,27 +199,53 @@ require_def:
 /* <require-key> */
 
 require_key:
-	STRIPS
-	| TYPING
-	| NEGATIVE_PRECONDITIONS
-	| DISJUNCTIVE_PRECONDITIONS
-	| EQUALITY
-	| EXISTENTIAL_PRECONDITIONS
-	| UNIVERSAL_PRECONDITIONS
-	| QUANTIFIED_PRECONDITIONS
-	| CONDITIONAL_EFFECTS
-	| FLUENTS
-	| NUMERIC_FLUENTS
-	| ADL
-	| DURACTIVE_ACTIONS
-	| DURATION_INEQUALITIES
-	| CONTINUOUS_EFFECTS
-	| DERIVED_PREDICATES
-	| TIMED_INITIAL_LITERALS
-	| PREFERENCES
-	| CONSTRAINTS
-	| ACTION_COSTS
-	| TEMPORALLY_EXTENDED
+	STRIPS						{Parser::add_requirement(STRIPS);}
+	| TYPING					{Parser::add_requirement(TYPING);}
+	| NEGATIVE_PRECONDITIONS	{Parser::add_requirement(NEGATIVE_PRECONDITIONS);}
+	| DISJUNCTIVE_PRECONDITIONS	{Parser::add_requirement(DISJUNCTIVE_PRECONDITIONS);}
+	| EQUALITY					{Parser::add_requirement(EQUALITY);}
+	| EXISTENTIAL_PRECONDITIONS	{Parser::add_requirement(EXISTENTIAL_PRECONDITIONS);}
+	| UNIVERSAL_PRECONDITIONS	{Parser::add_requirement(UNIVERSAL_PRECONDITIONS);}
+	| QUANTIFIED_PRECONDITIONS	{
+		Parser::add_requirement(QUANTIFIED_PRECONDITIONS);
+		Parser::add_requirement(EXISTENTIAL_PRECONDITIONS);
+		Parser::add_requirement(UNIVERSAL_PRECONDITIONS);
+	}
+	| CONDITIONAL_EFFECTS		{Parser::add_requirement(CONDITIONAL_EFFECTS);}
+	| FLUENTS					{
+		Parser::add_requirement(FLUENTS);
+		Parser::add_requirement(NUMERIC_FLUENTS);
+		Parser::add_requirement(OBJECT_FLUENTS);
+	}
+	| NUMERIC_FLUENTS			{Parser::add_requirement(NUMERIC_FLUENTS);}
+	| OBJECT_FLUENTS			{Parser::add_requirement(OBJECT_FLUENTS);}
+	| ADL						{
+		Parser::add_requirement(STRIPS);
+		Parser::add_requirement(TYPING);
+		Parser::add_requirement(NEGATIVE_PRECONDITIONS);
+		Parser::add_requirement(DISJUNCTIVE_PRECONDITIONS);
+		Parser::add_requirement(EQUALITY);
+		Parser::add_requirement(QUANTIFIED_PRECONDITIONS);
+		Parser::add_requirement(CONDITIONAL_EFFECTS);
+	}
+	| DURATIVE_ACTIONS			{
+		Parser::add_requirement(DURATIVE_ACTIONS);
+		Parser::add_requirement(NUMERIC_FLUENTS);
+	}
+	| DURATION_INEQUALITIES		{Parser::add_requirement(DURATION_INEQUALITIES);}
+	| CONTINUOUS_EFFECTS		{Parser::add_requirement(CONTINUOUS_EFFECTS);}
+	| DERIVED_PREDICATES		{Parser::add_requirement(DERIVED_PREDICATES);}
+	| TIMED_INITIAL_LITERALS	{
+		Parser::add_requirement(TIMED_INITIAL_LITERALS);
+		Parser::add_requirement(DURATIVE_ACTIONS);
+	}
+	| PREFERENCES				{Parser::add_requirement(PREFERENCES);}
+	| CONSTRAINTS				{Parser::add_requirement(CONSTRAINTS);}
+	| ACTION_COSTS				{Parser::add_requirement(ACTION_COSTS);}
+	| TEMPORALLY_EXTENDED		{
+		Parser::add_requirement(TEMPORALLY_EXTENDED);
+		Parser::add_requirement(DURATIVE_ACTIONS);
+	}
 	;
 
 /* <types-def> */
@@ -267,29 +298,44 @@ function_symbol:
 /* <functions-def> */
 
 functions_def:
-	L_P FUNCTIONS function_typed_list_atomic_function_skeleton R_P // require :fluents
+	L_P FUNCTIONS function_typed_list_atomic_function_skeleton R_P {
+		if (!Parser::is_requirement(FLUENTS)) Parser::lexical_error("Requirement :fluents is needed");
+	}
 	;
 
 /* <function type> */
 
 function_type:
-	NUMBER // require :numeric-fluents
-	| type // require :typing + :object-fluents
+	NUMBER {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
+	| type {
+		if (!Parser::is_requirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
+		if (!Parser::is_requirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+	}
 	;
 
 /* <constraints> */
 
 constraints_domain:
-	L_P CONSTRAINTS con_GD R_P // require :constraints
+	L_P CONSTRAINTS con_GD R_P {
+		if (!Parser::is_requirement(CONSTRAINTS)) Parser::lexical_error("Requirement :constraints is needed");
+	}
 	;
 
 /* <structure-def> */
 
 structure_def:
 	action_def
-	| durative_action_def // require :durative-actions
-	| te_durative_action_def // require :temporally-extended
-	| derived_def // require :derived-predicates
+	| durative_action_def {
+		if (!Parser::is_requirement(DURATIVE_ACTIONS)) Parser::lexical_error("Requirement :durative-actions is needed");
+	}
+	| te_durative_action_def {
+		if (!Parser::is_requirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+	}
+	| derived_def {
+		if (!Parser::is_requirement(DERIVED_PREDICATES)) Parser::lexical_error("Requirement :derived-predicates is needed");
+	}
 	;
 
 /* <primitive-type> */
@@ -339,14 +385,18 @@ action_def_body_option2:
 pre_GD:
 	pref_GD
 	| L_P AND list_pre_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P pre_GD R_P // require :universal-preconditions
+	| L_P FORALL L_P typed_list_variable R_P pre_GD R_P {
+		if (!Parser::is_requirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
+	}
 	;
 
 /* <pref-GD> */
 
 pref_GD:
 	GD
-	| L_P PREFERENCE pref_GD_option1 // require :preferences
+	| L_P PREFERENCE pref_GD_option1 {
+		if (!Parser::is_requirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
+	}
 	;
 
 pref_GD_option1:
@@ -364,14 +414,28 @@ pref_name:
 
 GD:
 	atomic_formula_term
-	| literal_term // require :negative-preconditions
+	| literal_term {
+		if (!Parser::is_requirement(NEGATIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :negative-preconditions is needed");
+	}
 	| L_P AND list_GD R_P
-	| L_P OR list_GD R_P // require :disjunctive-preconditions
-	| L_P NOT GD R_P // require :disjunctive-preconditions
-	| L_P IMPLY GD GD R_P // require :disjunctive-preconditions
-	| L_P EXISTS L_P L_P typed_list_variable R_P R_P GD R_P // require :existential-preconditions
-	| L_P FORALL L_P L_P typed_list_variable R_P R_P GD R_P // require :universal-preconditions
-	| f_comp // require :numeric-fluents
+	| L_P OR list_GD R_P {
+		if (!Parser::is_requirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
+	}
+	| L_P NOT GD R_P {
+		if (!Parser::is_requirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
+	}
+	| L_P IMPLY GD GD R_P {
+		if (!Parser::is_requirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
+	}
+	| L_P EXISTS L_P L_P typed_list_variable R_P R_P GD R_P {
+		if (!Parser::is_requirement(EXISTENTIAL_PRECONDITIONS)) Parser::lexical_error("Requirement :existential-preconditions is needed");
+	}
+	| L_P FORALL L_P L_P typed_list_variable R_P R_P GD R_P {
+		if (!Parser::is_requirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
+	}
+	| f_comp {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
 	;
 
 /* <f-comp> */
@@ -385,23 +449,37 @@ f_comp:
 term:
 	name
 	| variable
-	| function_term // require :object-fluents
+	| function_term {
+		if (!Parser::is_requirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+	}
 	;
 
 /* <function-term> */
 
 function_term:
-	L_P function_symbol list_term R_P // require :object-fluents
+	L_P function_symbol list_term R_P {
+		if (!Parser::is_requirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+	}
 	;
 
 /* <f-exp> */
 
 f_exp:
-	number // require :numeric-fluents
-	| L_P binary_op f_exp f_exp R_P // require :numeric-fluents
-	| L_P multi_op f_exp nvList_f_exp R_P // require :numeric-fluents
-	| L_P MINUS f_exp R_P // require :numeric-fluents
-	| f_head // require :numeric-fluents
+	number {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
+	| L_P binary_op f_exp f_exp R_P {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
+	| L_P multi_op f_exp nvList_f_exp R_P {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
+	| L_P MINUS f_exp R_P {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
+	| f_head {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
 	;
 
 /* <number> */
@@ -452,8 +530,12 @@ effect:
 /* <c-effect> */
 
 c_effect:
-	L_P FORALL L_P typed_list_variable R_P effect R_P// require :conditional-effects
-	| L_P WHEN GD cond_effect R_P // require :conditional-effects
+	L_P FORALL L_P typed_list_variable R_P effect R_P {
+		if (!Parser::is_requirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+	}
+	| L_P WHEN GD cond_effect R_P {
+		if (!Parser::is_requirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+	}
 	| p_effect
 	;
 
@@ -462,9 +544,15 @@ c_effect:
 p_effect:
 	L_P NOT atomic_formula_term R_P
 	| atomic_formula_term
-	| L_P assign_op f_head f_exp // require :numeric-fluents
-	| L_P ASSIGN function_term term R_P // require :object-fluents
-	| L_P ASSIGN function_term UNDEFINED R_P // require :object-fluents
+	| L_P assign_op f_head f_exp {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
+	| L_P ASSIGN function_term term R_P {
+		if (!Parser::is_requirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+	}
+	| L_P ASSIGN function_term UNDEFINED R_P {
+		if (!Parser::is_requirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+	}
 	;
 
 /* <cond-effect> */
@@ -507,14 +595,18 @@ da_def_body:
 da_GD:
 	pref_timed_GD
 	| L_P AND list_da_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P da_GD R_P // require :universal-preconditions
+	| L_P FORALL L_P typed_list_variable R_P da_GD R_P {
+		if (!Parser::is_requirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
+	}
 	;
 
 /* <pref-timed-GD> */
 
 pref_timed_GD:
 	timed_GD
-	| L_P PREFERENCE pref_name_option1 // require :preferences
+	| L_P PREFERENCE pref_name_option1 {
+		if (!Parser::is_requirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
+	}
 	;
 
 pref_name_option1:
@@ -545,7 +637,9 @@ interval:
 /* <duration-constraint> */
 
 duration_constraint:
-	L_P AND nvList_simple_duration_constraint R_P // require :duration-inequalities
+	L_P AND nvList_simple_duration_constraint R_P {
+		if (!Parser::is_requirement(DURATION_INEQUALITIES)) Parser::lexical_error("Requirement :duration-inequalities is needed");
+	}
 	| L_P R_P
 	| simple_duration_constraint
 	;
@@ -560,8 +654,12 @@ simple_duration_constraint:
 /* <d-op> */
 
 d_op:
-	LOE // require :duration-inequalities
-	| GOE // require :duration-inequalities
+	LOE {
+		if (!Parser::is_requirement(DURATION_INEQUALITIES)) Parser::lexical_error("Requirement :duration-inequalities is needed");
+	}
+	| GOE {
+		if (!Parser::is_requirement(DURATION_INEQUALITIES)) Parser::lexical_error("Requirement :duration-inequalities is needed");
+	}
 	| EQ
 	;
 
@@ -569,7 +667,9 @@ d_op:
 
 d_value:
 	NUMBER
-	| f_exp // require :numeric-fluents
+	| f_exp {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
 	;
 
 /* <da-effect> */
@@ -577,16 +677,25 @@ d_value:
 da_effect:
 	L_P AND list_da_effect R_P
 	| timed_effect
-	| L_P FORALL L_P typed_list_variable R_P da_effect R_P // require :conditional-effects
-	| L_P WHEN da_GD timed_effect R_P // require :conditional-effects
+	| L_P FORALL L_P typed_list_variable R_P da_effect R_P {
+		if (!Parser::is_requirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+	}
+	| L_P WHEN da_GD timed_effect R_P {
+		if (!Parser::is_requirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+	}
 	;
 
 /* <timed-effect> */
 
 timed_effect:
 	L_P AT time_specifier cond_effect R_P
-	| L_P AT time_specifier f_assign_da R_P // require :numeric-fluents
-	| L_P assign_op_t f_head f_exp_t R_P  // require :continuous-effects + :numeric-fluents
+	| L_P AT time_specifier f_assign_da R_P {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
+	| L_P assign_op_t f_head f_exp_t R_P {
+		if (!Parser::is_requirement(CONTINUOUS_EFFECTS)) Parser::lexical_error("Requirement :continuous-effects is needed");
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
 	;
 
 /* <f-assign-da> */
@@ -601,7 +710,9 @@ f_exp_da:
 	L_P binary_op f_exp_da f_exp_da R_P
 	| L_P multi_op f_exp_da nvList_f_exp_da R_P
 	| L_P MINUS f_exp_da R_P
-	| Q_M_DURATION  // require :duration-inequalities
+	| Q_M_DURATION  {
+		if (!Parser::is_requirement(DURATION_INEQUALITIES)) Parser::lexical_error("Requirement :duration-inequalities is needed");
+	}
 	| f_exp
 	;
 
@@ -650,12 +761,16 @@ problem_option2:
 
 problem_option3:
 	init goal problem_option4
-	| init goal constraints_problem problem_option4 // require :constraints
+	| init goal constraints_problem problem_option4 {
+		if (!Parser::is_requirement(CONSTRAINTS)) Parser::lexical_error("Requirement :constraints is needed");
+	}
 	;
 
 problem_option4:
 	problem_option5
-	| metric_spec problem_option5 // require :numeric-fluents
+	| metric_spec problem_option5 {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
 	;
 
 problem_option5:
@@ -679,9 +794,15 @@ init:
 
 init_el:
 	literal_name
-	| L_P AT number literal_name R_P // require :timed_initial-literals
-	| L_P EQ basic_function_term number R_P // require :numeric-fluents
-	| L_P EQ basic_function_term name R_P // require :object-fluents
+	| L_P AT number literal_name R_P {
+		if (!Parser::is_requirement(TIMED_INITIAL_LITERALS)) Parser::lexical_error("Requirement :timed-initial-literals is needed");
+	}
+	| L_P EQ basic_function_term number R_P {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
+	| L_P EQ basic_function_term name R_P {
+		if (!Parser::is_requirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+	}
 	;
 
 /* <basic-function-term> */
@@ -700,15 +821,21 @@ goal:
 /* <contraints> */
 
 constraints_problem:
-	L_P CONSTRAINTS pref_con_GD R_P // require :constraints
+	L_P CONSTRAINTS pref_con_GD R_P {
+		if (!Parser::is_requirement(CONSTRAINTS)) Parser::lexical_error("Requirement :constraints is needed");
+	}
 	;
 
 /* <pref-con-GD> */
 
 pref_con_GD:
 	L_P AND list_pref_con_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P pref_con_GD R_P // require :universal-preconditions
-	| L_P PREFERENCE pref_con_GD_option1 // require :preferences
+	| L_P FORALL L_P typed_list_variable R_P pref_con_GD R_P {
+		if (!Parser::is_requirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
+	}
+	| L_P PREFERENCE pref_con_GD_option1 {
+		if (!Parser::is_requirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
+	}
 	| con_GD
 	;
 
@@ -744,7 +871,9 @@ con2_GD:
 /* <metric-spec> */
 
 metric_spec:
-	L_P METRIC optimization metric_f_exp R_P // require :numeric-fluents
+	L_P METRIC optimization metric_f_exp R_P {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
 	;
 
 /* <optimization> */
@@ -765,7 +894,9 @@ metric_f_exp:
 	| function_symbol
 	| TOTAL_TIME
 	| L_P TOTAL_TIME R_P
-	| L_P IS_VIOLATED pref_name R_P // require :preferences
+	| L_P IS_VIOLATED pref_name R_P {
+		if (!Parser::is_requirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
+	}
 	;
 
 /* <length-spec> */
@@ -847,14 +978,18 @@ te_time_constraints:
 te_da_GD:
 	te_pref_timed_GD
 	| L_P AND list_te_da_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P te_da_GD R_P // require :universal-preconditions
+	| L_P FORALL L_P typed_list_variable R_P te_da_GD R_P {
+		if (!Parser::is_requirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
+	}
 	;
 
 /* <te-pref-timed-GD> */
 
 te_pref_timed_GD:
 	te_timed_GD
-	| L_P PREFERENCE te_pref_timed_GD_option1 // require :preferences
+	| L_P PREFERENCE te_pref_timed_GD_option1 {
+		if (!Parser::is_requirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
+	}
 	;
 
 te_pref_timed_GD_option1:
@@ -879,16 +1014,23 @@ te_da_effect:
 	L_P AND list_te_da_effect R_P
 	| te_timed_effect
 	| te_modality
-	| L_P FORALL L_P typed_list_variable R_P te_da_effect R_P // require :conditional-effects
-	| L_P WHEN da_GD te_timed_effect R_P // require :conditional-effects
+	| L_P FORALL L_P typed_list_variable R_P te_da_effect R_P {
+		if (!Parser::is_requirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+	}
+	| L_P WHEN da_GD te_timed_effect R_P {
+		if (!Parser::is_requirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+	}
 	;
 
 /* <te-timed-effect> */
 
 te_timed_effect:
 	L_P AT te_time_specifier cond_effect R_P
-	| L_P AT te_time_specifier f_assign_da R_P // require :numeric-fluents
-	| L_P assign_op_t f_head f_exp_t R_P  // require :continuous-effects + :numeric-fluents
+	| L_P AT te_time_specifier f_assign_da R_P {if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");}
+	| L_P assign_op_t f_head f_exp_t R_P  {
+		if (!Parser::is_requirement(CONTINUOUS_EFFECTS)) Parser::lexical_error("Requirement :continuous-effects is needed");
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
 	;
 
 /* <time-modality> */
@@ -933,7 +1075,9 @@ bracket:
 function_typed_list_atomic_function_skeleton:
 	/* empty */
 	| nvList_atomic_function_skeleton MINUS function_type function_typed_list_atomic_function_skeleton
-	| nvList_atomic_function_skeleton // require :numeric-fluents
+	| nvList_atomic_function_skeleton {
+		if (!Parser::is_requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+	}
 	;
 
 
@@ -941,12 +1085,16 @@ function_typed_list_atomic_function_skeleton:
 
 typed_list_name:
 	list_name
-	| nvList_name MINUS type typed_list_name // require :typing
+	| nvList_name MINUS type typed_list_name {
+		if (!Parser::is_requirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
+	}
 	;
 
 typed_list_variable:
 	list_variable
-	| nvList_variable MINUS type typed_list_variable // require :typing
+	| nvList_variable MINUS type typed_list_variable {
+		if (!Parser::is_requirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
+	}
 	;
 
 /* <emptyOr (x)> */
@@ -997,12 +1145,16 @@ literal_name:
 
 atomic_formula_term:
 	L_P predicate list_term R_P
-	| L_P EQ term term R_P // require :equality
+	| L_P EQ term term R_P {
+		if (!Parser::is_requirement(EQUALITY)) Parser::lexical_error("Requirement :equality is needed");
+	}
 	;
 
 atomic_formula_name:
 	L_P predicate list_name R_P
-	| L_P EQ name name R_P // require :equality
+	| L_P EQ name name R_P {
+		if (!Parser::is_requirement(EQUALITY)) Parser::lexical_error("Requirement :equality is needed");
+	}
 	;
 
 /* nvList_A (for non void list) -> A+ */

@@ -7,9 +7,12 @@
 
 #include "Data.h"
 
+#include <algorithm>
+
 Data::Data() {
 	// TODO Auto-generated constructor stub
-	this->m_data = std::vector<string> ();
+	this->m_data = vector<string> ();
+	this->m_requirements = vector<int> ();
 }
 
 Data::~Data() {
@@ -24,11 +27,19 @@ void Data::Add_Domain(string str) {
 	this->m_domain = new Domain(str);
 }
 
+void Data::Add_Requirement(int req) {
+	this->m_requirements.push_back(req);
+}
+
+bool Data::Is_Requirement(int req) {
+	return (find(m_requirements.begin(), m_requirements.end(), req) != m_requirements.end());
+}
+
 void Data::Display() {
-	std::cout << "Domain name : " << this->m_domain->getName() << std::endl;
-	std::cout << "Size : " << this->m_data.size() << std::endl;
+	cout << "Domain name : " << this->m_domain->getName() << endl;
+	cout << "Size : " << this->m_data.size() << endl;
 	for(int i=0; i<m_data.size(); i++)
-		std::cout << i << ": " << m_data[i] << std::endl;
-	std::cout << "End of display." << std::endl;
+		cout << i << ": " << m_data[i] << endl;
+	cout << "End of display." << endl;
 }
 

@@ -10,7 +10,7 @@
 
 inline void Parser::error(char const *msg)
 {
-    std::cerr << msg << '\n';
+    std::cerr << msg << std::endl;
 }
 
 // $insert lex
