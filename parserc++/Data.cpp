@@ -6,38 +6,72 @@
  */
 
 #include "Data.h"
+#include "src/constant.h"
 
 #include <algorithm>
 
 Data::Data() {
-	// TODO Auto-generated constructor stub
-	this->m_data = vector<string> ();
-	this->m_requirements = vector<int> ();
+	m_data = vector<string> ();
+	m_requirements = vector<int> ();
 }
 
-Data::~Data() {
-	// TODO Auto-generated destructor stub
+Data::~Data() {}
+
+void Data::add(string str) {
+	m_data.push_back(str);
 }
 
-void Data::Add(string str) {
-	this->m_data.push_back(str);
+void Data::add_Domain(string str) {
+	m_domain = new Domain(str);
 }
 
-void Data::Add_Domain(string str) {
-	this->m_domain = new Domain(str);
+bool Data::add_Constant(string name) {
+	if (!is_Constant(name)) {
+		return false;
+	}
+	else {
+		m_constants.push_back(new Constant(name));
+	}
+	return true;
 }
 
-void Data::Add_Requirement(int req) {
-	this->m_requirements.push_back(req);
+bool Data::add_Constant(string name, string type) {
+	if (!is_Constant(name, type)) {
+		return false;
+	}
+	else {
+		m_constants.push_back(new Constant(name, new Type(type)));
+	}
+	return true;
 }
 
-bool Data::Is_Requirement(int req) {
+bool Data::add_Requirement(int req) {
+	if (!is_Requirement(req)) {
+		return false;
+	}
+	else {
+		m_requirements.push_back(req);
+	}
+	return true;
+}
+
+bool Data::is_Constant(string name) {
+	Constant * constant = new Constant(name);
+	return (find(m_constants.begin(), m_constants.end(), constant) != m_constants.end());
+}
+
+bool Data::is_Constant(string name, string type) {
+	Constant * constant = new Constant(name, new Type(type));
+	return (find(m_constants.begin(), m_constants.end(), constant) != m_constants.end());
+}
+
+bool Data::is_Requirement(int req) {
 	return (find(m_requirements.begin(), m_requirements.end(), req) != m_requirements.end());
 }
 
-void Data::Display() {
-	cout << "Domain name : " << this->m_domain->getName() << endl;
-	cout << "Size : " << this->m_data.size() << endl;
+void Data::display() {
+	cout << "Domain name : " << m_domain->getName() << endl;
+	cout << "Size : " << m_data.size() << endl;
 	for(int i=0; i<m_data.size(); i++)
 		cout << i << ": " << m_data[i] << endl;
 	cout << "End of display." << endl;

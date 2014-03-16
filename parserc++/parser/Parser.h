@@ -18,35 +18,51 @@ class Parser: public ParserBase
     Scanner d_scanner;
         
     public:
-        int parse();
-        
-        void init() {
-        	this->m_data = new Data();
-        }
-        
-        void add(std::string str) {
-        	this->m_data->Add(str);
-        }
-        
-        void add_Domain(std::string str) {
-        	this->m_data->Add_Domain(str);
-        }
-        
-		void add_requirement(int req) {
-			this->m_data->Add_Requirement(req);
-		}
+	int parse();
 
-		bool is_requirement(int req) {
-			return this->m_data->Is_Requirement(req);
-		}
+	void init() {
+		this->m_data = new Data();
+	}
 
-        void display() {
-        	this->m_data->Display();
-        }
-        
-        void lexical_error(char const *msg) {
-        	std::cerr << msg << std::endl;
-        }
+	void add(std::string str) {
+		this->m_data->add(str);
+	}
+
+	void add_Domain(std::string str) {
+		this->m_data->add_Domain(str);
+	}
+
+	bool add_Constant(string name) {
+		return this->m_data->add_Constant(name);
+	}
+	
+	bool add_Constant(string name, string type) {
+		return this->m_data->add_Constant(name, type);
+	}
+
+	bool add_Requirement(int req) {
+		return this->m_data->add_Requirement(req);
+	}
+
+	bool is_Constant(string name) {
+		return this->m_data->is_Constant(name);
+	}
+	
+	bool is_Constant(string name, string type) {
+		return this->m_data->is_Constant(name, type);
+	}
+
+	bool is_Requirement(int req) {
+		return this->m_data->is_Requirement(req);
+	}
+
+	void display() {
+		this->m_data->display();
+	}
+
+	void lexical_error(char const *msg) {
+		std::cerr << msg << std::endl;
+	}
 
     private:
         void error(char const *msg);    // called on (syntax) errors

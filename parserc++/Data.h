@@ -19,15 +19,20 @@ class Data {
 public:
 	Data();
 	virtual ~Data();
-	void Add(std::string str);
-	void Add_Domain(std::string str);
-	void Add_Requirement(int req);
-	bool Is_Requirement(int req);
-	void Display();
+	void add(string str);
+	void add_Domain(string str);
+	bool add_Constant(string name);
+	bool add_Constant(string name, string type);
+	bool add_Requirement(int req);
+	bool is_Constant(string name);
+	bool is_Constant(string name, string type);
+	bool is_Requirement(int req);
+	void display();
 private:
-	std::vector<string> m_data ;
+	vector<string> m_data ;
 	Domain * m_domain;
 	vector<int> m_requirements;
+	vector<Constant *> m_constants;
 };
 
 #endif /* DATA_H_ */

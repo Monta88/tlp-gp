@@ -1,10 +1,10 @@
 # Makefile
 
-OBJS	= lex.o parse.o Data.o action.o atom.o attribute.o domain.o durative_action.o fluent.o interval.o lexer.o planningData.o problem.o type.o variable.o main.o
+OBJS	= lex.o parse.o Data.o action.o atom.o attribute.o constant.o domain.o durative_action.o fluent.o interval.o lexer.o planningData.o problem.o type.o typedList.o variable.o main.o
 CC		= g++
 CFLAGS	= -std=c++11
 
-all: pddl_3-1-te
+all: bison flex pddl_3-1-te
 
 pddl_3-1-te:		$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o pddl_3-1-te
@@ -27,6 +27,9 @@ atom.o:				src/atom.cpp
 attribute.o:		src/attribute.cpp
 		$(CC) $(CFLAGS) -c src/attribute.cpp -o attribute.o
 
+constant.o:			src/constant.cpp
+		$(CC) $(CFLAGS) -c src/constant.cpp -o constant.o
+
 domain.o:			src/domain.cpp
 		$(CC) $(CFLAGS) -c src/domain.cpp -o domain.o
 
@@ -45,34 +48,36 @@ lexer.o:			src/lexer.cpp
 planningData.o:		src/planningData.cpp
 		$(CC) $(CFLAGS) -c src/planningData.cpp -o planningData.o
 
-problem.o:	src/problem.cpp
+problem.o:			src/problem.cpp
 		$(CC) $(CFLAGS) -c src/problem.cpp -o problem.o
 
-type.o:	src/type.cpp
+type.o:				src/type.cpp
 		$(CC) $(CFLAGS) -c src/type.cpp -o type.o
 
-variable.o:	src/variable.cpp
+typedList.o:		src/typedList.cpp
+		$(CC) $(CFLAGS) -c src/typedList.cpp -o typedList.o
+
+variable.o:			src/variable.cpp
 		$(CC) $(CFLAGS) -c src/variable.cpp -o variable.o
 
-main.o:		main.cc
+main.o:				main.cc
 		$(CC) $(CFLAGS) -c main.cc -o main.o
 
 clean:
 	rm -f *.o *~ parser/*.o parser/*~ scanner/*.o scanner/*~ src/*.o src/*~
 
-mrproper:	clean
+mrproper:			clean
 	rm -f pddl_3-1-te
 
-.PHONY: mrproper
+.PHONY:				mrproper
 
-#do not remove Scanner.h !
-cleanall:	mrproper
+cleanall:			mrproper
 	rm -f parser/parse.cc parser/Parserbase.h  scanner/lex.cc scanner/Scannerbase.h
 
-bison:
+bison:				parser/grammar
 	cd parser && bisonc++ -H'../headers.h' grammar && cd ..
 
-flex:
+flex:				scanner/lexer
 	cd scanner && flexc++ lexer && cd ..
 
-reset: cleanall bison flex pddl_3-1-te
+reset: 				cleanall bison flex pddl_3-1-te

@@ -8,6 +8,7 @@
 #include "src/action.h"
 #include "src/atom.h"
 #include "src/attribute.h"
+#include "src/constant.h"
 #include "src/domain.h"
 #include "src/durative_action.h"
 #include "src/fluent.h"
@@ -16,6 +17,7 @@
 #include "src/planningData.h"
 #include "src/problem.h"
 #include "src/type.h"
+#include "src/typedList.h"
 #include "src/variable.h"
 
 // add the headers of the used classes here
