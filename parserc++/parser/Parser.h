@@ -28,6 +28,10 @@ class Parser: public ParserBase
         	this->m_data->Add(str);
         }
         
+        void add_Domain(std::string str) {
+        	this->m_data->Add_Domain(str);
+        }
+        
         void display() {
         	this->m_data->Display();
         }

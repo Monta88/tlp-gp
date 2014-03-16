@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 	parser.init();
 
 	if (parser.parse() == 0)
-		cout << "\nParsing successful" << endl;
+		cout << "Parsing successful" << endl;
 
 	parser.display();
 

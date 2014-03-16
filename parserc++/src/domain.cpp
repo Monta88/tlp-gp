@@ -10,6 +10,10 @@ Domain::~Domain() {
 	m_actions.~vector();
 }
 
+string Domain::getName() {
+	return m_name;
+}
+
 void Domain::add_Type(Type * type) {
 	m_types.push_back(type);
 }

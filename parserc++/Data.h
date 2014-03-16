@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "src/domain.h"
 
 using namespace std;
 
@@ -19,9 +20,11 @@ public:
 	Data();
 	virtual ~Data();
 	void Add(std::string str);
+	void Add_Domain(std::string str);
 	void Display();
 private:
 	std::vector<string> m_data ;
+	Domain * m_domain;
 };
 
 #endif /* DATA_H_ */

@@ -17,6 +17,7 @@ class Domain {
 	public:
 		Domain(string name);
 		virtual~Domain();
+		string getName();
 		void add_Type(Type * type);
 		void add_Predicate(Fluent * predicate);
 		void add_Action(Action * action);

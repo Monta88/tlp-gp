@@ -134,7 +134,9 @@ begin:
 /* <domain> */
 
 domain:
-	L_P DEFINE L_P DOMAIN name R_P domain_option1
+	L_P DEFINE L_P DOMAIN name R_P domain_option1 {
+		Parser::add_Domain(*($5.str));
+	}
 	;
 
 domain_option1:
@@ -175,10 +177,9 @@ domain_option7:
 
 name:
 	NAME {
-		std::string a = d_scanner.matched();
-        $$.str = new std::string(a);
-        std::cout << "NAME : " << *($$.str) << std::endl ;
-        Parser::add(*($$.str));}
+		$$.str = new std::string(d_scanner.matched());
+		Parser::add(*($$.str));
+	}
 	| AT
 	| OVER
 	| OBJECT
