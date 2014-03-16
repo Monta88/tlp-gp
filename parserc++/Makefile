@@ -1,6 +1,6 @@
 # Makefile
 
-OBJS	= lex.o parse.o main.o
+OBJS	= lex.o parse.o Data.o main.o
 CC		= g++
 CFLAGS	= -std=c++11
 
@@ -14,6 +14,9 @@ lex.o:		scanner/lex.cc
 
 parse.o:	parser/parse.cc
 		$(CC) $(CFLAGS) -c parser/parse.cc -o parse.o
+
+Data.o:		Data.cpp
+		$(CC) $(CFLAGS) -c Data.cpp -o Data.o
 
 main.o:		main.cc
 		$(CC) $(CFLAGS) -c main.cc -o main.o

@@ -177,7 +177,7 @@ name:
 	NAME {
 		std::string a = d_scanner.matched();
         $$.str = new std::string(a);
-        std::cout << "name "+ *($$.str) << std::endl ;
+        std::cout << "NAME : " << *($$.str) << std::endl ;
         Parser::add(*($$.str));}
 	| AT
 	| OVER

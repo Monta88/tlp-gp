@@ -8,17 +8,20 @@
 #ifndef DATA_H_
 #define DATA_H_
 
-namespace std {
+#include <string>
+#include <vector>
+#include <iostream>
+
+using namespace std;
 
 class Data {
 public:
 	Data();
 	virtual ~Data();
-	void Add(string str);
+	void Add(std::string str);
+	void Display();
 private:
-	vector<string> data ;
+	std::vector<string> data ;
 };
-
-} /* namespace std */
 
 #endif /* DATA_H_ */

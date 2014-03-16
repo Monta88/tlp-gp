@@ -19,18 +19,17 @@ class Parser: public ParserBase
         
     public:
         int parse();
-        void init(){
-        	this->data = std::vector<std::string>();
+        
+        void init() {
+        	this->data = new Data();
         }
-        void add(std::string str){
-        	this->data.push_back(str);
-        	std::cout << "skipop" <<std::endl ;
+        
+        void add(std::string str) {
+        	this->data->Add(str);
         }
-        void display(){
-        	std::cout << "size: "+ this->data.size() <<std::endl;
-        	for(int i=0;i<data.size();i++)
-        		std::cout << i+": "+ data[i] <<std::endl;
-        	std::cout << "end of display" <<std::endl;
+        
+        void display() {
+        	this->data->Display();
         }
 
     private:
@@ -48,7 +47,7 @@ class Parser: public ParserBase
         void exceptionHandler__(std::exception const &exc);
 
     // our stuff:
-        std::vector<std::string> data;
+        Data * data;
 };
 
 
