@@ -183,10 +183,7 @@ domain_option7:
 /* <name> */
 
 name:
-	NAME {
-		$$.name = new std::string(d_scanner.matched());
-		Parser::add(*($$.name));
-	}
+	NAME {$$.name = new std::string(d_scanner.matched());}
 	| AT {$$.name = new std::string("at");}
 	| OVER {$$.name = new std::string("over");}
 	| OBJECT {$$.name = new std::string("object");}
@@ -259,9 +256,7 @@ types_def:
 
 constants_def:
 	L_P CONSTANTS typed_list_name R_P {
-		std::vector<TypedList *> tl = *($3.typed_list);
-		for (int i=0; i<tl.size(); ++i)
-			std::cout << tl[i]->to_string() << std::endl;
+		if (!Parser::add_Constants($3.typed_list)) Parser::lexical_error("A constant must have only one type");
 	}
 	;
 

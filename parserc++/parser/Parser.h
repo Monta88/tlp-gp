@@ -24,32 +24,16 @@ class Parser: public ParserBase
 		this->m_data = new Data();
 	}
 
-	void add(std::string str) {
-		this->m_data->add(str);
-	}
-
 	void add_Domain(std::string str) {
 		this->m_data->add_Domain(str);
 	}
-
-	bool add_Constant(string name) {
-		return this->m_data->add_Constant(name);
-	}
 	
-	bool add_Constant(string name, string type) {
-		return this->m_data->add_Constant(name, type);
+	bool add_Constants(std::vector<TypedList*> * typed_list) {
+		return this->m_data->add_Constants(typed_list);
 	}
 
 	bool add_Requirement(int req) {
 		return this->m_data->add_Requirement(req);
-	}
-
-	bool is_Constant(string name) {
-		return this->m_data->is_Constant(name);
-	}
-	
-	bool is_Constant(string name, string type) {
-		return this->m_data->is_Constant(name, type);
 	}
 
 	bool is_Requirement(int req) {
@@ -62,6 +46,13 @@ class Parser: public ParserBase
 
 	void lexical_error(char const *msg) {
 		std::cerr << msg << std::endl;
+	}
+	
+	std::string to_string(std::vector<TypedList*> * typed_list) {
+		std::string str = "TypedList :\n";
+		for (std::vector<TypedList*>::iterator it = typed_list->begin(); it != typed_list->end(); ++it)
+			str += (*it)->to_string() + "\n";
+		return str;
 	}
 
     private:

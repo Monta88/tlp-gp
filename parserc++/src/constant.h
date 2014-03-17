@@ -14,9 +14,9 @@ using namespace std;
 class Constant {
 	public:
 		Constant(string name, Type * type);
-		Constant(string name);
 		~Constant();
 		string get_Name();
+		string to_string();
 	private:
 		string m_name;
 		Type * m_type;
