@@ -6,9 +6,9 @@ Fluent::Fluent(string * name, std::vector<NamedList*> * named_list):m_name(*name
 	m_types = vector<Type *> ();
 	
 	for (vector<NamedList*>::iterator it = named_list->begin(); it != named_list->end(); ++it) {
-		for (int i=0; i<(*it)->get_List()->size(); ++i) {
+		for (vector<string*>::iterator it_type = (*it)->get_List()->begin(); it_type != (*it)->get_List()->end(); ++it_type) {
 			// store the type each time there is a variable of this type
-			Type * type = new Type(*(*it)->get_Name());
+			Type * type = new Type(*(*it)->get_Name()->at(0));
 			m_types.push_back(type);
 		}
 	}

@@ -4,7 +4,7 @@ OBJS	= lex.o parse.o Data.o action.o atom.o attribute.o constant.o domain.o dura
 CC		= g++
 CFLAGS	= -std=c++11
 
-all: bison flex pddl_3-1-te
+all:				bison flex pddl_3-1-te
 
 pddl_3-1-te:		$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o pddl_3-1-te
@@ -79,5 +79,10 @@ bison:				parser/grammar
 
 flex:				scanner/lexer
 	cd scanner && flexc++ lexer && cd ..
+
+flex_debug:				scanner/lexer
+	cd scanner && flexc++ --print lexer && cd ..
+
+debug:				bison flex_debug pddl_3-1-te
 
 reset: 				cleanall bison flex pddl_3-1-te

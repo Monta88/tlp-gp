@@ -33,10 +33,10 @@ public:
 	void display();
 private:
 	Domain * m_domain;
-	vector<int> m_requirements;
-	vector<Type *> m_types; // for your Martin ;)
-	vector<Constant *> m_constants;
-	vector<Fluent *> m_predicates;
+	vector<int> * m_requirements;
+	vector<Type *> * m_types; // for your Martin ;)
+	vector<Constant *> * m_constants;
+	vector<Fluent *> * m_predicates;
 };
 
 #endif /* DATA_H_ */

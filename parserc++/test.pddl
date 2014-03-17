@@ -5,6 +5,22 @@
 (:requirements :typing :durative-actions)
 (:types hoist surface place area - object)
 
+(:constants
+		Letter - size_t
+
+		Black
+		Color - color_t
+
+		Front
+		Back - side_t
+
+		Some_Feeder_Tray
+		Some_Finisher_Tray
+		EndCap_Entry-BlackContainer_Exit
+		HtmOverBlack_Entry-EndCap_Exit
+		Finisher2_Tray - (either size_t color_t side_t)
+)
+
 (:predicates (clear ?s - storearea)
 	     (in ?x - (either storearea crate) ?p - place)
 	     (connected ?a1 ?a2 - area))

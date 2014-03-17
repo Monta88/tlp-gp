@@ -354,8 +354,11 @@ primitive_type:
 /* <type> */
 
 type:
-	primitive_type {$$.name = $1.name;}
-	| L_P EITHER nvList_primitive_type R_P
+	primitive_type {
+		$$.list_name = new std::vector<std::string*> ();
+		$$.list_name->push_back($1.name);
+	}
+	| L_P EITHER nvList_primitive_type R_P {$$.list_name = $3.list_name;}
 	;
 
 /* <action_def> */
@@ -1096,12 +1099,14 @@ typed_list_name:
 			// if end of named_list
 		} else {
 			// if no type
-			$$.named_list->push_back( new NamedList(new std::string("object"), $1.list_name ));
+			std::vector<std::string*> * list_name = new std::vector<std::string*> ();
+			list_name->push_back(new std::string("object"));
+			$$.named_list->push_back( new NamedList(list_name, $1.list_name ));
 		}
 	}
 	| nvList_name MINUS type typed_list_name {
 		if (!Parser::is_Requirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
-		$4.named_list->push_back( new NamedList($3.name, $1.list_name) );
+		$4.named_list->push_back( new NamedList($3.list_name, $1.list_name) );
 		$$.named_list = $4.named_list;
 	}
 	;
@@ -1113,12 +1118,14 @@ typed_list_variable:
 			// if end of named_list
 		} else {
 			// if no type
-			$$.named_list->push_back( new NamedList(new std::string("object"), $1.list_name ));
+			std::vector<std::string*> * list_name = new std::vector<std::string*> ();
+			list_name->push_back(new std::string("object"));
+			$$.named_list->push_back( new NamedList(list_name, $1.list_name ));
 		}
 	}
 	| nvList_variable MINUS type typed_list_variable {
 		if (!Parser::is_Requirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
-		$4.named_list->push_back( new NamedList($3.name, $1.list_name) );
+		$4.named_list->push_back( new NamedList($3.list_name, $1.list_name) );
 		$$.named_list = $4.named_list;
 	}
 	;
@@ -1212,7 +1219,10 @@ nvList_atomic_function_skeleton:
 	;
 
 nvList_primitive_type:
-	primitive_type list_primitive_type
+	primitive_type list_primitive_type {
+		$2.list_name->push_back($1.name);
+		$$.list_name = $2.list_name;
+	}
 	;
 
 nvList_f_exp:
@@ -1290,8 +1300,13 @@ list_atomic_function_skeleton:
 	;
 
 list_primitive_type:
-	/* empty */
-	| primitive_type list_primitive_type
+	/* empty */ {
+		$$.list_name = new std::vector<std::string *> ();
+	}
+	| primitive_type list_primitive_type {
+		$2.list_name->push_back($1.name);
+		$$.list_name = $2.list_name;
+	}
 	;
 
 list_pre_GD:
