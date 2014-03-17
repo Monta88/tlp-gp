@@ -11,7 +11,7 @@
 {
 	std::string * name;
 	std::vector<std::string *> * list_name;
-	std::vector<TypedList *> * typed_list;
+	std::vector<NamedList *> * named_list;
 }
 
 %token 	L_P
@@ -249,14 +249,14 @@ require_key:
 
 /* <types-def> */
 types_def:
-	L_P TYPES typed_list_name R_P
+	L_P TYPES named_list_name R_P
 	;
 
 /* <contants-def> */
 
 constants_def:
-	L_P CONSTANTS typed_list_name R_P {
-		if (!Parser::add_Constants($3.typed_list)) Parser::lexical_error("A constant must have only one type");
+	L_P CONSTANTS named_list_name R_P {
+		if (!Parser::add_Constants($3.named_list)) Parser::lexical_error("A constant must have only one type");
 	}
 	;
 
@@ -269,7 +269,7 @@ predicates_def:
 /* <atomic formula skeleton> */
 
 atomic_formula_skeleton:
-	L_P predicate typed_list_variable R_P
+	L_P predicate named_list_variable R_P
 	;
 
 /* <predicate> */
@@ -287,7 +287,7 @@ variable:
 /* <atomic function skeleton> */
 
 atomic_function_skeleton:
-	L_P function_symbol typed_list_variable R_P
+	L_P function_symbol named_list_variable R_P
 	;
 
 /* <function-symbol> */
@@ -299,7 +299,7 @@ function_symbol:
 /* <functions-def> */
 
 functions_def:
-	L_P FUNCTIONS function_typed_list_atomic_function_skeleton R_P {
+	L_P FUNCTIONS function_named_list_atomic_function_skeleton R_P {
 		if (!Parser::is_Requirement(FLUENTS)) Parser::lexical_error("Requirement :fluents is needed");
 	}
 	;
@@ -356,7 +356,7 @@ type:
 /* <action_def> */
 
 action_def:
-	L_P ACTION action_symbol PARAMETERS L_P typed_list_variable R_P action_def_body R_P
+	L_P ACTION action_symbol PARAMETERS L_P named_list_variable R_P action_def_body R_P
 	;
 
 /* <action_symbol> */
@@ -386,7 +386,7 @@ action_def_body_option2:
 pre_GD:
 	pref_GD
 	| L_P AND list_pre_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P pre_GD R_P {
+	| L_P FORALL L_P named_list_variable R_P pre_GD R_P {
 		if (!Parser::is_Requirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
 	}
 	;
@@ -428,10 +428,10 @@ GD:
 	| L_P IMPLY GD GD R_P {
 		if (!Parser::is_Requirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
 	}
-	| L_P EXISTS L_P L_P typed_list_variable R_P R_P GD R_P {
+	| L_P EXISTS L_P L_P named_list_variable R_P R_P GD R_P {
 		if (!Parser::is_Requirement(EXISTENTIAL_PRECONDITIONS)) Parser::lexical_error("Requirement :existential-preconditions is needed");
 	}
-	| L_P FORALL L_P L_P typed_list_variable R_P R_P GD R_P {
+	| L_P FORALL L_P L_P named_list_variable R_P R_P GD R_P {
 		if (!Parser::is_Requirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
 	}
 	| f_comp {
@@ -531,7 +531,7 @@ effect:
 /* <c-effect> */
 
 c_effect:
-	L_P FORALL L_P typed_list_variable R_P effect R_P {
+	L_P FORALL L_P named_list_variable R_P effect R_P {
 		if (!Parser::is_Requirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
 	}
 	| L_P WHEN GD cond_effect R_P {
@@ -576,7 +576,7 @@ assign_op:
 /* <durative-action-def> */
 
 durative_action_def:
-	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P da_def_body R_P
+	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P named_list_variable R_P da_def_body R_P
 	;
 
 /* <da-symbol> */
@@ -596,7 +596,7 @@ da_def_body:
 da_GD:
 	pref_timed_GD
 	| L_P AND list_da_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P da_GD R_P {
+	| L_P FORALL L_P named_list_variable R_P da_GD R_P {
 		if (!Parser::is_Requirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
 	}
 	;
@@ -678,7 +678,7 @@ d_value:
 da_effect:
 	L_P AND list_da_effect R_P
 	| timed_effect
-	| L_P FORALL L_P typed_list_variable R_P da_effect R_P {
+	| L_P FORALL L_P named_list_variable R_P da_effect R_P {
 		if (!Parser::is_Requirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
 	}
 	| L_P WHEN da_GD timed_effect R_P {
@@ -782,7 +782,7 @@ problem_option5:
 /* <object declaration> */
 
 object_declaration:
-	L_P OBJECTS typed_list_name R_P
+	L_P OBJECTS named_list_name R_P
 	;
 
 /* <init> */
@@ -831,7 +831,7 @@ constraints_problem:
 
 pref_con_GD:
 	L_P AND list_pref_con_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P pref_con_GD R_P {
+	| L_P FORALL L_P named_list_variable R_P pref_con_GD R_P {
 		if (!Parser::is_Requirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
 	}
 	| L_P PREFERENCE pref_con_GD_option1 {
@@ -849,7 +849,7 @@ pref_con_GD_option1:
 
 con_GD:
 	L_P AND list_con_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P con_GD R_P
+	| L_P FORALL L_P named_list_variable R_P con_GD R_P
 	| L_P AT END GD R_P
 	| L_P ALWAYS con2_GD R_P
 	| L_P SOMETIME con2_GD R_P
@@ -931,7 +931,7 @@ integer:
 /* <te-durative-action-def> */
 
 te_durative_action_def:
-	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P te_da_def_body R_P
+	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P named_list_variable R_P te_da_def_body R_P
 	;
 
 /* <te-da-def body> */
@@ -979,7 +979,7 @@ te_time_constraints:
 te_da_GD:
 	te_pref_timed_GD
 	| L_P AND list_te_da_GD R_P
-	| L_P FORALL L_P typed_list_variable R_P te_da_GD R_P {
+	| L_P FORALL L_P named_list_variable R_P te_da_GD R_P {
 		if (!Parser::is_Requirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
 	}
 	;
@@ -1015,7 +1015,7 @@ te_da_effect:
 	L_P AND list_te_da_effect R_P
 	| te_timed_effect
 	| te_modality
-	| L_P FORALL L_P typed_list_variable R_P te_da_effect R_P {
+	| L_P FORALL L_P named_list_variable R_P te_da_effect R_P {
 		if (!Parser::is_Requirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
 	}
 	| L_P WHEN da_GD te_timed_effect R_P {
@@ -1073,9 +1073,9 @@ bracket:
 
 /* <function typed list (x)> */
 
-function_typed_list_atomic_function_skeleton:
+function_named_list_atomic_function_skeleton:
 	/* empty */
-	| nvList_atomic_function_skeleton MINUS function_type function_typed_list_atomic_function_skeleton
+	| nvList_atomic_function_skeleton MINUS function_type function_named_list_atomic_function_skeleton
 	| nvList_atomic_function_skeleton {
 		if (!Parser::is_Requirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
 	}
@@ -1084,26 +1084,26 @@ function_typed_list_atomic_function_skeleton:
 
 /* <typed list (x)> */
 
-typed_list_name:
+named_list_name:
 	list_name {
-		$$.typed_list = new std::vector<TypedList *> ();
+		$$.named_list = new std::vector<NamedList *> ();
 		if ($1.list_name->size() == 0) {
-			// if end of typed_list
+			// if end of named_list
 		} else {
-			// if typed_list is a type list
-			$$.typed_list->push_back( new TypedList(new std::string("object"), $1.list_name ));
+			// if named_list is a type list
+			$$.named_list->push_back( new NamedList(new std::string("object"), $1.list_name ));
 		}
 	}
-	| nvList_name MINUS type typed_list_name {
+	| nvList_name MINUS type named_list_name {
 		if (!Parser::is_Requirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
-		$4.typed_list->push_back( new TypedList($3.name, $1.list_name) );
-		$$.typed_list = $4.typed_list;
+		$4.named_list->push_back( new NamedList($3.name, $1.list_name) );
+		$$.named_list = $4.named_list;
 	}
 	;
 
-typed_list_variable:
+named_list_variable:
 	list_variable
-	| nvList_variable MINUS type typed_list_variable {
+	| nvList_variable MINUS type named_list_variable {
 		if (!Parser::is_Requirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
 	}
 	;

@@ -22,11 +22,11 @@ void Data::add_Domain(string str) {
 	m_domain = new Domain(str);
 }
 
-bool Data::add_Constants(vector<TypedList*> * typed_list) {
-	for (vector<TypedList*>::iterator it = typed_list->begin(); it != typed_list->end(); ++it) {
-		vector<string*> * list_name = (*it)->get_List_name();
-		for (vector<string*>::iterator it_bis = list_name->begin(); it_bis != list_name->end(); ++it_bis) {
-			Constant * constant = new Constant(*(*it_bis), new Type(*(*it)->get_Type()));
+bool Data::add_Constants(vector<NamedList*> * named_list) {
+	for (vector<NamedList*>::iterator it = named_list->begin(); it != named_list->end(); ++it) {
+		vector<string*> * list = (*it)->get_List();
+		for (vector<string*>::iterator it_bis = list->begin(); it_bis != list->end(); ++it_bis) {
+			Constant * constant = new Constant(*(*it_bis), new Type(*(*it)->get_Name()));
 			if (is_Constant(constant))
 				return false;
 			m_constants.push_back(constant);

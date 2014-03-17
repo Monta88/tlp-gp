@@ -16,6 +16,7 @@ class Type {
 		string getType();
 		virtual ~Type();
 		string get_Name();
+		string to_string();
 	protected:
 		string m_name;
 	private:

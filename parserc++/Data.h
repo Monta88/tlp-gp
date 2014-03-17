@@ -12,7 +12,7 @@
 #include <vector>
 #include <iostream>
 #include "src/domain.h"
-#include "src/typedList.h"
+#include "src/namedList.h"
 
 using namespace std;
 
@@ -21,7 +21,7 @@ public:
 	Data();
 	virtual ~Data();
 	void add_Domain(string str);
-	bool add_Constants(vector<TypedList*> * typed_list);
+	bool add_Constants(vector<NamedList*> * named_list);
 	bool add_Requirement(int req);
 	bool is_Constant(Constant * constant);
 	bool is_Requirement(int req);

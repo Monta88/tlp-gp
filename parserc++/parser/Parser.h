@@ -28,8 +28,8 @@ class Parser: public ParserBase
 		this->m_data->add_Domain(str);
 	}
 	
-	bool add_Constants(std::vector<TypedList*> * typed_list) {
-		return this->m_data->add_Constants(typed_list);
+	bool add_Constants(std::vector<NamedList*> * named_list) {
+		return this->m_data->add_Constants(named_list);
 	}
 
 	bool add_Requirement(int req) {
@@ -48,9 +48,9 @@ class Parser: public ParserBase
 		std::cerr << msg << std::endl;
 	}
 	
-	std::string to_string(std::vector<TypedList*> * typed_list) {
-		std::string str = "TypedList :\n";
-		for (std::vector<TypedList*>::iterator it = typed_list->begin(); it != typed_list->end(); ++it)
+	std::string to_string(std::vector<NamedList*> * named_list) {
+		std::string str = "NamedList :\n";
+		for (std::vector<NamedList*>::iterator it = named_list->begin(); it != named_list->end(); ++it)
 			str += (*it)->to_string() + "\n";
 		return str;
 	}

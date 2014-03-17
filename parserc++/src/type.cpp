@@ -8,3 +8,7 @@ string Type::get_Name() {
 	return m_name;
 }
 
+string Type::to_string() {
+	return m_name;
+}
+
