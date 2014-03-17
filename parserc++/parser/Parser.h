@@ -27,10 +27,6 @@ class Parser: public ParserBase
 	void add_Domain(std::string str) {
 		this->m_data->add_Domain(str);
 	}
-	
-	bool add_Constants(std::vector<NamedList*> * named_list) {
-		return this->m_data->add_Constants(named_list);
-	}
 
 	bool add_Requirement(int req) {
 		return this->m_data->add_Requirement(req);
@@ -39,12 +35,20 @@ class Parser: public ParserBase
 	bool is_Requirement(int req) {
 		return this->m_data->is_Requirement(req);
 	}
-
+	
+	bool add_Constants(std::vector<NamedList*> * named_list) {
+		return this->m_data->add_Constants(named_list);
+	}
+	
+	bool add_Predicate(std::string * name, std::vector<NamedList*> * named_list) {
+		return this->m_data->add_Predicate(name, named_list);
+	}
+	
 	void display() {
 		this->m_data->display();
 	}
 
-	void lexical_error(char const *msg) {
+	void lexical_error(std::string msg) {
 		std::cerr << msg << std::endl;
 	}
 	
