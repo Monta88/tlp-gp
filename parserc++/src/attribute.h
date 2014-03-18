@@ -4,7 +4,6 @@
 #ifndef ATTRIBUTE_H
 #define ATTRIBUTE_H
 
-#include <iostream> 
 #include <string> 
 #include <vector>
 #include "variable.h"

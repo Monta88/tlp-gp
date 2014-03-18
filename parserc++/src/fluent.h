@@ -7,14 +7,14 @@
 #include <string>
 #include <vector>
 #include "type.h"
-#include "namedList.h"
+#include "typedList.h"
 
 using namespace std;
 
 
 class Fluent {
 	public:
-		Fluent(string * name, std::vector<NamedList*> * named_list);
+		Fluent(string * name, std::vector<TypedList*> * typed_list);
 		virtual ~Fluent();
 		string get_Name();
 		vector<Type *> get_Types();

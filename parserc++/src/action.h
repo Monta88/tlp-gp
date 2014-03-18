@@ -4,7 +4,6 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-#include <iostream> 
 #include <string> 
 #include <vector>
 #include "variable.h"

@@ -36,12 +36,16 @@ class Parser: public ParserBase
 		return this->m_data->is_Requirement(req);
 	}
 	
-	bool add_Constants(std::vector<NamedList*> * named_list) {
-		return this->m_data->add_Constants(named_list);
+	bool add_Types(std::vector<TypedList*> * typedList_list) {
+		return this->m_data->add_Types(typedList_list);
 	}
 	
-	bool add_Predicate(std::string * name, std::vector<NamedList*> * named_list) {
-		return this->m_data->add_Predicate(name, named_list);
+	bool add_Constants(std::vector<TypedList*> * typedList_list) {
+		return this->m_data->add_Constants(typedList_list);
+	}
+	
+	bool add_Predicate(std::string * name, std::vector<TypedList*> * typedList_list) {
+		return this->m_data->add_Predicate(name, typedList_list);
 	}
 	
 	void display() {
@@ -52,9 +56,9 @@ class Parser: public ParserBase
 		std::cerr << msg << std::endl;
 	}
 	
-	std::string to_string(std::vector<NamedList*> * named_list) {
-		std::string str = "NamedList :\n";
-		for (std::vector<NamedList*>::iterator it = named_list->begin(); it != named_list->end(); ++it)
+	std::string to_string(std::vector<TypedList*> * typedList_list) {
+		std::string str = "TypedList :\n";
+		for (std::vector<TypedList*>::iterator it = typedList_list->begin(); it != typedList_list->end(); ++it)
 			str += (*it)->to_string() + "\n";
 		return str;
 	}

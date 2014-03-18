@@ -11,7 +11,7 @@
 {
 	std::string * name;
 	std::vector<std::string *> * list_name;
-	std::vector<NamedList *> * named_list;
+	std::vector<TypedList *> * typedList_list;
 }
 
 %token 	L_P
@@ -249,14 +249,17 @@ require_key:
 
 /* <types-def> */
 types_def:
-	L_P TYPES typed_list_name R_P
+	L_P TYPES typed_list_name R_P {
+		if(!Parser::add_Types($3.typedList_list))
+			Parser::lexical_error("A type has been reported twice or a parent type is not declared before it is used");
+	}
 	;
 
 /* <contants-def> */
 
 constants_def:
 	L_P CONSTANTS typed_list_name R_P {
-		if (!Parser::add_Constants($3.named_list))
+		if (!Parser::add_Constants($3.typedList_list))
 			Parser::lexical_error("A constant must have only one type");
 	}
 	;
@@ -271,7 +274,7 @@ predicates_def:
 
 atomic_formula_skeleton:
 	L_P predicate typed_list_variable R_P {
-		if (!Parser::add_Predicate($2.name, $3.named_list)) {
+		if (!Parser::add_Predicate($2.name, $3.typedList_list)) {
 			Parser::lexical_error("Multiple definition of predicate " + *$2.name);
 		}
 	}
@@ -347,7 +350,7 @@ structure_def:
 /* <primitive-type> */
 
 primitive_type:
-	name {$$.name = new std::string(d_scanner.matched());}
+	name {$$.name = $1.name;}
 	| OBJECT {$$.name = new std::string("object");}
 	;
 
@@ -1094,39 +1097,39 @@ function_typed_list_atomic_function_skeleton:
 
 typed_list_name:
 	list_name {
-		$$.named_list = new std::vector<NamedList *> ();
+		$$.typedList_list = new std::vector<TypedList *> ();
 		if ($1.list_name->size() == 0) {
-			// if end of named_list
+			// if end of typed_list
 		} else {
 			// if no type
 			std::vector<std::string*> * list_name = new std::vector<std::string*> ();
 			list_name->push_back(new std::string("object"));
-			$$.named_list->push_back( new NamedList(list_name, $1.list_name ));
+			$$.typedList_list->push_back( new TypedList(list_name, $1.list_name ));
 		}
 	}
 	| nvList_name MINUS type typed_list_name {
 		if (!Parser::is_Requirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
-		$4.named_list->push_back( new NamedList($3.list_name, $1.list_name) );
-		$$.named_list = $4.named_list;
+		$4.typedList_list->push_back( new TypedList($3.list_name, $1.list_name) );
+		$$.typedList_list = $4.typedList_list;
 	}
 	;
 
 typed_list_variable:
 	list_variable {
-		$$.named_list = new std::vector<NamedList *> ();
+		$$.typedList_list = new std::vector<TypedList *> ();
 		if ($1.list_name->size() == 0) {
-			// if end of named_list
+			// if end of typed_list
 		} else {
 			// if no type
 			std::vector<std::string*> * list_name = new std::vector<std::string*> ();
 			list_name->push_back(new std::string("object"));
-			$$.named_list->push_back( new NamedList(list_name, $1.list_name ));
+			$$.typedList_list->push_back( new TypedList(list_name, $1.list_name ));
 		}
 	}
 	| nvList_variable MINUS type typed_list_variable {
 		if (!Parser::is_Requirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
-		$4.named_list->push_back( new NamedList($3.list_name, $1.list_name) );
-		$$.named_list = $4.named_list;
+		$4.typedList_list->push_back( new TypedList($3.list_name, $1.list_name) );
+		$$.typedList_list = $4.typedList_list;
 	}
 	;
 

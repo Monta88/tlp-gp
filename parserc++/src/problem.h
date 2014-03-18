@@ -4,7 +4,6 @@
 #ifndef PROBLEM_H
 #define PROBLEM_H
 
-#include <iostream>
 #include <string>
 #include <vector>
 #include "domain.h"

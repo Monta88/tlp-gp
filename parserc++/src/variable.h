@@ -4,7 +4,6 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
 
-#include <iostream> 
 #include <string> 
 #include "type.h"
 

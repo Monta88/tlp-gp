@@ -86,7 +86,7 @@ string Domain::to_string() {
 	}
 	str += "\n Types : ";
 	for (vector<Type *>::iterator it = m_types.begin(); it != m_types.end(); ++it) {	
-		str += (*it)->get_Name() + ", ";
+		str += (*it)->to_string() + ", ";
 	}
 	str += "\n Predicates : ";
 	for (vector<Fluent *>::iterator it = m_predicates.begin(); it != m_predicates.end(); ++it) {	

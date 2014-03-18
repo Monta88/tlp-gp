@@ -2,16 +2,16 @@
 
 #include <algorithm>
 
-Fluent::Fluent(string * name, std::vector<NamedList*> * named_list):m_name(*name) {
-	m_types = vector<Type *> ();
+Fluent::Fluent(string * name, std::vector<TypedList*> * typed_list):m_name(*name) {
+	/*m_types = vector<Type *> ();
 	
-	for (vector<NamedList*>::iterator it = named_list->begin(); it != named_list->end(); ++it) {
+	for (vector<TypedList*>::iterator it = typed_list->begin(); it != typed_list->end(); ++it) {
 		for (vector<string*>::iterator it_type = (*it)->get_List()->begin(); it_type != (*it)->get_List()->end(); ++it_type) {
 			// store the type each time there is a variable of this type
 			Type * type = new Type(*(*it)->get_Name()->at(0));
 			m_types.push_back(type);
 		}
-	}
+	}*/
 }
 
 Fluent::~Fluent() {}

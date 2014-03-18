@@ -14,10 +14,10 @@
 #include "src/fluent.h"
 #include "src/interval.h"
 #include "src/lexer.h"
-#include "src/namedList.h"
 #include "src/planningData.h"
 #include "src/problem.h"
 #include "src/type.h"
+#include "src/typedList.h"
 #include "src/variable.h"
 
 // add the headers of the used classes here

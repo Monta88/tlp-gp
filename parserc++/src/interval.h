@@ -4,7 +4,6 @@
 #ifndef INTERVAL_H
 #define INTERVAL_H
 
-#include <iostream>
 #include <string>
 #include <vector>
 #include "variable.h"

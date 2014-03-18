@@ -4,22 +4,25 @@
 #ifndef TYPE_H
 #define TYPE_H
 
-#include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
 
 class Type {
 	public:
-		Type(string name);        
-		string getType();
+		Type(Type * parent, vector<string*> * name_list);
+		Type(vector<string*> * parent, string * name);
+		Type(vector<string*> * name_list);
+		Type();
 		virtual ~Type();
-		string get_Name();
+		vector<string*> * get_Name_List();
+		Type * get_Parent();
 		string to_string();
-	protected:
-		string m_name;
 	private:
+		Type * m_parent;
+		vector<string*> * m_name_list; // a type can be an (either type) : a list of one type is a simple type, and a list of more than one type is a (either type)
 };
 
 #endif // TYPE_H

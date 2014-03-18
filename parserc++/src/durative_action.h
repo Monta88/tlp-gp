@@ -4,7 +4,6 @@
 #ifndef DURATIVE_ACTION_H
 #define DURATIVE_ACTION_H
 
-#include <iostream>
 #include <string>
 #include "action.h"
 

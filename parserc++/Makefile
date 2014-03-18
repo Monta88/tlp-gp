@@ -1,6 +1,6 @@
 # Makefile
 
-OBJS	= lex.o parse.o Data.o action.o atom.o attribute.o constant.o domain.o durative_action.o fluent.o interval.o lexer.o namedList.o planningData.o problem.o type.o variable.o main.o
+OBJS	= lex.o parse.o Data.o action.o atom.o attribute.o constant.o domain.o durative_action.o fluent.o interval.o lexer.o planningData.o problem.o type.o typedList.o variable.o main.o
 CC		= g++
 CFLAGS	= -std=c++11
 
@@ -45,9 +45,6 @@ interval.o:			src/interval.cpp
 lexer.o:			src/lexer.cpp
 		$(CC) $(CFLAGS) -c src/lexer.cpp -o lexer.o
 
-namedList.o:		src/namedList.cpp
-		$(CC) $(CFLAGS) -c src/namedList.cpp -o namedList.o
-
 planningData.o:		src/planningData.cpp
 		$(CC) $(CFLAGS) -c src/planningData.cpp -o planningData.o
 
@@ -56,6 +53,9 @@ problem.o:			src/problem.cpp
 
 type.o:				src/type.cpp
 		$(CC) $(CFLAGS) -c src/type.cpp -o type.o
+
+typedList.o:		src/typedList.cpp
+		$(CC) $(CFLAGS) -c src/typedList.cpp -o typedList.o
 
 variable.o:			src/variable.cpp
 		$(CC) $(CFLAGS) -c src/variable.cpp -o variable.o
