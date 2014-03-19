@@ -14,14 +14,14 @@ using namespace std;
 
 class Fluent {
 	public:
-		Fluent(string * name, std::vector<TypedList*> * typed_list);
+		Fluent(string name, vector< vector<Type*> > types_list);
 		virtual ~Fluent();
-		string get_Name();
-		vector<Type *> get_Types();
+		string getName();
+		vector< vector<Type*> > * getTypes_List();
 		string to_string();
 	private:
 		string m_name;
-		vector<Type *> m_types;
+		vector< vector<Type*> > m_types_list;
 };
 
 #endif // FLUENT_H

@@ -22,3 +22,7 @@ void Action::add_effect(Attribute att ,Fluent *fluent) {
 	m_effects.push_back(make_pair(att,fluent));
 }
 
+string Action::to_string() {
+	return m_name;
+}
+

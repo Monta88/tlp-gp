@@ -21,35 +21,35 @@ class Parser: public ParserBase
 	int parse();
 
 	void init() {
-		this->m_data = new Data();
+		m_data = Data();
 	}
 
-	void add_Domain(std::string str) {
-		this->m_data->add_Domain(str);
+	void addDomain(std::string * name) {
+		m_data.addDomain(name);
 	}
 
-	bool add_Requirement(int req) {
-		return this->m_data->add_Requirement(req);
+	bool addRequirement(int req) {
+		return m_data.addRequirement(req);
 	}
 
-	bool is_Requirement(int req) {
-		return this->m_data->is_Requirement(req);
+	bool isRequirement(int req) {
+		return m_data.isRequirement(req);
 	}
 	
-	bool add_Types(std::vector<TypedList*> * typedList_list) {
-		return this->m_data->add_Types(typedList_list);
+	bool addTypes(std::vector<TypedList*> * typedList_list) {
+		return m_data.addTypes(typedList_list);
 	}
 	
-	bool add_Constants(std::vector<TypedList*> * typedList_list) {
-		return this->m_data->add_Constants(typedList_list);
+	bool addConstants(std::vector<TypedList*> * typedList_list) {
+		return m_data.addConstants(typedList_list);
 	}
 	
-	bool add_Predicate(std::string * name, std::vector<TypedList*> * typedList_list) {
-		return this->m_data->add_Predicate(name, typedList_list);
+	bool addPredicate(std::string * name, std::vector<TypedList*> * typedList_list) {
+		return m_data.addPredicate(name, typedList_list);
 	}
 	
 	void display() {
-		this->m_data->display();
+		m_data.display();
 	}
 
 	void lexical_error(std::string msg) {
@@ -57,9 +57,9 @@ class Parser: public ParserBase
 	}
 	
 	std::string to_string(std::vector<TypedList*> * typedList_list) {
-		std::string str = "TypedList :\n";
+		std::string str = "TypedList List :";
 		for (std::vector<TypedList*>::iterator it = typedList_list->begin(); it != typedList_list->end(); ++it)
-			str += (*it)->to_string() + "\n";
+			str += "\n\t" + (*it)->to_string();
 		return str;
 	}
 
@@ -78,7 +78,7 @@ class Parser: public ParserBase
         void exceptionHandler__(std::exception const &exc);
 
     // our stuff:
-        Data * m_data;
+        Data m_data;
 };
 
 

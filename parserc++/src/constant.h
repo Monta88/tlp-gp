@@ -12,15 +12,15 @@ using namespace std;
 
 class Constant {
 	public:
-		Constant(string * name, Type * type);
+		Constant(string name, vector<Type*> types);
 		Constant();
 		~Constant();
-		string * get_Name();
-		Type * get_Type();
+		string getName();
+		vector<Type*> * getTypes();
 		string to_string();
 	private:
-		string * m_name;
-		Type * m_type;
+		string m_name;
+		vector<Type*> m_types;
 };
 
 #endif // CONSTANT_H

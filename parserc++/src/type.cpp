@@ -1,44 +1,40 @@
 #include "type.h"
 
-Type::Type(Type * parent, vector<string*> * name_list):m_parent(parent), m_name_list(name_list) {}
 
-Type::Type(vector<string*> * parent, string * name) {
-	m_parent = new Type(parent);
-	m_name_list = new vector<string*> ();
-	m_name_list->push_back(name);
+Type::Type(string name, vector<Type*> parents):m_name(name), m_parents(parents) {}
+
+Type::Type(string name):m_name(name) {
+	m_parents = vector<Type*> ();
 }
 
-Type::Type(vector<string*> * name_list):m_name_list(name_list) {
-	m_parent = NULL;
+Type::Type() {}
+
+Type::~Type() {}
+
+void Type::addParents(vector<Type*> parents) {
+	m_parents = parents;
 }
 
-Type::Type() {} 
-
-Type::~Type() {} 
-     
-vector<string*> * Type::get_Name_List() {
-	return m_name_list;
+string Type::getName() {
+	return m_name;
 }
 
-Type * Type::get_Parent() {
-	return m_parent;
+vector<Type*> * Type::getParents() {
+	return &m_parents;
 }
 
 string Type::to_string() {
-	string str;
-	if (m_parent == NULL) {
-		str = "Type (Parent NULL)";
-	}
-	else {
-		str = "Type (Parent " + m_parent->to_string() + ")";
-	}
-	if (m_name_list->size() == 1) {
-		str += " " + *(m_name_list->at(0));
-	}
-	else {
-		str += "either";
-		for (vector<string*>::iterator it = m_name_list->begin(); it != m_name_list->end(); ++it) {
-			str += " " + *(*it);
+	string str = "Type " + m_name;
+	if (m_parents.size() > 0) {
+		if (m_parents.size() == 1) {
+			str += " (Parent " + m_parents.at(0)->getName() + ")";
+		}
+		else {
+			str += " (Parents either";
+			for (vector<Type*>::iterator it = m_parents.begin(); it != m_parents.end(); ++it) {
+				str += " " + (*it)->getName();
+			}
+			str += ")";
 		}
 	}
 	return str;

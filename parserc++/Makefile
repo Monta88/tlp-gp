@@ -2,7 +2,7 @@
 
 OBJS	= lex.o parse.o Data.o action.o atom.o attribute.o constant.o domain.o durative_action.o fluent.o interval.o lexer.o planningData.o problem.o type.o typedList.o variable.o main.o
 CC		= g++
-CFLAGS	= -std=c++11
+CFLAGS	= -std=c++11 -Wall
 
 all:				bison flex pddl_3-1-te
 

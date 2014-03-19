@@ -12,17 +12,17 @@ using namespace std;
 
 class Type {
 	public:
-		Type(Type * parent, vector<string*> * name_list);
-		Type(vector<string*> * parent, string * name);
-		Type(vector<string*> * name_list);
+		Type(string name, vector<Type*> parents);
+		Type(string name);
 		Type();
 		virtual ~Type();
-		vector<string*> * get_Name_List();
-		Type * get_Parent();
+		void addParents(vector<Type*> parents);
+		string getName();
+		vector<Type*> * getParents();
 		string to_string();
 	private:
-		Type * m_parent;
-		vector<string*> * m_name_list; // a type can be an (either type) : a list of one type is a simple type, and a list of more than one type is a (either type)
+		string m_name;
+		vector<Type*> m_parents;
 };
 
 #endif // TYPE_H

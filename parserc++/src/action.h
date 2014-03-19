@@ -16,12 +16,12 @@ using namespace std;
 class Action {
 	public:
 		Action(string name);
+		virtual ~Action();
 		string get_Name();
 		void add_Parameters(Variable * parameter);
 		void add_condition(Attribute att,Fluent *fluent);
 		void add_effect(Attribute att,Fluent *fluent);
-		virtual ~Action();
-	
+		string to_string();
 	private:
 		string m_name;
 		vector<Variable *> m_parameters;
