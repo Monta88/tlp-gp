@@ -41,6 +41,7 @@ private:
 	vector<int> m_requirements;
 	vector<string>  m_type_list;
 	vector<string> m_constant_list;
+	vector<string> m_predicate_list;
 	vector<Type*> m_types;
 	vector<Constant*> m_constants;
 	vector<Fluent*> m_predicates;

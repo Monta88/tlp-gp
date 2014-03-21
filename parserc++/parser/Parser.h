@@ -53,14 +53,7 @@ class Parser: public ParserBase
 	}
 
 	void lexical_error(std::string msg) {
-		std::cerr << msg << std::endl;
-	}
-	
-	std::string to_string(std::vector<TypedList*> * typedList_list) {
-		std::string str = "TypedList List :";
-		for (std::vector<TypedList*>::iterator it = typedList_list->begin(); it != typedList_list->end(); ++it)
-			str += "\n\t" + (*it)->to_string();
-		return str;
+		m_data.lexical_error(msg);
 	}
 
     private:

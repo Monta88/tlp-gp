@@ -8,6 +8,7 @@ Data::Data() {
 	m_requirements = vector<int> ();
 	m_type_list = vector<string> ();
 	m_constant_list = vector<string> ();
+	m_predicate_list = vector<string> ();
 	m_types = vector<Type*> ();
 	m_constants = vector<Constant*> ();
 	m_predicates = vector<Fluent*> ();

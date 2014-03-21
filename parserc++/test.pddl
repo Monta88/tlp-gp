@@ -93,7 +93,7 @@
 		(Available ?resource - resource_t)
 		(Prevsheet ?sheet1 - sheet_t ?sheet2 - (either sheet_t color_t))
 		(Uninitialized)
-		(TestAlan ?a ?a ?a ?a - (either sheet_t size_t location_t) ?a ?a ?a ?a ?a - (either color_t size_t))
+		(TestAlan ?a ?a ?a ?a - (either side_t color_t) ?a ?a ?a ?a ?a - (either color_t size_t))
 
 )
 (:durative-action initialize

@@ -4,10 +4,10 @@ OBJS	= lex.o parse.o Data.o action.o atom.o attribute.o constant.o domain.o dura
 CC		= g++
 CFLAGS	= -std=c++11 -Wall
 
-all:				bison flex pddl_3-1-te
-
 pddl_3-1-te:		$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o pddl_3-1-te
+
+all:				bison flex pddl_3-1-te
 
 lex.o:				scanner/lex.cc
 		$(CC) $(CFLAGS) -c scanner/lex.cc -o lex.o
