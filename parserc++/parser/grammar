@@ -227,10 +227,7 @@ require_key:
 		Parser::addRequirement(QUANTIFIED_PRECONDITIONS);
 		Parser::addRequirement(CONDITIONAL_EFFECTS);
 	}
-	| DURATIVE_ACTIONS			{
-		Parser::addRequirement(DURATIVE_ACTIONS);
-		Parser::addRequirement(NUMERIC_FLUENTS);
-	}
+	| DURATIVE_ACTIONS			{Parser::addRequirement(DURATIVE_ACTIONS);}
 	| DURATION_INEQUALITIES		{Parser::addRequirement(DURATION_INEQUALITIES);}
 	| CONTINUOUS_EFFECTS		{Parser::addRequirement(CONTINUOUS_EFFECTS);}
 	| DERIVED_PREDICATES		{Parser::addRequirement(DERIVED_PREDICATES);}
@@ -948,12 +945,7 @@ te_durative_action_def:
 /* <te-da-def body> */
 
 te_da_def_body:
-	DURATION duration_constraint TIMEPOINTS L_P nvList_te_time_specifier R_P TIMEALIASES L_P nvList_te_interval_alias R_P te_da_def_body_option1 // :timepoints must contain at least "start" and "end" ### :timealiases must contain at least "all" interval from "start" to "end" ### :timeconstraints must contain at least "(= (- end start) ?duration"
-	;
-
-te_da_def_body_option1:
-	TIMECONSTRAINTS L_P nvList_te_time_constraints R_P CONDITION emptyOr_te_da_GD EFFECT emptyOr_te_da_effect
-	| TIMEMODALITY nvList_te_time_modality_user TIMECONSTRAINTS L_P nvList_te_time_constraints R_P CONDITION emptyOr_te_da_GD EFFECT emptyOr_te_da_effect
+	DURATION duration_constraint TIMEPOINTS L_P nvList_te_time_specifier R_P TIMEALIASES L_P nvList_te_interval_alias R_P TIMECONSTRAINTS L_P nvList_te_time_constraints R_P CONDITION emptyOr_te_da_GD EFFECT emptyOr_te_da_effect // :timepoints must contain at least "start" and "end" ### :timealiases must contain at least "all" interval from "start" to "end" ### :timeconstraints must contain at least "(= (- end start) ?duration"
 	;
 
 /* <te-time-specifier> */
@@ -1017,7 +1009,6 @@ te_timed_GD:
 	| L_P SOMEWHERE te_interval GD R_P
 	| L_P ANYWHERE te_interval GD R_P
 	| L_P TRANSITION_OVER te_interval GD R_P
-	| L_P name te_interval GD R_P // user modality
 	;
 
 /* <te-da-effect> */
@@ -1025,7 +1016,6 @@ te_timed_GD:
 te_da_effect:
 	L_P AND list_te_da_effect R_P
 	| te_timed_effect
-	| te_modality
 	| L_P FORALL L_P typed_list_variable R_P te_da_effect R_P {
 		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
 	}
@@ -1043,36 +1033,17 @@ te_timed_effect:
 		if (!Parser::isRequirement(CONTINUOUS_EFFECTS)) Parser::lexical_error("Requirement :continuous-effects is needed");
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
 	}
+	| te_modality
 	;
 
 /* <time-modality> */
 
 te_modality:
-	L_P AT te_time_specifier te_fluent R_P
-	| L_P OVER te_interval te_fluent R_P
-	| L_P SOMEWHERE te_interval te_fluent R_P
-	| L_P ANYWHERE te_interval te_fluent R_P
-	| L_P TRANSITION_OVER te_interval te_fluent R_P
-	| L_P name te_interval te_fluent R_P // user modality
-	;
-
-/* <te-fluent> */
-
-te_fluent:
-	te_atomic_formula_skeleton
-	| L_P NOT te_atomic_formula_skeleton R_P
-	;
-
-/* <te-atomic-formula-skeleton> */
-
-te_atomic_formula_skeleton:
-	L_P predicate typed_list_variable R_P // in order not to interfere with predicate definition
-	;
-
-/* <te-time-modality-user> */
-
-te_time_modality_user:
-	L_P name interval te_fluent R_P
+	L_P AT te_time_specifier cond_effect R_P
+	| L_P OVER te_interval cond_effect R_P
+	| L_P SOMEWHERE te_interval cond_effect R_P
+	| L_P ANYWHERE te_interval cond_effect R_P
+	| L_P TRANSITION_OVER te_interval cond_effect R_P
 	;
 
 /* <bracket> */
@@ -1246,10 +1217,6 @@ nvList_te_interval_alias:
 	te_interval_alias list_te_interval_alias
 	;
 
-nvList_te_time_modality_user:
-	te_time_modality_user list_te_time_modality_user
-	;
-
 nvList_te_time_constraints:
 	te_time_constraints list_te_time_constraints
 	;
@@ -1356,11 +1323,6 @@ list_te_time_specifier:
 list_te_interval_alias:
 	/* empty */
 	| te_interval_alias list_te_interval_alias
-	;
-
-list_te_time_modality_user:
-	/* empty */
-	| te_time_modality_user list_te_time_modality_user
 	;
 
 list_te_time_constraints:
