@@ -761,7 +761,14 @@ derived_def:
 /* <problem> */
 
 problem:
-	L_P DEFINE L_P PROBLEM name R_P L_P DD_DOMAIN name R_P problem_option1
+	L_P DEFINE L_P PROBLEM name R_P L_P DD_DOMAIN name R_P problem_option1 {
+		if (!Parser::isDomain($9.name)) {
+			Parser::lexical_error("Domain expexted : " + (*$9.name));
+		}
+		else {
+			Parser::addProblem($5.name);
+		}
+	}
 	;
 
 problem_option1:
@@ -796,7 +803,10 @@ problem_option5:
 /* <object declaration> */
 
 object_declaration:
-	L_P OBJECTS typed_list_name R_P
+	L_P OBJECTS typed_list_name R_P {
+		if (!Parser::addObjects($3.typedList_list))
+			Parser::lexical_error("Error in :objects");
+	}
 	;
 
 /* <init> */

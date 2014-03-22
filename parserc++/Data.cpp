@@ -13,6 +13,10 @@ Data::Data() {
 	m_predicates = vector<Fluent*> ();
 	m_functions = vector<Function*> ();
 	
+	m_problem = Problem();
+	m_object_list = vector<string> ();
+	m_objects = vector<Object*> ();
+	
 	// this type always exists and shouldn't be defined by the user in pddl file
 	m_types.push_back(new Type("object"));
 	m_type_list.push_back("object");
@@ -27,6 +31,10 @@ Data::~Data() {}
 
 void Data::addDomain(string * name) {
 	m_domain = Domain(*name);
+}
+
+bool Data::isDomain(string * name) {
+	return (m_domain.getName() == (*name));
 }
 
 bool Data::addRequirement(int req) {
@@ -261,6 +269,37 @@ bool Data::isFunction(string * name, vector<TypedList*> * typedList_list) {
 	return false;
 }
 
+void Data::addProblem(string * name) {
+	m_problem = Problem(*name, &m_domain);
+}
+
+bool Data::addObjects(vector<TypedList*> * typedList_list) {
+	// the parser is recursive so if we want the same order than in the file we need to reverse the lists
+	for (vector<TypedList*>::reverse_iterator it = typedList_list->rbegin(); it != typedList_list->rend(); ++it) {
+		vector<Type*> types = vector<Type*> ();
+		for (vector<string>::reverse_iterator it_type = (*it)->getTypes()->rbegin(); it_type != (*it)->getTypes()->rend(); ++it_type) {
+			if (!isType(*it_type)) {
+				lexical_error("The " + (*it_type) + " type does not exist");
+				return false;
+			}
+			types.push_back(getType(*it_type));
+		}
+		for (vector<string>::reverse_iterator it_object = (*it)->getList()->rbegin(); it_object != (*it)->getList()->rend(); ++it_object) {
+			if (isObject(*it_object)) {
+				lexical_error("The " + (*it_object) + " object already exists");
+				return false;
+			}
+			m_object_list.push_back(*it_object);
+			m_objects.push_back(new Object(*it_object, types));
+		}
+	}
+	return true;
+}
+
+bool Data::isObject(string object) {
+	return (find(m_object_list.begin(), m_object_list.end(), object) != m_object_list.end());
+}
+
 void Data::display() {
 	cout << "Domain : " << m_domain.getName() << endl;
 	
@@ -285,6 +324,14 @@ void Data::display() {
 	if (m_functions.size() != 0) {
 		cout << "Functions : " << endl;
 		for(vector<Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
+			cout << "\t" << (*it)->to_string() << endl;
+	}
+	
+	cout << "Problem : " << m_problem.getName() << endl;
+	
+	if (m_objects.size() != 0) {
+		cout << "Objects : " << endl;
+		for(vector<Object*>::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
 			cout << "\t" << (*it)->to_string() << endl;
 	}
 	
