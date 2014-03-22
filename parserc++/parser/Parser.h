@@ -48,6 +48,10 @@ class Parser: public ParserBase
 		return m_data.addPredicate(name, typedList_list);
 	}
 	
+	bool addFunctions(std::vector< std::pair< std::string*, std::vector<TypedList*>* >* > * function_skeleton_list, std::vector<std::string> * return_type) {
+		return m_data.addFunctions(function_skeleton_list, return_type);
+	}
+	
 	void display() {
 		m_data.display();
 	}

@@ -1,6 +1,6 @@
 # Makefile
 
-OBJS	= lex.o parse.o Data.o action.o atom.o attribute.o constant.o domain.o durative_action.o fluent.o interval.o lexer.o planningData.o problem.o type.o typedList.o variable.o main.o
+OBJS	= lex.o parse.o Data.o action.o atom.o attribute.o constant.o domain.o durative_action.o fluent.o function.o interval.o lexer.o planningData.o problem.o type.o typedList.o variable.o main.o
 CC		= g++
 CFLAGS	= -std=c++11 -Wall
 
@@ -38,6 +38,9 @@ durative_action.o:	src/durative_action.cpp
 
 fluent.o:			src/fluent.cpp
 		$(CC) $(CFLAGS) -c src/fluent.cpp -o fluent.o
+
+function.o:			src/function.cpp
+		$(CC) $(CFLAGS) -c src/function.cpp -o function.o
 
 interval.o:			src/interval.cpp
 		$(CC) $(CFLAGS) -c src/interval.cpp -o interval.o

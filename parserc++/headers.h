@@ -12,6 +12,7 @@
 #include "src/domain.h"
 #include "src/durative_action.h"
 #include "src/fluent.h"
+#include "src/function.h"
 #include "src/interval.h"
 #include "src/lexer.h"
 #include "src/planningData.h"

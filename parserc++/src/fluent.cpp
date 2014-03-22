@@ -9,7 +9,7 @@ string Fluent::getName() {
 	return m_name;
 }
 
-vector< vector<Type*> > * Fluent::getTypes_List() {
+vector< vector<Type*> > * Fluent::getTypesList() {
 	return &m_types_list;
 }
 

@@ -12,6 +12,8 @@
 	std::string * name;
 	std::vector<std::string> * list_name;
 	std::vector<TypedList*> * typedList_list;
+	std::pair< std::string*, std::vector<TypedList*>* > * function_skeleton;
+	std::vector< std::pair< std::string*, std::vector<TypedList*>* >* > * function_skeleton_list;
 }
 
 %token 	L_P
@@ -291,13 +293,15 @@ variable:
 /* <atomic function skeleton> */
 
 atomic_function_skeleton:
-	L_P function_symbol typed_list_variable R_P
+	L_P function_symbol typed_list_variable R_P {
+		$$.function_skeleton = new std::pair< std::string*, std::vector<TypedList*>* > ($2.name, $3.typedList_list);
+	}
 	;
 
 /* <function-symbol> */
 
 function_symbol:
-	name
+	name {$$.name = $1.name;}
 	;
 
 /* <functions-def> */
@@ -313,10 +317,13 @@ functions_def:
 function_type:
 	NUMBER {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		$$.list_name = new std::vector<std::string> ();
+		$$.list_name->push_back("number");
 	}
 	| type {
 		if (!Parser::isRequirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
 		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+		$$.list_name = $1.list_name;
 	}
 	;
 
@@ -1062,9 +1069,16 @@ bracket:
 
 function_typed_list_atomic_function_skeleton:
 	/* empty */
-	| nvList_atomic_function_skeleton MINUS function_type function_typed_list_atomic_function_skeleton
+	| nvList_atomic_function_skeleton MINUS function_type function_typed_list_atomic_function_skeleton {
+		if (!Parser::addFunctions($1.function_skeleton_list, $3.list_name)) {
+			Parser::lexical_error("Error in :function");
+		}
+	}
 	| nvList_atomic_function_skeleton {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		if (!Parser::addFunctions($1.function_skeleton_list, new std::vector<std::string> ())) {
+			Parser::lexical_error("Error in :function");
+		}
 	}
 	;
 
@@ -1194,7 +1208,10 @@ nvList_variable:
 	;
 	
 nvList_atomic_function_skeleton:
-	atomic_function_skeleton list_atomic_function_skeleton
+	atomic_function_skeleton list_atomic_function_skeleton {
+		$$.function_skeleton_list = $2.function_skeleton_list;
+		$$.function_skeleton_list->push_back($1.function_skeleton);
+	}
 	;
 
 nvList_primitive_type:
@@ -1270,8 +1287,13 @@ list_variable:
 	;
 
 list_atomic_function_skeleton:
-	/* empty */
-	| atomic_function_skeleton list_atomic_function_skeleton
+	/* empty */ {
+		$$.function_skeleton_list = new std::vector< std::pair< std::string*, std::vector<TypedList*>* >* > ();
+	}
+	| atomic_function_skeleton list_atomic_function_skeleton {
+		$$.function_skeleton_list = $2.function_skeleton_list;
+		$$.function_skeleton_list->push_back($1.function_skeleton);
+	}
 	;
 
 list_primitive_type:

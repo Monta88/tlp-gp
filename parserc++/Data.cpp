@@ -11,8 +11,14 @@ Data::Data() {
 	m_types = vector<Type*> ();
 	m_constants = vector<Constant*> ();
 	m_predicates = vector<Fluent*> ();
+	m_functions = vector<Function*> ();
+	
+	// this type always exists and shouldn't be defined by the user in pddl file
 	m_types.push_back(new Type("object"));
 	m_type_list.push_back("object");
+	// for functions
+	m_types.push_back(new Type("number"));
+	m_type_list.push_back("number");
 	
 	m_errors = vector<string> ();
 }
@@ -126,7 +132,7 @@ bool Data::addPredicate(string * name, vector<TypedList*> * typedList_list) {
 bool Data::isPredicate(string * name, vector<TypedList*> * typedList_list) {
 	unsigned int nb_parameters = 0;
 	
-	for (vector<TypedList*>::reverse_iterator it = typedList_list->rbegin(); it != typedList_list->rend(); ++it) {
+	for (vector<TypedList*>::iterator it = typedList_list->begin(); it != typedList_list->end(); ++it) {
 		nb_parameters += (*it)->getList()->size();
 	}
 	
@@ -136,14 +142,103 @@ bool Data::isPredicate(string * name, vector<TypedList*> * typedList_list) {
 				return true;
 			}
 			
-			if (nb_parameters == (*it_predicate)->getTypes_List()->size()) {
+			if (nb_parameters == (*it_predicate)->getTypesList()->size()) {
 				bool same = true;
 				unsigned int total = 0;
 				for (unsigned int i=typedList_list->size()-1; (i >= 0) && (total < nb_parameters) && same; --i) {
 					for (unsigned int j=0; (j < typedList_list->at(i)->getList()->size()) && same; ++j) {
 						bool contains = false;
 						for (unsigned int k=0; (k < typedList_list->at(i)->getTypes()->size()) && same && !contains; ++k) {
-							for (vector<Type*>::iterator it = (*it_predicate)->getTypes_List()->at(total+j).begin(); (it != (*it_predicate)->getTypes_List()->at(total+j).end()) && !contains; ++it) {
+							for (vector<Type*>::iterator it = (*it_predicate)->getTypesList()->at(total+j).begin(); (it != (*it_predicate)->getTypesList()->at(total+j).end()) && !contains; ++it) {
+								if ((*it)->getName() == typedList_list->at(i)->getTypes()->at(k)) {
+									contains = true;
+								}
+							}
+						}
+						if (!contains) {
+							same = false;
+						}
+					}
+					total += typedList_list->at(i)->getList()->size();
+				}
+				
+				if (same) {
+					return true;
+				}
+			}
+		}
+	}
+	
+	return false;
+}
+
+bool Data::addFunctions(vector< pair< string*, vector<TypedList*>* >* > * function_skeleton_list, vector<string> * return_type) {
+	bool success = true;
+	vector<Type*> return_t = vector<Type*> ();
+	
+	for (vector<string>::reverse_iterator it_type = return_type->rbegin(); it_type != return_type->rend(); ++it_type) {
+		if (!isType(*it_type)) {
+			lexical_error("The " + (*it_type) + " type does not exist");
+			return false;
+		}
+		return_t.push_back(getType(*it_type));
+	}
+	
+	for (vector< pair< string*, std::vector<TypedList*>* >* >::reverse_iterator it = function_skeleton_list->rbegin(); it != function_skeleton_list->rend(); ++it) {
+		if (!addFunction((*it)->first,  return_t, (*it)->second)) {
+			success = false;
+		}
+	}
+	
+	return success;
+}
+
+bool Data::addFunction(string * name, vector<Type*> return_type, vector<TypedList*> * typedList_list) {
+	// the parser is recursive so we must reverse in order to have the arguments of the function in the same order than in the file
+	if (isFunction(name, typedList_list)) {
+		lexical_error("The " + (*name) + " function already exists with the same types");
+		return false;
+	}
+	
+	vector< vector<Type*> > types_list = vector< vector<Type*> > ();
+	for (vector<TypedList*>::reverse_iterator it = typedList_list->rbegin(); it != typedList_list->rend(); ++it) {
+		vector<Type*> types = vector<Type*> ();
+		for (vector<string>::reverse_iterator it_type = (*it)->getTypes()->rbegin(); it_type != (*it)->getTypes()->rend(); ++it_type) {
+			if (!isType(*it_type)) {
+				lexical_error("The " + (*it_type) + " type does not exist");
+				return false;
+			}
+			types.push_back(getType(*it_type));
+		}
+		for (vector<string>::reverse_iterator it_variable = (*it)->getList()->rbegin(); it_variable != (*it)->getList()->rend(); ++it_variable) {
+			types_list.push_back(types);
+		}
+	}
+	m_functions.push_back(new Function(*name, return_type, types_list));
+	return true;
+}
+
+bool Data::isFunction(string * name, vector<TypedList*> * typedList_list) {
+	unsigned int nb_parameters = 0;
+	
+	for (vector<TypedList*>::iterator it = typedList_list->begin(); it != typedList_list->end(); ++it) {
+		nb_parameters += (*it)->getList()->size();
+	}
+	
+	for (vector<Function*>::iterator it_function = m_functions.begin(); it_function != m_functions.end(); ++it_function) {
+		if ((*name) == (*it_function)->getName()) {
+			if (nb_parameters == 0) {
+				return true;
+			}
+			
+			if (nb_parameters == (*it_function)->getTypesList()->size()) {
+				bool same = true;
+				unsigned int total = 0;
+				for (unsigned int i=typedList_list->size()-1; (i >= 0) && (total < nb_parameters) && same; --i) {
+					for (unsigned int j=0; (j < typedList_list->at(i)->getList()->size()) && same; ++j) {
+						bool contains = false;
+						for (unsigned int k=0; (k < typedList_list->at(i)->getTypes()->size()) && same && !contains; ++k) {
+							for (vector<Type*>::iterator it = (*it_function)->getTypesList()->at(total+j).begin(); (it != (*it_function)->getTypesList()->at(total+j).end()) && !contains; ++it) {
 								if ((*it)->getName() == typedList_list->at(i)->getTypes()->at(k)) {
 									contains = true;
 								}
@@ -184,6 +279,12 @@ void Data::display() {
 	if (m_predicates.size() != 0) {
 		cout << "Predicates : " << endl;
 		for(vector<Fluent*>::iterator it = m_predicates.begin(); it != m_predicates.end(); ++it)
+			cout << "\t" << (*it)->to_string() << endl;
+	}
+	
+	if (m_functions.size() != 0) {
+		cout << "Functions : " << endl;
+		for(vector<Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
 			cout << "\t" << (*it)->to_string() << endl;
 	}
 	
