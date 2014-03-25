@@ -14,6 +14,7 @@ string Problem::getName() {
 Domain * Problem::getDomain() {
 	return m_domain;
 }
+
 /*
 void Problem::add_Object(Variable *var) {
 	m_objects.push_back(var);
