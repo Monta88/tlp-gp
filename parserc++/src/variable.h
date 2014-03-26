@@ -12,11 +12,14 @@ using namespace std;
 
 class Variable {
 	public:
-		Variable(string name,Type type);
+		Variable(string name,vector<Type *> type);
+		void addType(Type *type);
+		string getName();
+		vector<Type *> getTypes();
 		~Variable();
 	private:
 		string m_name;
-		Type m_type;
+		vector<Type *> m_type;
 };
 
 #endif // VARIABLE_H

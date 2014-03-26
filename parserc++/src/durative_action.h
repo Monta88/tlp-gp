@@ -1,23 +1,34 @@
 #pragma once
 
 
-#ifndef DURATIVE_ACTION_H
-#define DURATIVE_ACTION_H
+#ifndef DURATIVEACTION_H
+#define DURATIVEACTION_H
 
-#include <string>
+#include <string> 
+#include <vector>
+#include "variable.h"
+#include "fluent.h"
+#include "attribute.h"
 #include "action.h"
-
 using namespace std;
 
 
-class Duractive_Action:Action {
+class DurativeAction:Action {
 	public:
-		Duractive_Action(string name,float duration);        
-		virtual ~Duractive_Action();
-	protected:
-		float m_duration;
+		DurativeAction(string name);
+		virtual ~DurativeAction();
+		void addParameters(Variable * parameter);
+		void addCondition(Attribute att,Fluent *fluent);
+		void addEffect(Attribute att,Fluent *fluent);
+		void addDuration(float duration);
+		bool isVariable(string name);
+		Variable * getVariable(string name);
 	private:
+		vector<Variable *> m_parameters;
+		vector< pair<Attribute,Fluent *> > m_preconditions; 
+		vector< pair<Attribute,Fluent *> > m_effects; 
+		float m_duration;
 };
 
-#endif // DURATIVE_ACTION_H
+#endif // DURATIVEACTION_H
 

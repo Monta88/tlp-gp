@@ -20,6 +20,11 @@ class Domain {
 		virtual~Domain();
 		string getName();
 		string to_string();
+		vector<string> listNameAction();
+		void addType(Type * type);
+		void addPredicate(Fluent * predicate);
+		void addDurativeAction(Action * action);
+		
 	private:
 		string m_name;
 		vector<Constant*> m_constants;

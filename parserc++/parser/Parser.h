@@ -19,7 +19,7 @@ class Parser: public ParserBase
         
     public:
 	int parse();
-
+	
 	void init() {
 		m_data = Data();
 	}
@@ -59,7 +59,11 @@ class Parser: public ParserBase
 	void lexical_error(std::string msg) {
 		m_data.lexical_error(msg);
 	}
-
+	
+	Data getData(){
+		return m_data;
+	}
+	
     private:
         void error(char const *msg);    // called on (syntax) errors
         int lex();                      // returns the next token from the

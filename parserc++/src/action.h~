@@ -14,7 +14,7 @@ class Action {
 		Action(string name);
 		virtual ~Action();
 		string getName();
-		string to_string();
+				string to_string();
 	private:
 		string m_name;
 };

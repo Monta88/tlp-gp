@@ -326,7 +326,7 @@ Fluent * Data::getFluent(string name,vector< vector<Type*> > types){
 				sort((*it2).begin(),(*it2).end());
 			}
 			sort((*it)->getTypesList()->begin(),(*it)->getTypesList()->end());
-			if ( equal(types.begin(), types.end(), (*it)->getTypesList()->begin()) ){
+			if ( equal(types.begin(), types.end(), (*it)->getTypesList().begin()) ){
 				return (*it);
 			}
 		}

@@ -13,6 +13,7 @@ vector< vector<Type*> > * Fluent::getTypesList() {
 	return &m_types_list;
 }
 
+
 string Fluent::to_string() {
 	string str = "Predicate " + m_name + " :";
 	for(vector< vector<Type*> >::iterator it = m_types_list.begin(); it != m_types_list.end(); ++it) {

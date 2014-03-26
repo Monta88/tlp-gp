@@ -40,6 +40,13 @@ public:
 	void display();
 	void lexical_error(string msg);
 	void fatal_error(string msg);
+	
+	Domain getDomain();
+
+	//duratives-actions functions
+	
+	bool isAction(string name);
+	Fluent * getFluent(string name,vector< vector<Type*> >);
 private:
 	Domain m_domain;
 	vector<int> m_requirements;
@@ -48,8 +55,7 @@ private:
 	vector<Type*> m_types;
 	vector<Constant*> m_constants;
 	vector<Fluent*> m_predicates;
-	vector<Function*> m_functions;
-	
+	vector<Function*> m_functions;	
 	vector<string> m_errors;
 };
 

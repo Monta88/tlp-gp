@@ -14,6 +14,14 @@
 	std::vector<TypedList*> * typedList_list;
 	std::pair< std::string*, std::vector<TypedList*>* > * function_skeleton;
 	std::vector< std::pair< std::string*, std::vector<TypedList*>* >* > * function_skeleton_list;
+	
+	//durativeaction
+	std::float durative;				
+	std::vector< pair<Attribute,Fluent *> > effect_list;
+	std::vector< pair<Attribute,Fluent *> > condidtion_list; 
+	std::vector< pair<std::vector<std::string> *,string *> pair_name_variables_list;
+	std::vector< pair< pair<std::vector<std::string> *,string *> ,int> int_pair_name_variables_list;
+	std::int specifier_time;
 }
 
 %token 	L_P
@@ -428,11 +436,12 @@ pref_name:
 /* <GD> */
 
 GD:
-	atomic_formula_term
+	atomic_formula_term	{	$$.pair_name_variables_list=new std::vector< pair<std::vector<std::string> *,string *> ();
+					$$.pair_name_variables_list->push_back(new pair($1.list_name,$1.list_name));	}	
 	| literal_term {
 		if (!Parser::isRequirement(NEGATIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :negative-preconditions is needed");
 	}
-	| L_P AND list_GD R_P
+	| L_P AND list_GD R_P	{$$.pair_name_variables_list=$1.pair_name_variables_list;}
 	| L_P OR list_GD R_P {
 		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
 	}
@@ -462,8 +471,8 @@ f_comp:
 /* <term> */
 
 term:
-	name
-	| variable
+	name		{$$.name=$1.name;}
+	| variable	{$$.name=$1.name;}
 	| function_term {
 		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
 	}
@@ -500,7 +509,7 @@ f_exp:
 /* <number> */
 
 number:
-	NUM
+	NUM {$$.durative = new std::float(d_scanner.matched())}
 	;
 
 /* <f-head> */
@@ -590,26 +599,66 @@ assign_op:
 /* <durative-action-def> */
 
 durative_action_def:
-	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P da_def_body R_P
+	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect R_P 
+		{ 
+			if (Parser::getData().isAction($3.name)){
+				lexical_error("The " + $3.name + " action already exists with the same name");
+			} 
+			Action m_action = DurativeAction($3.name);
+			// for each vairiable-type , we need to check if type existed and add each variable with his type(s))
+			for (std::vector<TypedList*>::iterator it = $6.typedList_list.begin(); it != $6.typedList_list.end(); ++it){
+				for (std::vector<string>::iterator it2 = (*it)->getTypes().begin(); it2 != (*it)->getTypes().end(); ++it2){
+					 if (Parser::getData().isType(*it2)){
+						Parser::lexical_error("The type" + (*it2) +"doesn't exist");
+				}
+				for (std::vector<string>::iterator it2 =(*it)->getList().begin(); it2 != (*it)->getList().end();++it){					
+					if (m_action.isVariable(*it2){
+						lexical_error("In action" + m_action.getName() + "The " + (it2) + " variable already exist");
+					}	
+					vector<Type *> types;
+					for (std::vector<string>::iterator it3=(*it)->getTypes().begin();it2 != (*it)->getTypes().end();++it3){
+						types.push_back(Parser::getdata().getType(*it3))
+					}
+					m_action.addParameters( Variable(*it2,types) );					
+				}
+			m_action.addDuration($8.durative);
+			//list of conditions 
+			for(std::vector< pair< pair<std::vector<std::string> *,string *> ,int> ::iterator it = $11.int_pair_name_variables_list.begin(); it != $11.int_pair_name_variables_list.end(); ++it){
+				
+				// each variable need to be define in parameters
+				
+				vector< vector<Type*> > type_list;
+				for (std::vector<std::string> *::iterator it2 =(*it)->first->first.begin(); it2 != (*it)->first->first.end(); ++it){
+					if( !m_action.isVariable(*it2) ){
+						lexical_error("In action" + m_action.getName() + "The variable" + (it2) + " does not exist");
+					}
+					type_list.push_back(m_action.getVariable(*it2).getType());					
+				}
+				if(!Parser::getData().isType((*it)->first->second)){
+					lexical_error("In action" + m_action.getName() + "The action " + (*it)->first->second) + " does not exist");
+				}
+				
+				Fluent * fluent = getFluent((*it)->first->second),type_list);
+			}	
+			Parser::getData().getDomain().addDurativeAction(m_action);
+			}
 	;
 
 /* <da-symbol> */
 
 da_symbol:
-	name
+	name	{$$.name = $1.name;}
 	;
 
 /* <da-def body> */
 
-da_def_body:
-	DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect
-	;
+//regle inutile je l'ai supprimée
 
 /* <da-GD> */
 
 da_GD:
-	pref_timed_GD
-	| L_P AND list_da_GD R_P
+	pref_timed_GD	{$$.int_pair_name_variables_list=$1.int_pair_name_variables_list;}
+	| L_P AND list_da_GD R_P {$$.int_pair_name_variables_list=$3.int_pair_name_variables_list;}
 	| L_P FORALL L_P typed_list_variable R_P da_GD R_P {
 		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
 	}
@@ -618,7 +667,7 @@ da_GD:
 /* <pref-timed-GD> */
 
 pref_timed_GD:
-	timed_GD
+	timed_GD {$$.int_pair_name_variables_list=$.int_pair_name_variables_list;}
 	| L_P PREFERENCE pref_name_option1 {
 		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
 	}
@@ -632,21 +681,21 @@ pref_name_option1:
 /* <timed-GD> */
 
 timed_GD:
-	L_P AT time_specifier GD R_P
-	| L_P OVER interval GD R_P
+	L_P AT time_specifier GD R_P 	{$$.int_pair_name_variables_list=pair($4.pair_name_variables_list,$3.specifier_time);}
+	| L_P OVER interval GD R_P	{$$.int_pair_name_variables_list=pair($4.pair_name_variables_list,$3.specifier_time);}
 	;
 
 /* <time-specifier> */
 
 time_specifier:
-	START
-	| END
+	START	{$$.specifier_time=0);}
+	| END	{$$.specifier_time=1);}
 	;
 
 /* <interval> */
 
 interval:
-	ALL
+	ALL	{$$.specifier_time=2);}
 	;
 
 /* <duration-constraint> */
@@ -655,15 +704,15 @@ duration_constraint:
 	L_P AND nvList_simple_duration_constraint R_P {
 		if (!Parser::isRequirement(DURATION_INEQUALITIES)) Parser::lexical_error("Requirement :duration-inequalities is needed");
 	}
-	| L_P R_P
-	| simple_duration_constraint
+	| L_P R_P	{ $$=0. }
+	| simple_duration_constraint	{$$.durative=$1.durative;}
 	;
 
 /* <simple-duration-constraint> */
 
 simple_duration_constraint:
-	L_P d_op Q_M_DURATION d_value R_P
-	| L_P AT time_specifier simple_duration_constraint R_P
+	L_P d_op Q_M_DURATION d_value R_P	{ $$.durative=$.4;}
+	| L_P AT time_specifier simple_duration_constraint R_P	{$$.durative=$.4;}
 	;
 
 /* <d-op> */
@@ -681,7 +730,7 @@ d_op:
 /* <d-value> */
 
 d_value:
-	NUMBER
+	number		
 	| f_exp {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
 	}
@@ -1136,8 +1185,8 @@ emptyOr_effect:
 	;
 
 emptyOr_da_GD:
-	L_P R_P
-	| da_GD
+	L_P R_P	{$$.int_pair_name_variables_list= new std::vector< pair< pair<std::vector<std::string> *,string *>();}
+	| da_GD	{$$.int_pair_name_variables_list= $1.int_pair_name_variables_list; }
 	;
 
 emptyOr_da_effect:
@@ -1170,7 +1219,8 @@ literal_name:
 /* <atomic formula (t)> */
 
 atomic_formula_term:
-	L_P predicate list_term R_P
+	L_P predicate list_term R_P	{$$.name=$2.name;
+					$$.list_name=$3.list_name);}
 	| L_P EQ term term R_P {
 		if (!Parser::isRequirement(EQUALITY)) Parser::lexical_error("Requirement :equality is needed");
 	}
@@ -1313,12 +1363,13 @@ list_pre_GD:
 
 list_term:
 	/* empty */
-	| term list_term
+	| term list_term	{ 	$$.list_name=$2.list_name;
+					$$.list_name.push_back($1.name); }
 	;
 
 list_GD:
 	/* empty */
-	| GD list_GD
+	| GD list_GD { $$.pair_name_variables_list=$2.pair_name_variables_list.insert( $2.pair_name_variables_list.end(), $1.pair_name_variables_list.begin(), $1.pair_name_variables_list.end() );}
 	;
 
 list_f_exp:
@@ -1362,8 +1413,8 @@ list_te_da_effect:
 	;
 
 list_da_GD:
-	/* empty */
-	| da_GD list_da_GD
+	/* empty */{$$.int_pair_name_variables_list= new std::vector< pair< pair<std::vector<std::string> *,string *> ,int> ();}
+	| da_GD list_da_GD {$$.int_pair_name_variables_list=$2.int_pair_name_variables_list.insert( $2.int_pair_name_variables_list.end(), $1.int_pair_name_variables_list.begin(), $1.int_pair_name_variables_list.end() ); }
 	;
 
 list_simple_duration_constraint:
