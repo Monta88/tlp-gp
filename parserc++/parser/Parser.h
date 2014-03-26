@@ -23,9 +23,21 @@ class Parser: public ParserBase
 	void init() {
 		m_data = Data();
 	}
+	
+	void setData(Parser * parser) {
+		m_data = *(parser->getData());
+	}
+	
+	Data * getData() {
+		return &m_data;
+	}
 
 	void addDomain(std::string * name) {
 		m_data.addDomain(name);
+	}
+	
+	bool isDomain(std::string * name) {
+		return m_data.isDomain(name);
 	}
 
 	bool addRequirement(int req) {
@@ -50,6 +62,14 @@ class Parser: public ParserBase
 	
 	bool addFunctions(std::vector< std::pair< std::string*, std::vector<TypedList*>* >* > * function_skeleton_list, std::vector<std::string> * return_type) {
 		return m_data.addFunctions(function_skeleton_list, return_type);
+	}
+	
+	void addProblem(std::string * name) {
+		m_data.addProblem(name);
+	}
+	
+	bool addObjects(std::vector<TypedList*> * typedList_list) {
+		return m_data.addObjects(typedList_list);
 	}
 	
 	void display() {

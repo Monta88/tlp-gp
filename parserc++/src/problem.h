@@ -15,11 +15,23 @@ using namespace std;
 
 class Problem {
 	public:
-		Problem(string name,Domain *domain);
-		void add_Object(Variable *);
-		void add_Init(Fluent *fluent,vector<Variable *> vars);
-		void add_Goal(Fluent *fluent,vector<Variable *> vars);
+		Problem(string name,Domain * domain);
+		Problem();
 		~Problem();
+		string getName();
+		Domain * getDomain();
+
+		const vector<pair<Fluent*, vector<Variable*> > >& getGoals() const {
+			return m_goals;
+		}
+
+		const vector<pair<Fluent*, vector<Variable*> > >& getInits() const {
+			return m_inits;
+		}
+
+		/*void add_Object(Variable *);
+		void add_Init(Fluent *fluent,vector<Variable *> vars);
+		void add_Goal(Fluent *fluent,vector<Variable *> vars);*/
 	private:
 		string m_name;
 		Domain * m_domain;

@@ -9,12 +9,7 @@ Domain::Domain(string name):m_name(name) {
 
 Domain::Domain(){}
 
-Domain::~Domain() {
-	m_constants.~vector();
-	m_types.~vector();
-	m_predicates.~vector();
-	m_actions.~vector();
-}
+Domain::~Domain() {}
 
 string Domain::getName() {
 	return m_name;
