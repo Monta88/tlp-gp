@@ -61,16 +61,13 @@ private:
 	vector<Type*> m_types;
 	vector<Constant*> m_constants;
 	vector<Fluent*> m_predicates;
-<<<<<<< HEAD
+
 	vector<Function*> m_functions;	
-=======
-	vector<Function*> m_functions;
 	
 	Problem m_problem;
 	vector<string> m_object_list;
 	vector<Object*> m_objects;
 	
->>>>>>> c090d04dc6d3ff2354e7b5f854e364d3c8a93720
 	vector<string> m_errors;
 };
 
