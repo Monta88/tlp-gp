@@ -10,7 +10,7 @@ Data::Data() {
 	m_constant_list = vector<string> ();
 	m_types = vector<Type*> ();
 	m_constants = vector<Constant*> ();
-	m_predicates = vector<Fluent*> ();
+	m_predicates = vector<Predicate*> ();
 	m_functions = vector<Function*> ();
 	
 	m_problem = Problem();
@@ -133,7 +133,7 @@ bool Data::addPredicate(string * name, vector<TypedList*> * typedList_list) {
 			types_list.push_back(types);
 		}
 	}
-	m_predicates.push_back(new Fluent(*name, types_list));
+	m_predicates.push_back(new Predicate(*name, types_list));
 	return true;
 }
 
@@ -144,7 +144,7 @@ bool Data::isPredicate(string * name, vector<TypedList*> * typedList_list) {
 		nb_parameters += (*it)->getList()->size();
 	}
 	
-	for (vector<Fluent*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
+	for (vector<Predicate*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
 		if ((*name) == (*it_predicate)->getName()) {
 			if (nb_parameters == 0) {
 				return true;
@@ -317,7 +317,7 @@ void Data::display() {
 	
 	if (m_predicates.size() != 0) {
 		cout << "Predicates : " << endl;
-		for(vector<Fluent*>::iterator it = m_predicates.begin(); it != m_predicates.end(); ++it)
+		for(vector<Predicate*>::iterator it = m_predicates.begin(); it != m_predicates.end(); ++it)
 			cout << "\t" << (*it)->to_string() << endl;
 	}
 	
@@ -358,16 +358,17 @@ Domain Data::getDomain(){
 }
 
 //duratives-actions functions
-bool Data::isAction(string name){
-	return (find(m_domain.listNameAction().begin(), m_domain.listNameAction().end(), name) !=  m_domain.listNameAction().end());
-}
 
+bool Data::isAction(string const * name){
+	return (find(m_domain.listNameAction().begin(), m_domain.listNameAction().end(), *name) !=  m_domain.listNameAction().end());
+}
+/*
 Fluent * Data::getFluent(string name,vector< vector<Type*> > types){
 	for(vector< vector<Type*> >::iterator it=types.begin();it !=types.end(); ++it){
 		sort((*it).begin(),(*it).end());
 	}
 	sort(types.begin(),types.end());
-	for(vector<Fluent*>::iterator it= m_predicates.begin();it != m_predicates.end(); ++it){
+	for(vector<Predicate*>::iterator it= m_predicates.begin();it != m_predicates.end(); ++it){
 		if ((*it)->getName() == name){
 			for(vector<vector<Type*>>::iterator it2=(*it)->getTypesList()->begin();it2 !=(*it)->getTypesList()->end(); ++it2){
 				sort((*it2).begin(),(*it2).end());
@@ -378,13 +379,138 @@ Fluent * Data::getFluent(string name,vector< vector<Type*> > types){
 			}
 		}
 	}
-	cerr << "ERROR fluent " << name << "not find";
+	cerr << "ERROR Predicate " << name << "not find";
 	exit(1);
 	return  new Fluent( string("lol"), vector< vector<Type*> >());
+}*/
+
+bool Data::isPredicate(string * name,vector< vector<Type*> > types){
+	for (vector<Predicate*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
+		if (((*name) == (*it_predicate)->getName() ) && (equal(types.begin(), types.end(),(*it_predicate)->getTypesList()->begin()) ) ){
+			return true;
+		}
+	}
+	return false;
 }
 
+Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types){
+	for (vector<Predicate*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
+		if (((*name) == (*it_predicate)->getName() ) && (equal(types.begin(), types.end(),(*it_predicate)->getTypesList()->begin()) ) ){
+			return (*it_predicate);
+		}
+	}
+	return new Predicate("inexistant");
+}
 
-
+DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *,string *> ,int*> >  * nearly_conds,vector< pair< pair< vector< string > *,string *> ,int*> >  * nearly_effects){
+	DurativeAction * action = new DurativeAction(*name);
+	vector<Type *> types;
+	vector<Variable *> variable_list;
+	vector< vector<Type*> > type_list;
+	Fluent * fluent;
+	Attribut  att;
+	//action name
+	if (isAction(name)){
+			lexical_error("The " + *name + " action already exists with the same name");
+		} 
+		//action parameters
+		// for each vairiable-type , we need to check if type existed and add each variable with his type(s))
+		for (vector<TypedList*>::iterator it = typedList_list->begin(); it != typedList_list->end(); ++it){
+			for (vector<string>::iterator it2 = (*it)->getTypes()->begin(); it2 != (*it)->getTypes()->end(); ++it2){
+				 if (isType(*it2)){
+					lexical_error("The type" + (*it2) +"doesn't exist");
+				}
+			}
+			for (vector<string>::iterator it2 =(*it)->getList()->begin(); it2 != (*it)->getList()->end();++it){					
+				if (action->isVariable(*it2)){
+					lexical_error("In action" + action->getName() + "The " + (*it2) + " variable already exist");
+				}	
+				types=  vector<Type *> ();
+				for (vector<string>::iterator it3=(*it)->getTypes()->begin();it2 != (*it)->getTypes()->end();++it3){
+					types.push_back(getType(*it3));
+				}
+				action->addParameters( new Variable(*it2,types) );					
+			}
+		}
+		// action time
+		action->addDuration(durative);
+		//action conditions 
+		for(vector< pair< pair<vector<string> *,string *> ,int*>>::iterator it = nearly_conds->begin(); it != nearly_conds->end(); ++it){
+				
+			// each variable need to be define in parameters
+					
+			type_list = vector< vector<Type*> >();
+			for (vector<string>::iterator it2 =(*it).first.first->begin(); it2 != (*it).first.first->end(); ++it){
+				if( !action->isVariable(*it2) ){
+					lexical_error("In action" + action->getName() + "The variable" + (*it2) + " does not exist");
+				}
+				type_list.push_back(action->getVariable(*it2)->getTypes());
+				variable_list.push_back(action->getVariable(*it2));	
+			}
+			// predicate existence verification 
+			if(!isPredicate((*it).first.second,type_list)){
+				lexical_error("In action" + action->getName() + "The action " + *(*it).first.second + " does not exist");
+			}
+			fluent = new Fluent (getPredicate((*it).first.second,type_list));
+			
+			
+			att =  Attribut();
+			switch((*it).second[0]){
+				case 0: // at start
+					att.addSupported(Interval(0.,0.));
+					break;
+				case 1:	// at end
+					att.addSupported(Interval(durative,durative));
+					break;
+				case 2: // over all
+					att.addSupported(Interval(0.,durative));
+					break;
+				default:perror("");
+				}
+			if (!(*it).second[1]){
+				action->addCondition(att,fluent);
+			} else {
+				action->addNotCondition(att,fluent);
+			}
+		}
+		for(vector< pair< pair<vector<string> *,string *> ,int*>>::iterator it = nearly_effects->begin(); it != nearly_effects->end(); ++it){
+			// each variable need to be define in parameters
+					
+			type_list = vector< vector<Type*> >();
+			for (vector<string>::iterator it2 =(*it).first.first->begin(); it2 != (*it).first.first->end(); ++it){
+				if( !action->isVariable(*it2) ){
+					lexical_error("In action" + action->getName() + "The variable" + (*it2) + " does not exist");
+				}
+				type_list.push_back(action->getVariable(*it2)->getTypes());
+				variable_list.push_back(action->getVariable(*it2));	
+			}
+			// predicate existence verification 
+			if(!isPredicate((*it).first.second,type_list)){
+				lexical_error("In action" + action->getName() + "The action " + *(*it).first.second + " does not exist");
+			}
+			fluent = new Fluent (getPredicate((*it).first.second,type_list));
+			
+			att =  Attribut();
+			switch((*it).second[0]){
+				case 0: // at start
+					att.addSupported(Interval(0.,0.));
+					break;
+				case 1:	// at end
+					att.addSupported(Interval(durative,durative));
+					break;
+				case 2: // over all
+					att.addSupported(Interval(0.,durative));
+					break;
+				default:perror("");
+				}
+			if (!(*it).second[1]){
+				action->addEffect(att,fluent);
+			} else {
+				action->addNotEffect(att,fluent);
+			}
+		}
+	return action;
+}
 
 
 

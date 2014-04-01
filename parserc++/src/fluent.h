@@ -6,21 +6,23 @@
 
 #include <string>
 #include <vector>
-#include "type.h"
+#include "variable.h"
+#include "predicate.h"
 
 using namespace std;
 
 
 class Fluent {
 	public:
-		Fluent(string name, vector< vector<Type*> > types_list);
+		Fluent(Predicate * predicate);
 		virtual ~Fluent();
-		string getName();
-		vector< vector<Type*> > * getTypesList();
+		Predicate * getPredicate();
+		void addVariable(vector< Variable *> variable);
+		void addVariable(Variable * variable);
 		string to_string();
 	private:
-		string m_name;
-		vector< vector<Type*> > m_types_list;
+		Predicate * m_predicate;
+		vector< Variable *> m_variables;
 };
 
 #endif // FLUENT_H

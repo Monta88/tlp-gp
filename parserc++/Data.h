@@ -18,8 +18,8 @@
 #include "src/object.h"
 #include "src/problem.h"
 #include "src/typedList.h"
-
-
+#include "src/predicate.h"
+#include "src/durative_action.h"
 using namespace std;
 
 class Data {
@@ -46,12 +46,14 @@ public:
 	void display();
 	void lexical_error(string msg);
 	void fatal_error(string msg);
-	
+	bool isPredicate(string * name,vector< vector<Type*> > types);
+	Predicate * getPredicate(string * name,vector< vector<Type*> > types);
 	Domain getDomain();
 
 	//duratives-actions functions
 	
-	bool isAction(string name);
+	bool isAction(string const * name);
+	DurativeAction * makeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *,string *> ,int*> >  * nearly_conds,vector< pair< pair< vector< string > *,string *> ,int*> >  * nearly_effects);
 	Fluent * getFluent(string name,vector< vector<Type*> >);
 private:
 	Domain m_domain;
@@ -60,7 +62,7 @@ private:
 	vector<string> m_constant_list;
 	vector<Type*> m_types;
 	vector<Constant*> m_constants;
-	vector<Fluent*> m_predicates;
+	vector<Predicate*> m_predicates;
 
 	vector<Function*> m_functions;	
 	

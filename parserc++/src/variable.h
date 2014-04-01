@@ -6,17 +6,17 @@
 
 #include <string> 
 #include "type.h"
-
+#include "member.h"
 using namespace std;
 
 
-class Variable {
-	public:
+class Variable{
+	public:public:
 		Variable(string name,vector<Type *> type);
-		void addType(Type *type);
-		string getName();
-		vector<Type *> getTypes();
-		~Variable();
+		 void addType(Type *type);
+		 string getName();
+		 vector<Type *> getTypes();
+		 ~Variable();
 	private:
 		string m_name;
 		vector<Type *> m_type;

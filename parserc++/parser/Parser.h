@@ -80,9 +80,6 @@ class Parser: public ParserBase
 		m_data.lexical_error(msg);
 	}
 	
-	Data getData(){
-		return m_data;
-	}
 	
     private:
         void error(char const *msg);    // called on (syntax) errors

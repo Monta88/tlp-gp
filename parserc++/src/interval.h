@@ -14,14 +14,14 @@ using namespace std;
 class Interval
 {
 	public:
+		Interval();
 		Interval(float start,float end);
-		virtual ~Interval();   
-		void add_argu(Variable * argu);
+		float getStart();
+		float geEnd();
+		virtual ~Interval();
 	protected:
 		float m_start;
 		float m_end;
-		vector <Variable*> m_arguments;
-	private:
 };
 
 #endif // INTERVAL_H

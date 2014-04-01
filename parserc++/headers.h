@@ -6,8 +6,7 @@
 #include "Data.h"
 
 #include "src/action.h"
-#include "src/atom.h"
-#include "src/attribute.h"
+#include "src/predicate.h"
 #include "src/constant.h"
 #include "src/domain.h"
 #include "src/durative_action.h"

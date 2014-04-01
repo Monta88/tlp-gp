@@ -9,7 +9,7 @@
 #include "type.h"
 #include "fluent.h"
 #include "action.h"
-
+#include "durative_action.h"
 using namespace std;
 
 
@@ -22,15 +22,15 @@ class Domain {
 		string to_string();
 		vector<string> listNameAction();
 		void addType(Type * type);
-		void addPredicate(Fluent * predicate);
-		void addDurativeAction(Action * action);
+		void addPredicate(Predicate * predicate);
+		void addDurativeAction(DurativeAction * action);
 		
 	private:
 		string m_name;
 		vector<Constant*> m_constants;
 		vector<Type*> m_types; 
-		vector<Fluent*> m_predicates; 
-		vector<Action*> m_actions; 
+		vector<Predicate*> m_predicates; 
+		vector<DurativeAction *> m_actions; 
 };
 
 #endif // DOMAIN_H
