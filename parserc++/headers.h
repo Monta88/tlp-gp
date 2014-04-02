@@ -14,6 +14,7 @@
 #include "src/function.h"
 #include "src/interval.h"
 #include "src/lexer.h"
+#include "src/member.h"
 #include "src/object.h"
 #include "src/planningData.h"
 #include "src/problem.h"
