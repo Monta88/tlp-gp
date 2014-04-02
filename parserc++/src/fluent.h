@@ -6,7 +6,7 @@
 
 #include <string>
 #include <vector>
-#include "variable.h"
+#include "member.h"
 #include "predicate.h"
 
 using namespace std;
@@ -14,15 +14,17 @@ using namespace std;
 
 class Fluent {
 	public:
+		Fluent(Predicate * predicate, vector<Member*> members_list);
 		Fluent(Predicate * predicate);
 		virtual ~Fluent();
 		Predicate * getPredicate();
-		void addVariable(vector< Variable *> variable);
-		void addVariable(Variable * variable);
+		vector<Member*> * getMembersList();
+		void addMember(vector<Member*> member);
+		void addMember(Member * member);
 		string to_string();
 	private:
 		Predicate * m_predicate;
-		vector< Variable *> m_variables;
+		vector<Member*> m_members_list;
 };
 
 #endif // FLUENT_H
