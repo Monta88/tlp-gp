@@ -3,24 +3,15 @@
 
 #ifndef CONSTANT_H
 #define CONSTANT_H
- 
-#include <string> 
-#include "type.h"
-
-using namespace std;
+  
+#include "member.h"
 
 
-class Constant {
+class Constant : public Member {
 	public:
 		Constant(string name, vector<Type*> types);
 		Constant();
-		~Constant();
-		string getName();
-		vector<Type*> * getTypes();
-		string to_string();
-	private:
-		string m_name;
-		vector<Type*> m_types;
+		virtual string to_string();
 };
 
 #endif // CONSTANT_H

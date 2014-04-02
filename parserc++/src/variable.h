@@ -4,22 +4,14 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
 
-#include <string> 
-#include "type.h"
 #include "member.h"
-using namespace std;
 
 
-class Variable{
-	public:public:
-		Variable(string name,vector<Type *> type);
-		 void addType(Type *type);
-		 string getName();
-		 vector<Type *> getTypes();
-		 ~Variable();
-	private:
-		string m_name;
-		vector<Type *> m_type;
+class Variable : public Member {
+	public:
+		Variable(string name, vector<Type*> types);
+		Variable();
+		virtual string to_string();
 };
 
 #endif // VARIABLE_H

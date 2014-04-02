@@ -4,23 +4,14 @@
 #ifndef OBJECT_H
 #define OBJECT_H
  
-#include <string> 
-#include "type.h"
-
-using namespace std;
+#include "member.h"
 
 
-class Object {
+class Object : public Member {
 	public:
 		Object(string name, vector<Type*> types);
 		Object();
-		~Object();
-		string getName();
-		vector<Type*> * getTypes();
-		string to_string();
-	private:
-		string m_name;
-		vector<Type*> m_types;
+		virtual string to_string();
 };
 
 #endif // OBJECT_H

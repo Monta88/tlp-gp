@@ -1,10 +1,11 @@
 #pragma once
 
 
-#ifndef MENBER_H
-#define MENBER_H
+#ifndef MEMBER_H
+#define MEMBER_H
 
-#include <string> 
+#include <string>
+#include <vector>
 #include "type.h"
 
 using namespace std;
@@ -12,15 +13,16 @@ using namespace std;
 
 class Member {
 	public:
-		Member(string name,vector<Type *> type);
-		virtual void addType(Type *type);
-		virtual string getName();
-		virtual vector<Type *> getTypes();
+		Member(string name, vector<Type*> types);
+		Member();
 		virtual ~Member();
-	private:
+		string getName();
+		vector<Type*> * getTypes();
+		virtual string to_string();
+	protected:
 		string m_name;
-		vector<Type *> m_type;
+		vector<Type*> m_types;
 };
 
-#endif // MENBER_H
+#endif // MEMBER_H
 
