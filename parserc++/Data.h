@@ -53,7 +53,7 @@ public:
 	//duratives-actions functions
 	
 	bool isAction(string const * name);
-	DurativeAction * makeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *,string *> ,int*> >  * nearly_conds,vector< pair< pair< vector< string > *,string *> ,int*> >  * nearly_effects);
+	DurativeAction * makeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,int* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,int* >* > * nearly_effects);
 	Fluent * getFluent(string name,vector< vector<Type*> >);
 private:
 	Domain m_domain;
@@ -69,7 +69,6 @@ private:
 	Problem m_problem;
 	vector<string> m_object_list;
 	vector<Object*> m_objects;
-	
 	vector<string> m_errors;
 };
 

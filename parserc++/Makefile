@@ -2,7 +2,7 @@
 
 OBJS	= lex.o parse.o Data.o action.o constant.o domain.o durative_action.o fluent.o function.o interval.o lexer.o object.o planningData.o problem.o type.o typedList.o variable.o main.o predicate.o attribut.o
 CC		= g++
-CFLAGS	= -std=c++11 -Wall
+CFLAGS	= -std=c++11 -Wall -g
 
 pddl_3-1-te:		$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o pddl_3-1-te

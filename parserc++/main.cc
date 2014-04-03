@@ -10,9 +10,10 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    Parser parser_domain;
-    
+	
+    	Parser parser_domain;
 	FILE *domain, *problem;
+	
 	if (argc != 3) {
 		cerr << "Usage :\n\t" << argv[0] << " domainFile.pddl problemFile.pddl" << endl;
 		exit(1);
@@ -36,13 +37,11 @@ int main(int argc, char **argv)
 	}
 	
 	parser_domain.init();
-	
 	if (parser_domain.parse() == 0) {
 		cout << "The domain was successfully parsed" << endl;
-		
 		Parser parser_problem;
-		parser_problem.setData(&parser_domain);
 		
+		parser_problem.setData(&parser_domain);
 		dup2(fileno(problem), STDIN_FILENO);
 		
 		if (fclose(problem) != 0) {

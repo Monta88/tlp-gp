@@ -82,7 +82,7 @@ Type * Data::getType(string name) {
 			return (*it);
 		}
 	}
-	fatal_error("You shouldn't have this error, please check your pddl file");
+	fatal_error("You try to get a Type* : \""+ name +"\" but can't find him");
 	return NULL;
 }
 
@@ -362,27 +362,7 @@ Domain Data::getDomain(){
 bool Data::isAction(string const * name){
 	return (find(m_domain.listNameAction().begin(), m_domain.listNameAction().end(), *name) !=  m_domain.listNameAction().end());
 }
-/*
-Fluent * Data::getFluent(string name,vector< vector<Type*> > types){
-	for(vector< vector<Type*> >::iterator it=types.begin();it !=types.end(); ++it){
-		sort((*it).begin(),(*it).end());
-	}
-	sort(types.begin(),types.end());
-	for(vector<Predicate*>::iterator it= m_predicates.begin();it != m_predicates.end(); ++it){
-		if ((*it)->getName() == name){
-			for(vector<vector<Type*>>::iterator it2=(*it)->getTypesList()->begin();it2 !=(*it)->getTypesList()->end(); ++it2){
-				sort((*it2).begin(),(*it2).end());
-			}
-			sort((*it)->getTypesList()->begin(),(*it)->getTypesList()->end());
-			if ( equal(types.begin(), types.end(), (*it)->getTypesList()->begin()) ){
-				return (*it);
-			}
-		}
-	}
-	cerr << "ERROR Predicate " << name << "not find";
-	exit(1);
-	return  new Fluent( string("lol"), vector< vector<Type*> >());
-}*/
+
 
 bool Data::isPredicate(string * name,vector< vector<Type*> > types){
 	for (vector<Predicate*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
@@ -402,7 +382,16 @@ Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types){
 	return new Predicate("inexistant");
 }
 
-DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *,string *> ,int*> >  * nearly_conds,vector< pair< pair< vector< string > *,string *> ,int*> >  * nearly_effects){
+DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,int* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,int* >* > * nearly_effects){
+
+	for (vector<Type*>::iterator it = m_types.begin(); it != m_types.end(); ++it) {
+	
+			printf((" lala :"+(*it)->getName()+":\n").c_str());
+		
+	}
+		
+
+
 	DurativeAction * action = new DurativeAction(*name);
 	vector<Type *> types;
 	vector<Variable *> variable_list;
@@ -435,12 +424,12 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 		// action time
 		action->addDuration(durative);
 		//action conditions 
-		for(vector< pair< pair<vector<string> *,string *> ,int*>>::iterator it = nearly_conds->begin(); it != nearly_conds->end(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * ,int*> * >::iterator it = nearly_conds->begin(); it != nearly_conds->end(); ++it){
 				
 			// each variable need to be define in parameters
 					
 			type_list = vector< vector<Type*> >();
-			for (vector<string>::iterator it2 =(*it).first.first->begin(); it2 != (*it).first.first->end(); ++it){
+			for (vector<string>::iterator it2 =(*it)->first->first->begin(); it2 != (*it)->first->first->end(); ++it){
 				if( !action->isVariable(*it2) ){
 					lexical_error("In action" + action->getName() + "The variable" + (*it2) + " does not exist");
 				}
@@ -448,14 +437,14 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 				variable_list.push_back(action->getVariable(*it2));	
 			}
 			// predicate existence verification 
-			if(!isPredicate((*it).first.second,type_list)){
-				lexical_error("In action" + action->getName() + "The action " + *(*it).first.second + " does not exist");
+			if(!isPredicate((*it)->first->second,type_list)){
+				lexical_error("In action" + action->getName() + "The action " + *(*it)->first->second + " does not exist");
 			}
-			fluent = new Fluent (getPredicate((*it).first.second,type_list));
+			fluent = new Fluent (getPredicate((*it)->first->second,type_list));
 			
 			
 			att =  Attribut();
-			switch((*it).second[0]){
+			switch((*it)->second[0]){
 				case 0: // at start
 					att.addSupported(Interval(0.,0.));
 					break;
@@ -467,17 +456,17 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 					break;
 				default:perror("");
 				}
-			if (!(*it).second[1]){
+			if (!(*it)->second[1]){
 				action->addCondition(att,fluent);
 			} else {
 				action->addNotCondition(att,fluent);
 			}
 		}
-		for(vector< pair< pair<vector<string> *,string *> ,int*>>::iterator it = nearly_effects->begin(); it != nearly_effects->end(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * ,int*> * >::iterator it = nearly_effects->begin(); it != nearly_effects->end(); ++it){
 			// each variable need to be define in parameters
 					
 			type_list = vector< vector<Type*> >();
-			for (vector<string>::iterator it2 =(*it).first.first->begin(); it2 != (*it).first.first->end(); ++it){
+			for (vector<string>::iterator it2 =(*it)->first->first->begin(); it2 != (*it)->first->first->end(); ++it){
 				if( !action->isVariable(*it2) ){
 					lexical_error("In action" + action->getName() + "The variable" + (*it2) + " does not exist");
 				}
@@ -485,13 +474,13 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 				variable_list.push_back(action->getVariable(*it2));	
 			}
 			// predicate existence verification 
-			if(!isPredicate((*it).first.second,type_list)){
-				lexical_error("In action" + action->getName() + "The action " + *(*it).first.second + " does not exist");
+			if(!isPredicate((*it)->first->second,type_list)){
+				lexical_error("In action" + action->getName() + "The action " + *(*it)->first->second + " does not exist");
 			}
-			fluent = new Fluent (getPredicate((*it).first.second,type_list));
+			fluent = new Fluent (getPredicate((*it)->first->second,type_list));
 			
 			att =  Attribut();
-			switch((*it).second[0]){
+			switch((*it)->second[0]){
 				case 0: // at start
 					att.addSupported(Interval(0.,0.));
 					break;
@@ -503,7 +492,7 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 					break;
 				default:perror("");
 				}
-			if (!(*it).second[1]){
+			if (!(*it)->second[1]){
 				action->addEffect(att,fluent);
 			} else {
 				action->addNotEffect(att,fluent);
