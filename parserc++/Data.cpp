@@ -20,6 +20,12 @@ Data::Data() {
 	// this type always exists and shouldn't be defined by the user in pddl file
 	m_types.push_back(new Type("object"));
 	m_type_list.push_back("object");
+	m_types.push_back(new Type("objects"));
+	m_type_list.push_back("objects");
+	m_types.push_back(new Type("Object"));
+	m_type_list.push_back("Object");
+	m_types.push_back(new Type("Objects"));
+	m_type_list.push_back("Objects");
 	// for functions
 	m_types.push_back(new Type("number"));
 	m_type_list.push_back("number");
@@ -397,7 +403,7 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 	vector<Variable *> variable_list;
 	vector< vector<Type*> > type_list;
 	Fluent * fluent;
-	Attribut  att;
+	Attribute  att;
 	//action name
 	if (isAction(name)){
 			lexical_error("The " + *name + " action already exists with the same name");
@@ -443,7 +449,7 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 			fluent = new Fluent (getPredicate((*it)->first->second,type_list));
 			
 			
-			att =  Attribut();
+			att =  Attribute();
 			switch((*it)->second[0]){
 				case 0: // at start
 					att.addSupported(Interval(0.,0.));
@@ -479,7 +485,7 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 			}
 			fluent = new Fluent (getPredicate((*it)->first->second,type_list));
 			
-			att =  Attribut();
+			att =  Attribute();
 			switch((*it)->second[0]){
 				case 0: // at start
 					att.addSupported(Interval(0.,0.));

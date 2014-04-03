@@ -9,7 +9,7 @@
 #include "variable.h"
 #include "fluent.h"
 #include "action.h"
-#include "attribut.h"
+#include "attribute.h"
 using namespace std;
 
 
@@ -21,10 +21,10 @@ class DurativeAction : public Action {
 		void addDuration(float duration);
 		void addParameters(Variable * parameter);
 
-		void addCondition(Attribut att,Fluent *fluent);
-		void addEffect(Attribut att,Fluent *fluent);
-		void addNotCondition(Attribut att,Fluent *fluent);
-		void addNotEffect(Attribut att,Fluent *fluent);
+		void addCondition(Attribute att,Fluent *fluent);
+		void addEffect(Attribute att,Fluent *fluent);
+		void addNotCondition(Attribute att,Fluent *fluent);
+		void addNotEffect(Attribute att,Fluent *fluent);
 
 		bool isVariable(string name);
 		Variable * getVariable(string name);
@@ -38,10 +38,10 @@ class DurativeAction : public Action {
 		Fluent * getPredNotCondition(string * name,vector<vector<Type *>> );
 	private:
 		vector<Variable *> m_parameters;
-		vector< pair< Attribut,Fluent *> > m_preconditions;
-		vector< pair< Attribut,Fluent *> > m_not_preconditions; 
-		vector< pair< Attribut,Fluent *> > m_effects; 
-		vector< pair< Attribut,Fluent *> > m_not_effects; 
+		vector< pair< Attribute,Fluent *> > m_preconditions;
+		vector< pair< Attribute,Fluent *> > m_not_preconditions; 
+		vector< pair< Attribute,Fluent *> > m_effects; 
+		vector< pair< Attribute,Fluent *> > m_not_effects; 
 		float m_duration;
 };
 

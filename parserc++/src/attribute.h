@@ -1,16 +1,16 @@
 #pragma once
 
 
-#ifndef ATTRIBUT_H
-#define ATTRIBUT_H
+#ifndef ATTRIBUTE_H
+#define ATTRIBUTE_H
 
 #include <string>
 #include "interval.h"
 
-class Attribut {
+class Attribute {
 	public:
-		Attribut();
-		virtual ~Attribut();
+		Attribute();
+		virtual ~Attribute();
 		void addForbidens(Interval inter);
 		void addNotForbidens(Interval inter);
 		void addSupported(Interval inter);
@@ -23,6 +23,6 @@ class Attribut {
 		Interval m_not_supporteds;
 };
 
-#endif // ATTRIBUT_H
+#endif // ATTRIBUTE_H
 
 		

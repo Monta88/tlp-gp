@@ -10,11 +10,11 @@ void DurativeAction::addParameters(Variable * parameter) {
 	m_parameters.push_back(parameter);
 }
 
-void DurativeAction::addCondition(Attribut att,Fluent *fluent) {	
+void DurativeAction::addCondition(Attribute att,Fluent *fluent) {	
 	m_preconditions.push_back(make_pair(att,fluent));
 }
 
-void DurativeAction::addEffect(Attribut att,Fluent *fluent) {	
+void DurativeAction::addEffect(Attribute att,Fluent *fluent) {	
 	m_effects.push_back(make_pair(att,fluent));
 }
 
@@ -22,11 +22,11 @@ void DurativeAction::addDuration(float duration){
 	m_duration=duration;
 }
 
-void DurativeAction::addNotCondition(Attribut att,Fluent *fluent){
+void DurativeAction::addNotCondition(Attribute att,Fluent *fluent){
 	m_not_preconditions.push_back(make_pair(att,fluent));
 }
 
-void DurativeAction::addNotEffect(Attribut att,Fluent *fluent){
+void DurativeAction::addNotEffect(Attribute att,Fluent *fluent){
 	m_not_effects.push_back(make_pair(att,fluent));
 }
 
@@ -47,14 +47,14 @@ Variable * DurativeAction::getVariable(string name){
 //preconditions
 vector< Fluent *> DurativeAction::getPreconditions(){
 	vector< Fluent *> prec =vector< Fluent *>();
-	for (vector< pair< Attribut,Fluent *> >::iterator it = m_preconditions.begin(); it != m_preconditions.end(); ++it){
+	for (vector< pair< Attribute,Fluent *> >::iterator it = m_preconditions.begin(); it != m_preconditions.end(); ++it){
 		prec.push_back((*it).second);
 	}
 	return prec;
 }
 
 bool DurativeAction::isPredConditions(string * name,vector<vector<Type *>> types){
-	for (vector< pair< Attribut,Fluent *> >::iterator it_flu = m_preconditions.begin(); it_flu != m_preconditions.end(); ++it_flu) {
+	for (vector< pair< Attribute,Fluent *> >::iterator it_flu = m_preconditions.begin(); it_flu != m_preconditions.end(); ++it_flu) {
 		if (((*name) == (*it_flu).second->getPredicate()->getName() ) && (equal(types.begin(), types.end(),(*it_flu).second->getPredicate()->getTypesList()->begin()) )) {
 			return true;
 		}
@@ -63,7 +63,7 @@ bool DurativeAction::isPredConditions(string * name,vector<vector<Type *>> types
 }
 
 Fluent * DurativeAction::getPredCondition(string * name,vector<vector<Type *>> types){
-	for (vector< pair< Attribut,Fluent *> >::iterator it_flu = m_preconditions.begin(); it_flu != m_preconditions.end(); ++it_flu) {
+	for (vector< pair< Attribute,Fluent *> >::iterator it_flu = m_preconditions.begin(); it_flu != m_preconditions.end(); ++it_flu) {
 		if (((*name) == (*it_flu).second->getPredicate()->getName() ) && (equal(types.begin(), types.end(),(*it_flu).second->getPredicate()->getTypesList()->begin()) )) {
 			return (*it_flu).second;
 		}
@@ -75,14 +75,14 @@ Fluent * DurativeAction::getPredCondition(string * name,vector<vector<Type *>> t
 //notprecondition
 vector< Fluent *> DurativeAction::getNotPreconditions(){
 	vector< Fluent *> prec =vector< Fluent *>();
-	for (vector< pair< Attribut,Fluent *> >::iterator it = m_not_preconditions.begin(); it != m_not_preconditions.end(); ++it){
+	for (vector< pair< Attribute,Fluent *> >::iterator it = m_not_preconditions.begin(); it != m_not_preconditions.end(); ++it){
 		prec.push_back((*it).second);
 	}
 	return prec;
 }
 
 bool DurativeAction::isPredNotConditions(string * name,vector<vector<Type *>> types){
-	for (vector< pair< Attribut,Fluent *> >::iterator it_flu = m_not_preconditions.begin(); it_flu != m_not_preconditions.end(); ++it_flu) {
+	for (vector< pair< Attribute,Fluent *> >::iterator it_flu = m_not_preconditions.begin(); it_flu != m_not_preconditions.end(); ++it_flu) {
 		if (((*name) == (*it_flu).second->getPredicate()->getName() ) && (equal(types.begin(), types.end(),(*it_flu).second->getPredicate()->getTypesList()->begin()) )) {
 			return true;
 		}
@@ -91,7 +91,7 @@ bool DurativeAction::isPredNotConditions(string * name,vector<vector<Type *>> ty
 }
 
 Fluent * DurativeAction::getPredNotCondition(string * name,vector<vector<Type *>> types){
-	for (vector< pair< Attribut,Fluent *> >::iterator it_flu = m_not_preconditions.begin(); it_flu != m_not_preconditions.end(); ++it_flu) {
+	for (vector< pair< Attribute,Fluent *> >::iterator it_flu = m_not_preconditions.begin(); it_flu != m_not_preconditions.end(); ++it_flu) {
 		if (((*name) == (*it_flu).second->getPredicate()->getName() ) && (equal(types.begin(), types.end(),(*it_flu).second->getPredicate()->getTypesList()->begin()) )) {
 			return (*it_flu).second;
 		}

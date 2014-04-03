@@ -1,6 +1,6 @@
 # Makefile
 
-OBJS	= lex.o parse.o Data.o action.o atom.o attribute.o constant.o domain.o durative_action.o fluent.o function.o interval.o lexer.o member.o object.o planningData.o predicate.o problem.o type.o typedList.o variable.o main.o
+OBJS	= lex.o parse.o Data.o action.o attribute.o constant.o domain.o durative_action.o fluent.o function.o interval.o lexer.o member.o object.o planningData.o predicate.o problem.o type.o typedList.o variable.o main.o
 CC		= g++
 CFLAGS	= -std=c++11 -Wall -g
 
