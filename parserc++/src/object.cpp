@@ -1,19 +1,9 @@
 #include "object.h"
 
 
-Object::Object(string name, vector<Type*> types):m_name(name), m_types(types) {}
+Object::Object(string name, vector<Type*> types): Member(name, types) {}
 
-Object::Object() {}
-
-Object::~Object() {}
-
-string Object::getName() {
-	return m_name;
-}
-
-vector<Type*> * Object::getTypes() {
-	return &m_types;
-}
+Object::Object(): Member() {}
 
 string Object::to_string() {
 	string str = "Object " + m_name + " - ";

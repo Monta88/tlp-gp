@@ -1,19 +1,8 @@
 #include "constant.h"
 
+Constant::Constant(string name, vector<Type*> types): Member(name, types) {}
 
-Constant::Constant(string name, vector<Type*> types):m_name(name), m_types(types) {}
-
-Constant::Constant() {}
-
-Constant::~Constant() {}
-
-string Constant::getName() {
-	return m_name;
-}
-
-vector<Type*> * Constant::getTypes() {
-	return &m_types;
-}
+Constant::Constant(): Member() {}
 
 string Constant::to_string() {
 	string str = "Constant " + m_name + " - ";

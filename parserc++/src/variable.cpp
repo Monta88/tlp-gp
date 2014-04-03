@@ -1,16 +1,23 @@
 #include "variable.h"
-Variable::Variable(string name,vector<Type *> type):m_name(name),m_type(type) {}
 
-Variable::~Variable() {}
 
-void Variable::addType(Type* type){
-	m_type.push_back(type);
-}
+Variable::Variable(string name, vector<Type*> types): Member(name, types) {}
 
-string Variable::getName(){
-	return m_name;
-}
+Variable::Variable(): Member() {}
 
-vector<Type *>  Variable::getTypes(){
-	return m_type;
+string Variable::to_string() {
+	string str = "Variable " + m_name + " - ";
+	if (m_types.size() > 0) {
+		if (m_types.size() == 1) {
+			str += m_types.at(0)->getName();
+		}
+		else {
+			str += "(either";
+			for (vector<Type*>::iterator it = m_types.begin(); it != m_types.end(); ++it) {
+				str += " " + (*it)->getName();
+			}
+			str += ")";
+		}
+	}
+	return str;
 }
