@@ -61,7 +61,7 @@ bool Data::addTypes(std::vector<TypedList*> * typedList_list) {
 		vector<Type*> parents = vector<Type*> ();
 		for (vector<string>::reverse_iterator it_parent = (*it)->getTypes()->rbegin(); it_parent != (*it)->getTypes()->rend(); ++it_parent) {
 			if (!isType(*it_parent)) {
-				lexical_error("The " + (*it_parent) + " type does not exist");
+				lexical_error("The " + (*it_parent) + " type don't exist");
 				return false;
 			}
 			parents.push_back(getType(*it_parent));
@@ -98,7 +98,7 @@ bool Data::addConstants(vector<TypedList*> * typedList_list) {
 		vector<Type*> types = vector<Type*> ();
 		for (vector<string>::reverse_iterator it_type = (*it)->getTypes()->rbegin(); it_type != (*it)->getTypes()->rend(); ++it_type) {
 			if (!isType(*it_type)) {
-				lexical_error("The " + (*it_type) + " type does not exist");
+				lexical_error("The " + (*it_type) + " type don't exist");
 				return false;
 			}
 			types.push_back(getType(*it_type));
@@ -130,7 +130,7 @@ bool Data::addPredicate(string * name, vector<TypedList*> * typedList_list) {
 		vector<Type*> types = vector<Type*> ();
 		for (vector<string>::reverse_iterator it_type = (*it)->getTypes()->rbegin(); it_type != (*it)->getTypes()->rend(); ++it_type) {
 			if (!isType(*it_type)) {
-				lexical_error("The " + (*it_type) + " type does not exist");
+				lexical_error("The " + (*it_type) + " type don't exist");
 				return false;
 			}
 			types.push_back(getType(*it_type));
@@ -192,7 +192,7 @@ bool Data::addFunctions(vector< pair< string*, vector<TypedList*>* >* > * functi
 	
 	for (vector<string>::reverse_iterator it_type = return_type->rbegin(); it_type != return_type->rend(); ++it_type) {
 		if (!isType(*it_type)) {
-			lexical_error("The " + (*it_type) + " type does not exist");
+			lexical_error("The " + (*it_type) + " type don't exist");
 			return false;
 		}
 		return_t.push_back(getType(*it_type));
@@ -219,7 +219,7 @@ bool Data::addFunction(string * name, vector<Type*> return_type, vector<TypedLis
 		vector<Type*> types = vector<Type*> ();
 		for (vector<string>::reverse_iterator it_type = (*it)->getTypes()->rbegin(); it_type != (*it)->getTypes()->rend(); ++it_type) {
 			if (!isType(*it_type)) {
-				lexical_error("The " + (*it_type) + " type does not exist");
+				lexical_error("The " + (*it_type) + " type don't exist");
 				return false;
 			}
 			types.push_back(getType(*it_type));
@@ -285,7 +285,7 @@ bool Data::addObjects(vector<TypedList*> * typedList_list) {
 		vector<Type*> types = vector<Type*> ();
 		for (vector<string>::reverse_iterator it_type = (*it)->getTypes()->rbegin(); it_type != (*it)->getTypes()->rend(); ++it_type) {
 			if (!isType(*it_type)) {
-				lexical_error("The " + (*it_type) + " type does not exist");
+				lexical_error("The " + (*it_type) + " type don't exist");
 				return false;
 			}
 			types.push_back(getType(*it_type));
@@ -372,7 +372,7 @@ bool Data::isAction(string const * name){
 
 bool Data::isPredicate(string * name,vector< vector<Type*> > types){
 	for (vector<Predicate*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
-		if (((*name) == (*it_predicate)->getName() ) && (equal(types.begin(), types.end(),(*it_predicate)->getTypesList()->begin()) ) ){
+		if ((*name) == ((*it_predicate)->getName()) && ( (*it_predicate)->getTypesList()->size() == types.size())){
 			return true;
 		}
 	}
@@ -390,14 +390,6 @@ Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types){
 
 DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,int* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,int* >* > * nearly_effects){
 
-	for (vector<Type*>::iterator it = m_types.begin(); it != m_types.end(); ++it) {
-	
-			printf((" lala :"+(*it)->getName()+":\n").c_str());
-		
-	}
-		
-
-
 	DurativeAction * action = new DurativeAction(*name);
 	vector<Type *> types;
 	vector<Variable *> variable_list;
@@ -411,19 +403,17 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 		//action parameters
 		// for each vairiable-type , we need to check if type existed and add each variable with his type(s))
 		for (vector<TypedList*>::iterator it = typedList_list->begin(); it != typedList_list->end(); ++it){
+			types=  vector<Type *> ();				
 			for (vector<string>::iterator it2 = (*it)->getTypes()->begin(); it2 != (*it)->getTypes()->end(); ++it2){
-				 if (isType(*it2)){
-					lexical_error("The type" + (*it2) +"doesn't exist");
+				 if (! isType(*it2)){
+					lexical_error("The type " + (*it2) +" doesn't exist");
 				}
+				types.push_back(getType(*it2));
 			}
-			for (vector<string>::iterator it2 =(*it)->getList()->begin(); it2 != (*it)->getList()->end();++it){					
-				if (action->isVariable(*it2)){
-					lexical_error("In action" + action->getName() + "The " + (*it2) + " variable already exist");
+			for (vector<string>::iterator it2 =(*it)->getList()->begin(); it2 != (*it)->getList()->end();++it2){					
+				if (  action->isVariable(*it2)){
+					lexical_error("In action " + action->getName() + "The " + (*it2) + " variable already exist");
 				}	
-				types=  vector<Type *> ();
-				for (vector<string>::iterator it3=(*it)->getTypes()->begin();it2 != (*it)->getTypes()->end();++it3){
-					types.push_back(getType(*it3));
-				}
 				action->addParameters( new Variable(*it2,types) );					
 			}
 		}
@@ -435,16 +425,16 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 			// each variable need to be define in parameters
 					
 			type_list = vector< vector<Type*> >();
-			for (vector<string>::iterator it2 =(*it)->first->first->begin(); it2 != (*it)->first->first->end(); ++it){
-				if( !action->isVariable(*it2) ){
-					lexical_error("In action" + action->getName() + "The variable" + (*it2) + " does not exist");
+			for (vector<string>::iterator it2 =(*it)->first->first->begin(); it2 != (*it)->first->first->end(); ++it2){
+				if( !(action->isVariable(*it2)) ){
+					lexical_error("In action " + action->getName() + "The variable " + (*it2) + " don't exist");
 				}
-				type_list.push_back(action->getVariable(*it2)->getTypes());
+				type_list.push_back(*(action->getVariable(*it2)->getTypes()));
 				variable_list.push_back(action->getVariable(*it2));	
 			}
 			// predicate existence verification 
-			if(!isPredicate((*it)->first->second,type_list)){
-				lexical_error("In action" + action->getName() + "The action " + *(*it)->first->second + " does not exist");
+			if(!(isPredicate((*it)->first->second,type_list))){
+				lexical_error(("In action " + action->getName() + ", the predicate  "+ *(*it)->first->second +"  don't exist").c_str());
 			}
 			fluent = new Fluent (getPredicate((*it)->first->second,type_list));
 			
@@ -468,20 +458,22 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 				action->addNotCondition(att,fluent);
 			}
 		}
+		// effects
+
 		for(vector< pair< pair<vector<string> *,string *> * ,int*> * >::iterator it = nearly_effects->begin(); it != nearly_effects->end(); ++it){
 			// each variable need to be define in parameters
 					
 			type_list = vector< vector<Type*> >();
-			for (vector<string>::iterator it2 =(*it)->first->first->begin(); it2 != (*it)->first->first->end(); ++it){
-				if( !action->isVariable(*it2) ){
-					lexical_error("In action" + action->getName() + "The variable" + (*it2) + " does not exist");
+			for (vector<string>::iterator it2 =(*it)->first->first->begin(); it2 != (*it)->first->first->end(); ++it2){
+				if( !(action->isVariable(*it2)) ){
+					lexical_error("In action " + action->getName() + ", The variable" + (*it2) + " don't exist");
 				}
-				type_list.push_back(action->getVariable(*it2)->getTypes());
+				type_list.push_back(*(action->getVariable(*it2)->getTypes()));
 				variable_list.push_back(action->getVariable(*it2));	
 			}
 			// predicate existence verification 
-			if(!isPredicate((*it)->first->second,type_list)){
-				lexical_error("In action" + action->getName() + "The action " + *(*it)->first->second + " does not exist");
+			if(!(isPredicate((*it)->first->second,type_list))){
+				lexical_error("In action " + action->getName() + ", The action  "+ *(*it)->first->second + " don't exist");
 			}
 			fluent = new Fluent (getPredicate((*it)->first->second,type_list));
 			

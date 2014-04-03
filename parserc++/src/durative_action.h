@@ -36,6 +36,8 @@ class DurativeAction : public Action {
 		vector< Fluent *> getNotPreconditions();
 		bool isPredNotConditions( string * name,vector<vector<Type *>>);
 		Fluent * getPredNotCondition(string * name,vector<vector<Type *>> );
+		
+		string to_string();
 	private:
 		vector<Variable *> m_parameters;
 		vector< pair< Attribute,Fluent *> > m_preconditions;

@@ -98,3 +98,7 @@ Fluent * DurativeAction::getPredNotCondition(string * name,vector<vector<Type *>
 	}
 	return new Fluent(new Predicate("inexistant"));
 }
+
+string DurativeAction::to_string(){
+	return("lol\n");
+}
