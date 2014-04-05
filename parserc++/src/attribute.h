@@ -17,10 +17,10 @@ class Attribute {
 		void addNotSupported(Interval inter);
 		string to_string();
 	private:
-		Interval m_forbidens;
-		Interval m_supporteds;
-		Interval m_not_forbidens;
-		Interval m_not_supporteds;
+		Interval m_forbiden;
+		Interval m_supported;
+		Interval m_not_forbiden;
+		Interval m_not_supported;
 };
 
 #endif // ATTRIBUTE_H

@@ -17,7 +17,7 @@ class Interval
 		Interval();
 		Interval(float start,float end);
 		float getStart();
-		float geEnd();
+		float getEnd();
 		virtual ~Interval();
 	protected:
 		float m_start;

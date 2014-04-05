@@ -100,5 +100,30 @@ Fluent * DurativeAction::getPredNotCondition(string * name,vector<vector<Type *>
 }
 
 string DurativeAction::to_string(){
-	return("lol\n");
+	string rep="\nAction "+getName();
+	if (m_preconditions.size() > 0){
+		rep +="\n Precondicion : ";
+		for (vector< pair< Attribute,Fluent *> >::iterator it =m_preconditions.begin(); it !=m_preconditions.end();++it){
+			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string()+" ;; " ;
+		}
+	}
+	if (m_not_preconditions.size() > 0){
+		rep +="\n Negative precondition : ";
+		for (vector< pair< Attribute,Fluent *> >::iterator it =m_not_preconditions.begin(); it !=m_not_preconditions.end();++it){
+			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string();
+		}
+	}
+	if (m_effects.size() > 0){
+		rep +="\n Add : ";
+		for (vector< pair< Attribute,Fluent *> >::iterator it =m_effects.begin(); it !=m_effects.end();++it){
+			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string();
+		}
+	}
+	if (m_not_effects.size() > 0){
+		rep +="\n Delete : ";
+		for (vector< pair< Attribute,Fluent *> >::iterator it =m_not_effects.begin(); it !=m_not_effects.end();++it){
+			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string();
+		}
+	}
+	return rep;
 }

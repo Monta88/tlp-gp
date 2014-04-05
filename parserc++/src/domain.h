@@ -24,6 +24,8 @@ class Domain {
 		void addType(Type * type);
 		void addPredicate(Predicate * predicate);
 		void addDurativeAction(DurativeAction * action);
+		vector<DurativeAction *> getActions();
+		
 		
 	private:
 		string m_name;

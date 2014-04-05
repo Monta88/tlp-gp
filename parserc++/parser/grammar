@@ -18,10 +18,10 @@
 	
 	//durativeaction
 	float durative;	
-	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int* >* > * nearly_conds;
-	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int* >* > * nearly_effects;
-	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int* >* > *> *,float> * cond_eff_durative;
-	int specifier_time;
+	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > * nearly_conds;
+	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > * nearly_effects;
+	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > *> *,float> * cond_eff_durative;
+	int * specifier_time;
 }
 
 %token 	L_P
@@ -447,9 +447,9 @@ pref_name:
 
 GD:
 	atomic_formula_term	{	
-		$$.nearly_conds= new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >   ();	
-		int init[] = {0,0};
-		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int*  >($1.atomic_formula_term,init) );
+		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >  ();	
+		int * init[2] = {new int(0),new int(0)};
+		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int**  >($1.atomic_formula_term,init) );
 	}	
 	| literal_term {
 		if (!Parser::isRequirement(NEGATIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :negative-preconditions is needed");
@@ -462,7 +462,7 @@ GD:
 	}
 	| L_P NOT GD R_P {
 		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
-		$3.nearly_conds->front()->second[1]=1 ;
+		$3.nearly_conds->front()->second[1]= new int(1) ;
 		$$.nearly_conds=$3.nearly_conds;
 	}
 	| L_P IMPLY GD GD R_P {
@@ -590,14 +590,14 @@ c_effect:
 
 p_effect:
 	L_P NOT atomic_formula_term R_P {	
-		$$.nearly_conds= new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >   ();
-		int init[2] = {0,1};
-		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int*  >($3.atomic_formula_term,init));
+		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > ();
+		int * init[2] = {new int(0),new int(1)};
+		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int** >($3.atomic_formula_term,init));
 	}
 	| atomic_formula_term	{			
-		$$.nearly_conds= new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >   ();
-		int init[2] = {0,0};
-		$$.nearly_conds->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  >($1.atomic_formula_term,init));
+		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > ();
+		int  * init[2] = {new int(0),new int(0)};
+		$$.nearly_conds->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >($1.atomic_formula_term,init));
 	}
 	| L_P assign_op f_head f_exp {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
@@ -635,15 +635,17 @@ assign_op:
 
 durative_action_def:
 	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P da_def_body R_P {
-		Parser::getData()->getDomain().addDurativeAction(Parser::getData()->makeAction($3.name,$6.typedList_list,$8.cond_eff_durative->second,$8.cond_eff_durative->first->first,$8.cond_eff_durative->first->second));
+		Parser::getData()->getDomain()->addDurativeAction(Parser::getData()->addDurationAction($3.name,$6.typedList_list,$8.cond_eff_durative->second,$8.cond_eff_durative->first->first,$8.cond_eff_durative->first->second));
+	
+	
 	};
 
 
 da_def_body:
 	DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect  { 
-		std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int* >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int* >* > *> ($4.nearly_conds,$6.nearly_effects);
+		std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > *> ($4.nearly_conds,$6.nearly_effects);
 
-		$$.cond_eff_durative=new std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int* >* > *> *,float> (a,$2.durative );
+		$$.cond_eff_durative=new std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > *> *,float> (a,$2.durative );
 	};
 		
 
@@ -666,7 +668,7 @@ da_GD:
 		$$.nearly_conds=$1.nearly_conds;
 	}
 	| L_P AND list_da_GD R_P {	
-		$$.nearly_conds=$3.nearly_conds;
+		$$.nearly_conds=$3.nearly_conds;		
 	}
 	| L_P FORALL L_P typed_list_variable R_P da_GD R_P {
 		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
@@ -677,7 +679,7 @@ da_GD:
 
 pref_timed_GD:
 	timed_GD {
-		$$.nearly_conds=$1.nearly_conds;
+		$$.nearly_conds=$1.nearly_conds;			
 	}
 	| L_P PREFERENCE pref_name_option1 {
 		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
@@ -692,15 +694,15 @@ pref_name_option1:
 /* <timed-GD> */
 
 timed_GD:
-	L_P AT time_specifier GD R_P {		
-		for (std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >::iterator it=$4.nearly_conds->begin();it != $4.nearly_conds->end(); ++it){
-		(*it)->second[0]=$3.specifier_time;
+	L_P AT time_specifier GD R_P {
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it=$4.nearly_conds->begin();it != $4.nearly_conds->end(); ++it){
+			(*it)->second[0]=$3.specifier_time;
 		}
 		$$.nearly_conds=$4.nearly_conds;
 	}
 	| L_P OVER interval GD R_P {	
-		for ( std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >::iterator it=$4.nearly_conds->begin(); it != $4.nearly_conds->end(); ++it){
-		(*it)->second[0]=$3.specifier_time;
+		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it=$4.nearly_conds->begin(); it != $4.nearly_conds->end(); ++it){
+			(*it)->second[0]=$3.specifier_time;
 		}
 		$$.nearly_conds=$4.nearly_conds;
 	}
@@ -710,10 +712,10 @@ timed_GD:
 
 time_specifier:
 	START {
-		$$.specifier_time=0;
+		$$.specifier_time= new int(0);
 	}
 	| END {
-		$$.specifier_time=1;
+		$$.specifier_time= new int(1);
 	}
 	;
 
@@ -721,7 +723,7 @@ time_specifier:
 
 interval:
 	ALL {
-		$$.specifier_time=2;
+		$$.specifier_time= new int(2);
 	}
 	;
 
@@ -792,7 +794,7 @@ da_effect:
 
 timed_effect:
 	L_P AT time_specifier cond_effect R_P { 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >::iterator it = $4.nearly_effects->begin(); it != $4.nearly_effects->end() ; ++it){
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** > * >::iterator it = $4.nearly_effects->begin(); it != $4.nearly_effects->end() ; ++it){
 			(*it)->second[1]=$3.specifier_time;
 		}	
 		$$.nearly_effects=$4.nearly_effects;
@@ -1234,7 +1236,7 @@ emptyOr_effect:
 
 emptyOr_da_GD:
 	L_P R_P	{
-		$$.nearly_conds =new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >();
+		$$.nearly_conds =new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >();
 	}
 	| da_GD	{
 		$$.nearly_conds= $1.nearly_conds; 
@@ -1243,7 +1245,7 @@ emptyOr_da_GD:
 
 emptyOr_da_effect:
 	L_P R_P	{
-		$$.nearly_effects = new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >();
+		$$.nearly_effects = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >();
 	}
 	| da_effect {
 		$$.nearly_effects=$1.nearly_effects;
@@ -1430,11 +1432,11 @@ list_term:
 
 list_GD:
 	/* empty */{
-		$$.nearly_conds = new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * > ();
+		$$.nearly_conds = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >();
 	}
 	| GD list_GD {
 		$$.nearly_conds = $2.nearly_conds; 
-		for (std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >::iterator it = $1.nearly_conds->begin() ;it != $1.nearly_conds->end() ; ++it){
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $1.nearly_conds->begin() ;it != $1.nearly_conds->end() ; ++it){
 			$$.nearly_conds->push_back(*it);
 		}
 	}
@@ -1452,7 +1454,7 @@ list_c_effect:
 
 list_p_effect:
 	/* empty */ {
-		$$.nearly_effects= new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >();
+		$$.nearly_effects= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >();
 	}
 	| p_effect list_p_effect {
 		$2.nearly_effects->insert( $2.nearly_effects->end(), $1.nearly_effects->begin(), $1.nearly_effects->end() );
@@ -1487,14 +1489,17 @@ list_te_da_effect:
 
 list_da_GD:
 	/* empty */{
-		$$.nearly_conds = new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * > ();
+		$$.nearly_conds = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >();
 	}
 	| da_GD list_da_GD {
 	
 	$$.nearly_conds = $2.nearly_conds; 
-		for (std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >::iterator it = $1.nearly_conds->begin() ;it != $1.nearly_conds->end() ; ++it){
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $1.nearly_conds->begin() ;it != $1.nearly_conds->end() ; ++it){
 			$$.nearly_conds->push_back(*it);
 		}
+		/*for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $1.nearly_conds->begin() ; it != $1.nearly_conds->end() ;++it){
+			cout << "lolololol "<<(*(*it)->second[0])<<" lololol\n";
+		}*/
 	}
 	;
 
@@ -1505,11 +1510,11 @@ list_simple_duration_constraint:
 
 list_da_effect:
 	/* empty */	{
-		$$.nearly_effects= new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int* > * >();
+		$$.nearly_effects= new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** > * >();
 	}
 	| da_effect list_da_effect{
 		$$.nearly_effects = $2.nearly_effects; 
-		for (std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int*  > * >::iterator it = $1.nearly_effects->begin() ;it != $1.nearly_effects->end() ; ++it){
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $1.nearly_effects->begin() ;it != $1.nearly_effects->end() ; ++it){
 			$$.nearly_effects->push_back(*it);
 		}
 	}

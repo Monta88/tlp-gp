@@ -48,23 +48,25 @@ public:
 	void fatal_error(string msg);
 	bool isPredicate(string * name,vector< vector<Type*> > types);
 	Predicate * getPredicate(string * name,vector< vector<Type*> > types);
-	Domain getDomain();
+	Domain * getDomain();
 
 	//duratives-actions functions
 	
 	bool isAction(string const * name);
-	DurativeAction * makeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,int* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,int* >* > * nearly_effects);
+	DurativeAction * addDurationAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_effects);
 	Fluent * getFluent(string name,vector< vector<Type*> >);
 private:
-	Domain m_domain;
+	Domain * m_domain;
 	vector<int> m_requirements;
 	vector<string> m_type_list;
+	vector<string> m_list_name_action;
 	vector<string> m_constant_list;
 	vector<Type*> m_types;
 	vector<Constant*> m_constants;
 	vector<Predicate*> m_predicates;
 
 	vector<Function*> m_functions;	
+	vector<DurativeAction*> m_actions;	
 	
 	Problem m_problem;
 	vector<string> m_object_list;

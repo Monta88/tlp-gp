@@ -71,7 +71,7 @@ class Parser: public ParserBase
 	bool addObjects(std::vector<TypedList*> * typedList_list) {
 		return m_data.addObjects(typedList_list);
 	}
-	
+		
 	void display() {
 		m_data.display();
 	}

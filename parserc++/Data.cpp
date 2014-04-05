@@ -4,7 +4,7 @@
 #include <iostream>
 
 Data::Data() {
-	m_domain = Domain();
+	m_domain = new Domain();
 	m_requirements = vector<int> ();
 	m_type_list = vector<string> ();
 	m_constant_list = vector<string> ();
@@ -36,11 +36,11 @@ Data::Data() {
 Data::~Data() {}
 
 void Data::addDomain(string * name) {
-	m_domain = Domain(*name);
+	m_domain = new Domain(*name);
 }
 
 bool Data::isDomain(string * name) {
-	return (m_domain.getName() == (*name));
+	return (m_domain->getName() == (*name));
 }
 
 bool Data::addRequirement(int req) {
@@ -276,7 +276,7 @@ bool Data::isFunction(string * name, vector<TypedList*> * typedList_list) {
 }
 
 void Data::addProblem(string * name) {
-	m_problem = Problem(*name, &m_domain);
+	m_problem = Problem(*name, m_domain);
 }
 
 bool Data::addObjects(vector<TypedList*> * typedList_list) {
@@ -307,7 +307,7 @@ bool Data::isObject(string object) {
 }
 
 void Data::display() {
-	cout << "Domain : " << m_domain.getName() << endl;
+	cout << "Domain : " << m_domain->getName() << endl;
 	
 	if (m_types.size() != 0) {
 		cout << "Types : " << endl;
@@ -346,6 +346,13 @@ void Data::display() {
 		for(vector<string>::iterator it = m_errors.begin(); it != m_errors.end(); ++it)
 			cout << "\t" << (*it) << endl;
 	}
+	
+	if (m_actions.size() != 0) {
+		cout << "Actions : " << endl;
+		for(vector<DurativeAction*>::iterator it = m_actions.begin(); it != m_actions.end(); ++it)
+			cout << "\t" << (*it)->to_string() << endl;
+	}
+	
 }
 
 void Data::lexical_error(string msg) {
@@ -359,14 +366,14 @@ void Data::fatal_error(string msg) {
 	exit(1);
 }
 
-Domain Data::getDomain(){
+Domain * Data::getDomain(){
 	return m_domain;
 }
 
 //duratives-actions functions
 
 bool Data::isAction(string const * name){
-	return (find(m_domain.listNameAction().begin(), m_domain.listNameAction().end(), *name) !=  m_domain.listNameAction().end());
+	return (find(m_list_name_action.begin(), m_list_name_action.end(), *name) !=  m_list_name_action.end());
 }
 
 
@@ -388,9 +395,9 @@ Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types){
 	return new Predicate("inexistant");
 }
 
-DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,int* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,int* >* > * nearly_effects){
+DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_effects){
 
-	DurativeAction * action = new DurativeAction(*name);
+	DurativeAction * action; 
 	vector<Type *> types;
 	vector<Variable *> variable_list;
 	vector< vector<Type*> > type_list;
@@ -399,7 +406,8 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 	//action name
 	if (isAction(name)){
 			lexical_error("The " + *name + " action already exists with the same name");
-		} 
+	} else { 
+		action = new DurativeAction(*name);
 		//action parameters
 		// for each vairiable-type , we need to check if type existed and add each variable with his type(s))
 		for (vector<TypedList*>::iterator it = typedList_list->begin(); it != typedList_list->end(); ++it){
@@ -420,7 +428,7 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 		// action time
 		action->addDuration(durative);
 		//action conditions 
-		for(vector< pair< pair<vector<string> *,string *> * ,int*> * >::iterator it = nearly_conds->begin(); it != nearly_conds->end(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * ,int**> * >::iterator it = nearly_conds->begin(); it != nearly_conds->end(); ++it){
 				
 			// each variable need to be define in parameters
 					
@@ -440,7 +448,7 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 			
 			
 			att =  Attribute();
-			switch((*it)->second[0]){
+			switch(*(*it)->second[0]){
 				case 0: // at start
 					att.addSupported(Interval(0.,0.));
 					break;
@@ -460,7 +468,7 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 		}
 		// effects
 
-		for(vector< pair< pair<vector<string> *,string *> * ,int*> * >::iterator it = nearly_effects->begin(); it != nearly_effects->end(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * ,int**> * >::iterator it = nearly_effects->begin(); it != nearly_effects->end(); ++it){
 			// each variable need to be define in parameters
 					
 			type_list = vector< vector<Type*> >();
@@ -478,7 +486,7 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 			fluent = new Fluent (getPredicate((*it)->first->second,type_list));
 			
 			att =  Attribute();
-			switch((*it)->second[0]){
+			switch(*(*it)->second[0]){
 				case 0: // at start
 					att.addSupported(Interval(0.,0.));
 					break;
@@ -496,7 +504,11 @@ DurativeAction * Data::makeAction(string * name,vector<TypedList*> * typedList_l
 				action->addNotEffect(att,fluent);
 			}
 		}
+	m_list_name_action.push_back(action->getName());
+	m_actions.push_back(action);
 	return action;
+	}
+	return new DurativeAction("inxistant");
 }
 
 
