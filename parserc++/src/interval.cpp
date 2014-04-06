@@ -1,5 +1,5 @@
 #include "interval.h"
-
+#include <sstream>
 
 Interval::Interval():m_start(-1.0),m_end(-1.0){}
 
@@ -15,12 +15,12 @@ float Interval::getEnd(){
 	return m_end;
 }
 
+template <typename T> string tostr(const T& t) { 
+ostringstream os; 
+os<<t; 
+return os.str(); } 
+
 string Interval::to_string() {
-	string rep = "[";
-	rep += m_start;
-	rep += "; ";
-	rep += m_end;
-	rep += "]";
-	return rep;
+	return "["+tostr(m_start)+";"+tostr(m_end)+"]" ;
 }
 
