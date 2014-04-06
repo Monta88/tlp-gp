@@ -10,11 +10,11 @@ Attribute::Attribute() {
 
 Attribute::~Attribute() {}
 
-void Attribute::addForbiddens(Interval inter) {
+void Attribute::addForbidden(Interval inter) {
 	m_forbidden.push_back(inter);
 }
 
-void Attribute::addNotForbiddens(Interval inter) {
+void Attribute::addNotForbidden(Interval inter) {
 	m_not_forbidden.push_back(inter);
 }
 void Attribute::addSupported(Interval inter) {

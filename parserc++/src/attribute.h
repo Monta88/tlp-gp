@@ -12,8 +12,8 @@ class Attribute {
 	public:
 		Attribute();
 		virtual ~Attribute();
-		void addForbiddens(Interval inter);
-		void addNotForbiddens(Interval inter);
+		void addForbidden(Interval inter);
+		void addNotForbidden(Interval inter);
 		void addSupported(Interval inter);
 		void addNotSupported(Interval inter);
 		vector<Interval> * getForbidden();
