@@ -388,7 +388,7 @@ bool Data::isPredicate(string * name,vector< vector<Type*> > types){
 
 Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types){
 	for (vector<Predicate*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
-		if (((*name) == (*it_predicate)->getName() ) && (equal(types.begin(), types.end(),(*it_predicate)->getTypesList()->begin()) ) ){
+		if (((*name) == (*it_predicate)->getName() ) && ( (*it_predicate)->getTypesList()->size() == types.size())){
 			return (*it_predicate);
 		}
 	}
@@ -460,7 +460,7 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 					break;
 				default:perror("");
 				}
-			if (!(*it)->second[1]){
+			if  (!*((*it)->second[1])){
 				action->addCondition(att,fluent);
 			} else {
 				action->addNotCondition(att,fluent);
@@ -498,7 +498,7 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 					break;
 				default:perror("");
 				}
-			if (!(*it)->second[1]){
+			if  (!*((*it)->second[1])){
 				action->addEffect(att,fluent);
 			} else {
 				action->addNotEffect(att,fluent);

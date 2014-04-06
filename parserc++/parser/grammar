@@ -453,6 +453,7 @@ GD:
 	}	
 	| literal_term {
 		if (!Parser::isRequirement(NEGATIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :negative-preconditions is needed");
+		$$.nearly_conds=$1.nearly_conds;
 	}
 	| L_P AND list_GD R_P{
 		$$.nearly_conds=$3.nearly_conds;
@@ -666,6 +667,10 @@ da_symbol:
 da_GD:
 	pref_timed_GD {
 		$$.nearly_conds=$1.nearly_conds;
+		cout << " da_gd \n";
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $1.nearly_conds->begin() ; it != $1.nearly_conds->end() ;++it){
+			cout << "$1 lolololol "<<(*(*it)->second[0])<<" || "<<(*(*it)->second[1])<<" lololol "<< (*(*it)->first->second)<<"\n";
+		}
 	}
 	| L_P AND list_da_GD R_P {	
 		$$.nearly_conds=$3.nearly_conds;		
@@ -795,7 +800,7 @@ da_effect:
 timed_effect:
 	L_P AT time_specifier cond_effect R_P { 
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** > * >::iterator it = $4.nearly_effects->begin(); it != $4.nearly_effects->end() ; ++it){
-			(*it)->second[1]=$3.specifier_time;
+			(*it)->second[0]=$3.specifier_time;
 		}	
 		$$.nearly_effects=$4.nearly_effects;
 	}		
@@ -1265,8 +1270,16 @@ emptyOr_te_da_effect:
 /* <litteral (t)> */
 
 literal_term:
-	atomic_formula_term
-	| L_P NOT atomic_formula_term R_P
+	atomic_formula_term{		
+		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >  ();	
+		int * init[2] = {new int(0),new int(0)};
+		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int**  >($1.atomic_formula_term,init) );
+	}
+	| L_P NOT atomic_formula_term R_P{
+		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >  ();	
+		int * init[2] = {new int(0),new int(1)};
+		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int**  >($1.atomic_formula_term,init) );
+	}
 	;
 
 literal_name:
@@ -1492,14 +1505,36 @@ list_da_GD:
 		$$.nearly_conds = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >();
 	}
 	| da_GD list_da_GD {
+	cout << " pppppp \n";
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $1.nearly_conds->begin() ; it != $1.nearly_conds->end() ;++it){
+			cout << "$1 lolololol "<<(*(*it)->second[0])<<" || "<<(*(*it)->second[1])<<" lololol "<< (*(*it)->first->second)<<"\n";
+		}
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $2.nearly_conds->begin() ; it != $2.nearly_conds->end() ;++it){
+			cout << "$2lolololol "<<(*(*it)->second[0])<<" || "<<(*(*it)->second[1])<<" lololol "<< (*(*it)->first->second)<<"\n";
+		}
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $$.nearly_conds->begin() ; it != $$.nearly_conds->end() ;++it){
+			cout << "$$lolololol "<<(*(*it)->second[0])<<" || "<<(*(*it)->second[1])<<" lololol "<< (*(*it)->first->second)<<"\n";
+		}
+		cout << "\n";	
 	
-	$$.nearly_conds = $2.nearly_conds; 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $1.nearly_conds->begin() ;it != $1.nearly_conds->end() ; ++it){
+
+	$$.nearly_conds = $1.nearly_conds; 
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $2.nearly_conds->begin() ;it != $2.nearly_conds->end() ; ++it){
 			$$.nearly_conds->push_back(*it);
 		}
-		/*for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $1.nearly_conds->begin() ; it != $1.nearly_conds->end() ;++it){
-			cout << "lolololol "<<(*(*it)->second[0])<<" lololol\n";
-		}*/
+		
+		
+		cout << " kkkkkk \n";
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $1.nearly_conds->begin() ; it != $1.nearly_conds->end() ;++it){
+			cout << "$1 lolololol "<<(*(*it)->second[0])<<" || "<<(*(*it)->second[1])<<" lololol "<< (*(*it)->first->second)<<"\n";
+		}
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $2.nearly_conds->begin() ; it != $2.nearly_conds->end() ;++it){
+			cout << "$2lolololol "<<(*(*it)->second[0])<<" || "<<(*(*it)->second[1])<<" lololol "<< (*(*it)->first->second)<<"\n";
+		}
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >::iterator it = $$.nearly_conds->begin() ; it != $$.nearly_conds->end() ;++it){
+			cout << "$$lolololol "<<(*(*it)->second[0])<<" || "<<(*(*it)->second[1])<<" lololol "<< (*(*it)->first->second)<<"\n";
+		}
+		cout << "\n";
 	}
 	;
 
