@@ -1,6 +1,6 @@
 /* Parser PDDL */
 /* pddl_3_1.y */
-/* Authors : BENIER Alan, PRAT Nathan, LAGLEIZE Martin, JOMAA Montassar */
+/* Authors : BENIER Alan, PRAT Nathan, LAGLEIZE Martin */
 
 %scanner                ../scanner/Scanner.h
 %scanner-token-function d_scanner.lex()

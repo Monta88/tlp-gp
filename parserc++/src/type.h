@@ -19,6 +19,7 @@ class Type {
 		void addParents(vector<Type*> parents);
 		string getName();
 		vector<Type*> * getParents();
+		bool isOneOfParents(string name);
 		string to_string();
 	private:
 		string m_name;

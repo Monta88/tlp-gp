@@ -348,7 +348,7 @@ void Data::display() {
 	}
 	
 	if (m_actions.size() != 0) {
-		cout << "Actions : " << endl;
+		cout << "Actions :" << endl;
 		for(vector<DurativeAction*>::iterator it = m_actions.begin(); it != m_actions.end(); ++it)
 			cout << "\t" << (*it)->to_string() << endl;
 	}
@@ -376,23 +376,86 @@ bool Data::isAction(string const * name){
 	return (find(m_list_name_action.begin(), m_list_name_action.end(), *name) !=  m_list_name_action.end());
 }
 
-
-bool Data::isPredicate(string * name,vector< vector<Type*> > types){
+bool Data::isPredicate(string * name,vector< vector<Type*> > types) {
+	unsigned int nb_parameters = 0;
+	
+	for (vector< vector<Type*> >::iterator it = types.begin(); it != types.end(); ++it) {
+		nb_parameters += (*it).size();
+	}
+	
 	for (vector<Predicate*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
-		if ((*name) == ((*it_predicate)->getName()) && ( (*it_predicate)->getTypesList()->size() == types.size())){
-			return true;
+		if ((*name) == (*it_predicate)->getName()) {
+			if (nb_parameters == 0) {
+				return true;
+			}
+			
+			if (nb_parameters == (*it_predicate)->getTypesList()->size()) {
+				bool same = true;
+				
+				for (unsigned int i=0; (i < types.size()) && same; ++i) {
+					bool contains = false;
+					for (unsigned int k=0; (k < types.at(i).size()) && same && !contains; ++k) {
+						for (vector<Type*>::iterator it = (*it_predicate)->getTypesList()->at(i).begin(); (it != (*it_predicate)->getTypesList()->at(i).end()) && !contains; ++it) {
+							if (((*it)->getName() == types.at(i).at(k)->getName())||(types.at(i).at(k)->isOneOfParents((*it)->getName()))) {
+								contains = true;
+							}
+						}
+					}
+					if (!contains) {
+						same = false;
+					}
+				}
+				
+				if (same) {
+					return true;
+				}
+			}
 		}
 	}
+	
 	return false;
 }
 
-Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types){
+Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types) {
+	unsigned int nb_parameters = 0;
+	
+	for (vector< vector<Type*> >::iterator it = types.begin(); it != types.end(); ++it) {
+		nb_parameters += (*it).size();
+	}
+	
 	for (vector<Predicate*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
-		if (((*name) == (*it_predicate)->getName() ) && ( (*it_predicate)->getTypesList()->size() == types.size())){
-			return (*it_predicate);
+		if ((*name) == (*it_predicate)->getName()) {
+			if (nb_parameters == 0) {
+				return *it_predicate;
+			}
+			
+			if (nb_parameters == (*it_predicate)->getTypesList()->size()) {
+				bool same = true;
+				
+				for (unsigned int i=0; (i < types.size()) && same; ++i) {
+					bool contains = false;
+					for (unsigned int k=0; (k < types.at(i).size()) && same && !contains; ++k) {
+						for (vector<Type*>::iterator it = (*it_predicate)->getTypesList()->at(i).begin(); (it != (*it_predicate)->getTypesList()->at(i).end()) && !contains; ++it) {
+							if (((*it)->getName() == types.at(i).at(k)->getName())||(types.at(i).at(k)->isOneOfParents((*it)->getName()))) {
+								contains = true;
+							}
+						}
+					}
+					if (!contains) {
+						same = false;
+					}
+				}
+				
+				if (same) {
+					return *it_predicate;
+				}
+			}
 		}
 	}
-	return new Predicate("inexistant");
+	
+	fatal_error("You tried to get the predicate \""+ *name +"\" but couldn't find it");
+	
+	return NULL;
 }
 
 DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_effects){
@@ -410,15 +473,15 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 		action = new DurativeAction(*name);
 		//action parameters
 		// for each vairiable-type , we need to check if type existed and add each variable with his type(s))
-		for (vector<TypedList*>::iterator it = typedList_list->begin(); it != typedList_list->end(); ++it){
+		for (vector<TypedList*>::reverse_iterator it = typedList_list->rbegin(); it != typedList_list->rend(); ++it){
 			types=  vector<Type *> ();				
-			for (vector<string>::iterator it2 = (*it)->getTypes()->begin(); it2 != (*it)->getTypes()->end(); ++it2){
+			for (vector<string>::reverse_iterator it2 = (*it)->getTypes()->rbegin(); it2 != (*it)->getTypes()->rend(); ++it2){
 				 if (! isType(*it2)){
 					lexical_error("The type " + (*it2) +" doesn't exist");
 				}
 				types.push_back(getType(*it2));
 			}
-			for (vector<string>::iterator it2 =(*it)->getList()->begin(); it2 != (*it)->getList()->end();++it2){					
+			for (vector<string>::reverse_iterator it2 =(*it)->getList()->rbegin(); it2 != (*it)->getList()->rend();++it2){					
 				if (  action->isVariable(*it2)){
 					lexical_error("In action " + action->getName() + "The " + (*it2) + " variable already exist");
 				}	
@@ -428,12 +491,12 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 		// action time
 		action->addDuration(durative);
 		//action conditions 
-		for(vector< pair< pair<vector<string> *,string *> * ,int**> * >::iterator it = nearly_conds->begin(); it != nearly_conds->end(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * ,int**> * >::reverse_iterator it = nearly_conds->rbegin(); it != nearly_conds->rend(); ++it){
 				
 			// each variable need to be define in parameters
 					
 			type_list = vector< vector<Type*> >();
-			for (vector<string>::iterator it2 =(*it)->first->first->begin(); it2 != (*it)->first->first->end(); ++it2){
+			for (vector<string>::reverse_iterator it2 =(*it)->first->first->rbegin(); it2 != (*it)->first->first->rend(); ++it2){
 				if( !(action->isVariable(*it2)) ){
 					lexical_error("In action " + action->getName() + "The variable " + (*it2) + " don't exist");
 				}
@@ -444,7 +507,12 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 			if(!(isPredicate((*it)->first->second,type_list))){
 				lexical_error(("In action " + action->getName() + ", the predicate  "+ *(*it)->first->second +"  don't exist").c_str());
 			}
-			fluent = new Fluent (getPredicate((*it)->first->second,type_list));
+			if (isPredicate((*it)->first->second, type_list)) {
+				fluent = new Fluent (getPredicate((*it)->first->second, type_list));
+			}
+			else {
+				fatal_error("Predicate \""+ *(*it)->first->second +"\" not found");
+			}
 			
 			
 			att =  Attribute();
@@ -468,11 +536,11 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 		}
 		// effects
 
-		for(vector< pair< pair<vector<string> *,string *> * ,int**> * >::iterator it = nearly_effects->begin(); it != nearly_effects->end(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * ,int**> * >::reverse_iterator it = nearly_effects->rbegin(); it != nearly_effects->rend(); ++it){
 			// each variable need to be define in parameters
 					
 			type_list = vector< vector<Type*> >();
-			for (vector<string>::iterator it2 =(*it)->first->first->begin(); it2 != (*it)->first->first->end(); ++it2){
+			for (vector<string>::reverse_iterator it2 =(*it)->first->first->rbegin(); it2 != (*it)->first->first->rend(); ++it2){
 				if( !(action->isVariable(*it2)) ){
 					lexical_error("In action " + action->getName() + ", The variable" + (*it2) + " don't exist");
 				}
@@ -483,7 +551,12 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 			if(!(isPredicate((*it)->first->second,type_list))){
 				lexical_error("In action " + action->getName() + ", The action  "+ *(*it)->first->second + " don't exist");
 			}
-			fluent = new Fluent (getPredicate((*it)->first->second,type_list));
+			if (isPredicate((*it)->first->second, type_list)) {
+				fluent = new Fluent (getPredicate((*it)->first->second, type_list));
+			}
+			else {
+				fatal_error("Predicate \""+ *(*it)->first->second +"\" not found");
+			}
 			
 			att =  Attribute();
 			switch(*(*it)->second[0]){

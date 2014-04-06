@@ -68,7 +68,7 @@ Fluent * DurativeAction::getPredCondition(string * name,vector<vector<Type *>> t
 			return (*it_flu).second;
 		}
 	}
-	return new Fluent(new Predicate("inexistant"));
+	return new Fluent(new Predicate("inexistant_1"));
 }
 
 
@@ -96,31 +96,31 @@ Fluent * DurativeAction::getPredNotCondition(string * name,vector<vector<Type *>
 			return (*it_flu).second;
 		}
 	}
-	return new Fluent(new Predicate("inexistant"));
+	return new Fluent(new Predicate("inexistant_2"));
 }
 
 string DurativeAction::to_string(){
-	string rep="\nAction "+getName();
+	string rep="Action "+getName();
 	if (m_preconditions.size() > 0){
-		rep +="\n Precondicion : ";
+		rep +="\n\t\tPrecondicion : ";
 		for (vector< pair< Attribute,Fluent *> >::iterator it =m_preconditions.begin(); it !=m_preconditions.end();++it){
 			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string()+" ;; " ;
 		}
 	}
 	if (m_not_preconditions.size() > 0){
-		rep +="\n Negative precondition : ";
+		rep +="\n\t\tNegative precondition : ";
 		for (vector< pair< Attribute,Fluent *> >::iterator it =m_not_preconditions.begin(); it !=m_not_preconditions.end();++it){
 			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string();
 		}
 	}
 	if (m_effects.size() > 0){
-		rep +="\n Add : ";
+		rep +="\n\t\tAdd : ";
 		for (vector< pair< Attribute,Fluent *> >::iterator it =m_effects.begin(); it !=m_effects.end();++it){
 			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string();
 		}
 	}
 	if (m_not_effects.size() > 0){
-		rep +="\n Delete : ";
+		rep +="\n\t\tDelete : ";
 		for (vector< pair< Attribute,Fluent *> >::iterator it =m_not_effects.begin(); it !=m_not_effects.end();++it){
 			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string();
 		}

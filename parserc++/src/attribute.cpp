@@ -1,46 +1,70 @@
 #include "attribute.h"
-#include <sstream>
-Attribute::Attribute(){
 
+
+Attribute::Attribute() {
+	m_forbidden = vector<Interval> ();
+	m_supported = vector<Interval> ();
+	m_not_forbidden = vector<Interval> ();
+	m_not_supported = vector<Interval> ();
 }
 
-Attribute::~Attribute(){
+Attribute::~Attribute() {}
 
+void Attribute::addForbiddens(Interval inter) {
+	m_forbidden.push_back(inter);
 }
 
-
-void Attribute::addForbidens(Interval inter){
-	m_forbiden=inter;
+void Attribute::addNotForbiddens(Interval inter) {
+	m_not_forbidden.push_back(inter);
+}
+void Attribute::addSupported(Interval inter) {
+	m_supported.push_back(inter);
+}
+void Attribute::addNotSupported(Interval inter) {
+	m_not_supported.push_back(inter);
 }
 
-void Attribute::addNotForbidens(Interval inter){
-	m_not_forbiden=inter;
-}
-void Attribute::addSupported(Interval inter){
-	m_supported=inter;
-}
-void Attribute::addNotSupported(Interval inter){
-	m_not_supported=inter;
+vector<Interval> * Attribute::getForbidden() {
+	return &m_forbidden;
 }
 
-template <typename T> string tostr(const T& t) { 
-ostringstream os; 
-os<<t; 
-return os.str(); } 
+vector<Interval> * Attribute::getSupported() {
+	return &m_supported;
+}
 
-string Attribute::to_string(){
+vector<Interval> * Attribute::getNotForbidden() {
+	return &m_not_forbidden;
+}
+
+vector<Interval> * Attribute::getNotSupported() {
+	return &m_not_supported;
+}
+
+string Attribute::to_string() {
 	string rep="";
-	if (m_forbiden.getStart() != -1.0 ){
-		rep +=" forbiden on "+tostr(m_forbiden.getStart())+" - "+tostr(m_forbiden.getEnd());
+	if (m_forbidden.size() != 0) {
+		rep +="forbidden on";
+		for (vector<Interval>::iterator it = m_forbidden.begin(); it != m_forbidden.end(); ++it) {
+			rep += " " + it->to_string();
+		}
 	}
-	if (m_supported.getStart() != -1.0 ){
-		rep +=" supported on "+tostr(m_supported.getStart())+" - "+tostr(m_supported.getEnd());
+	if (m_supported.size() != 0) {
+		rep +="supported on";
+		for (vector<Interval>::iterator it = m_supported.begin(); it != m_supported.end(); ++it) {
+			rep += " " + it->to_string();
+		}
 	}
-	if (m_not_forbiden.getStart() != -1.0 ){
-		rep +=" not forbiden on "+tostr(m_not_forbiden.getStart())+" - "+tostr(m_not_forbiden.getEnd());
+	if (m_not_forbidden.size() != 0) {
+		rep +="not forbidden on";
+		for (vector<Interval>::iterator it = m_not_forbidden.begin(); it != m_not_forbidden.end(); ++it) {
+			rep += " " + it->to_string();
+		}
 	}
-	if (m_not_supported.getStart() != -1.0 ){
-		rep +=" not supported on "+tostr(m_not_supported.getStart())+" - "+tostr(m_not_supported.getEnd());
+	if (m_not_supported.size() != 0) {
+		rep +="not supported on";
+		for (vector<Interval>::iterator it = m_not_supported.begin(); it != m_not_supported.end(); ++it) {
+			rep += " " + it->to_string();
+		}
 	}
 	return rep;
 }
