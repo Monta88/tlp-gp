@@ -1,25 +1,26 @@
-/*
- * Data.h
- *
- *  Created on: Mar 15, 2014
- *      Author: nathan
- */
-
 #ifndef DATA_H_
 #define DATA_H_
 
 #include <string>
 #include <vector>
-#include "src/domain.h"
-#include "src/type.h"
+#include "src/action.h"
+#include "src/attribute.h"
+#include "src/predicate.h"
 #include "src/constant.h"
+#include "src/domain.h"
+#include "src/durative_action.h"
 #include "src/fluent.h"
 #include "src/function.h"
+#include "src/interval.h"
+#include "src/lexer.h"
+#include "src/member.h"
 #include "src/object.h"
+#include "src/planningData.h"
 #include "src/problem.h"
+#include "src/type.h"
 #include "src/typedList.h"
-#include "src/predicate.h"
-#include "src/durative_action.h"
+#include "src/variable.h"
+
 using namespace std;
 
 class Data {
@@ -35,6 +36,7 @@ public:
 	Type * getType(string name);
 	bool addConstants(vector<TypedList*> * typedList_list);
 	bool isConstant(string constant);
+	Constant * getConstant(string constant);
 	bool addPredicate(string * name, vector<TypedList*> * typedList_list);
 	bool isPredicate(string * name, vector<TypedList*> * typedList_list);
 	bool addFunctions(vector< pair< string*, vector<TypedList*>* >* > * function_skeleton_list, vector<string> * return_type);
@@ -43,6 +45,8 @@ public:
 	void addProblem(string * name);
 	bool addObjects(vector<TypedList*> * typedList_list);
 	bool isObject(string object);
+	Object * getObject(string object);
+	bool addInit(pair< pair< vector< string > *, string *> *, vector<int> * > * literal, float at);
 	void display();
 	void lexical_error(string msg);
 	void fatal_error(string msg);
@@ -64,13 +68,15 @@ private:
 	vector<Type*> m_types;
 	vector<Constant*> m_constants;
 	vector<Predicate*> m_predicates;
-
 	vector<Function*> m_functions;	
+	
 	vector<DurativeAction*> m_actions;	
 	
 	Problem m_problem;
 	vector<string> m_object_list;
 	vector<Object*> m_objects;
+	vector<pair<Fluent*, Attribute> > m_inits;
+	
 	vector<string> m_errors;
 };
 

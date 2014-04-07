@@ -11,10 +11,11 @@
 {
 	std::string * name;
 	std::vector<std::string> * list_name;
-	std::pair< std::vector< std::string > *, std::string *> * atomic_formula_term;
+	std::pair< std::vector< std::string > *, std::string *> * atomic_formula;
 	std::vector<TypedList*> * typedList_list;
 	std::pair< std::string*, std::vector<TypedList*>* > * function_skeleton;
 	std::vector< std::pair< std::string*, std::vector<TypedList*>* >* > * function_skeleton_list;
+	std::pair< std::pair< std::vector< std::string > *, std::string *> *, vector<int> * > * literal;
 	
 	//durativeaction
 	float durative;	
@@ -449,7 +450,7 @@ GD:
 	atomic_formula_term	{	
 		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >  ();	
 		int * init[2] = {new int(0),new int(0)};
-		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int**  >($1.atomic_formula_term,init) );
+		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int**  >($1.atomic_formula,init) );
 	}	
 	| literal_term {
 		if (!Parser::isRequirement(NEGATIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :negative-preconditions is needed");
@@ -593,12 +594,12 @@ p_effect:
 	L_P NOT atomic_formula_term R_P {	
 		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > ();
 		int * init[2] = {new int(0),new int(1)};
-		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int** >($3.atomic_formula_term,init));
+		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int** >($3.atomic_formula,init));
 	}
 	| atomic_formula_term	{			
 		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* > ();
 		int  * init[2] = {new int(0),new int(0)};
-		$$.nearly_conds->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >($1.atomic_formula_term,init));
+		$$.nearly_conds->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >($1.atomic_formula,init));
 	}
 	| L_P assign_op f_head f_exp {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
@@ -912,15 +913,20 @@ object_declaration:
 /* <init> */
 
 init:
-	L_P INIT list_init_el R_P
+	L_P INIT list_init_el R_P {}
 	;
 
 /* <init-el> */
 
 init_el:
-	literal_name
+	literal_name {
+		if (!Parser::addInit($1.literal, 0.))
+			Parser::lexical_error("Error in :init");
+	}
 	| L_P AT number literal_name R_P {
 		if (!Parser::isRequirement(TIMED_INITIAL_LITERALS)) Parser::lexical_error("Requirement :timed-initial-literals is needed");
+		if (!Parser::addInit($4.literal, $3.durative))
+			Parser::lexical_error("Error in :init");
 	}
 	| L_P EQ basic_function_term number R_P {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
@@ -1280,28 +1286,38 @@ emptyOr_te_da_effect:
 /* <litteral (t)> */
 
 literal_term:
-	atomic_formula_term{		
+	atomic_formula_term {		
 		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >  ();	
 		int * init[2] = {new int(0),new int(0)};
-		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int**  >($1.atomic_formula_term,init) );
+		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int**  >($1.atomic_formula,init) );
 	}
-	| L_P NOT atomic_formula_term R_P{
+	| L_P NOT atomic_formula_term R_P {
 		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,int** >* >  ();	
 		int * init[2] = {new int(0),new int(1)};
-		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int**  >($1.atomic_formula_term,init) );
+		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,int**  >($3.atomic_formula,init) );
 	}
 	;
 
 literal_name:
-	atomic_formula_name
-	| L_P NOT atomic_formula_name R_P
+	atomic_formula_name {		
+		vector<int> * init = new vector<int> ();
+		init->push_back(0);
+		init->push_back(0);
+		$$.literal = new std::pair<std::pair< std::vector< std::string > *, std::string *> * , vector<int> *  >($1.atomic_formula, init);
+	}
+	| L_P NOT atomic_formula_name R_P {
+		vector<int> * init = new vector<int> ();
+		init->push_back(0);
+		init->push_back(1);
+		$$.literal = new std::pair<std::pair< std::vector< std::string > *, std::string *> * , vector<int> *  >($3.atomic_formula, init);
+	}
 	;
 
 /* <atomic formula (t)> */
 
 atomic_formula_term:
 	L_P predicate list_term R_P {
-		$$.atomic_formula_term= new std::pair< std::vector< std::string > *, std::string *>($3.list_name,$2.name);
+		$$.atomic_formula= new std::pair< std::vector< std::string > *, std::string *>($3.list_name,$2.name);
 	}
 	| L_P EQ term term R_P {
 		if (!Parser::isRequirement(EQUALITY)) Parser::lexical_error("Requirement :equality is needed");
@@ -1309,7 +1325,9 @@ atomic_formula_term:
 	;
 
 atomic_formula_name:
-	L_P predicate list_name R_P
+	L_P predicate list_name R_P {
+		$$.atomic_formula = new std::pair< std::vector< std::string > *, std::string *>($3.list_name,$2.name);
+	}
 	| L_P EQ name name R_P {
 		if (!Parser::isRequirement(EQUALITY)) Parser::lexical_error("Requirement :equality is needed");
 	}

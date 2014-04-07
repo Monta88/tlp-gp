@@ -16,6 +16,7 @@ Data::Data() {
 	m_problem = Problem();
 	m_object_list = vector<string> ();
 	m_objects = vector<Object*> ();
+	m_inits = vector<pair<Fluent*, Attribute> > ();
 	
 	// this type always exists and shouldn't be defined by the user in pddl file
 	m_types.push_back(new Type("object"));
@@ -117,6 +118,18 @@ bool Data::addConstants(vector<TypedList*> * typedList_list) {
 
 bool Data::isConstant(string constant) {
 	return (find(m_constant_list.begin(), m_constant_list.end(), constant) != m_constant_list.end());
+}
+
+Constant * Data::getConstant(string constant) {
+	for (vector<Constant*>::iterator it = m_constants.begin(); it != m_constants.end(); ++it) {
+		if ((*it)->getName() == constant) {
+			return *it;
+		}
+	}
+	
+	fatal_error("Constant \""+ constant +"\" not found");
+	
+	return NULL;
 }
 
 bool Data::addPredicate(string * name, vector<TypedList*> * typedList_list) {
@@ -303,7 +316,67 @@ bool Data::addObjects(vector<TypedList*> * typedList_list) {
 }
 
 bool Data::isObject(string object) {
+	if (find(m_constant_list.begin(), m_constant_list.end(), object) != m_constant_list.end()) {
+		lexical_error(object + " cannot be an Object because it is already a Constant !");
+		return true;
+	}
 	return (find(m_object_list.begin(), m_object_list.end(), object) != m_object_list.end());
+}
+
+Object * Data::getObject(string object) {
+	for (vector<Object*>::iterator it = m_objects.begin(); it != m_objects.end(); ++it) {
+		if ((*it)->getName() == object) {
+			return *it;
+		}
+	}
+	
+	fatal_error("Object \""+ object +"\" not found");
+	
+	return NULL;
+}
+
+bool Data::addInit(pair< pair< vector< string > *, string *> *, vector<int> * > * literal, float at) {
+	vector<vector<Type*> > type_list = vector<vector<Type*> > ();
+	vector<Member *> members_list = vector<Member *> ();
+	Member * member;
+	Predicate * predicate;
+	Attribute attribute;
+	
+	for (vector<string>::reverse_iterator it_member = literal->first->first->rbegin(); it_member != literal->first->first->rend(); ++it_member) {
+		if (isConstant(*it_member)) {
+			member = getConstant(*it_member);
+		}
+		else {
+			if (isObject(*it_member)) {
+				member = getObject(*it_member);
+			}
+			else {
+				lexical_error((*it_member) + " is nor a Constant nor an Object");
+				return false;
+			}
+		}
+		members_list.push_back(member);
+		type_list.push_back(*(member->getTypes()));
+	}
+	
+	if (isPredicate(literal->first->second, type_list)) {
+		predicate = getPredicate(literal->first->second, type_list);
+	}
+	else {
+		fatal_error("Predicate \""+ *(literal->first->second) +"\" not found");
+	}
+	
+	attribute = Attribute();
+	if (literal->second->at(1) == 0) {
+		attribute.addSupported(Interval(at, at));
+	}
+	else {
+		attribute.addNotSupported(Interval(at, at));
+	}
+	
+	m_inits.push_back(make_pair(new Fluent(predicate, members_list), attribute));
+	
+	return true;
 }
 
 void Data::display() {
@@ -339,6 +412,12 @@ void Data::display() {
 		cout << "Objects : " << endl;
 		for(vector<Object*>::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
 			cout << "\t" << (*it)->to_string() << endl;
+	}
+	
+	if (m_inits.size() != 0) {
+		cout << "Inits : " << endl;
+		for(vector<pair<Fluent*, Attribute> >::iterator it = m_inits.begin(); it != m_inits.end(); ++it)
+			cout << "\t" << (*it).first->to_string() << " <-> " << (*it).second.to_string() << endl;
 	}
 	
 	if (m_errors.size() != 0) {
