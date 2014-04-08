@@ -29,6 +29,7 @@ public:
 	virtual ~Data();
 	void addDomain(string * name);
 	bool isDomain(string * name);
+	Domain * getDomain();
 	bool addRequirement(int req);
 	bool isRequirement(int req);
 	bool addTypes(std::vector<TypedList*> * typedList_list);
@@ -39,6 +40,8 @@ public:
 	Constant * getConstant(string constant);
 	bool addPredicate(string * name, vector<TypedList*> * typedList_list);
 	bool isPredicate(string * name, vector<TypedList*> * typedList_list);
+	bool isPredicate(string * name,vector< vector<Type*> > types);
+	Predicate * getPredicate(string * name,vector< vector<Type*> > types);
 	bool addFunctions(vector< pair< string*, vector<TypedList*>* >* > * function_skeleton_list, vector<string> * return_type);
 	bool addFunction(string * name, vector<Type*> return_type, vector<TypedList*> * typedList_list);
 	bool isFunction(string * name, vector<TypedList*> * typedList_list);
@@ -47,18 +50,17 @@ public:
 	bool isObject(string object);
 	Object * getObject(string object);
 	bool addInit(pair< pair< vector< string > *, string *> *, vector<int> * > * literal, float at);
+	vector<pair<Fluent*, Attribute> > getInits();
+	bool isAction(string const * name);
+	vector<DurativeAction*> getActions();
 	void display();
 	void lexical_error(string msg);
 	void fatal_error(string msg);
-	bool isPredicate(string * name,vector< vector<Type*> > types);
-	Predicate * getPredicate(string * name,vector< vector<Type*> > types);
-	Domain * getDomain();
-
 	//duratives-actions functions
-	
-	bool isAction(string const * name);
 	DurativeAction * addDurationAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_effects);
 	Fluent * getFluent(string name,vector< vector<Type*> >);
+
+
 private:
 	Domain * m_domain;
 	vector<int> m_requirements;

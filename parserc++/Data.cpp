@@ -663,12 +663,10 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 	return new DurativeAction("inxistant");
 }
 
+vector<pair<Fluent*, Attribute> > Data::getInits(){
+	return m_inits;
+}
 
-
-
-
-
-
-
-
-
+vector<DurativeAction*> Data::getActions(){
+	return m_actions;
+}
