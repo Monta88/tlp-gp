@@ -57,7 +57,7 @@ public:
 	void lexical_error(string msg);
 	void fatal_error(string msg);
 	//duratives-actions functions
-	DurativeAction * addDurationAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_effects);
+	DurativeAction * addDurationAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_effects);
 	Fluent * getFluent(string name,vector< vector<Type*> >);
 
 

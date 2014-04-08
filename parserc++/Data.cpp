@@ -537,7 +537,7 @@ Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types) {
 	return NULL;
 }
 
-DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,int** >* > * nearly_effects){
+DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_effects){
 
 	DurativeAction * action; 
 	vector<Type *> types;
@@ -570,7 +570,7 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 		// action time
 		action->addDuration(durative);
 		//action conditions 
-		for(vector< pair< pair<vector<string> *,string *> * ,int**> * >::reverse_iterator it = nearly_conds->rbegin(); it != nearly_conds->rend(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * ,vector<int>*> * >::reverse_iterator it = nearly_conds->rbegin(); it != nearly_conds->rend(); ++it){
 				
 			// each variable need to be define in parameters
 					
@@ -595,7 +595,7 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 			
 			
 			att =  Attribute();
-			switch(*(*it)->second[0]){
+			switch((*it)->second->at(0)){
 				case 0: // at start
 					att.addSupported(Interval(0.,0.));
 					break;
@@ -607,7 +607,7 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 					break;
 				default:perror("");
 				}
-			if  (!*((*it)->second[1])){
+			if  (!(*it)->second->at(1)){
 				action->addCondition(att,fluent);
 			} else {
 				action->addNotCondition(att,fluent);
@@ -615,7 +615,7 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 		}
 		// effects
 
-		for(vector< pair< pair<vector<string> *,string *> * ,int**> * >::reverse_iterator it = nearly_effects->rbegin(); it != nearly_effects->rend(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * ,vector<int>*> * >::reverse_iterator it = nearly_effects->rbegin(); it != nearly_effects->rend(); ++it){
 			// each variable need to be define in parameters
 					
 			type_list = vector< vector<Type*> >();
@@ -638,7 +638,7 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 			}
 			
 			att =  Attribute();
-			switch(*(*it)->second[0]){
+			switch((*it)->second->at(0)){
 				case 0: // at start
 					att.addSupported(Interval(0.,0.));
 					break;
@@ -650,7 +650,7 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 					break;
 				default:perror("");
 				}
-			if  (!*((*it)->second[1])){
+			if  (!(*it)->second->at(1)){
 				action->addEffect(att,fluent);
 			} else {
 				action->addNotEffect(att,fluent);
