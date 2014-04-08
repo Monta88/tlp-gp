@@ -11,8 +11,12 @@ using namespace std;
 int main(int argc, char **argv)
 {
 	
-    	Parser parser_domain;
+    Parser parser_domain;
 	FILE *domain, *problem;
+	Data *data(0) ;
+	//data = new Data();
+	vector<pair<Fluent*, Attribute> > inits ;
+	vector<DurativeAction*> actions ;
 	
 	if (argc != 3) {
 		cerr << "Usage :\n\t" << argv[0] << " domainFile.pddl problemFile.pddl" << endl;
@@ -52,6 +56,10 @@ int main(int argc, char **argv)
 		if (parser_problem.parse() == 0) {
 			cout << "The problem was successfully parsed" << endl;
 			parser_problem.display();
+			cout << data <<endl;
+			data = parser_problem.getData();
+			//inits = parser_problem.getData()->getInits();
+			cout << data <<endl;
 		}
 	}
 	else {
@@ -60,6 +68,21 @@ int main(int argc, char **argv)
 			exit(5);
 		}
 	}
+
+	cout << data->getDomain()->getName() <<endl;
+	//data->display() ;
+
+	inits = data->getInits() ;
+	actions = data->getActions();
+	//actions = data->getDomain()->getActions();
+
+	cout << "(test) Inits : " << inits.size() << endl;
+	for(vector<pair<Fluent*, Attribute> >::iterator it = inits.begin()+1; it != inits.end(); ++it) //error with the first element
+		cout << "\t" << (*it).first->to_string() << endl;
+
+	cout << "(test) Actions :" << endl;
+	for(vector<DurativeAction*>::iterator it = actions.begin()+1; it != actions.end(); ++it) //error with the first element
+		cout << "\t" << (*it)->to_string() << endl;
 
 	return 0;
 }
