@@ -85,6 +85,9 @@ mrproper:			clean
 
 cleanall:			mrproper
 	rm -f parser/parse.cc parser/Parserbase.h  scanner/lex.cc scanner/Scannerbase.h
+	
+cleanbisonflex:			
+	rm -f parser/parse.cc parser/Parserbase.h  scanner/lex.cc scanner/Scannerbase.h	
 
 bison:				parser/grammar
 	cd parser && bisonc++ -H'../headers.h' grammar && cd ..
@@ -98,3 +101,6 @@ flex_debug:				scanner/lexer
 debug:				bison flex_debug pddl_3-1-te
 
 reset: 				cleanall bison flex pddl_3-1-te
+
+parser:				cleanbisonflex bison flex pddl_3-1-te
+					
