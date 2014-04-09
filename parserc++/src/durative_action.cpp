@@ -99,6 +99,14 @@ Fluent * DurativeAction::getPredNotCondition(string * name,vector<vector<Type *>
 	return new Fluent(new Predicate("inexistant_2"));
 }
 
+vector<pair<Attribute, Fluent*> > DurativeAction::getEffects() {
+	return m_effects;
+}
+
+vector<pair<Attribute, Fluent*> > DurativeAction::getNotEffects() {
+	return m_not_effects;
+}
+
 string DurativeAction::to_string(){
 	string rep="Action "+getName();
 	if (m_preconditions.size() > 0){
