@@ -8,6 +8,8 @@ using namespace std;
 #include <string>
 #include <unistd.h>
 
+#include "src/graph.h"
+
 int main(int argc, char **argv)
 {
 	
@@ -15,9 +17,9 @@ int main(int argc, char **argv)
 	FILE *domain, *problem;
 	Data *data(0) ;
 	//data = new Data();
-	vector<pair<Fluent*, Attribute> > inits ;
-	vector<DurativeAction*> actions ;
 	
+	Graph graph;
+
 	if (argc != 3) {
 		cerr << "Usage :\n\t" << argv[0] << " domainFile.pddl problemFile.pddl" << endl;
 		exit(1);
@@ -69,20 +71,9 @@ int main(int argc, char **argv)
 		}
 	}
 
-	cout << data->getDomain()->getName() <<endl;
-	//data->display() ;
 
-	inits = data->getInits() ;
-	actions = data->getActions();
-	//actions = data->getDomain()->getActions();
-
-	cout << "(test) Inits : " << inits.size() << endl;
-	for(vector<pair<Fluent*, Attribute> >::iterator it = inits.begin()+1; it != inits.end(); ++it) //error with the first element
-		cout << "\t" << (*it).first->to_string() << endl;
-
-	cout << "(test) Actions :" << endl;
-	for(vector<DurativeAction*>::iterator it = actions.begin()+1; it != actions.end(); ++it) //error with the first element
-		cout << "\t" << (*it)->to_string() << endl;
+		graph = Graph(data);
+		graph.generateGraph();
 
 	return 0;
 }
