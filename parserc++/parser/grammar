@@ -15,13 +15,14 @@
 	std::vector<TypedList*> * typedList_list;
 	std::pair< std::string*, std::vector<TypedList*>* > * function_skeleton;
 	std::vector< std::pair< std::string*, std::vector<TypedList*>* >* > * function_skeleton_list;
-	std::pair< std::pair< std::vector< std::string > *, std::string *> *, vector<int> * > * literal;
+	std::pair< std::pair< std::vector< std::string > *, std::string *> *, bool > * literal;
+	std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * > * pre_GD;
 	
 	//durativeaction
 	float durative;	
-	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > * nearly_conds;
-	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > * nearly_effects;
-	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> *,float> * cond_eff_durative;
+	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * nearly_conds;
+	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * nearly_effects;
+	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > *> *,float> * cond_eff_durative;
 	int specifier_time;
 }
 
@@ -418,8 +419,13 @@ action_def_body_option2:
 /* <pre-GD> */
 
 pre_GD:
-	pref_GD
-	| L_P AND list_pre_GD R_P
+	pref_GD {
+		$$.pre_GD = new std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > * > ();
+		$$.pre_GD->push_back($1.nearly_conds);
+	}
+	| L_P AND list_pre_GD R_P {
+		$$.pre_GD->insert($$.pre_GD->end(), $3.pre_GD->begin(), $3.pre_GD->end());
+	}
 	| L_P FORALL L_P typed_list_variable R_P pre_GD R_P {
 		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
 	}
@@ -428,7 +434,9 @@ pre_GD:
 /* <pref-GD> */
 
 pref_GD:
-	GD
+	GD {
+		$$.nearly_conds = $1.nearly_conds;
+	}
 	| L_P PREFERENCE pref_GD_option1 {
 		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
 	}
@@ -449,7 +457,7 @@ pref_name:
 
 GD:
 	atomic_formula_term	{	
-		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
+		$$.nearly_conds = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
 		vector<int>* init= new vector<int>();
 		init->push_back(0);
 		init->push_back(0);
@@ -946,7 +954,10 @@ basic_function_term:
 /* <goal> */
 
 goal:
-	L_P GOAL pre_GD R_P
+	L_P GOAL pre_GD R_P {
+		if (!Parser::addGoals($3.pre_GD))
+			Parser::lexical_error("Error in :goal");
+	}
 	;
 
 /* <contraints> */
@@ -1332,16 +1343,10 @@ literal_term:
 
 literal_name:
 	atomic_formula_name {		
-		vector<int> * init = new vector<int> ();
-		init->push_back(0);
-		init->push_back(0);
-		$$.literal = new std::pair<std::pair< std::vector< std::string > *, std::string *> * , vector<int> *  >($1.atomic_formula, init);
+		$$.literal = new std::pair<std::pair< std::vector< std::string > *, std::string *> * , bool >($1.atomic_formula, true);
 	}
 	| L_P NOT atomic_formula_name R_P {
-		vector<int> * init = new vector<int> ();
-		init->push_back(0);
-		init->push_back(1);
-		$$.literal = new std::pair<std::pair< std::vector< std::string > *, std::string *> * , vector<int> *  >($3.atomic_formula, init);
+		$$.literal = new std::pair<std::pair< std::vector< std::string > *, std::string *> * , bool >($3.atomic_formula, false);
 	}
 	;
 
@@ -1477,8 +1482,12 @@ list_primitive_type:
 	;
 
 list_pre_GD:
-	/* empty */
-	| pre_GD list_pre_GD
+	/* empty */ {
+		$$.pre_GD = new std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > * > ();
+	}
+	| pre_GD list_pre_GD {
+		$$.pre_GD->insert($$.pre_GD->end(), $2.pre_GD->begin(), $2.pre_GD->end());
+	}
 	;
 
 list_term:

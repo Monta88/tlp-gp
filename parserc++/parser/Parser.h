@@ -64,7 +64,7 @@ class Parser: public ParserBase
 		return m_data->addFunctions(function_skeleton_list, return_type);
 	}
 	
-	bool addDurativeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_effects) {
+	bool addDurativeAction(std::string * name, std::vector<TypedList*> * typedList_list,float durative, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * nearly_conds, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * nearly_effects) {
 		return m_data->addDurativeAction(name, typedList_list, durative, nearly_conds, nearly_effects);
 	}
 	
@@ -76,8 +76,12 @@ class Parser: public ParserBase
 		return m_data->addObjects(typedList_list);
 	}
 	
-	bool addInit(std::pair< std::pair< std::vector< std::string > *, std::string *> *, vector<int> * > * literal, float at) {
+	bool addInit(std::pair< std::pair< std::vector< std::string > *, std::string *> *, bool > * literal, float at) {
 		return m_data->addInit(literal, at);
+	}
+	
+	bool addGoals(std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * > * pre_GD) {
+		return m_data->addGoals(pre_GD);
 	}
 		
 	void display() {

@@ -50,8 +50,10 @@ public:
 	bool addObjects(vector<TypedList*> * typedList_list);
 	bool isObject(string object);
 	Object * getObject(string object);
-	bool addInit(pair< pair< vector< string > *, string *> *, vector<int> * > * literal, float at);
+	bool addInit(pair< pair< vector< string > *, string *> *, bool > * literal, float at);
 	vector<pair<Fluent*, Attribute> > * getInits();
+	bool addGoals(vector< vector< pair< pair< vector< string > *, string *> * , vector<int>* >* > * > * pre_GD);
+	vector<pair<Fluent*, Attribute> > * getGoals();
 	bool isAction(string const * name);
 	vector<DurativeAction*> * getActions();
 	void display();

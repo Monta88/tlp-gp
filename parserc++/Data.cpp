@@ -355,7 +355,7 @@ Object * Data::getObject(string object) {
 	return NULL;
 }
 
-bool Data::addInit(pair< pair< vector< string > *, string *> *, vector<int> * > * literal, float at) {
+bool Data::addInit(pair< pair< vector< string > *, string *> *, bool > * literal, float at) {
 	vector<vector<Type*> > type_list = vector<vector<Type*> > ();
 	vector<Member *> members_list = vector<Member *> ();
 	Member * member;
@@ -387,7 +387,7 @@ bool Data::addInit(pair< pair< vector< string > *, string *> *, vector<int> * > 
 	}
 	
 	attribute = Attribute();
-	if (literal->second->at(1) == 0) {
+	if (literal->second) {
 		attribute.addSupported(Interval(at, at));
 	}
 	else {
@@ -397,6 +397,56 @@ bool Data::addInit(pair< pair< vector< string > *, string *> *, vector<int> * > 
 	m_inits->push_back(make_pair(new Fluent(predicate, members_list), attribute));
 	
 	return true;
+}
+
+bool Data::addGoals(vector< vector< pair< pair< vector< string > *, std::string *> * , vector<int>* >* > * > * pre_GD) { 
+	vector<Member *> members_list = vector<Member *> ();
+	Member * member;
+	vector< vector<Type*> > type_list;
+	Predicate * predicate;
+	Attribute  att;
+	
+	for (vector< vector< pair< pair< vector< string > *, std::string *> * , vector<int>* >* > * >::reverse_iterator it_main = pre_GD->rbegin(); it_main != pre_GD->rend(); it_main++) {
+		for(vector< pair< pair<vector<string> *,string *> * ,vector<int>*> * >::reverse_iterator it = (*it_main)->rbegin(); it != (*it_main)->rend(); ++it){
+			type_list = vector< vector<Type*> >();
+			for (vector<string>::reverse_iterator it_member =(*it)->first->first->rbegin(); it_member != (*it)->first->first->rend(); ++it_member){
+				if (isConstant(*it_member)) {
+					member = getConstant(*it_member);
+				}
+				else {
+					if (isObject(*it_member)) {
+						member = getObject(*it_member);
+					}
+					else {
+						lexical_error((*it_member) + " is nor a Constant nor an Object");
+						return false;
+					}
+				}
+				members_list.push_back(member);
+				type_list.push_back(*(member->getTypes()));
+			}
+			
+			if (isPredicate((*it)->first->second, type_list)) {
+				predicate = getPredicate((*it)->first->second, type_list);
+			}
+			else {
+				fatal_error("Predicate \""+ *(*it)->first->second +"\" not found");
+				return false;
+			}
+			
+			
+			att =  Attribute();
+			att.addSupported(Interval(0.,0.));
+			
+			m_goals->push_back(make_pair(new Fluent(predicate, members_list), att));
+		}
+	}
+	
+	return true;
+}
+
+vector<pair<Fluent*, Attribute> > * Data::getGoals() {
+	return m_goals;
 }
 
 void Data::display() {
@@ -437,6 +487,12 @@ void Data::display() {
 	if (m_inits->size() != 0) {
 		cout << "Inits : " << endl;
 		for(vector<pair<Fluent*, Attribute> >::iterator it = m_inits->begin(); it != m_inits->end(); ++it)
+			cout << "\t" << (*it).first->to_string() << " <-> " << (*it).second.to_string() << endl;
+	}
+	
+	if (m_goals->size() != 0) {
+		cout << "Goals : " << endl;
+		for(vector<pair<Fluent*, Attribute> >::iterator it = m_goals->begin(); it != m_goals->end(); ++it)
 			cout << "\t" << (*it).first->to_string() << " <-> " << (*it).second.to_string() << endl;
 	}
 	
@@ -627,7 +683,9 @@ bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,f
 				case 2: // over all
 					att.addSupported(Interval(0.,durative));
 					break;
-				default:perror("");
+				default:
+					perror("");
+					return false;
 				}
 			if  (!(*it)->second->at(1)){
 				action->addCondition(att,fluent);
@@ -673,7 +731,9 @@ bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,f
 				case 2: // over all
 					att.addSupported(Interval(0.,durative));
 					break;
-				default:perror("");
+				default:
+					perror("");
+					return false;
 				}
 			if  (!(*it)->second->at(1)){
 				action->addEffect(att,fluent);
