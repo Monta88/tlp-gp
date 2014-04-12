@@ -28,8 +28,9 @@ public:
 	Data();
 	virtual ~Data();
 	void addDomain(string * name);
-	bool isDomain(string * name);
 	Domain * getDomain();
+	Problem * getProblem();
+	bool isDomain(string * name);
 	bool addRequirement(int req);
 	bool isRequirement(int req);
 	bool addTypes(std::vector<TypedList*> * typedList_list);
@@ -50,34 +51,34 @@ public:
 	bool isObject(string object);
 	Object * getObject(string object);
 	bool addInit(pair< pair< vector< string > *, string *> *, vector<int> * > * literal, float at);
-	vector<pair<Fluent*, Attribute> > getInits();
+	vector<pair<Fluent*, Attribute> > * getInits();
 	bool isAction(string const * name);
-	vector<DurativeAction*> getActions();
+	vector<DurativeAction*> * getActions();
 	void display();
 	void lexical_error(string msg);
 	void fatal_error(string msg);
 	//duratives-actions functions
-	DurativeAction * addDurationAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_effects);
+	bool addDurativeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_effects);
 	Fluent * getFluent(string name,vector< vector<Type*> >);
 
 
 private:
-	Domain * m_domain;
+	string m_domain;
 	vector<int> m_requirements;
 	vector<string> m_type_list;
 	vector<string> m_list_name_action;
 	vector<string> m_constant_list;
-	vector<Type*> m_types;
-	vector<Constant*> m_constants;
-	vector<Predicate*> m_predicates;
-	vector<Function*> m_functions;	
+	vector<Type*> * m_types;
+	vector<Constant*> * m_constants;
+	vector<Predicate*> * m_predicates;
+	vector<Function*> * m_functions;	
+	vector<DurativeAction*> * m_actions;	
 	
-	vector<DurativeAction*> m_actions;	
-	
-	Problem m_problem;
+	string m_problem;
 	vector<string> m_object_list;
-	vector<Object*> m_objects;
-	vector<pair<Fluent*, Attribute> > m_inits;
+	vector<Object*> * m_objects;
+	vector<pair<Fluent*, Attribute> > * m_inits;
+	vector<pair<Fluent*, Attribute> > * m_goals;
 	
 	vector<string> m_errors;
 };

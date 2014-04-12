@@ -4,31 +4,31 @@
 #include <iostream>
 
 Data::Data() {
-	m_domain = new Domain();
 	m_requirements = vector<int> ();
 	m_type_list = vector<string> ();
 	m_constant_list = vector<string> ();
-	m_types = vector<Type*> ();
-	m_constants = vector<Constant*> ();
-	m_predicates = vector<Predicate*> ();
-	m_functions = vector<Function*> ();
+	m_types = new vector<Type*> ();
+	m_constants = new vector<Constant*> ();
+	m_predicates = new vector<Predicate*> ();
+	m_functions = new vector<Function*> ();
+	m_actions = new vector<DurativeAction*> ();
 	
-	m_problem = Problem();
 	m_object_list = vector<string> ();
-	m_objects = vector<Object*> ();
-	m_inits = vector<pair<Fluent*, Attribute> > ();
+	m_objects = new vector<Object*> ();
+	m_inits = new vector<pair<Fluent*, Attribute> > ();
+	m_goals = new vector<pair<Fluent*, Attribute> > ();
 	
 	// this type always exists and shouldn't be defined by the user in pddl file
-	m_types.push_back(new Type("object"));
+	m_types->push_back(new Type("object"));
 	m_type_list.push_back("object");
-	m_types.push_back(new Type("objects"));
+	m_types->push_back(new Type("objects"));
 	m_type_list.push_back("objects");
-	m_types.push_back(new Type("Object"));
+	m_types->push_back(new Type("Object"));
 	m_type_list.push_back("Object");
-	m_types.push_back(new Type("Objects"));
+	m_types->push_back(new Type("Objects"));
 	m_type_list.push_back("Objects");
 	// for functions
-	m_types.push_back(new Type("number"));
+	m_types->push_back(new Type("number"));
 	m_type_list.push_back("number");
 	
 	m_errors = vector<string> ();
@@ -37,11 +37,31 @@ Data::Data() {
 Data::~Data() {}
 
 void Data::addDomain(string * name) {
-	m_domain = new Domain(*name);
+	m_domain = *name;
+}
+
+Domain * Data::getDomain() {
+	Domain * domain = new Domain(m_domain);
+	domain->addTypes(m_types);
+	domain->addConstants(m_constants);
+	domain->addPredicates(m_predicates);
+	domain->addFunctions(m_functions);
+	domain->addActions(m_actions);
+	
+	return domain;
+}
+
+Problem * Data::getProblem() {
+	Problem * problem = new Problem(m_problem);
+	problem->addObjects(m_objects);
+	problem->addInits(m_inits);
+	problem->addGoals(m_goals);
+	
+	return problem;
 }
 
 bool Data::isDomain(string * name) {
-	return (m_domain->getName() == (*name));
+	return (m_domain == (*name));
 }
 
 bool Data::addRequirement(int req) {
@@ -73,7 +93,7 @@ bool Data::addTypes(std::vector<TypedList*> * typedList_list) {
 				return false;
 			}
 			m_type_list.push_back(*it_type);
-			m_types.push_back(new Type(*it_type, parents));
+			m_types->push_back(new Type(*it_type, parents));
 		}
 	}
 	return true;
@@ -84,7 +104,7 @@ bool Data::isType(string type) {
 }
 
 Type * Data::getType(string name) {
-	for (vector<Type*>::iterator it = m_types.begin(); it != m_types.end(); ++it) {
+	for (vector<Type*>::iterator it = m_types->begin(); it != m_types->end(); ++it) {
 		if ((*it)->getName() == name) {
 			return (*it);
 		}
@@ -110,7 +130,7 @@ bool Data::addConstants(vector<TypedList*> * typedList_list) {
 				return false;
 			}
 			m_constant_list.push_back(*it_constant);
-			m_constants.push_back(new Constant(*it_constant, types));
+			m_constants->push_back(new Constant(*it_constant, types));
 		}
 	}
 	return true;
@@ -121,7 +141,7 @@ bool Data::isConstant(string constant) {
 }
 
 Constant * Data::getConstant(string constant) {
-	for (vector<Constant*>::iterator it = m_constants.begin(); it != m_constants.end(); ++it) {
+	for (vector<Constant*>::iterator it = m_constants->begin(); it != m_constants->end(); ++it) {
 		if ((*it)->getName() == constant) {
 			return *it;
 		}
@@ -152,7 +172,7 @@ bool Data::addPredicate(string * name, vector<TypedList*> * typedList_list) {
 			types_list.push_back(types);
 		}
 	}
-	m_predicates.push_back(new Predicate(*name, types_list));
+	m_predicates->push_back(new Predicate(*name, types_list));
 	return true;
 }
 
@@ -163,7 +183,7 @@ bool Data::isPredicate(string * name, vector<TypedList*> * typedList_list) {
 		nb_parameters += (*it)->getList()->size();
 	}
 	
-	for (vector<Predicate*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
+	for (vector<Predicate*>::iterator it_predicate = m_predicates->begin(); it_predicate != m_predicates->end(); ++it_predicate) {
 		if ((*name) == (*it_predicate)->getName()) {
 			if (nb_parameters == 0) {
 				return true;
@@ -241,7 +261,7 @@ bool Data::addFunction(string * name, vector<Type*> return_type, vector<TypedLis
 			types_list.push_back(types);
 		}
 	}
-	m_functions.push_back(new Function(*name, return_type, types_list));
+	m_functions->push_back(new Function(*name, return_type, types_list));
 	return true;
 }
 
@@ -252,7 +272,7 @@ bool Data::isFunction(string * name, vector<TypedList*> * typedList_list) {
 		nb_parameters += (*it)->getList()->size();
 	}
 	
-	for (vector<Function*>::iterator it_function = m_functions.begin(); it_function != m_functions.end(); ++it_function) {
+	for (vector<Function*>::iterator it_function = m_functions->begin(); it_function != m_functions->end(); ++it_function) {
 		if ((*name) == (*it_function)->getName()) {
 			if (nb_parameters == 0) {
 				return true;
@@ -289,7 +309,7 @@ bool Data::isFunction(string * name, vector<TypedList*> * typedList_list) {
 }
 
 void Data::addProblem(string * name) {
-	m_problem = Problem(*name, m_domain);
+	m_problem = *name;
 }
 
 bool Data::addObjects(vector<TypedList*> * typedList_list) {
@@ -309,7 +329,7 @@ bool Data::addObjects(vector<TypedList*> * typedList_list) {
 				return false;
 			}
 			m_object_list.push_back(*it_object);
-			m_objects.push_back(new Object(*it_object, types));
+			m_objects->push_back(new Object(*it_object, types));
 		}
 	}
 	return true;
@@ -324,7 +344,7 @@ bool Data::isObject(string object) {
 }
 
 Object * Data::getObject(string object) {
-	for (vector<Object*>::iterator it = m_objects.begin(); it != m_objects.end(); ++it) {
+	for (vector<Object*>::iterator it = m_objects->begin(); it != m_objects->end(); ++it) {
 		if ((*it)->getName() == object) {
 			return *it;
 		}
@@ -374,49 +394,49 @@ bool Data::addInit(pair< pair< vector< string > *, string *> *, vector<int> * > 
 		attribute.addNotSupported(Interval(at, at));
 	}
 	
-	m_inits.push_back(make_pair(new Fluent(predicate, members_list), attribute));
+	m_inits->push_back(make_pair(new Fluent(predicate, members_list), attribute));
 	
 	return true;
 }
 
 void Data::display() {
-	cout << "Domain : " << m_domain->getName() << endl;
+	cout << "Domain : " << m_domain << endl;
 	
-	if (m_types.size() != 0) {
+	if (m_types->size() != 0) {
 		cout << "Types : " << endl;
-		for(vector<Type*>::iterator it = m_types.begin(); it != m_types.end(); ++it)
+		for(vector<Type*>::iterator it = m_types->begin(); it != m_types->end(); ++it)
 			cout << "\t" << (*it)->to_string() << endl;
 	}
 	
-	if (m_constants.size() != 0) {
+	if (m_constants->size() != 0) {
 		cout << "Constants : " << endl;
-		for(vector<Constant*>::iterator it = m_constants.begin(); it != m_constants.end(); ++it)
+		for(vector<Constant*>::iterator it = m_constants->begin(); it != m_constants->end(); ++it)
 			cout << "\t" << (*it)->to_string() << endl;
 	}
 	
-	if (m_predicates.size() != 0) {
+	if (m_predicates->size() != 0) {
 		cout << "Predicates : " << endl;
-		for(vector<Predicate*>::iterator it = m_predicates.begin(); it != m_predicates.end(); ++it)
+		for(vector<Predicate*>::iterator it = m_predicates->begin(); it != m_predicates->end(); ++it)
 			cout << "\t" << (*it)->to_string() << endl;
 	}
 	
-	if (m_functions.size() != 0) {
+	if (m_functions->size() != 0) {
 		cout << "Functions : " << endl;
-		for(vector<Function*>::iterator it = m_functions.begin(); it != m_functions.end(); ++it)
+		for(vector<Function*>::iterator it = m_functions->begin(); it != m_functions->end(); ++it)
 			cout << "\t" << (*it)->to_string() << endl;
 	}
 	
-	cout << "Problem : " << m_problem.getName() << endl;
+	cout << "Problem : " << m_problem << endl;
 	
-	if (m_objects.size() != 0) {
+	if (m_objects->size() != 0) {
 		cout << "Objects : " << endl;
-		for(vector<Object*>::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+		for(vector<Object*>::iterator it = m_objects->begin(); it != m_objects->end(); ++it)
 			cout << "\t" << (*it)->to_string() << endl;
 	}
 	
-	if (m_inits.size() != 0) {
+	if (m_inits->size() != 0) {
 		cout << "Inits : " << endl;
-		for(vector<pair<Fluent*, Attribute> >::iterator it = m_inits.begin(); it != m_inits.end(); ++it)
+		for(vector<pair<Fluent*, Attribute> >::iterator it = m_inits->begin(); it != m_inits->end(); ++it)
 			cout << "\t" << (*it).first->to_string() << " <-> " << (*it).second.to_string() << endl;
 	}
 	
@@ -426,9 +446,9 @@ void Data::display() {
 			cout << "\t" << (*it) << endl;
 	}
 	
-	if (m_actions.size() != 0) {
+	if (m_actions->size() != 0) {
 		cout << "Actions :" << endl;
-		for(vector<DurativeAction*>::iterator it = m_actions.begin(); it != m_actions.end(); ++it)
+		for(vector<DurativeAction*>::iterator it = m_actions->begin(); it != m_actions->end(); ++it)
 			cout << "\t" << (*it)->to_string() << endl;
 	}
 	
@@ -445,10 +465,6 @@ void Data::fatal_error(string msg) {
 	exit(1);
 }
 
-Domain * Data::getDomain(){
-	return m_domain;
-}
-
 //duratives-actions functions
 
 bool Data::isAction(string const * name){
@@ -462,7 +478,7 @@ bool Data::isPredicate(string * name,vector< vector<Type*> > types) {
 		nb_parameters += (*it).size();
 	}
 	
-	for (vector<Predicate*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
+	for (vector<Predicate*>::iterator it_predicate = m_predicates->begin(); it_predicate != m_predicates->end(); ++it_predicate) {
 		if ((*name) == (*it_predicate)->getName()) {
 			if (nb_parameters == 0) {
 				return true;
@@ -502,7 +518,7 @@ Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types) {
 		nb_parameters += (*it).size();
 	}
 	
-	for (vector<Predicate*>::iterator it_predicate = m_predicates.begin(); it_predicate != m_predicates.end(); ++it_predicate) {
+	for (vector<Predicate*>::iterator it_predicate = m_predicates->begin(); it_predicate != m_predicates->end(); ++it_predicate) {
 		if ((*name) == (*it_predicate)->getName()) {
 			if (nb_parameters == 0) {
 				return *it_predicate;
@@ -537,7 +553,7 @@ Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types) {
 	return NULL;
 }
 
-DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_effects){
+bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_effects){
 
 	DurativeAction * action; 
 	vector<Type *> types;
@@ -548,6 +564,7 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 	//action name
 	if (isAction(name)){
 			lexical_error("The " + *name + " action already exists with the same name");
+			return false;
 	} else { 
 		action = new DurativeAction(*name);
 		//action parameters
@@ -557,12 +574,14 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 			for (vector<string>::reverse_iterator it2 = (*it)->getTypes()->rbegin(); it2 != (*it)->getTypes()->rend(); ++it2){
 				 if (! isType(*it2)){
 					lexical_error("The type " + (*it2) +" doesn't exist");
+					return false;
 				}
 				types.push_back(getType(*it2));
 			}
 			for (vector<string>::reverse_iterator it2 =(*it)->getList()->rbegin(); it2 != (*it)->getList()->rend();++it2){					
 				if (  action->isVariable(*it2)){
 					lexical_error("In action " + action->getName() + "The " + (*it2) + " variable already exist");
+					return false;
 				}	
 				action->addParameters( new Variable(*it2,types) );					
 			}
@@ -578,6 +597,7 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 			for (vector<string>::reverse_iterator it2 =(*it)->first->first->rbegin(); it2 != (*it)->first->first->rend(); ++it2){
 				if( !(action->isVariable(*it2)) ){
 					lexical_error("In action " + action->getName() + "The variable " + (*it2) + " don't exist");
+					return false;
 				}
 				type_list.push_back(*(action->getVariable(*it2)->getTypes()));
 				variable_list.push_back(action->getVariable(*it2));	
@@ -585,12 +605,14 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 			// predicate existence verification 
 			if(!(isPredicate((*it)->first->second,type_list))){
 				lexical_error(("In action " + action->getName() + ", the predicate  "+ *(*it)->first->second +"  don't exist").c_str());
+				return false;
 			}
 			if (isPredicate((*it)->first->second, type_list)) {
 				fluent = new Fluent (getPredicate((*it)->first->second, type_list));
 			}
 			else {
 				fatal_error("Predicate \""+ *(*it)->first->second +"\" not found");
+				return false;
 			}
 			
 			
@@ -622,6 +644,7 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 			for (vector<string>::reverse_iterator it2 =(*it)->first->first->rbegin(); it2 != (*it)->first->first->rend(); ++it2){
 				if( !(action->isVariable(*it2)) ){
 					lexical_error("In action " + action->getName() + ", The variable" + (*it2) + " don't exist");
+					return false;
 				}
 				type_list.push_back(*(action->getVariable(*it2)->getTypes()));
 				variable_list.push_back(action->getVariable(*it2));	
@@ -629,12 +652,14 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 			// predicate existence verification 
 			if(!(isPredicate((*it)->first->second,type_list))){
 				lexical_error("In action " + action->getName() + ", The action  "+ *(*it)->first->second + " don't exist");
+				return false;
 			}
 			if (isPredicate((*it)->first->second, type_list)) {
 				fluent = new Fluent (getPredicate((*it)->first->second, type_list));
 			}
 			else {
 				fatal_error("Predicate \""+ *(*it)->first->second +"\" not found");
+				return false;
 			}
 			
 			att =  Attribute();
@@ -656,17 +681,16 @@ DurativeAction * Data::addDurationAction(string * name,vector<TypedList*> * type
 				action->addNotEffect(att,fluent);
 			}
 		}
-	m_list_name_action.push_back(action->getName());
-	m_actions.push_back(action);
-	return action;
+		m_list_name_action.push_back(action->getName());
+		m_actions->push_back(action);
 	}
-	return new DurativeAction("inxistant");
+	return true;
 }
 
-vector<pair<Fluent*, Attribute> > Data::getInits(){
+vector<pair<Fluent*, Attribute> > * Data::getInits(){
 	return m_inits;
 }
 
-vector<DurativeAction*> Data::getActions(){
+vector<DurativeAction*> * Data::getActions(){
 	return m_actions;
 }

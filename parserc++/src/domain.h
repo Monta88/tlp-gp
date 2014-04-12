@@ -5,11 +5,13 @@
 
 #include <string> 
 #include <vector>
-#include "constant.h"
 #include "type.h"
-#include "fluent.h"
+#include "constant.h"
+#include "predicate.h"
+#include "function.h"
 #include "action.h"
 #include "durative_action.h"
+
 using namespace std;
 
 
@@ -21,18 +23,19 @@ class Domain {
 		string getName();
 		string to_string();
 		vector<string> listNameAction();
-		void addType(Type * type);
-		void addPredicate(Predicate * predicate);
-		void addDurativeAction(DurativeAction * action);
-		vector<DurativeAction *> getActions();
-		
-		
+		void addTypes(vector<Type*> * types);
+		void addConstants(vector<Constant*> * constants);
+		void addPredicates(vector<Predicate*> * predicates);
+		void addFunctions(vector<Function*> * functions);
+		void addActions(vector<DurativeAction*> * actions);
+		vector<DurativeAction *> * getActions();
 	private:
 		string m_name;
-		vector<Constant*> m_constants;
-		vector<Type*> m_types; 
-		vector<Predicate*> m_predicates; 
-		vector<DurativeAction *> m_actions; 
+		vector<Type*> * m_types;
+		vector<Constant*> * m_constants;
+		vector<Predicate*> * m_predicates;
+		vector<Function*> * m_functions;
+		vector<DurativeAction *> * m_actions;
 };
 
 #endif // DOMAIN_H

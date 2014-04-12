@@ -644,7 +644,8 @@ assign_op:
 
 durative_action_def:
 	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P da_def_body R_P {
-		Parser::getData()->getDomain()->addDurativeAction(Parser::getData()->addDurationAction($3.name,$6.typedList_list,$8.cond_eff_durative->second,$8.cond_eff_durative->first->first,$8.cond_eff_durative->first->second));
+		if(!Parser::addDurativeAction($3.name,$6.typedList_list,$8.cond_eff_durative->second,$8.cond_eff_durative->first->first,$8.cond_eff_durative->first->second))
+			Parser::lexical_error("Error in :durative-action");
 	
 	
 	};

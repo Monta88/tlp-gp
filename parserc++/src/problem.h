@@ -6,38 +6,36 @@
 
 #include <string>
 #include <vector>
-#include "domain.h"
-#include "variable.h"
+#include "object.h"
 #include "fluent.h"
+#include "attribute.h"
 
 using namespace std;
 
 
 class Problem {
 	public:
-		Problem(string name,Domain * domain);
+		Problem(string name);
 		Problem();
 		~Problem();
 		string getName();
-		Domain * getDomain();
-
-		const vector<pair<Fluent*, vector<Variable*> > >& getGoals() const {
+		
+		const vector<pair<Fluent*, Attribute> > * getGoals() const {
 			return m_goals;
 		}
 
-		const vector<pair<Fluent*, vector<Variable*> > >& getInits() const {
+		const vector<pair<Fluent*, Attribute> > * getInits() const {
 			return m_inits;
 		}
 
-		/*void add_Object(Variable *);
-		void add_Init(Fluent *fluent,vector<Variable *> vars);
-		void add_Goal(Fluent *fluent,vector<Variable *> vars);*/
+		void addObjects(vector<Object*> * objects);
+		void addInits(vector<pair<Fluent*, Attribute> > * inits);
+		void addGoals(vector<pair<Fluent*, Attribute> > * goals);
 	private:
 		string m_name;
-		Domain * m_domain;
-		vector<Variable *> m_objects;
-		vector< pair< Fluent *,vector<Variable *> > >  m_inits;
-		vector< pair< Fluent *,vector<Variable *> > >  m_goals;
+		vector<Object*> * m_objects;
+		vector<pair<Fluent*, Attribute> > * m_inits;
+		vector<pair<Fluent*, Attribute> > * m_goals;
 };
 
 #endif // PROBLEM_H
