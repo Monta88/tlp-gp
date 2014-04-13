@@ -35,16 +35,16 @@ void Graph::generateGraph() {
 	actions = m_dataptr->getActions();
 	//actions = data->getDomain()->getActions();
 
-	cout << "(test) Inits : " << inits.size() << endl;
+	cout << "(generateGraph) Inits : " << inits.size() << endl;
 	for(auto it = inits.begin()+1; it != inits.end(); ++it) //error with the first element
 		cout << "\t" << (*it).first->to_string() << endl;
 
-	cout << "(test) Actions : " << actions.size()<< endl;
+	cout << "(generateGraph) Actions : " << actions.size()<< endl;
 	for(auto it_act = actions.begin()+1; it_act != actions.end(); ++it_act) {//error with the first element
 		cout << "\n" <<(*it_act)->getName() << endl;
 
 		vect = (*it_act)->getPreconditions();
-		cout << "preconditions size:" << vect.size() << endl;
+		cout << "(generateGraph) preconditions size:" << vect.size() << endl;
 		for(auto it = vect.begin(); it != vect.end();++it){
 			if(vect.size() != 0)
 				cout << (*it)->to_string() <<endl;
@@ -52,7 +52,7 @@ void Graph::generateGraph() {
 		}
 
 		vect2 = (*it_act)->getEffects();
-		cout << "effects size:" << vect2.size() << endl;
+		cout << "(generateGraph) effects size:" << vect2.size() << endl;
 		for(auto it = vect2.begin(); it != vect2.end(); ++it){
 			if(vect2.size() != 0)
 				cout << (*it).second->to_string() <<endl;
@@ -60,7 +60,7 @@ void Graph::generateGraph() {
 		}
 
 		vect2 = (*it_act)->getNotEffects();
-		cout << "not_effects size:" << vect2.size() << endl;
+		cout << "(generateGraph) not_effects size:" << vect2.size() << endl;
 		for(auto it= vect2.begin(); it != vect2.end(); ++it){
 			if(vect2.size() != 0)
 				cout << it->second->to_string() <<endl;
@@ -68,6 +68,35 @@ void Graph::generateGraph() {
 		}
 	}
 
-	cout << "\nGRAPH: END OF PRINT" <<endl;
+	for(auto it_act = actions.begin()+1; it_act != actions.end(); ++it_act) {//error with the first element
+		actionUsable(*it_act, inits);
+	}
+
+	cout << "\n(generateGraph): END OF PRINT" <<endl;
 }
 
+bool Graph::actionUsable(DurativeAction* action, vector<pair<Fluent*, Attribute> > var){
+	bool res = true;
+	vector< Fluent *> vect ;
+	vector<pair<Fluent*, Attribute> > vect2 ;
+	Fluent *fluent;
+
+	vect = action->getPreconditions();
+	vect2 = var;
+
+	cout << "\n" << "(actionUsable)"<< action->getName() << endl;
+	cout << vect.size() <<" "<< vect2.size() <<endl;
+
+	for(auto it = vect.begin(); it != vect.end(); ++it){
+		cout << (*it)->to_string() <<endl;
+		for(auto it_var = vect2.begin(); it_var != vect2.end(); ++it_var){
+			fluent = (*it_var).first ;
+			//cout << (*it)->to_string() << " " << (*it_var).first->to_string() <<endl;
+			cout << "plop" <<endl;
+			cout << fluent->getPredicate()->getName() << endl;
+			//cout << "\t" << (*it_var).first->to_string() <<endl;
+		}
+	}
+
+	return res;
+}

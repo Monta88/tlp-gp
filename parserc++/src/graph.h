@@ -25,6 +25,7 @@ public:
 	virtual ~Graph();
 
 	void generateGraph();
+	bool actionUsable(DurativeAction *action, vector<pair<Fluent*, Attribute> > var);
 private:
 	Data *m_dataptr;
 };
