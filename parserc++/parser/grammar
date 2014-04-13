@@ -9,21 +9,19 @@
 
 %union
 {
+	int integer;
+	float number;
 	std::string * name;
 	std::vector<std::string> * list_name;
 	std::pair< std::vector< std::string > *, std::string *> * atomic_formula;
 	std::vector<TypedList*> * typedList_list;
 	std::pair< std::string*, std::vector<TypedList*>* > * function_skeleton;
-	std::vector< std::pair< std::string*, std::vector<TypedList*>* >* > * function_skeleton_list;
-	std::pair< std::pair< std::vector< std::string > *, std::string *> *, bool > * literal;
-	std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * > * pre_GD;
-	
-	//durativeaction
-	float number;	
-	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * GD;
-	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * cond_effect;
-	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > *> *,float> * da_def_body;
-	int integer;
+	std::vector< std::pair< std::string*, std::vector<TypedList*> * > * > * function_skeleton_list;
+	std::pair< std::pair< std::vector< std::string > *, std::string*> *, bool > * literal;
+	std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > * > * pre_GD;
+	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int > * > * GD;
+	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int > * > * cond_effect;
+	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > *> *, float> * da_def_body;
 }
 
 %token 	L_P
@@ -212,27 +210,46 @@ require_def:
 /* <require-key> */
 
 require_key:
-	STRIPS						{Parser::addRequirement(STRIPS);}
-	| TYPING					{Parser::addRequirement(TYPING);}
-	| NEGATIVE_PRECONDITIONS	{Parser::addRequirement(NEGATIVE_PRECONDITIONS);}
-	| DISJUNCTIVE_PRECONDITIONS	{Parser::addRequirement(DISJUNCTIVE_PRECONDITIONS);}
-	| EQUALITY					{Parser::addRequirement(EQUALITY);}
-	| EXISTENTIAL_PRECONDITIONS	{Parser::addRequirement(EXISTENTIAL_PRECONDITIONS);}
-	| UNIVERSAL_PRECONDITIONS	{Parser::addRequirement(UNIVERSAL_PRECONDITIONS);}
-	| QUANTIFIED_PRECONDITIONS	{
+	STRIPS {
+		Parser::addRequirement(STRIPS);
+	}
+	| TYPING {
+		Parser::addRequirement(TYPING);
+	}
+	| NEGATIVE_PRECONDITIONS {
+		Parser::addRequirement(NEGATIVE_PRECONDITIONS);
+	}
+	| DISJUNCTIVE_PRECONDITIONS {
+		Parser::addRequirement(DISJUNCTIVE_PRECONDITIONS);
+	}
+	| EQUALITY {
+		Parser::addRequirement(EQUALITY);}
+	| EXISTENTIAL_PRECONDITIONS {
+		Parser::addRequirement(EXISTENTIAL_PRECONDITIONS);
+	}
+	| UNIVERSAL_PRECONDITIONS {
+		Parser::addRequirement(UNIVERSAL_PRECONDITIONS);
+	}
+	| QUANTIFIED_PRECONDITIONS {
 		Parser::addRequirement(QUANTIFIED_PRECONDITIONS);
 		Parser::addRequirement(EXISTENTIAL_PRECONDITIONS);
 		Parser::addRequirement(UNIVERSAL_PRECONDITIONS);
 	}
-	| CONDITIONAL_EFFECTS		{Parser::addRequirement(CONDITIONAL_EFFECTS);}
-	| FLUENTS					{
+	| CONDITIONAL_EFFECTS {
+		Parser::addRequirement(CONDITIONAL_EFFECTS);
+	}
+	| FLUENTS {
 		Parser::addRequirement(FLUENTS);
 		Parser::addRequirement(NUMERIC_FLUENTS);
 		Parser::addRequirement(OBJECT_FLUENTS);
 	}
-	| NUMERIC_FLUENTS			{Parser::addRequirement(NUMERIC_FLUENTS);}
-	| OBJECT_FLUENTS			{Parser::addRequirement(OBJECT_FLUENTS);}
-	| ADL						{
+	| NUMERIC_FLUENTS {
+		Parser::addRequirement(NUMERIC_FLUENTS);
+	}
+	| OBJECT_FLUENTS {
+		Parser::addRequirement(OBJECT_FLUENTS);
+	}
+	| ADL {
 		Parser::addRequirement(STRIPS);
 		Parser::addRequirement(TYPING);
 		Parser::addRequirement(NEGATIVE_PRECONDITIONS);
@@ -241,18 +258,32 @@ require_key:
 		Parser::addRequirement(QUANTIFIED_PRECONDITIONS);
 		Parser::addRequirement(CONDITIONAL_EFFECTS);
 	}
-	| DURATIVE_ACTIONS			{Parser::addRequirement(DURATIVE_ACTIONS);}
-	| DURATION_INEQUALITIES		{Parser::addRequirement(DURATION_INEQUALITIES);}
-	| CONTINUOUS_EFFECTS		{Parser::addRequirement(CONTINUOUS_EFFECTS);}
-	| DERIVED_PREDICATES		{Parser::addRequirement(DERIVED_PREDICATES);}
-	| TIMED_INITIAL_LITERALS	{
+	| DURATIVE_ACTIONS {
+		Parser::addRequirement(DURATIVE_ACTIONS);
+	}
+	| DURATION_INEQUALITIES {
+		Parser::addRequirement(DURATION_INEQUALITIES);
+	}
+	| CONTINUOUS_EFFECTS {
+		Parser::addRequirement(CONTINUOUS_EFFECTS);
+	}
+	| DERIVED_PREDICATES {
+		Parser::addRequirement(DERIVED_PREDICATES);
+	}
+	| TIMED_INITIAL_LITERALS {
 		Parser::addRequirement(TIMED_INITIAL_LITERALS);
 		Parser::addRequirement(DURATIVE_ACTIONS);
 	}
-	| PREFERENCES				{Parser::addRequirement(PREFERENCES);}
-	| CONSTRAINTS				{Parser::addRequirement(CONSTRAINTS);}
-	| ACTION_COSTS				{Parser::addRequirement(ACTION_COSTS);}
-	| TEMPORALLY_EXTENDED		{
+	| PREFERENCES {
+		Parser::addRequirement(PREFERENCES);
+	}
+	| CONSTRAINTS {
+		Parser::addRequirement(CONSTRAINTS);
+	}
+	| ACTION_COSTS {
+		Parser::addRequirement(ACTION_COSTS);
+	}
+	| TEMPORALLY_EXTENDED {
 		Parser::addRequirement(TEMPORALLY_EXTENDED);
 		Parser::addRequirement(DURATIVE_ACTIONS);
 	}
@@ -422,7 +453,7 @@ action_def_body_option2:
 
 pre_GD:
 	pref_GD {
-		$$.pre_GD = new std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > * > ();
+		$$.pre_GD = new std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > * > ();
 		$$.pre_GD->push_back($1.GD);
 	}
 	| L_P AND list_pre_GD R_P {
@@ -459,11 +490,9 @@ pref_name:
 
 GD:
 	atomic_formula_term	{	
-		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
-		vector<int>* init= new vector<int>();
-		init->push_back(0);
-		init->push_back(0);
-		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>*  >($1.atomic_formula,init) );
+		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >  ();	
+		int init = 0b0;
+		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula,init) );
 	}	
 	| literal_term {
 		if (!Parser::isRequirement(NEGATIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :negative-preconditions is needed");
@@ -477,7 +506,10 @@ GD:
 	}
 	| L_P NOT GD R_P {
 		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
-		$3.GD->front()->second->at(1) = 1 ;
+		if ($3.GD->front()->second & 0b01)
+			$3.GD->front()->second -= 0b01;
+		else
+			$3.GD->front()->second += 0b01;
 		$$.GD=$3.GD;
 	}
 	| L_P IMPLY GD GD R_P {
@@ -605,18 +637,14 @@ c_effect:
 
 p_effect:
 	L_P NOT atomic_formula_term R_P {	
-		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > ();
-		vector<int>* init= new vector<int>();
-		init->push_back(0);
-		init->push_back(1);
-		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >($3.atomic_formula,init));
+		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();
+		int init = 0b01;
+		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> *, int > ($3.atomic_formula,init));
 	}
 	| atomic_formula_term	{			
-		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > ();
-		vector<int>*  init= new vector<int>();
-		init->push_back(0);
-		init->push_back(0);
-		$$.GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >($1.atomic_formula,init));
+		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();
+		int init = 0b0;
+		$$.GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula,init));
 	}
 	| L_P assign_op f_head f_exp {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
@@ -672,9 +700,9 @@ da_symbol:
 
 da_def_body:
 	DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect  { 
-		std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> ($4.GD,$6.cond_effect);
+		std::pair< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *> ($4.GD,$6.cond_effect);
 
-		$$.da_def_body=new std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> *,float> (a,$2.number );
+		$$.da_def_body=new std::pair< std::pair< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *> *, float> (a, $2.number);
 	};
 
 /* <da-GD> */
@@ -711,14 +739,14 @@ pref_name_option1:
 
 timed_GD:
 	L_P AT time_specifier GD R_P {
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it=$4.GD->begin();it != $4.GD->end(); ++it){
-			(*it)->second->at(0)=$3.integer;
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.GD->begin(); it != $4.GD->end(); ++it){
+			(*it)->second += 1 << $3.integer;
 		}
 		$$.GD=$4.GD;
 	}
 	| L_P OVER interval GD R_P {	
-		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it=$4.GD->begin(); it != $4.GD->end(); ++it){
-			(*it)->second->at(0)=$3.integer;
+		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.GD->begin(); it != $4.GD->end(); ++it){
+			(*it)->second += 1 << $3.integer;
 		}
 		$$.GD=$4.GD;
 	}
@@ -728,10 +756,10 @@ timed_GD:
 
 time_specifier:
 	START {
-		$$.integer= 0;
+		$$.integer = 1;
 	}
 	| END {
-		$$.integer= 1;
+		$$.integer = 2;
 	}
 	;
 
@@ -739,7 +767,7 @@ time_specifier:
 
 interval:
 	ALL {
-		$$.integer= 2;
+		$$.integer = 3;
 	}
 	;
 
@@ -810,8 +838,8 @@ da_effect:
 
 timed_effect:
 	L_P AT time_specifier cond_effect R_P { 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
-			(*it)->second->at(0)=$3.integer;
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
+			(*it)->second += 1 << $3.integer;
 		}	
 		$$.cond_effect=$4.cond_effect;
 	}		
@@ -1302,7 +1330,7 @@ emptyOr_effect:
 
 emptyOr_da_GD:
 	L_P R_P	{
-		$$.GD =new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
+		$$.GD =new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
 	}
 	| da_GD	{
 		$$.GD= $1.GD; 
@@ -1311,7 +1339,7 @@ emptyOr_da_GD:
 
 emptyOr_da_effect:
 	L_P R_P	{
-		$$.cond_effect = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
+		$$.cond_effect = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
 	}
 	| da_effect {
 		$$.cond_effect=$1.cond_effect;
@@ -1332,18 +1360,14 @@ emptyOr_te_da_effect:
 
 literal_term:
 	atomic_formula_term{		
-		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
-		vector<int>*  init= new vector<int>();
-		init->push_back(0);
-		init->push_back(0);
-		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>*  >($1.atomic_formula,init) );
+		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >  ();	
+		int init = 0b0;
+		$$.GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula,init) );
 	}
 	| L_P NOT atomic_formula_term R_P{
-		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
-		vector<int>* init= new vector<int>();
-		init->push_back(0);
-		init->push_back(0);
-		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>*  >($1.atomic_formula,init) );
+		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();	
+		int init = 0b0;
+		$$.GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >($1.atomic_formula,init) );
 	}
 	;
 
@@ -1489,7 +1513,7 @@ list_primitive_type:
 
 list_pre_GD:
 	/* empty */ {
-		$$.pre_GD = new std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > * > ();
+		$$.pre_GD = new std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > * > ();
 	}
 	| pre_GD list_pre_GD {
 		$$.pre_GD->insert($$.pre_GD->end(), $2.pre_GD->begin(), $2.pre_GD->end());
@@ -1508,11 +1532,11 @@ list_term:
 
 list_GD:
 	/* empty */{
-		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
+		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
 	}
 	| GD list_GD {
 		$$.GD = $2.GD; 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it = $1.GD->begin() ;it != $1.GD->end() ; ++it){
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it = $1.GD->begin() ; it != $1.GD->end() ; ++it){
 			$$.GD->push_back(*it);
 		}
 	}
@@ -1530,7 +1554,7 @@ list_c_effect:
 
 list_p_effect:
 	/* empty */ {
-		$$.cond_effect= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
+		$$.cond_effect= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
 	}
 	| p_effect list_p_effect {
 		$2.cond_effect->insert( $2.cond_effect->end(), $1.cond_effect->begin(), $1.cond_effect->end() );
@@ -1565,12 +1589,12 @@ list_te_da_effect:
 
 list_da_GD:
 	/* empty */{
-		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
+		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
 	}
 	| da_GD list_da_GD {
 
 	$$.GD = $1.GD; 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it = $2.GD->begin() ;it != $2.GD->end() ; ++it){
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it = $2.GD->begin() ; it != $2.GD->end() ; ++it){
 			$$.GD->push_back(*it);
 		}
 	}
@@ -1583,11 +1607,11 @@ list_simple_duration_constraint:
 
 list_da_effect:
 	/* empty */	{
-		$$.cond_effect= new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* > * >();
+		$$.cond_effect= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >();
 	}
 	| da_effect list_da_effect{
 		$$.cond_effect = $2.cond_effect; 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it = $1.cond_effect->begin() ;it != $1.cond_effect->end() ; ++it){
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it = $1.cond_effect->begin() ; it != $1.cond_effect->end() ; ++it){
 			$$.cond_effect->push_back(*it);
 		}
 	}

@@ -64,7 +64,7 @@ class Parser: public ParserBase
 		return m_data->addFunctions(function_skeleton_list, return_type);
 	}
 	
-	bool addDurativeAction(std::string * name, std::vector<TypedList*> * typedList_list,float number, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * GD, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * cond_effect) {
+	bool addDurativeAction(std::string * name, std::vector<TypedList*> * typedList_list, float number, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > * GD, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > * cond_effect) {
 		return m_data->addDurativeAction(name, typedList_list, number, GD, cond_effect);
 	}
 	
@@ -80,7 +80,7 @@ class Parser: public ParserBase
 		return m_data->addInit(literal, at);
 	}
 	
-	bool addGoals(std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * > * pre_GD) {
+	bool addGoals(std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > * > * pre_GD) {
 		return m_data->addGoals(pre_GD);
 	}
 		

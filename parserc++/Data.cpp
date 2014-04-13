@@ -399,15 +399,15 @@ bool Data::addInit(pair< pair< vector< string > *, string *> *, bool > * literal
 	return true;
 }
 
-bool Data::addGoals(vector< vector< pair< pair< vector< string > *, std::string *> * , vector<int>* >* > * > * pre_GD) { 
+bool Data::addGoals(vector< vector< pair< pair< vector< string > *, std::string *> *, int >* > * > * pre_GD) { 
 	vector<Member *> members_list = vector<Member *> ();
 	Member * member;
 	vector< vector<Type*> > type_list;
 	Predicate * predicate;
 	Attribute  att;
 	
-	for (vector< vector< pair< pair< vector< string > *, std::string *> * , vector<int>* >* > * >::reverse_iterator it_main = pre_GD->rbegin(); it_main != pre_GD->rend(); it_main++) {
-		for(vector< pair< pair<vector<string> *,string *> * ,vector<int>*> * >::reverse_iterator it = (*it_main)->rbegin(); it != (*it_main)->rend(); ++it){
+	for (vector< vector< pair< pair< vector< string > *, std::string *> *, int >* > * >::reverse_iterator it_main = pre_GD->rbegin(); it_main != pre_GD->rend(); it_main++) {
+		for(vector< pair< pair<vector<string> *,string *> *, int> * >::reverse_iterator it = (*it_main)->rbegin(); it != (*it_main)->rend(); ++it){
 			type_list = vector< vector<Type*> >();
 			for (vector<string>::reverse_iterator it_member =(*it)->first->first->rbegin(); it_member != (*it)->first->first->rend(); ++it_member){
 				if (isConstant(*it_member)) {
@@ -609,7 +609,7 @@ Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types) {
 	return NULL;
 }
 
-bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,float number,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * GD, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * cond_effect){
+bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list, float number, vector< pair< pair< vector< string > *, string *> *, int >* > * GD, vector< pair< pair< vector< string > *, string *> *, int >* > * cond_effect){
 
 	DurativeAction * action; 
 	vector<Type *> types;
@@ -645,7 +645,7 @@ bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,f
 		// action time
 		action->addDuration(number);
 		//action conditions 
-		for(vector< pair< pair<vector<string> *,string *> * ,vector<int>*> * >::reverse_iterator it = GD->rbegin(); it != GD->rend(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * , int> * >::reverse_iterator it = GD->rbegin(); it != GD->rend(); ++it){
 				
 			// each variable need to be define in parameters
 					
@@ -671,23 +671,22 @@ bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,f
 				return false;
 			}
 			
-			
 			att =  Attribute();
-			switch((*it)->second->at(0)){
-				case 0: // at start
+			switch(((*it)->second & 0b1110) >> 1){
+				case 0b001: 	// at start
 					att.addSupported(Interval(0.,0.));
 					break;
-				case 1:	// at end
+				case 0b010:	// at end
 					att.addSupported(Interval(number,number));
 					break;
-				case 2: // over all
+				case 0b100: 	// over all
 					att.addSupported(Interval(0.,number));
 					break;
 				default:
-					perror("");
+					lexical_error("Something went wrong while reading time-specifiers (conditions)");
 					return false;
 				}
-			if  (!(*it)->second->at(1)){
+			if  (!((*it)->second & 0b1)){
 				action->addCondition(att,fluent);
 			} else {
 				action->addNotCondition(att,fluent);
@@ -695,7 +694,7 @@ bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,f
 		}
 		// effects
 
-		for(vector< pair< pair<vector<string> *,string *> * ,vector<int>*> * >::reverse_iterator it = cond_effect->rbegin(); it != cond_effect->rend(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> *, int> * >::reverse_iterator it = cond_effect->rbegin(); it != cond_effect->rend(); ++it){
 			// each variable need to be define in parameters
 					
 			type_list = vector< vector<Type*> >();
@@ -721,21 +720,21 @@ bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,f
 			}
 			
 			att =  Attribute();
-			switch((*it)->second->at(0)){
-				case 0: // at start
+			switch(((*it)->second & 0b1110) >> 1){
+				case 0b001: 	// at start
 					att.addSupported(Interval(0.,0.));
 					break;
-				case 1:	// at end
+				case 0b010:	// at end
 					att.addSupported(Interval(number,number));
 					break;
-				case 2: // over all
+				case 0b100: 	// over all
 					att.addSupported(Interval(0.,number));
 					break;
 				default:
-					perror("");
+					lexical_error("Something went wrong while reading time-specifiers (effects)");
 					return false;
 				}
-			if  (!(*it)->second->at(1)){
+			if  (!((*it)->second & 0b1)){
 				action->addEffect(att,fluent);
 			} else {
 				action->addNotEffect(att,fluent);

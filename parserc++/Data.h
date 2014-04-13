@@ -52,7 +52,7 @@ public:
 	Object * getObject(string object);
 	bool addInit(pair< pair< vector< string > *, string *> *, bool > * literal, float at);
 	vector<pair<Fluent*, Attribute> > * getInits();
-	bool addGoals(vector< vector< pair< pair< vector< string > *, string *> * , vector<int>* >* > * > * pre_GD);
+	bool addGoals(vector< vector< pair< pair< vector< string > *, string *> * , int >* > * > * pre_GD);
 	vector<pair<Fluent*, Attribute> > * getGoals();
 	bool isAction(string const * name);
 	vector<DurativeAction*> * getActions();
@@ -60,7 +60,7 @@ public:
 	void lexical_error(string msg);
 	void fatal_error(string msg);
 	//numbers-actions functions
-	bool addDurativeAction(string * name,vector<TypedList*> * typedList_list,float number,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * GD, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * cond_effect);
+	bool addDurativeAction(string * name, vector<TypedList*> * typedList_list, float number, vector< pair< pair< vector< string > *, string *> *, int >* > * GD, vector< pair< pair< vector< string > *, string *> * , int >* > * cond_effect);
 	Fluent * getFluent(string name,vector< vector<Type*> >);
 
 
