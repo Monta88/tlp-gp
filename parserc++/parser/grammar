@@ -19,7 +19,7 @@
 	std::vector< std::pair< std::string*, std::vector<TypedList*> * > * > * function_skeleton_list;
 	std::pair< std::pair< std::vector< std::string > *, std::string*> *, bool > * literal;
 	std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > * > * pre_GD;
-	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int > * > * GD;
+	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int > * > * timed_GD;
 	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int > * > * cond_effect;
 	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > *> *, float> * da_def_body;
 }
@@ -454,7 +454,7 @@ action_def_body_option2:
 pre_GD:
 	pref_GD {
 		$$.pre_GD = new std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > * > ();
-		$$.pre_GD->push_back($1.GD);
+		$$.pre_GD->push_back($1.timed_GD);
 	}
 	| L_P AND list_pre_GD R_P {
 		$$.pre_GD->insert($$.pre_GD->end(), $3.pre_GD->begin(), $3.pre_GD->end());
@@ -468,7 +468,7 @@ pre_GD:
 
 pref_GD:
 	GD {
-		$$.GD = $1.GD;
+		$$.timed_GD = $1.timed_GD;
 	}
 	| L_P PREFERENCE pref_GD_option1 {
 		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
@@ -490,27 +490,27 @@ pref_name:
 
 GD:
 	atomic_formula_term	{	
-		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >  ();	
+		$$.timed_GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >  ();	
 		int init = 0b0;
-		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula,init) );
+		$$.timed_GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula,init) );
 	}	
 	| literal_term {
 		if (!Parser::isRequirement(NEGATIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :negative-preconditions is needed");
-		$$.GD=$1.GD;
+		$$.timed_GD=$1.timed_GD;
 	}
 	| L_P AND list_GD R_P{
-		$$.GD=$3.GD;
+		$$.timed_GD=$3.timed_GD;
 	}
 	| L_P OR list_GD R_P {
 		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
 	}
 	| L_P NOT GD R_P {
 		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
-		if ($3.GD->front()->second & 0b01)
-			$3.GD->front()->second -= 0b01;
+		if ($3.timed_GD->front()->second & 0b01)
+			$3.timed_GD->front()->second -= 0b01;
 		else
-			$3.GD->front()->second += 0b01;
-		$$.GD=$3.GD;
+			$3.timed_GD->front()->second += 0b01;
+		$$.timed_GD=$3.timed_GD;
 	}
 	| L_P IMPLY GD GD R_P {
 		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
@@ -637,14 +637,14 @@ c_effect:
 
 p_effect:
 	L_P NOT atomic_formula_term R_P {	
-		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();
+		$$.timed_GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();
 		int init = 0b01;
-		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> *, int > ($3.atomic_formula,init));
+		$$.timed_GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> *, int > ($3.atomic_formula,init));
 	}
 	| atomic_formula_term	{			
-		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();
+		$$.timed_GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();
 		int init = 0b0;
-		$$.GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula,init));
+		$$.timed_GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula,init));
 	}
 	| L_P assign_op f_head f_exp {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
@@ -700,7 +700,7 @@ da_symbol:
 
 da_def_body:
 	DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect  { 
-		std::pair< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *> ($4.GD,$6.cond_effect);
+		std::pair< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *> ($4.timed_GD,$6.cond_effect);
 
 		$$.da_def_body=new std::pair< std::pair< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *> *, float> (a, $2.number);
 	};
@@ -709,10 +709,10 @@ da_def_body:
 
 da_GD:
 	pref_timed_GD {
-		$$.GD=$1.GD;
+		$$.timed_GD=$1.timed_GD;
 	}
 	| L_P AND list_da_GD R_P {	
-		$$.GD=$3.GD;		
+		$$.timed_GD=$3.timed_GD;		
 	}
 	| L_P FORALL L_P typed_list_variable R_P da_GD R_P {
 		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
@@ -723,7 +723,7 @@ da_GD:
 
 pref_timed_GD:
 	timed_GD {
-		$$.GD=$1.GD;			
+		$$.timed_GD=$1.timed_GD;			
 	}
 	| L_P PREFERENCE pref_name_option1 {
 		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
@@ -739,16 +739,16 @@ pref_name_option1:
 
 timed_GD:
 	L_P AT time_specifier GD R_P {
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.GD->begin(); it != $4.GD->end(); ++it){
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
 			(*it)->second += 1 << $3.integer;
 		}
-		$$.GD=$4.GD;
+		$$.timed_GD=$4.timed_GD;
 	}
 	| L_P OVER interval GD R_P {	
-		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.GD->begin(); it != $4.GD->end(); ++it){
+		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
 			(*it)->second += 1 << $3.integer;
 		}
-		$$.GD=$4.GD;
+		$$.timed_GD=$4.timed_GD;
 	}
 	;
 
@@ -1330,10 +1330,10 @@ emptyOr_effect:
 
 emptyOr_da_GD:
 	L_P R_P	{
-		$$.GD =new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
+		$$.timed_GD =new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
 	}
 	| da_GD	{
-		$$.GD= $1.GD; 
+		$$.timed_GD= $1.timed_GD; 
 	}
 	;
 
@@ -1360,14 +1360,14 @@ emptyOr_te_da_effect:
 
 literal_term:
 	atomic_formula_term{		
-		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >  ();	
+		$$.timed_GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >  ();	
 		int init = 0b0;
-		$$.GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula,init) );
+		$$.timed_GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula,init) );
 	}
 	| L_P NOT atomic_formula_term R_P{
-		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();	
+		$$.timed_GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();	
 		int init = 0b0;
-		$$.GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >($1.atomic_formula,init) );
+		$$.timed_GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >($1.atomic_formula,init) );
 	}
 	;
 
@@ -1532,12 +1532,12 @@ list_term:
 
 list_GD:
 	/* empty */{
-		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
+		$$.timed_GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
 	}
 	| GD list_GD {
-		$$.GD = $2.GD; 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it = $1.GD->begin() ; it != $1.GD->end() ; ++it){
-			$$.GD->push_back(*it);
+		$$.timed_GD = $2.timed_GD; 
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it = $1.timed_GD->begin() ; it != $1.timed_GD->end() ; ++it){
+			$$.timed_GD->push_back(*it);
 		}
 	}
 	;
@@ -1589,13 +1589,13 @@ list_te_da_effect:
 
 list_da_GD:
 	/* empty */{
-		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
+		$$.timed_GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
 	}
 	| da_GD list_da_GD {
 
-	$$.GD = $1.GD; 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it = $2.GD->begin() ; it != $2.GD->end() ; ++it){
-			$$.GD->push_back(*it);
+	$$.timed_GD = $1.timed_GD; 
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it = $2.timed_GD->begin() ; it != $2.timed_GD->end() ; ++it){
+			$$.timed_GD->push_back(*it);
 		}
 	}
 	;

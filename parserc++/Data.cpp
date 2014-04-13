@@ -434,9 +434,12 @@ bool Data::addGoals(vector< vector< pair< pair< vector< string > *, std::string 
 				return false;
 			}
 			
-			
-			att =  Attribute();
-			att.addSupported(Interval(0.,0.));
+			att = Attribute();
+			if  (!((*it)->second & 0b1)){
+				att.addSupported(Interval(0., 0.));
+			} else {
+				att.addNotSupported(Interval(0., 0.));
+			}
 			
 			m_goals->push_back(make_pair(new Fluent(predicate, members_list), att));
 		}
@@ -609,7 +612,7 @@ Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types) {
 	return NULL;
 }
 
-bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list, float number, vector< pair< pair< vector< string > *, string *> *, int >* > * GD, vector< pair< pair< vector< string > *, string *> *, int >* > * cond_effect){
+bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list, float number, vector< pair< pair< vector< string > *, string *> *, int >* > * timed_GD, vector< pair< pair< vector< string > *, string *> *, int >* > * cond_effect){
 
 	DurativeAction * action; 
 	vector<Type *> types;
@@ -645,7 +648,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 		// action time
 		action->addDuration(number);
 		//action conditions 
-		for(vector< pair< pair<vector<string> *,string *> * , int> * >::reverse_iterator it = GD->rbegin(); it != GD->rend(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * , int> * >::reverse_iterator it = timed_GD->rbegin(); it != timed_GD->rend(); ++it){
 				
 			// each variable need to be define in parameters
 					
@@ -676,7 +679,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 				case 0b001: 	// at start
 					att.addSupported(Interval(0.,0.));
 					break;
-				case 0b010:	// at end
+				case 0b010:		// at end
 					att.addSupported(Interval(number,number));
 					break;
 				case 0b100: 	// over all
@@ -724,7 +727,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 				case 0b001: 	// at start
 					att.addSupported(Interval(0.,0.));
 					break;
-				case 0b010:	// at end
+				case 0b010:		// at end
 					att.addSupported(Interval(number,number));
 					break;
 				case 0b100: 	// over all

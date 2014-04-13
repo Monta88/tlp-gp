@@ -64,8 +64,8 @@ class Parser: public ParserBase
 		return m_data->addFunctions(function_skeleton_list, return_type);
 	}
 	
-	bool addDurativeAction(std::string * name, std::vector<TypedList*> * typedList_list, float number, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > * GD, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > * cond_effect) {
-		return m_data->addDurativeAction(name, typedList_list, number, GD, cond_effect);
+	bool addDurativeAction(std::string * name, std::vector<TypedList*> * typedList_list, float number, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > * timed_GD, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > * cond_effect) {
+		return m_data->addDurativeAction(name, typedList_list, number, timed_GD, cond_effect);
 	}
 	
 	void addProblem(std::string * name) {
