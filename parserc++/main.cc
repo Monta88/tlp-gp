@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 	FILE *domain_file, *problem_file;
 	Data * data ;
 	
-	//Graph graph;
+	Graph *graph;
 	Domain * domain;
 	Problem * problem;
 
@@ -72,10 +72,9 @@ int main(int argc, char **argv)
 	domain = data->getDomain();
 	problem = data->getProblem();
 
-	/*
-	graph = Graph(data);
-	graph.generateGraph();
-	*/
+	graph = new Graph(domain, problem);
+	graph->generateGraph();
+
 
 	return 0;
 }
