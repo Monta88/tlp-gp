@@ -521,7 +521,7 @@ void Data::fatal_error(string msg) {
 	exit(1);
 }
 
-//duratives-actions functions
+//numbers-actions functions
 
 bool Data::isAction(string const * name){
 	return (find(m_list_name_action.begin(), m_list_name_action.end(), *name) !=  m_list_name_action.end());
@@ -609,7 +609,7 @@ Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types) {
 	return NULL;
 }
 
-bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_effects){
+bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,float number,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * GD, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * cond_effect){
 
 	DurativeAction * action; 
 	vector<Type *> types;
@@ -643,9 +643,9 @@ bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,f
 			}
 		}
 		// action time
-		action->addDuration(durative);
+		action->addDuration(number);
 		//action conditions 
-		for(vector< pair< pair<vector<string> *,string *> * ,vector<int>*> * >::reverse_iterator it = nearly_conds->rbegin(); it != nearly_conds->rend(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * ,vector<int>*> * >::reverse_iterator it = GD->rbegin(); it != GD->rend(); ++it){
 				
 			// each variable need to be define in parameters
 					
@@ -678,10 +678,10 @@ bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,f
 					att.addSupported(Interval(0.,0.));
 					break;
 				case 1:	// at end
-					att.addSupported(Interval(durative,durative));
+					att.addSupported(Interval(number,number));
 					break;
 				case 2: // over all
-					att.addSupported(Interval(0.,durative));
+					att.addSupported(Interval(0.,number));
 					break;
 				default:
 					perror("");
@@ -695,7 +695,7 @@ bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,f
 		}
 		// effects
 
-		for(vector< pair< pair<vector<string> *,string *> * ,vector<int>*> * >::reverse_iterator it = nearly_effects->rbegin(); it != nearly_effects->rend(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> * ,vector<int>*> * >::reverse_iterator it = cond_effect->rbegin(); it != cond_effect->rend(); ++it){
 			// each variable need to be define in parameters
 					
 			type_list = vector< vector<Type*> >();
@@ -726,10 +726,10 @@ bool Data::addDurativeAction(string * name,vector<TypedList*> * typedList_list,f
 					att.addSupported(Interval(0.,0.));
 					break;
 				case 1:	// at end
-					att.addSupported(Interval(durative,durative));
+					att.addSupported(Interval(number,number));
 					break;
 				case 2: // over all
-					att.addSupported(Interval(0.,durative));
+					att.addSupported(Interval(0.,number));
 					break;
 				default:
 					perror("");

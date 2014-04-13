@@ -19,11 +19,11 @@
 	std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * > * pre_GD;
 	
 	//durativeaction
-	float durative;	
-	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * nearly_conds;
-	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * nearly_effects;
-	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > *> *,float> * cond_eff_durative;
-	int specifier_time;
+	float number;	
+	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * GD;
+	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * cond_effect;
+	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > *> *,float> * da_def_body;
+	int integer;
 }
 
 %token 	L_P
@@ -95,6 +95,8 @@
 	CONDITION
 	AT
 	OVER
+	SUPPORTED
+	FORBIDDEN
 	SOMEWHERE
 	ANYWHERE
 	MINIMAL_DURATION
@@ -421,7 +423,7 @@ action_def_body_option2:
 pre_GD:
 	pref_GD {
 		$$.pre_GD = new std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > * > ();
-		$$.pre_GD->push_back($1.nearly_conds);
+		$$.pre_GD->push_back($1.GD);
 	}
 	| L_P AND list_pre_GD R_P {
 		$$.pre_GD->insert($$.pre_GD->end(), $3.pre_GD->begin(), $3.pre_GD->end());
@@ -435,7 +437,7 @@ pre_GD:
 
 pref_GD:
 	GD {
-		$$.nearly_conds = $1.nearly_conds;
+		$$.GD = $1.GD;
 	}
 	| L_P PREFERENCE pref_GD_option1 {
 		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
@@ -457,26 +459,26 @@ pref_name:
 
 GD:
 	atomic_formula_term	{	
-		$$.nearly_conds = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
+		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
 		vector<int>* init= new vector<int>();
 		init->push_back(0);
 		init->push_back(0);
-		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>*  >($1.atomic_formula,init) );
+		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>*  >($1.atomic_formula,init) );
 	}	
 	| literal_term {
 		if (!Parser::isRequirement(NEGATIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :negative-preconditions is needed");
-		$$.nearly_conds=$1.nearly_conds;
+		$$.GD=$1.GD;
 	}
 	| L_P AND list_GD R_P{
-		$$.nearly_conds=$3.nearly_conds;
+		$$.GD=$3.GD;
 	}
 	| L_P OR list_GD R_P {
 		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
 	}
 	| L_P NOT GD R_P {
 		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
-		$3.nearly_conds->front()->second->at(1) = 1 ;
-		$$.nearly_conds=$3.nearly_conds;
+		$3.GD->front()->second->at(1) = 1 ;
+		$$.GD=$3.GD;
 	}
 	| L_P IMPLY GD GD R_P {
 		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
@@ -544,7 +546,7 @@ f_exp:
 
 number:
 	NUM {
-		$$.durative = atof(d_scanner.matched().c_str());
+		$$.number = atof(d_scanner.matched().c_str());
 	}
 	;
 
@@ -603,18 +605,18 @@ c_effect:
 
 p_effect:
 	L_P NOT atomic_formula_term R_P {	
-		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > ();
+		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > ();
 		vector<int>* init= new vector<int>();
 		init->push_back(0);
 		init->push_back(1);
-		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >($3.atomic_formula,init));
+		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >($3.atomic_formula,init));
 	}
 	| atomic_formula_term	{			
-		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > ();
+		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > ();
 		vector<int>*  init= new vector<int>();
 		init->push_back(0);
 		init->push_back(0);
-		$$.nearly_conds->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >($1.atomic_formula,init));
+		$$.GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >($1.atomic_formula,init));
 	}
 	| L_P assign_op f_head f_exp {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
@@ -631,10 +633,10 @@ p_effect:
 
 cond_effect:
 	L_P AND list_p_effect R_P {
-		$$.nearly_effects=$3.nearly_effects;
+		$$.cond_effect=$3.cond_effect;
 	}
 	| p_effect {
-		$$.nearly_effects=$1.nearly_effects;
+		$$.cond_effect=$1.cond_effect;
 	}
 	;
 
@@ -652,7 +654,7 @@ assign_op:
 
 durative_action_def:
 	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P da_def_body R_P {
-		if(!Parser::addDurativeAction($3.name,$6.typedList_list,$8.cond_eff_durative->second,$8.cond_eff_durative->first->first,$8.cond_eff_durative->first->second))
+		if(!Parser::addDurativeAction($3.name,$6.typedList_list,$8.da_def_body->second,$8.da_def_body->first->first,$8.da_def_body->first->second))
 			Parser::lexical_error("Error in :durative-action");
 	
 	
@@ -670,19 +672,19 @@ da_symbol:
 
 da_def_body:
 	DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect  { 
-		std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> ($4.nearly_conds,$6.nearly_effects);
+		std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> ($4.GD,$6.cond_effect);
 
-		$$.cond_eff_durative=new std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> *,float> (a,$2.durative );
+		$$.da_def_body=new std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> *,float> (a,$2.number );
 	};
 
 /* <da-GD> */
 
 da_GD:
 	pref_timed_GD {
-		$$.nearly_conds=$1.nearly_conds;
+		$$.GD=$1.GD;
 	}
 	| L_P AND list_da_GD R_P {	
-		$$.nearly_conds=$3.nearly_conds;		
+		$$.GD=$3.GD;		
 	}
 	| L_P FORALL L_P typed_list_variable R_P da_GD R_P {
 		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
@@ -693,7 +695,7 @@ da_GD:
 
 pref_timed_GD:
 	timed_GD {
-		$$.nearly_conds=$1.nearly_conds;			
+		$$.GD=$1.GD;			
 	}
 	| L_P PREFERENCE pref_name_option1 {
 		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
@@ -709,16 +711,16 @@ pref_name_option1:
 
 timed_GD:
 	L_P AT time_specifier GD R_P {
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it=$4.nearly_conds->begin();it != $4.nearly_conds->end(); ++it){
-			(*it)->second->at(0)=$3.specifier_time;
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it=$4.GD->begin();it != $4.GD->end(); ++it){
+			(*it)->second->at(0)=$3.integer;
 		}
-		$$.nearly_conds=$4.nearly_conds;
+		$$.GD=$4.GD;
 	}
 	| L_P OVER interval GD R_P {	
-		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it=$4.nearly_conds->begin(); it != $4.nearly_conds->end(); ++it){
-			(*it)->second->at(0)=$3.specifier_time;
+		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it=$4.GD->begin(); it != $4.GD->end(); ++it){
+			(*it)->second->at(0)=$3.integer;
 		}
-		$$.nearly_conds=$4.nearly_conds;
+		$$.GD=$4.GD;
 	}
 	;
 
@@ -726,10 +728,10 @@ timed_GD:
 
 time_specifier:
 	START {
-		$$.specifier_time= 0;
+		$$.integer= 0;
 	}
 	| END {
-		$$.specifier_time= 1;
+		$$.integer= 1;
 	}
 	;
 
@@ -737,7 +739,7 @@ time_specifier:
 
 interval:
 	ALL {
-		$$.specifier_time= 2;
+		$$.integer= 2;
 	}
 	;
 
@@ -748,10 +750,10 @@ duration_constraint:
 		if (!Parser::isRequirement(DURATION_INEQUALITIES)) Parser::lexical_error("Requirement :duration-inequalities is needed");
 	}
 	| L_P R_P { 
-		$$.durative=0.0; 
+		$$.number=0.0; 
 	}
 	| simple_duration_constraint {
-		$$.durative=$1.durative;
+		$$.number=$1.number;
 	}
 	;
 
@@ -759,10 +761,10 @@ duration_constraint:
 
 simple_duration_constraint:
 	L_P d_op Q_M_DURATION d_value R_P { 
-		$$.durative=$4.durative;
+		$$.number=$4.number;
 	}
 	| L_P AT time_specifier simple_duration_constraint R_P	{
-		$$.durative=$4.durative;
+		$$.number=$4.number;
 	}
 	;
 
@@ -791,10 +793,10 @@ d_value:
 
 da_effect:
 	L_P AND list_da_effect R_P { 
-		$$.nearly_effects=$3.nearly_effects;
+		$$.cond_effect=$3.cond_effect;
 	}
 	| timed_effect {
-		$$.nearly_effects=$1.nearly_effects;
+		$$.cond_effect=$1.cond_effect;
 	}
 	| L_P FORALL L_P typed_list_variable R_P da_effect R_P {
 		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
@@ -808,10 +810,10 @@ da_effect:
 
 timed_effect:
 	L_P AT time_specifier cond_effect R_P { 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* > * >::iterator it = $4.nearly_effects->begin(); it != $4.nearly_effects->end() ; ++it){
-			(*it)->second->at(0)=$3.specifier_time;
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
+			(*it)->second->at(0)=$3.integer;
 		}	
-		$$.nearly_effects=$4.nearly_effects;
+		$$.cond_effect=$4.cond_effect;
 	}		
 	| L_P AT time_specifier f_assign_da R_P {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
@@ -933,7 +935,7 @@ init_el:
 	}
 	| L_P AT number literal_name R_P {
 		if (!Parser::isRequirement(TIMED_INITIAL_LITERALS)) Parser::lexical_error("Requirement :timed-initial-literals is needed");
-		if (!Parser::addInit($4.literal, $3.durative))
+		if (!Parser::addInit($4.literal, $3.number))
 			Parser::lexical_error("Error in :init");
 	}
 	| L_P EQ basic_function_term number R_P {
@@ -1173,6 +1175,8 @@ te_pref_timed_GD_option1:
 te_timed_GD:
 	L_P AT te_timepoint_op GD R_P
 	| L_P OVER te_interval GD R_P
+	| L_P SUPPORTED te_interval GD R_P
+	| L_P FORBIDDEN te_interval GD R_P
 	| L_P SOMEWHERE te_interval GD R_P
 	| L_P ANYWHERE te_interval GD R_P
 	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval GD R_P
@@ -1210,6 +1214,8 @@ te_timed_effect:
 te_modality:
 	L_P AT te_timepoint_op cond_effect R_P
 	| L_P OVER te_interval cond_effect R_P
+	| L_P SUPPORTED te_interval cond_effect R_P
+	| L_P FORBIDDEN te_interval cond_effect R_P
 	| L_P SOMEWHERE te_interval cond_effect R_P
 	| L_P ANYWHERE te_interval cond_effect R_P
 	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval cond_effect R_P
@@ -1296,19 +1302,19 @@ emptyOr_effect:
 
 emptyOr_da_GD:
 	L_P R_P	{
-		$$.nearly_conds =new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
+		$$.GD =new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
 	}
 	| da_GD	{
-		$$.nearly_conds= $1.nearly_conds; 
+		$$.GD= $1.GD; 
 	}
 	;
 
 emptyOr_da_effect:
 	L_P R_P	{
-		$$.nearly_effects = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
+		$$.cond_effect = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
 	}
 	| da_effect {
-		$$.nearly_effects=$1.nearly_effects;
+		$$.cond_effect=$1.cond_effect;
 	}
 	;
 
@@ -1326,18 +1332,18 @@ emptyOr_te_da_effect:
 
 literal_term:
 	atomic_formula_term{		
-		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
+		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
 		vector<int>*  init= new vector<int>();
 		init->push_back(0);
 		init->push_back(0);
-		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>*  >($1.atomic_formula,init) );
+		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>*  >($1.atomic_formula,init) );
 	}
 	| L_P NOT atomic_formula_term R_P{
-		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
+		$$.GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
 		vector<int>* init= new vector<int>();
 		init->push_back(0);
 		init->push_back(0);
-		$$.nearly_conds->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>*  >($1.atomic_formula,init) );
+		$$.GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> * ,vector<int>*  >($1.atomic_formula,init) );
 	}
 	;
 
@@ -1502,12 +1508,12 @@ list_term:
 
 list_GD:
 	/* empty */{
-		$$.nearly_conds = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
+		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
 	}
 	| GD list_GD {
-		$$.nearly_conds = $2.nearly_conds; 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it = $1.nearly_conds->begin() ;it != $1.nearly_conds->end() ; ++it){
-			$$.nearly_conds->push_back(*it);
+		$$.GD = $2.GD; 
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it = $1.GD->begin() ;it != $1.GD->end() ; ++it){
+			$$.GD->push_back(*it);
 		}
 	}
 	;
@@ -1524,11 +1530,11 @@ list_c_effect:
 
 list_p_effect:
 	/* empty */ {
-		$$.nearly_effects= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
+		$$.cond_effect= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
 	}
 	| p_effect list_p_effect {
-		$2.nearly_effects->insert( $2.nearly_effects->end(), $1.nearly_effects->begin(), $1.nearly_effects->end() );
-		$$.nearly_effects=$2.nearly_effects; 
+		$2.cond_effect->insert( $2.cond_effect->end(), $1.cond_effect->begin(), $1.cond_effect->end() );
+		$$.cond_effect=$2.cond_effect; 
 	}
 	;
 
@@ -1559,13 +1565,13 @@ list_te_da_effect:
 
 list_da_GD:
 	/* empty */{
-		$$.nearly_conds = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
+		$$.GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >();
 	}
 	| da_GD list_da_GD {
 
-	$$.nearly_conds = $1.nearly_conds; 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it = $2.nearly_conds->begin() ;it != $2.nearly_conds->end() ; ++it){
-			$$.nearly_conds->push_back(*it);
+	$$.GD = $1.GD; 
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it = $2.GD->begin() ;it != $2.GD->end() ; ++it){
+			$$.GD->push_back(*it);
 		}
 	}
 	;
@@ -1577,12 +1583,12 @@ list_simple_duration_constraint:
 
 list_da_effect:
 	/* empty */	{
-		$$.nearly_effects= new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* > * >();
+		$$.cond_effect= new std::vector<  std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* > * >();
 	}
 	| da_effect list_da_effect{
-		$$.nearly_effects = $2.nearly_effects; 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it = $1.nearly_effects->begin() ;it != $1.nearly_effects->end() ; ++it){
-			$$.nearly_effects->push_back(*it);
+		$$.cond_effect = $2.cond_effect; 
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >::iterator it = $1.cond_effect->begin() ;it != $1.cond_effect->end() ; ++it){
+			$$.cond_effect->push_back(*it);
 		}
 	}
 	;

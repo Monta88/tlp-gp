@@ -74,6 +74,8 @@
 ":condition"									return Parser::CONDITION;
 "at"											return Parser::AT;
 "over"											return Parser::OVER;
+"supported"										return Parser::SUPPORTED;
+"forbidden"										return Parser::FORBIDDEN;
 "somewhere"										return Parser::SOMEWHERE;
 "anywhere"										return Parser::ANYWHERE;
 "minimal-duration"								return Parser::MINIMAL_DURATION;

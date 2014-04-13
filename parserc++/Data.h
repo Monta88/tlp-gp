@@ -59,8 +59,8 @@ public:
 	void display();
 	void lexical_error(string msg);
 	void fatal_error(string msg);
-	//duratives-actions functions
-	bool addDurativeAction(string * name,vector<TypedList*> * typedList_list,float durative,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_conds, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * nearly_effects);
+	//numbers-actions functions
+	bool addDurativeAction(string * name,vector<TypedList*> * typedList_list,float number,vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * GD, vector< pair< pair< vector< string > *, string *> * ,vector<int>* >* > * cond_effect);
 	Fluent * getFluent(string name,vector< vector<Type*> >);
 
 
