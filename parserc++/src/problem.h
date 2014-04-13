@@ -20,11 +20,11 @@ class Problem {
 		~Problem();
 		string getName();
 		
-		const vector<pair<Fluent*, Attribute> > * getGoals() const {
+		vector<pair<Fluent*, Attribute> > * getGoals(){
 			return m_goals;
 		}
 
-		const vector<pair<Fluent*, Attribute> > * getInits() const {
+		vector<pair<Fluent*, Attribute> > * getInits(){
 			return m_inits;
 		}
 

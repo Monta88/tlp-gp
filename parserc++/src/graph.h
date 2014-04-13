@@ -15,19 +15,22 @@
 #include <unistd.h>
 #include <vector>
 #include "../Data.h"
+#include "problem.h"
+#include "domain.h"
 
 using namespace std;
 
 class Graph {
 public:
 	Graph();
-	Graph(Data *data);
+	Graph(Domain *domain, Problem *problem);
 	virtual ~Graph();
 
 	void generateGraph();
-	bool actionUsable(DurativeAction *action, vector<pair<Fluent*, Attribute> > var);
+	bool actionUsable(DurativeAction *action, vector<pair<Fluent*, Attribute> > *var);
 private:
-	Data *m_dataptr;
+	Domain *m_domainptr;
+	Problem *m_problemptr;
 };
 
 
