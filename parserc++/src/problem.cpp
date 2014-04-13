@@ -1,7 +1,11 @@
 #include "problem.h"
 
 
-Problem::Problem(string name,Domain * domain):m_name(name),m_domain(domain) {}
+Problem::Problem(string name):m_name(name) {
+		m_objects = new vector<Object*> ();
+		m_inits = new vector<pair<Fluent*, Attribute> > ();
+		m_goals = new vector<pair<Fluent*, Attribute> > ();
+}
 
 Problem::Problem() {}
 
@@ -11,20 +15,15 @@ string Problem::getName() {
 	return m_name;
 }
 
-Domain * Problem::getDomain() {
-	return m_domain;
+void Problem::addObjects(vector<Object*> * objects) {
+	m_objects = objects;
 }
 
-/*
-void Problem::add_Object(Variable *var) {
-	m_objects.push_back(var);
+void Problem::addInits(vector<pair<Fluent*, Attribute> > * inits) {
+	m_inits = inits;
 }
 
-void Problem::add_Init(Fluent *fluent,vector<Variable *> vars) {
-	m_inits.push_back(make_pair(fluent,vars));
+void Problem::addGoals(vector<pair<Fluent*, Attribute> > * goals) {
+	m_goals = goals;
 }
-
-void Problem::add_Goal(Fluent *fluent,vector<Variable *> vars) {
-	m_goals.push_back(make_pair(fluent,vars));
-}*/
 

@@ -110,7 +110,7 @@ vector<pair<Attribute, Fluent*> > DurativeAction::getNotEffects() {
 string DurativeAction::to_string(){
 	string rep="Action "+getName();
 	if (m_preconditions.size() > 0){
-		rep +="\n\t\tPrecondicion : ";
+		rep +="\n\t\tPrecondition : ";
 		for (vector< pair< Attribute,Fluent *> >::iterator it =m_preconditions.begin(); it !=m_preconditions.end();++it){
 			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string()+" ;; " ;
 		}

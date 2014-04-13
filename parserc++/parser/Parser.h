@@ -21,67 +21,75 @@ class Parser: public ParserBase
 	int parse();
 	
 	void init() {
-		m_data = Data();
+		m_data = new Data();
 	}
 	
 	void setData(Parser * parser) {
-		m_data = *(parser->getData());
+		m_data = parser->getData();
 	}
 	
 	Data * getData() {
-		return &m_data;
+		return m_data;
 	}
 
 	void addDomain(std::string * name) {
-		m_data.addDomain(name);
+		m_data->addDomain(name);
 	}
 	
 	bool isDomain(std::string * name) {
-		return m_data.isDomain(name);
+		return m_data->isDomain(name);
 	}
 
 	bool addRequirement(int req) {
-		return m_data.addRequirement(req);
+		return m_data->addRequirement(req);
 	}
 
 	bool isRequirement(int req) {
-		return m_data.isRequirement(req);
+		return m_data->isRequirement(req);
 	}
 	
 	bool addTypes(std::vector<TypedList*> * typedList_list) {
-		return m_data.addTypes(typedList_list);
+		return m_data->addTypes(typedList_list);
 	}
 	
 	bool addConstants(std::vector<TypedList*> * typedList_list) {
-		return m_data.addConstants(typedList_list);
+		return m_data->addConstants(typedList_list);
 	}
 	
 	bool addPredicate(std::string * name, std::vector<TypedList*> * typedList_list) {
-		return m_data.addPredicate(name, typedList_list);
+		return m_data->addPredicate(name, typedList_list);
 	}
 	
 	bool addFunctions(std::vector< std::pair< std::string*, std::vector<TypedList*>* >* > * function_skeleton_list, std::vector<std::string> * return_type) {
-		return m_data.addFunctions(function_skeleton_list, return_type);
+		return m_data->addFunctions(function_skeleton_list, return_type);
+	}
+	
+	bool addDurativeAction(std::string * name, std::vector<TypedList*> * typedList_list,float durative, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * nearly_conds, std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * nearly_effects) {
+		return m_data->addDurativeAction(name, typedList_list, durative, nearly_conds, nearly_effects);
 	}
 	
 	void addProblem(std::string * name) {
-		m_data.addProblem(name);
+		m_data->addProblem(name);
 	}
 	
 	bool addObjects(std::vector<TypedList*> * typedList_list) {
-		return m_data.addObjects(typedList_list);
+		return m_data->addObjects(typedList_list);
 	}
 	
-	bool addInit(std::pair< std::pair< std::vector< std::string > *, std::string *> *, vector<int> * > * literal, float at) {
-		return m_data.addInit(literal, at);
+	bool addInit(std::pair< std::pair< std::vector< std::string > *, std::string *> *, bool > * literal, float at) {
+		return m_data->addInit(literal, at);
+	}
+	
+	bool addGoals(std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * > * pre_GD) {
+		return m_data->addGoals(pre_GD);
 	}
 		
 	void display() {
-		m_data.display();
+		m_data->display();
 	}
 
 	void lexical_error(std::string msg) {
-		m_data.lexical_error(msg);
+		m_data->lexical_error(msg);
 	}
 	
 	
@@ -100,7 +108,7 @@ class Parser: public ParserBase
         void exceptionHandler__(std::exception const &exc);
 
     // our stuff:
-        Data m_data;
+        Data * m_data;
 };
 
 

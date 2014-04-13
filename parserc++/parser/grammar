@@ -15,13 +15,14 @@
 	std::vector<TypedList*> * typedList_list;
 	std::pair< std::string*, std::vector<TypedList*>* > * function_skeleton;
 	std::vector< std::pair< std::string*, std::vector<TypedList*>* >* > * function_skeleton_list;
-	std::pair< std::pair< std::vector< std::string > *, std::string *> *, vector<int> * > * literal;
+	std::pair< std::pair< std::vector< std::string > *, std::string *> *, bool > * literal;
+	std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * > * pre_GD;
 	
 	//durativeaction
 	float durative;	
-	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > * nearly_conds;
-	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > * nearly_effects;
-	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> *,float> * cond_eff_durative;
+	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * nearly_conds;
+	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > * nearly_effects;
+	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , std::vector<int>* >* > *> *,float> * cond_eff_durative;
 	int specifier_time;
 }
 
@@ -96,6 +97,7 @@
 	OVER
 	SOMEWHERE
 	ANYWHERE
+	MINIMAL_DURATION
 	TRANSITION_OVER
 	MINUS
 	START
@@ -417,8 +419,13 @@ action_def_body_option2:
 /* <pre-GD> */
 
 pre_GD:
-	pref_GD
-	| L_P AND list_pre_GD R_P
+	pref_GD {
+		$$.pre_GD = new std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > * > ();
+		$$.pre_GD->push_back($1.nearly_conds);
+	}
+	| L_P AND list_pre_GD R_P {
+		$$.pre_GD->insert($$.pre_GD->end(), $3.pre_GD->begin(), $3.pre_GD->end());
+	}
 	| L_P FORALL L_P typed_list_variable R_P pre_GD R_P {
 		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
 	}
@@ -427,7 +434,9 @@ pre_GD:
 /* <pref-GD> */
 
 pref_GD:
-	GD
+	GD {
+		$$.nearly_conds = $1.nearly_conds;
+	}
 	| L_P PREFERENCE pref_GD_option1 {
 		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
 	}
@@ -448,7 +457,7 @@ pref_name:
 
 GD:
 	atomic_formula_term	{	
-		$$.nearly_conds= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
+		$$.nearly_conds = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* >  ();	
 		vector<int>* init= new vector<int>();
 		init->push_back(0);
 		init->push_back(0);
@@ -643,19 +652,11 @@ assign_op:
 
 durative_action_def:
 	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P da_def_body R_P {
-		Parser::getData()->getDomain()->addDurativeAction(Parser::getData()->addDurationAction($3.name,$6.typedList_list,$8.cond_eff_durative->second,$8.cond_eff_durative->first->first,$8.cond_eff_durative->first->second));
+		if(!Parser::addDurativeAction($3.name,$6.typedList_list,$8.cond_eff_durative->second,$8.cond_eff_durative->first->first,$8.cond_eff_durative->first->second))
+			Parser::lexical_error("Error in :durative-action");
 	
 	
 	};
-
-
-da_def_body:
-	DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect  { 
-		std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> ($4.nearly_conds,$6.nearly_effects);
-
-		$$.cond_eff_durative=new std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> *,float> (a,$2.durative );
-	};
-		
 
 /* <da-symbol> */
 
@@ -667,7 +668,12 @@ da_symbol:
 
 /* <da-def body> */
 
-//regle inutile je l'ai supprimée
+da_def_body:
+	DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect  { 
+		std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> ($4.nearly_conds,$6.nearly_effects);
+
+		$$.cond_eff_durative=new std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > *> *,float> (a,$2.durative );
+	};
 
 /* <da-GD> */
 
@@ -948,7 +954,10 @@ basic_function_term:
 /* <goal> */
 
 goal:
-	L_P GOAL pre_GD R_P
+	L_P GOAL pre_GD R_P {
+		if (!Parser::addGoals($3.pre_GD))
+			Parser::lexical_error("Error in :goal");
+	}
 	;
 
 /* <contraints> */
@@ -1063,44 +1072,76 @@ integer:
 /* <te-durative-action-def> */
 
 te_durative_action_def:
-	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P te_da_def_body R_P{
-	//$3.name $6.typelist $8.
-	}
+	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P DURATION duration_constraint te_durative_action_def_option1
 	;
 
-/* <te-da-def body> */
-
-te_da_def_body:
-	DURATION duration_constraint TIMEPOINTS L_P nvList_te_time_specifier R_P TIMEALIASES L_P nvList_te_interval_alias R_P TIMECONSTRAINTS L_P nvList_te_time_constraints R_P CONDITION emptyOr_te_da_GD EFFECT emptyOr_te_da_effect // :timepoints must contain at least "start" and "end" ### :timealiases must contain at least "all" interval from "start" to "end" ### :timeconstraints must contain at least "(= (- end start) ?duration"
+te_durative_action_def_option1:
+	TIMEPOINTS L_P list_te_timepoint R_P te_durative_action_def_option2
+	| te_durative_action_def_option2
 	;
 
-/* <te-time-specifier> */
+te_durative_action_def_option2:
+	TIMEALIASES L_P list_te_timealias R_P te_durative_action_def_option3
+	| te_durative_action_def_option3
+	;
 
-te_time_specifier:
+te_durative_action_def_option3:
+	TIMECONSTRAINTS L_P list_te_timeconstraint R_P CONDITION emptyOr_te_da_GD EFFECT emptyOr_te_da_effect R_P
+	| CONDITION emptyOr_te_da_GD EFFECT emptyOr_te_da_effect R_P
+	;
+
+/* <te-timepoint> */
+
+te_timepoint:
 	time_specifier
-	| f_exp_da
-	| name // allows to define flypoints
-	| L_P binary_op te_time_specifier te_time_specifier R_P // allows to compare flypoints with binary operations
+	| name
 	;
 
-/* <te-interval-alias> */
+/* <te-timealias> */
 
-te_interval_alias:
-	te_interval te_interval
+te_timealias:
+	L_P te_interval_name te_interval_def R_P
+	;
+
+/* <te-interval-name> */
+
+te_interval_name:
+	interval
+	| name
+	;
+
+/* <te-interval-def> */
+
+te_interval_def:
+	bracket te_timepoint_op te_timepoint_op bracket
+	;
+
+/* <bracket> */
+
+bracket:
+	L_B
+	| R_B
+	;
+
+/* <te-timeconstraint> */
+
+te_timeconstraint:
+	L_P binary_comp te_timepoint_op te_timepoint_op R_P
+	;
+
+/* <te-timepoint-op> */
+
+te_timepoint_op:
+	te_timepoint
+	| d_value
+	| L_P binary_op te_timepoint_op te_timepoint_op R_P
 	;
 
 /* <te-interval> */
 
 te_interval:
-	interval
-	| name
-	| bracket te_time_specifier te_time_specifier bracket
-	;
-
-/* <te-time-constraints> */
-
-te_time_constraints:
-	L_P binary_comp te_time_specifier te_time_specifier R_P
+	te_interval_name
+	| te_interval_def
 	;
 
 /* <te-da-GD> */
@@ -1130,11 +1171,11 @@ te_pref_timed_GD_option1:
 /* <te-timed-GD> */
 
 te_timed_GD:
-	L_P AT te_time_specifier GD R_P
+	L_P AT te_timepoint_op GD R_P
 	| L_P OVER te_interval GD R_P
 	| L_P SOMEWHERE te_interval GD R_P
 	| L_P ANYWHERE te_interval GD R_P
-	| L_P TRANSITION_OVER te_interval GD R_P
+	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval GD R_P
 	;
 
 /* <te-da-effect> */
@@ -1153,8 +1194,8 @@ te_da_effect:
 /* <te-timed-effect> */
 
 te_timed_effect:
-	L_P AT te_time_specifier cond_effect R_P
-	| L_P AT te_time_specifier f_assign_da R_P {
+	L_P AT te_timepoint_op cond_effect R_P
+	| L_P AT te_timepoint_op f_assign_da R_P {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
 	}
 	| L_P assign_op_t f_head f_exp_t R_P  {
@@ -1164,22 +1205,18 @@ te_timed_effect:
 	| te_modality
 	;
 
-/* <time-modality> */
+/* <te-modality> */
 
 te_modality:
-	L_P AT te_time_specifier cond_effect R_P
+	L_P AT te_timepoint_op cond_effect R_P
 	| L_P OVER te_interval cond_effect R_P
 	| L_P SOMEWHERE te_interval cond_effect R_P
 	| L_P ANYWHERE te_interval cond_effect R_P
+	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval cond_effect R_P
 	| L_P TRANSITION_OVER te_interval cond_effect R_P
 	;
 
-/* <bracket> */
 
-bracket:
-	L_B
-	| R_B
-	;
 
 
 /***************************************************/
@@ -1306,16 +1343,10 @@ literal_term:
 
 literal_name:
 	atomic_formula_name {		
-		vector<int> * init = new vector<int> ();
-		init->push_back(0);
-		init->push_back(0);
-		$$.literal = new std::pair<std::pair< std::vector< std::string > *, std::string *> * , vector<int> *  >($1.atomic_formula, init);
+		$$.literal = new std::pair<std::pair< std::vector< std::string > *, std::string *> * , bool >($1.atomic_formula, true);
 	}
 	| L_P NOT atomic_formula_name R_P {
-		vector<int> * init = new vector<int> ();
-		init->push_back(0);
-		init->push_back(1);
-		$$.literal = new std::pair<std::pair< std::vector< std::string > *, std::string *> * , vector<int> *  >($3.atomic_formula, init);
+		$$.literal = new std::pair<std::pair< std::vector< std::string > *, std::string *> * , bool >($3.atomic_formula, false);
 	}
 	;
 
@@ -1379,18 +1410,6 @@ nvList_primitive_type:
 
 nvList_f_exp:
 	f_exp list_f_exp
-	;
-
-nvList_te_time_specifier:
-	te_time_specifier list_te_time_specifier
-	;
-
-nvList_te_interval_alias:
-	te_interval_alias list_te_interval_alias
-	;
-
-nvList_te_time_constraints:
-	te_time_constraints list_te_time_constraints
 	;
 
 nvList_simple_duration_constraint:
@@ -1463,8 +1482,12 @@ list_primitive_type:
 	;
 
 list_pre_GD:
-	/* empty */
-	| pre_GD list_pre_GD
+	/* empty */ {
+		$$.pre_GD = new std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * ,vector<int>* >* > * > ();
+	}
+	| pre_GD list_pre_GD {
+		$$.pre_GD->insert($$.pre_GD->end(), $2.pre_GD->begin(), $2.pre_GD->end());
+	}
 	;
 
 list_term:
@@ -1509,19 +1532,19 @@ list_p_effect:
 	}
 	;
 
-list_te_time_specifier:
+list_te_timepoint:
 	/* empty */
-	| te_time_specifier list_te_time_specifier
+	| te_timepoint list_te_timepoint
 	;
 
-list_te_interval_alias:
+list_te_timealias:
 	/* empty */
-	| te_interval_alias list_te_interval_alias
+	| te_timealias list_te_timealias
 	;
 
-list_te_time_constraints:
+list_te_timeconstraint:
 	/* empty */
-	| te_time_constraints list_te_time_constraints
+	| te_timeconstraint list_te_timeconstraint
 	;
 
 list_te_da_GD:

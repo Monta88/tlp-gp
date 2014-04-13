@@ -76,6 +76,7 @@
 "over"											return Parser::OVER;
 "somewhere"										return Parser::SOMEWHERE;
 "anywhere"										return Parser::ANYWHERE;
+"minimal-duration"								return Parser::MINIMAL_DURATION;
 "->over"										return Parser::TRANSITION_OVER;
 "-"												return Parser::MINUS;
 "start"											return Parser::START;
