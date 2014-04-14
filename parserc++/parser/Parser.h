@@ -83,7 +83,11 @@ class Parser: public ParserBase
 	bool addGoals(std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > * > * pre_GD) {
 		return m_data->addGoals(pre_GD);
 	}
-		
+	
+	bool addInitiatedFunction(std::pair< std::vector< std::string > *, std::string *> * atomic_formula, float number) {
+		return m_data->addInitiatedFunction(atomic_formula, number);
+	}
+	
 	void display() {
 		m_data->display();
 	}
@@ -92,6 +96,13 @@ class Parser: public ParserBase
 		m_data->lexical_error(msg);
 	}
 	
+	void fatal_error(std::string msg) {
+		m_data->fatal_error(msg);
+	}
+	
+	float getFunctionReturn(std::string * name, std::vector<std::string> * list_term) {
+		return m_data->getFunctionReturn(name, list_term);
+	}
 	
     private:
         void error(char const *msg);    // called on (syntax) errors

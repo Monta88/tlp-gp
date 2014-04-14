@@ -62,8 +62,10 @@ public:
 	//numbers-actions functions
 	bool addDurativeAction(string * name, vector<TypedList*> * typedList_list, float number, vector< pair< pair< vector< string > *, string *> *, int >* > * timed_GD, vector< pair< pair< vector< string > *, string *> * , int >* > * cond_effect);
 	Fluent * getFluent(string name,vector< vector<Type*> >);
-
-
+	bool addInitiatedFunction(pair< vector< string > *, string *> * atomic_formula, float number);
+	bool isFunction(string * name,vector< vector<Type*> > types);
+	Function * getFunction(string * name,vector< vector<Type*> > types);
+	float getFunctionReturn(string * name, vector<string> * list_term);
 private:
 	string m_domain;
 	vector<int> m_requirements;
@@ -78,6 +80,7 @@ private:
 	
 	string m_problem;
 	vector<string> m_object_list;
+	vector< pair< pair<Function*, vector<Member*> >, float> > m_initiated_functions;
 	vector<Object*> * m_objects;
 	vector<pair<Fluent*, Attribute> > * m_inits;
 	vector<pair<Fluent*, Attribute> > * m_goals;

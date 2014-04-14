@@ -14,6 +14,7 @@ Data::Data() {
 	m_actions = new vector<DurativeAction*> ();
 	
 	m_object_list = vector<string> ();
+	m_initiated_functions = vector< pair< pair<Function*, vector<Member*> >, float> > ();
 	m_objects = new vector<Object*> ();
 	m_inits = new vector<pair<Fluent*, Attribute> > ();
 	m_goals = new vector<pair<Fluent*, Attribute> > ();
@@ -533,9 +534,7 @@ bool Data::isAction(string const * name){
 bool Data::isPredicate(string * name,vector< vector<Type*> > types) {
 	unsigned int nb_parameters = 0;
 	
-	for (vector< vector<Type*> >::iterator it = types.begin(); it != types.end(); ++it) {
-		nb_parameters += (*it).size();
-	}
+	nb_parameters = types.size();
 	
 	for (vector<Predicate*>::iterator it_predicate = m_predicates->begin(); it_predicate != m_predicates->end(); ++it_predicate) {
 		if ((*name) == (*it_predicate)->getName()) {
@@ -573,9 +572,7 @@ bool Data::isPredicate(string * name,vector< vector<Type*> > types) {
 Predicate * Data::getPredicate(string * name,vector< vector<Type*> > types) {
 	unsigned int nb_parameters = 0;
 	
-	for (vector< vector<Type*> >::iterator it = types.begin(); it != types.end(); ++it) {
-		nb_parameters += (*it).size();
-	}
+	nb_parameters = types.size();
 	
 	for (vector<Predicate*>::iterator it_predicate = m_predicates->begin(); it_predicate != m_predicates->end(); ++it_predicate) {
 		if ((*name) == (*it_predicate)->getName()) {
@@ -756,3 +753,149 @@ vector<pair<Fluent*, Attribute> > * Data::getInits(){
 vector<DurativeAction*> * Data::getActions(){
 	return m_actions;
 }
+
+bool Data::addInitiatedFunction(pair< vector< string > *, string *> * atomic_formula, float number) {
+	vector<vector<Type*> > type_list = vector<vector<Type*> > ();
+	vector<Member *> members_list = vector<Member *> ();
+	Member * member;
+	Function * function;
+	
+	for (vector<string>::reverse_iterator it_member = atomic_formula->first->rbegin(); it_member != atomic_formula->first->rend(); ++it_member) {
+		if (isConstant(*it_member)) {
+			member = getConstant(*it_member);
+		}
+		else {
+			if (isObject(*it_member)) {
+				member = getObject(*it_member);
+			}
+			else {
+				lexical_error((*it_member) + " is nor a Constant nor an Object");
+				return false;
+			}
+		}
+		members_list.push_back(member);
+		type_list.push_back(*(member->getTypes()));
+	}
+	
+	if (isFunction(atomic_formula->second, type_list)) {
+		function = getFunction(atomic_formula->second, type_list);
+	}
+	else {
+		fatal_error("Function \""+ *(atomic_formula->second) +"\" not found");
+	}
+	
+	m_initiated_functions.push_back(make_pair(make_pair(function, members_list), number));
+	
+	return true;
+}
+
+bool Data::isFunction(string * name,vector< vector<Type*> > types) {
+	unsigned int nb_parameters = 0;
+	
+	nb_parameters = types.size();
+	
+	for (vector<Function*>::iterator it_function = m_functions->begin(); it_function != m_functions->end(); ++it_function) {
+		if ((*name) == (*it_function)->getName()) {
+			if (nb_parameters == 0) {
+				return true;
+			}
+			
+			if (nb_parameters == (*it_function)->getTypesList()->size()) {
+				bool same = true;
+				
+				for (unsigned int i=0; (i < types.size()) && same; ++i) {
+					bool contains = false;
+					for (unsigned int k=0; (k < types.at(i).size()) && same && !contains; ++k) {
+						for (vector<Type*>::iterator it = (*it_function)->getTypesList()->at(i).begin(); (it != (*it_function)->getTypesList()->at(i).end()) && !contains; ++it) {
+							if (((*it)->getName() == types.at(i).at(k)->getName())||(types.at(i).at(k)->isOneOfParents((*it)->getName()))) {
+								contains = true;
+							}
+						}
+					}
+					if (!contains) {
+						same = false;
+					}
+				}
+				
+				if (same) {
+					return true;
+				}
+			}
+		}
+	}
+	
+	return false;
+}
+
+Function * Data::getFunction(string * name,vector< vector<Type*> > types) {
+	unsigned int nb_parameters = 0;
+	
+	nb_parameters = types.size();
+	
+	for (vector<Function*>::iterator it_function = m_functions->begin(); it_function != m_functions->end(); ++it_function) {
+		if ((*name) == (*it_function)->getName()) {
+			if (nb_parameters == 0) {
+				return (*it_function);
+			}
+			
+			if (nb_parameters == (*it_function)->getTypesList()->size()) {
+				bool same = true;
+				
+				for (unsigned int i=0; (i < types.size()) && same; ++i) {
+					bool contains = false;
+					for (unsigned int k=0; (k < types.at(i).size()) && same && !contains; ++k) {
+						for (vector<Type*>::iterator it = (*it_function)->getTypesList()->at(i).begin(); (it != (*it_function)->getTypesList()->at(i).end()) && !contains; ++it) {
+							if (((*it)->getName() == types.at(i).at(k)->getName())||(types.at(i).at(k)->isOneOfParents((*it)->getName()))) {
+								contains = true;
+							}
+						}
+					}
+					if (!contains) {
+						same = false;
+					}
+				}
+				
+				if (same) {
+					return (*it_function);
+				}
+			}
+		}
+	}
+	
+	fatal_error("You tried to get the function \""+ *name +"\" but couldn't find it");
+	
+	return NULL;
+}
+
+float Data::getFunctionReturn(string * name, vector<string> * list_term) {
+	unsigned int nb_parameters = 0;
+	
+	nb_parameters = list_term->size();
+	
+	for (vector< pair< pair<Function*, vector<Member*> >, float> >::iterator it_initiated_function = m_initiated_functions.begin(); it_initiated_function != m_initiated_functions.end(); ++it_initiated_function) {
+		if ((*name) == (*it_initiated_function).first.first->getName()) {
+			if (nb_parameters == 0) {
+				return (*it_initiated_function).second;
+			}
+			
+			if (nb_parameters == (*it_initiated_function).first.second.size()) {
+				bool same = true;
+				
+				for (unsigned int i=0; (i < list_term->size()) && same; ++i) {
+					if (list_term->at(i) != (*it_initiated_function).first.second.at(i)->getName()) {
+						same = false;
+					}
+				}
+				
+				if (same) {
+					return (*it_initiated_function).second;
+				}
+			}
+		}
+	}
+	
+	fatal_error("You tried to get the return of \""+ *name +"\" function but couldn't find it");
+	
+	return -1.;
+}
+

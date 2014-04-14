@@ -13,6 +13,7 @@
 	float number;
 	std::string * name;
 	std::vector<std::string> * list_name;
+	std::vector<float> * list_float;
 	std::pair< std::vector< std::string > *, std::string *> * atomic_formula;
 	std::vector<TypedList*> * typedList_list;
 	std::pair< std::string*, std::vector<TypedList*>* > * function_skeleton;
@@ -325,7 +326,7 @@ atomic_formula_skeleton:
 /* <predicate> */
 
 predicate:
-	name 	{
+	name {
 		$$.name = $1.name;
 	}
 	;
@@ -349,7 +350,7 @@ atomic_function_skeleton:
 /* <function-symbol> */
 
 function_symbol:
-	name 	{
+	name {
 		$$.name = $1.name;
 	}
 	;
@@ -559,18 +560,52 @@ function_term:
 f_exp:
 	number {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		$$.number = $1.number;
 	}
 	| L_P binary_op f_exp f_exp R_P {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		switch ($2.integer) {
+		case 1:
+			$$.number = $3.number * $4.number;
+			break;
+		case 2:
+			$$.number = $3.number + $4.number;
+			break;
+		case 3:
+			$$.number = $3.number - $4.number;
+			break;
+		case 4:
+			$$.number = $3.number / $4.number;
+			break;
+		default :
+			Parser::fatal_error("Unkown binary operator");
+		}
 	}
 	| L_P multi_op f_exp nvList_f_exp R_P {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		$$.number = $3.number;
+		switch ($2.integer) {
+		case 1:
+			for (std::vector<float>::reverse_iterator it = $4.list_float->rbegin(); it != $4.list_float->rend(); ++it) {
+				$$.number *= (*it);
+			}
+			break;
+		case 2:
+			for (std::vector<float>::reverse_iterator it = $4.list_float->rbegin(); it != $4.list_float->rend(); ++it) {
+				$$.number += (*it);
+			}
+			break;
+		default :
+			Parser::fatal_error("Unkown multi operator");
+		}
 	}
 	| L_P MINUS f_exp R_P {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		$$.number = - $3.number;
 	}
 	| f_head {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		$$.number = $1.number;
 	}
 	;
 
@@ -585,33 +620,57 @@ number:
 /* <f-head> */
 
 f_head:
-	L_P function_symbol list_term R_P
-	| function_symbol
+	L_P function_symbol list_term R_P {
+		$$.number = Parser::getFunctionReturn($1.name, $2.list_name);
+	}
+	| function_symbol {
+		$$.number = Parser::getFunctionReturn($1.name, new std::vector<std::string> ());
+	}
 	;
 
 /* <binary-op> */
 
 binary_op:
-	multi_op
-	| MINUS
-	| SLASH
+	multi_op {
+		$$.integer = $1.integer;
+	}
+	| MINUS {
+		$$.integer = 3;
+	}
+	| SLASH {
+		$$.integer = 4;
+	}
 	;
 
 /* <multi-op> */
 
 multi_op:
-	STAR
-	| PLUS
+	STAR {
+		$$.integer = 1;
+	}
+	| PLUS {
+		$$.integer = 2;
+	}
 	;
 
 /* <binary-comp> */
 
 binary_comp:
-	GT
-	| LT
-	| EQ
-	| GOE
-	| LOE
+	GT {
+		$$.integer = 1;
+	}
+	| LT {
+		$$.integer = 2;
+	}
+	| EQ {
+		$$.integer = 3;
+	}
+	| GOE {
+		$$.integer = 4;
+	}
+	| LOE {
+		$$.integer = 5;
+	}
 	;
 
 /* <effect> */
@@ -811,9 +870,12 @@ d_op:
 /* <d-value> */
 
 d_value:
-	number		
+	number {
+		$$.number = $1.number;
+	}
 	| f_exp {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		$$.number = $1.number;
 	}
 	;
 
@@ -968,6 +1030,8 @@ init_el:
 	}
 	| L_P EQ basic_function_term number R_P {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		if (!Parser::addInitiatedFunction($3.atomic_formula, $4.number))
+			Parser::lexical_error("Error in :init");
 	}
 	| L_P EQ basic_function_term name R_P {
 		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
@@ -977,8 +1041,12 @@ init_el:
 /* <basic-function-term> */
 
 basic_function_term:
-	function_symbol
-	| L_P function_symbol list_name R_P
+	function_symbol {
+		$$.atomic_formula = new std::pair< std::vector< std::string > *, std::string *> (new std::vector<std::string> (), $1.name);
+	}
+	| L_P function_symbol list_name R_P {
+		$$.atomic_formula = new std::pair< std::vector< std::string > *, std::string *> ($3.list_name, $2.name);
+	}
 	;
 
 /* <goal> */
@@ -1090,7 +1158,9 @@ length_spec_option2:
 /* <integer> */
 
 integer:
-	NUM
+	NUM {
+		$$.number = atof(d_scanner.matched().c_str());
+	}
 	;
 
 
@@ -1400,7 +1470,7 @@ atomic_formula_name:
 	}
 	;
 
-/* nvList_A (for non void list) -> A+ */
+/* <nvList_A> (= non void list) -> <A>+ */
 
 nvList_require_key:
 	require_key list_require_key
@@ -1439,7 +1509,10 @@ nvList_primitive_type:
 	;
 
 nvList_f_exp:
-	f_exp list_f_exp
+	f_exp list_f_exp {
+		$$.list_float = $2.list_float;
+		$$.list_float->push_back($1.number);
+	}
 	;
 
 nvList_simple_duration_constraint:
@@ -1454,7 +1527,7 @@ nvList_metric_f_exp:
 	metric_f_exp list_metric_f_exp
 	;
 
-/* list_A -> A* */
+/* <list_A> -> <A>* */
 
 list_structure_def:
 	/* empty */
@@ -1531,7 +1604,7 @@ list_term:
 	;
 
 list_GD:
-	/* empty */{
+	/* empty */ {
 		$$.timed_GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
 	}
 	| GD list_GD {
@@ -1543,8 +1616,13 @@ list_GD:
 	;
 
 list_f_exp:
-	/* empty */
-	| f_exp list_f_exp
+	/* empty */ {
+		$$.list_float = new std::vector<float>;
+	}
+	| f_exp list_f_exp {
+		$$.list_float = $2.list_float;
+		$$.list_float->push_back($1.number);
+	}
 	;
 
 list_c_effect:
@@ -1588,7 +1666,7 @@ list_te_da_effect:
 	;
 
 list_da_GD:
-	/* empty */{
+	/* empty */ {
 		$$.timed_GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >();
 	}
 	| da_GD list_da_GD {
