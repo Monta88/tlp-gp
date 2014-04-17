@@ -27,7 +27,7 @@ public:
 	virtual ~Graph();
 
 	void generateGraph();
-	bool actionUsable(DurativeAction *action, vector<pair<Fluent*, Attribute> > *var);
+	bool actionUsable(DurativeAction *action, vector<pair<Attribute, Fluent*> > *var);
 private:
 	Domain *m_domainptr;
 	Problem *m_problemptr;
