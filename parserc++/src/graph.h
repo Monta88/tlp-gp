@@ -17,6 +17,7 @@
 #include "../Data.h"
 #include "problem.h"
 #include "domain.h"
+#include "constraint.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ public:
 
 	void generateGraph();
 	bool actionUsable(DurativeAction *action, vector<pair<Attribute, Fluent*> > *var);
+	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> >);
 private:
 	Domain *m_domainptr;
 	Problem *m_problemptr;

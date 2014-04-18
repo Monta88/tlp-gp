@@ -27,6 +27,7 @@ Graph::~Graph() {
 void Graph::generateGraph() {
 	vector<pair<Fluent*, Attribute> > *inits, *goals ;
 	vector<DurativeAction*> *actions ;
+	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > level0,level1,level2,level3;
 	DurativeAction goalsAction("Goals") ;
 
 	vector< Fluent *> vect ;
@@ -98,7 +99,8 @@ void Graph::generateGraph() {
 	}*/
 
 	vect2.clear();
-	vect2.insert(vect2.end(),inits2.begin(),inits2.end());
+	//vect2.insert(vect2.end(),inits2.begin(),inits2.end());
+	//vect2 = inits2;
 	cout << "\nETAPE 1: " << vect2.size() << endl;
 	for(auto it_act = actions->begin(); it_act != actions->end(); ++it_act) {
 		if(actionUsable(*it_act, &inits2)){
@@ -108,9 +110,25 @@ void Graph::generateGraph() {
 			vect2.insert(vect2.end(), vect3.begin(), vect3.end());
 		}
 	}
-	cout << "RESULT: " << vect2.size() << " " << actionUsable(&goalsAction, &inits2)<< endl;
+	cout << "RESULT: " << vect2.size() << " " << actionUsable(&goalsAction, &vect2)<< endl;
 
-	cout << "\nETAPE 2: " << vect2.size() << endl;
+
+	cout << "level 0: " << " " << actionUsable(&goalsAction, &vect2)<< endl;
+
+	level1 = nextLevel(actions,vect2);
+	cout << "level 1: " << " " << actionUsable(&goalsAction, &vect2)<< endl;
+	cout << ": " << level1.first.size() << " " << level1.second.size()<< endl;
+
+	level2 = nextLevel(&level1.first,level1.second);
+	cout << "level 2: " << " " << actionUsable(&goalsAction, &vect2)<< endl;
+	cout << ": " << level2.first.size() << " " << level2.second.size()<< endl;
+
+	level3 = nextLevel(&level2.first,level2.second);
+	cout << "level 2: " << " " << actionUsable(&goalsAction, &vect2)<< endl;
+	cout << ": " << level3.first.size() << " " << level3.second.size()<< endl;
+
+
+	/*cout << "\nETAPE 2: " << vect2.size() << endl;
 	for(auto it_act = actions->begin(); it_act != actions->end(); ++it_act) {
 		if(actionUsable(*it_act, &vect2)){
 			cout << (*it_act)->getName() << endl;
@@ -130,9 +148,42 @@ void Graph::generateGraph() {
 			vect2.insert(vect2.end(), vect3.begin(), vect3.end());
 		}
 	}
-	cout << "RESULT: " << vect2.size() << " " << actionUsable(&goalsAction, &inits2)<< endl;
+	cout << "RESULT: " << vect2.size() << " " << actionUsable(&goalsAction, &inits2)<< endl;*/
+
 
 	cout << "\n(generateGraph): END OF PRINT" <<endl;
+
+	constraint c (1,2,"<",(*actions)[0],(*actions)[1]);
+	c.print();
+}
+
+pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > Graph::nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> > conditions){
+	vector<pair<Attribute, Fluent*> > newEffects,tempEffects;
+	vector<DurativeAction*> newActions ;
+	vector<pair<Attribute, Fluent*> >::iterator pos ;
+	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > result;
+
+	cout << "\nETAPE : " << conditions.size() << endl;
+	for(auto it_act = actions->begin(); it_act != actions->end(); ++it_act) {
+		if(actionUsable(*it_act, &conditions)){
+			//cout << (*it_act)->getName() << endl;
+			newActions.push_back(*it_act);
+			tempEffects = (*it_act)->getEffects() ;
+
+			/*for(auto it_eff = tempEffects.begin(); it_eff != tempEffects.end(); ++it_eff){
+				pos = find(newEffects.begin(), newEffects.end(), it_eff) ;
+				if(pos == newEffects.end() ){
+					newEffects.push_back(*it_eff);
+				}
+			}*/
+			newEffects.insert(newEffects.end(),tempEffects.begin(),tempEffects.end());
+		}
+	}
+
+	result.first = newActions;
+	result.second = newEffects;
+
+	return result;
 }
 
 // Given a list of fluents, return if the action is activable (ie all preconds are satisfied)
