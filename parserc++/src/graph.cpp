@@ -29,6 +29,7 @@ void Graph::generateGraph() {
 	vector<DurativeAction*> *actions ;
 	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > level0,level1,level2,level3;
 	DurativeAction goalsAction("Goals") ;
+	sat sol;
 
 	vector< Fluent *> vect ;
 	vector<pair<Attribute, Fluent*> > vect2,vect3,inits2 ;
@@ -155,6 +156,10 @@ void Graph::generateGraph() {
 
 	constraint c (1,2,"<",(*actions)[0],(*actions)[1]);
 	c.print();
+
+	sol.initialize();
+
+	cout << "\n(generateGraph): END" <<endl;
 }
 
 pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > Graph::nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> > conditions){

@@ -18,6 +18,7 @@
 #include "problem.h"
 #include "domain.h"
 #include "constraint.h"
+#include "sat.h"
 
 using namespace std;
 
