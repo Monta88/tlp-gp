@@ -21,6 +21,8 @@
 #include "vertex.h"
 #include "tools.h"
 #include "lObjType.h"
+#include "constraint.h"
+
 using namespace std;
 
 class Graph {
@@ -35,6 +37,7 @@ public:
 	bool actionUsable(DurativeAction action, vector< Fluent > * fluents);
 	bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
 	bool compareFV(vector<Member * >* v1,Member * m);
+	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> >);
 private:
 	Domain * m_domainptr;
 	Problem * m_problemptr;

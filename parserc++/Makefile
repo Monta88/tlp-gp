@@ -1,6 +1,8 @@
 # Makefile
 
-OBJS	= lex.o parse.o Data.o action.o attribute.o constant.o domain.o durative_action.o fluent.o function.o interval.o lexer.o member.o object.o planningData.o predicate.o problem.o type.o typedList.o variable.o tools.o lObjType.o edge.o vertex.o graph.o main.o
+
+OBJS	= lex.o parse.o Data.o action.o attribute.o constant.o domain.o durative_action.o fluent.o function.o interval.o lexer.o member.o object.o planningData.o predicate.o problem.o type.o typedList.o variable.o tools.o lObjType.o edge.o vertex.o graph.o constraint.o main.o
+
 CC		= g++
 CFLAGS	= -std=c++11 -Wall -g
 
@@ -74,6 +76,9 @@ variable.o:			src/variable.cpp
 		
 graph.o: 			src/graph.cpp
 		$(CC) $(CFLAGS) -c src/graph.cpp -o graph.o
+		
+constraint.o:		src/constraint.cpp
+		$(CC) $(CFLAGS) -c src/constraint.cpp -o constraint.o
 
 tools.o: 			src/tools.cpp
 		$(CC) $(CFLAGS) -c src/tools.cpp -o tools.o
