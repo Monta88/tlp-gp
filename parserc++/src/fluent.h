@@ -16,6 +16,7 @@ class Fluent {
 	public:
 		Fluent(Predicate * predicate, vector<Member*> members_list);
 		Fluent(Predicate * predicate);
+		Fluent(){}
 		virtual ~Fluent();
 		Predicate * getPredicate();
 		vector<Member*> * getMembersList();

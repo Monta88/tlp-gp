@@ -32,3 +32,6 @@ string Member::to_string() {
 	return str;
 }
 
+void Member::changeName(string name){
+	m_name=name;
+}

@@ -17,20 +17,27 @@
 #include "../Data.h"
 #include "problem.h"
 #include "domain.h"
-
+#include "edge.h"
+#include "vertex.h"
+#include "tools.h"
+#include "lObjType.h"
 using namespace std;
 
 class Graph {
 public:
 	Graph();
-	Graph(Domain *domain, Problem *problem);
+	Graph(Domain *domain, Problem * problem);
 	virtual ~Graph();
-
+	vector<DurativeAction > * instanceActions();
+	vector<DurativeAction >* instanciation(vector<vector<Object * > > * objects,DurativeAction *action);
 	void generateGraph();
 	bool actionUsable(DurativeAction *action, vector<pair<Attribute, Fluent*> > *var);
+	bool actionUsable(DurativeAction action, vector< Fluent > * fluents);
+	bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
+	bool compareFV(vector<Member * >* v1,Member * m);
 private:
-	Domain *m_domainptr;
-	Problem *m_problemptr;
+	Domain * m_domainptr;
+	Problem * m_problemptr;
 };
 
 

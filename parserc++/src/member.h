@@ -14,6 +14,7 @@ using namespace std;
 class Member {
 	public:
 		Member(string name, vector<Type*> types);
+		void changeName(string name);
 		Member();
 		virtual ~Member();
 		string getName();

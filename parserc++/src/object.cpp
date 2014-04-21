@@ -21,4 +21,3 @@ string Object::to_string() {
 	}
 	return str;
 }
-

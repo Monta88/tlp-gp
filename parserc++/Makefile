@@ -1,6 +1,6 @@
 # Makefile
 
-OBJS	= lex.o parse.o Data.o action.o attribute.o constant.o domain.o durative_action.o fluent.o function.o interval.o lexer.o member.o object.o planningData.o predicate.o problem.o type.o typedList.o variable.o graph.o main.o
+OBJS	= lex.o parse.o Data.o action.o attribute.o constant.o domain.o durative_action.o fluent.o function.o interval.o lexer.o member.o object.o planningData.o predicate.o problem.o type.o typedList.o variable.o tools.o lObjType.o edge.o vertex.o graph.o main.o
 CC		= g++
 CFLAGS	= -std=c++11 -Wall -g
 
@@ -24,7 +24,7 @@ action.o:			src/action.cpp
 atom.o:				src/atom.cpp
 		$(CC) $(CFLAGS) -c src/atom.cpp -o atom.o
 
-attribute.o:		src/attribute.cpp
+attribute.o:			src/attribute.cpp
 		$(CC) $(CFLAGS) -c src/attribute.cpp -o attribute.o
 
 constant.o:			src/constant.cpp
@@ -74,6 +74,18 @@ variable.o:			src/variable.cpp
 		
 graph.o: 			src/graph.cpp
 		$(CC) $(CFLAGS) -c src/graph.cpp -o graph.o
+
+tools.o: 			src/tools.cpp
+		$(CC) $(CFLAGS) -c src/tools.cpp -o tools.o
+
+edge.o: 			src/edge.cpp
+		$(CC) $(CFLAGS) -c src/edge.cpp -o edge.o
+
+vertex.o: 			src/vertex.cpp
+		$(CC) $(CFLAGS) -c src/vertex.cpp -o vertex.o
+
+lObjType.o: 			src/lObjType.cpp
+		$(CC) $(CFLAGS) -c src/lObjType.cpp -o lObjType.o
 
 main.o:				main.cc
 		$(CC) $(CFLAGS) -c main.cc -o main.o
