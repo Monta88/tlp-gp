@@ -613,7 +613,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 
 	DurativeAction * action; 
 	vector<Type *> types;
-	vector<Variable *> variable_list;
+	vector<Member *> variable_list =  vector<Member *>();
 	vector< vector<Type*> > type_list;
 	Fluent * fluent;
 	Attribute  att;
@@ -639,7 +639,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 					lexical_error("In action " + action->getName() + "The " + (*it2) + " variable already exist");
 					return false;
 				}	
-				action->addParameters( new Variable(*it2,types) );					
+				action->addParameters( Variable(*it2,types) );					
 			}
 		}
 		// action time
@@ -648,7 +648,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 		for(vector< pair< pair<vector<string> *,string *> * , int> * >::reverse_iterator it = timed_GD->rbegin(); it != timed_GD->rend(); ++it){
 				
 			// each variable need to be define in parameters
-					
+			variable_list =  vector<Member *>();
 			type_list = vector< vector<Type*> >();
 			for (vector<string>::reverse_iterator it2 =(*it)->first->first->rbegin(); it2 != (*it)->first->first->rend(); ++it2){
 				if( !(action->isVariable(*it2)) ){
@@ -664,7 +664,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 				return false;
 			}
 			if (isPredicate((*it)->first->second, type_list)) {
-				fluent = new Fluent (getPredicate((*it)->first->second, type_list));
+				fluent = new Fluent (getPredicate((*it)->first->second, type_list),variable_list);
 			}
 			else {
 				fatal_error("Predicate \""+ *(*it)->first->second +"\" not found");
@@ -691,9 +691,10 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 			} else {
 				action->addNotCondition(att,fluent);
 			}
+			variable_list.clear();
 		}
 		// effects
-
+		
 		for(vector< pair< pair<vector<string> *,string *> *, int> * >::reverse_iterator it = cond_effect->rbegin(); it != cond_effect->rend(); ++it){
 			// each variable need to be define in parameters
 					
@@ -712,7 +713,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 				return false;
 			}
 			if (isPredicate((*it)->first->second, type_list)) {
-				fluent = new Fluent (getPredicate((*it)->first->second, type_list));
+				fluent = new Fluent (getPredicate((*it)->first->second, type_list),variable_list);
 			}
 			else {
 				fatal_error("Predicate \""+ *(*it)->first->second +"\" not found");
@@ -739,6 +740,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 			} else {
 				action->addNotEffect(att,fluent);
 			}
+		variable_list.clear();
 		}
 		m_list_name_action.push_back(action->getName());
 		m_actions->push_back(action);

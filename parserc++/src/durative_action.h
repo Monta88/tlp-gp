@@ -10,6 +10,7 @@
 #include "fluent.h"
 #include "action.h"
 #include "attribute.h"
+#include "object.h"
 using namespace std;
 
 
@@ -19,8 +20,8 @@ class DurativeAction : public Action {
 		virtual ~DurativeAction();
 
 		void addDuration(float duration);
-		void addParameters(Variable * parameter);
-
+		void addParameters(Variable parameter);
+		float getDuration();
 		void addCondition(Attribute att,Fluent *fluent);
 		void addEffect(Attribute att,Fluent *fluent);
 		void addNotCondition(Attribute att,Fluent *fluent);
@@ -36,13 +37,22 @@ class DurativeAction : public Action {
 		vector< Fluent *> getNotPreconditions();
 		bool isPredNotConditions( string * name,vector<vector<Type *>>);
 		Fluent * getPredNotCondition(string * name,vector<vector<Type *>> );
-		
+		vector< pair<Attribute, Fluent *> > getPreconditions2();
+		vector< pair<Attribute, Fluent *> > getNotPreconditions2();
 		vector< pair< Attribute,Fluent *> > getEffects();
 		vector< pair< Attribute,Fluent *> > getNotEffects();
+		
+		vector< Fluent *> getEffectsF();			
 
+		vector<Variable > * getParameters();
 		string to_string();
+		string to_stringParam();
+		
+
+		//constructeur par copie	
+		
 	private:
-		vector<Variable *> m_parameters;
+		vector<Variable> m_parameters;
 		vector< pair< Attribute,Fluent *> > m_preconditions;
 		vector< pair< Attribute,Fluent *> > m_not_preconditions; 
 		vector< pair< Attribute,Fluent *> > m_effects; 
