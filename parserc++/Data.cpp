@@ -701,7 +701,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 			type_list = vector< vector<Type*> >();
 			for (vector<string>::reverse_iterator it2 =(*it)->first->first->rbegin(); it2 != (*it)->first->first->rend(); ++it2){
 				if( !(action->isVariable(*it2)) ){
-					lexical_error("In action " + action->getName() + ", The variable" + (*it2) + " don't exist");
+					lexical_error("In action " + action->getName() + ", The variable " + (*it2) + " don't exist");
 					return false;
 				}
 				type_list.push_back(*(action->getVariable(*it2)->getTypes()));

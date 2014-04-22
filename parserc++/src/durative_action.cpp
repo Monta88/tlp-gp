@@ -1,12 +1,13 @@
 #include "durative_action.h"
+#include <iostream>
 
-
-DurativeAction::DurativeAction(string name):Action(name) {}
-
+DurativeAction::DurativeAction(string name):m_name(name) {}
 
 DurativeAction::~DurativeAction() {}
 
-
+string DurativeAction::getName() {
+	return m_name;
+}
 
 float DurativeAction::getDuration(){
 	return m_duration;
@@ -134,7 +135,7 @@ vector<Variable >* DurativeAction::getParameters(){
 }
 
 string DurativeAction::to_string(){
-	string rep="Action "+getName();
+	string rep="Action "+m_name;
 	rep +="\n\tParam : ";
 	for (vector<Variable>::iterator it = m_parameters.begin(); it != m_parameters.end();++it){
 		rep +=" | "+(*it).getName();
@@ -176,3 +177,54 @@ string  DurativeAction::to_stringParam(){
 	return rep;
 }
 
+
+//copy constructor
+
+DurativeAction::DurativeAction(const DurativeAction &action){
+	m_name=action.getNameC();
+	m_parameters = vector<Variable>();
+	for(unsigned i =0 ; i<action.getParametersC().size(); ++i){
+		m_parameters.push_back(action.getParametersC().at(i));
+	}
+	m_preconditions=vector< pair<Attribute, Fluent *> >();
+	for(unsigned i =0 ; i< action.getPreconditions2C().size(); ++i){
+		m_preconditions.push_back(action.getPreconditions2C().at(i));
+	}
+	m_not_preconditions=vector< pair<Attribute, Fluent *> >();
+	for(unsigned i =0 ; i< action.getNotPreconditions2C().size(); ++i){
+		m_not_preconditions.push_back(action.getNotPreconditions2C().at(i));
+	}
+	m_effects=vector< pair<Attribute, Fluent *> >();
+	for(unsigned i = 0 ; i< action.getEffectsC().size(); ++i){
+		m_effects.push_back(action.getEffectsC().at(i));
+	}
+	m_not_effects=vector< pair<Attribute, Fluent *> >();
+	for(unsigned i =0 ; i< action.getNotEffectsC().size(); ++i){
+		m_not_effects.push_back(action.getNotEffectsC().at(i));
+	}
+}
+
+
+vector<Variable >  DurativeAction::getParametersC()const{
+	return m_parameters;
+}
+
+string DurativeAction::getNameC()const{
+	return m_name;
+}
+	
+vector< pair<Attribute, Fluent *> > DurativeAction::getPreconditions2C()const{
+	return m_preconditions;
+}
+
+vector< pair<Attribute, Fluent *> > DurativeAction::getNotPreconditions2C()const{
+	return m_not_preconditions;
+}
+
+vector< pair< Attribute,Fluent *> > DurativeAction::getEffectsC()const{
+	return m_effects;
+}
+
+vector< pair< Attribute,Fluent *> > DurativeAction::getNotEffectsC()const{
+	return m_not_effects;
+}

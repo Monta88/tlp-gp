@@ -1,6 +1,11 @@
 #include "fluent.h"
 
-Fluent::Fluent(Predicate * predicate, vector<Member*> members_list):m_predicate(predicate), m_members_list(members_list) {}
+Fluent::Fluent(Predicate * predicate, vector<Member*> members_list):m_predicate(predicate) {
+	m_members_list = vector<Member *>();
+	for(vector<Member*>::iterator it=members_list.begin() ; it != members_list.end();++it){
+		m_members_list.push_back(*it);
+	}
+}
 
 Fluent::Fluent(Predicate * predicate):m_predicate(predicate) {}
 

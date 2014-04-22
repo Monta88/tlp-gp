@@ -14,11 +14,13 @@
 using namespace std;
 
 
-class DurativeAction : public Action {
+class DurativeAction {
 	public:
 		DurativeAction(string name);
 		virtual ~DurativeAction();
 
+		string getName();	
+	
 		void addDuration(float duration);
 		void addParameters(Variable parameter);
 		float getDuration();
@@ -48,10 +50,18 @@ class DurativeAction : public Action {
 		string to_string();
 		string to_stringParam();
 		
-
-		//constructeur par copie	
+		
+		//copy constructor
+		DurativeAction(const DurativeAction &action);
+		vector<Variable >  getParametersC()const;
+		string getNameC()const;	
+		vector< pair<Attribute, Fluent *> > getPreconditions2C()const;
+		vector< pair<Attribute, Fluent *> > getNotPreconditions2C()const;
+		vector< pair< Attribute,Fluent *> > getEffectsC()const;
+		vector< pair< Attribute,Fluent *> > getNotEffectsC()const;
 		
 	private:
+		string m_name;
 		vector<Variable> m_parameters;
 		vector< pair< Attribute,Fluent *> > m_preconditions;
 		vector< pair< Attribute,Fluent *> > m_not_preconditions; 

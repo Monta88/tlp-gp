@@ -259,7 +259,7 @@ vector<DurativeAction >* Graph::instanciation(vector<vector<Object * > > * objec
 	vector<Object > instance =  vector<Object  >();
 	int * tabMax = new int[objects->size()];
 	int * tab = new int[objects->size()];
-	string objectN,temp;
+	string temp;
 	vector<Member*> members_list;
 	Fluent f;
 	for (unsigned int i = 0 ;i < objects->size();++i){
@@ -295,22 +295,19 @@ vector<DurativeAction >* Graph::instanciation(vector<vector<Object * > > * objec
 			}
 		}
 	}
-	cout<<"\ndebut\n"<<action->to_string()<<"\nfin\n";
-	
-	//step 2 create one action / combinaison
+	//cout<<"\n************************************************\n"<<action->to_string()<<"\n************************************************\n";
 	vector<DurativeAction >* ret=new vector<DurativeAction >();
-	DurativeAction actualAction = *action;
+	DurativeAction actualAction = DurativeAction(*action);
 	for(vector<vector<Object  >>::iterator it_inst = all_instance->begin() ; it_inst != all_instance->end() ;++it_inst){
-		actualAction=*action ;
+		actualAction = DurativeAction(*action);
+		actualAction.getParameters()->at(0).changeName("lol");
 		for (unsigned int i=0 ;i<actualAction.getParameters()->size();i++) {
-			objectN = actualAction.getParameters()->at(i).getName();
-			// probleme ici d'instantiation normalement il faudrai juste changer les paramtetre mais marche pas 
 			actualAction.getParameters()->at(i).changeName((*it_inst).at(i).getName());
 		}
 		ret->push_back(actualAction);
 	}
 	for (vector<DurativeAction >::iterator it = ret->begin() ; it != ret->end() ; ++it){
-		cout<<"\ndebut\n"<<(*it).to_string()<<"\nfin\n";
+		//cout<<"\ndebut\n"<<(*it).to_string()<<"\nfin\n";
 	}
 	instance.clear();
 	all_instance->clear();
@@ -321,7 +318,9 @@ vector<DurativeAction >* Graph::instanciation(vector<vector<Object * > > * objec
 
 void Graph::generateGraph() {
 	bool goal = false;
+	cout<<"debut instanciations \n";
 	vector<DurativeAction > * m_actions = instanceActions();	
+	cout<<"fin instanciations \n";
 	DurativeAction goalsAction =  DurativeAction((string)"Goals") ;
 	DurativeAction initAction =  DurativeAction("Inits") ;
 	//create action goals
