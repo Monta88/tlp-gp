@@ -22,6 +22,7 @@
 #include "tools.h"
 #include "lObjType.h"
 #include "constraint.h"
+#include "sat.h"
 
 using namespace std;
 
