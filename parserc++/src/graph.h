@@ -23,6 +23,7 @@
 #include "lObjType.h"
 #include "constraint.h"
 #include "sat.h"
+#include "attribute.h"
 
 using namespace std;
 
@@ -31,13 +32,13 @@ public:
 	Graph();
 	Graph(Domain *domain, Problem * problem);
 	virtual ~Graph();
-	vector<DurativeAction > * instanceActions();
-	vector<DurativeAction >* instanciation(vector<vector<Object * > > * objects,DurativeAction *action);
+	vector<DurativeAction *> * instanceActions();
+	vector<DurativeAction *>* instanciation(vector<vector<Object * > > * objects,DurativeAction *action);
 	void generateGraph();
-	bool actionUsable(DurativeAction *action, vector<pair<Attribute, Fluent*> > *var);
-	bool actionUsable(DurativeAction action, vector< Fluent > * fluents);
+	bool actionUsable(DurativeAction *action, vector< Fluent > * fluents);
 	bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
 	bool compareFV(vector<Member * >* v1,Member * m);
+	DurativeAction * make_actionGoal();
 	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> >);
 private:
 	Domain * m_domainptr;

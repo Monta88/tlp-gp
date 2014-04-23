@@ -54,6 +54,7 @@ class DurativeAction {
 		//copy constructor
 		DurativeAction(const DurativeAction &action);
 		vector<Variable >  getParametersC()const;
+		Variable * givePointVariable (Member * member);
 		string getNameC()const;	
 		vector< pair<Attribute, Fluent *> > getPreconditions2C()const;
 		vector< pair<Attribute, Fluent *> > getNotPreconditions2C()const;

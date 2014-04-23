@@ -67,14 +67,12 @@ int main(int argc, char **argv)
 			exit(5);
 		}
 	}
-	//data->display();
-	//data->getActions()->at(0)->getParameters()->at(0).changeName("lol");
-	//cout<<" pppp"<<data->getActions()->at(0)->to_string();
+	data->display();
 	domain = data->getDomain();
 	problem = data->getProblem();
 
 	graph = new Graph(domain, problem);
-	graph->generateGraph();
+	//graph->generateGraph();
 
 
 	return 0;

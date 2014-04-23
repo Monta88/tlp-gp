@@ -217,11 +217,12 @@ bool Graph::actionUsable(DurativeAction* action, vector<pair<Attribute, Fluent*>
 	return res;
 }*/
 
-vector<DurativeAction > * Graph::instanceActions(){
+
+vector<DurativeAction * > * Graph::instanceActions(){
 	vector<DurativeAction *> * m_actions = m_domainptr->getActions();
 	vector<lObjType> * objects = m_problemptr->getObjects();
-	vector<DurativeAction >* ret = new vector<DurativeAction >();	
-	vector<DurativeAction >* temp ;
+	vector<DurativeAction * >* ret = new vector<DurativeAction *>();	
+	vector<DurativeAction *>* temp ;
 	vector<vector<Object * > >*objects_need = new vector<vector<Object * > >();
 	vector<Object * > temp2;
 	vector<Type * > temp3;
@@ -247,8 +248,8 @@ vector<DurativeAction > * Graph::instanceActions(){
 		}
 		
 		temp = instanciation(objects_need,(*it_act));
-		for (vector<DurativeAction >::iterator it_ins = temp->begin(); it_ins != temp->end() ; ++it_ins){
-			ret->push_back(*it_ins);
+		for (vector<DurativeAction *>::iterator it_ins = temp->begin(); it_ins != temp->end() ; ++it_ins){
+			ret->push_back((*it_ins));
 		}
 		objects_need->clear();
 		temp->clear();
@@ -259,7 +260,7 @@ vector<DurativeAction > * Graph::instanceActions(){
 }
 
 // all the objects must be usefull 
-vector<DurativeAction >* Graph::instanciation(vector<vector<Object * > > * objects,DurativeAction * action){
+vector<DurativeAction *>* Graph::instanciation(vector<vector<Object * > > * objects,DurativeAction * action){
 	vector<vector<Object  > >* all_instance = new vector<vector<Object >>();
 	vector<Object > instance =  vector<Object  >();
 	int * tabMax = new int[objects->size()];
@@ -300,19 +301,16 @@ vector<DurativeAction >* Graph::instanciation(vector<vector<Object * > > * objec
 			}
 		}
 	}
-	//cout<<"\n************************************************\n"<<action->to_string()<<"\n************************************************\n";
-	vector<DurativeAction >* ret=new vector<DurativeAction >();
-	DurativeAction actualAction = DurativeAction(*action);
-	for(vector<vector<Object  >>::iterator it_inst = all_instance->begin() ; it_inst != all_instance->end() ;++it_inst){
-		actualAction = DurativeAction(*action);
-		actualAction.getParameters()->at(0).changeName("lol");
-		for (unsigned int i=0 ;i<actualAction.getParameters()->size();i++) {
-			actualAction.getParameters()->at(i).changeName((*it_inst).at(i).getName());
+	vector<DurativeAction *>* ret=new vector<DurativeAction *>();
+	DurativeAction *actualAction = new DurativeAction(*action);
+	for(unsigned i=0;i<all_instance->size() ; ++i){
+		for (unsigned int j=0 ;j<actualAction->getParameters()->size();j++) {
+			actualAction->getParameters()->at(j).changeName(all_instance->at(i).at(j).getName());
 		}
 		ret->push_back(actualAction);
+		actualAction = new DurativeAction(*action);
 	}
-	for (vector<DurativeAction >::iterator it = ret->begin() ; it != ret->end() ; ++it){
-		//cout<<"\ndebut\n"<<(*it).to_string()<<"\nfin\n";
+	for (vector<DurativeAction *>::iterator it = ret->begin() ; it != ret->end() ; ++it){
 	}
 	instance.clear();
 	all_instance->clear();
@@ -322,16 +320,12 @@ vector<DurativeAction >* Graph::instanciation(vector<vector<Object * > > * objec
 
 
 void Graph::generateGraph() {
-	bool goal = false;
 	cout<<"debut instanciations \n";
-	vector<DurativeAction > * m_actions = instanceActions();	
+	vector<DurativeAction *> * m_actions = instanceActions();	
 	cout<<"fin instanciations \n";
-	DurativeAction goalsAction =  DurativeAction((string)"Goals") ;
-	DurativeAction initAction =  DurativeAction("Inits") ;
+	DurativeAction *goalsAction =  make_actionGoal() ;
+	DurativeAction *initAction =  new DurativeAction("Inits") ;
 	//create action goals
-	for(vector<pair<Fluent*, Attribute> >::iterator it = m_problemptr->getGoals()->begin(); it != m_problemptr->getGoals()->end(); ++it){
-		goalsAction.addCondition((*it).second,(*it).first);
-	}
 	vector<Fluent >* lastlFlu = new vector<Fluent >();
 	vector<Fluent >* actualFlu = new vector<Fluent >();
 	Fluent*  temp;
@@ -339,30 +333,29 @@ void Graph::generateGraph() {
 	for(vector<pair<Fluent*, Attribute> >::iterator it = m_problemptr->getInits()->begin(); it != m_problemptr->getInits()->end(); ++it){
 		temp =((*it).first);		
 		actualFlu->push_back(*temp);
-		initAction.addCondition((*it).second,(*it).first);
+		initAction->addEffect((*it).second,(*it).first);
 	}
 	
 	Vertex * firtVertex = new Vertex();
 	Vertex * lastVertex = new Vertex();
 	Vertex * actualVertex = new Vertex();
 	Edge * edge;
-	firtVertex->addAction(&initAction);
+	firtVertex->addAction(initAction);
 	lastVertex = firtVertex;
 	int plan=0;
 	bool c;
 	cout<<"generation du graph :\n";
-	goal=true;//instantiation marche pas donc on pas generé le graphe
+	
+	bool goal = false;
 
 	while( !goal ){
-		//cout<<"plan "<<plan<<"\n";
+		cout<<"plan "<<plan<<"\n";
 		lastVertex = actualVertex;
 		actualVertex = new Vertex();
 
 		lastlFlu=actualFlu;
 		//if we can have goal we stop
-		/*for (unsigned i=0;i<goalsAction.getPreconditions().size() ;++i){
-			cout<<" goal "<<goalsAction.getPreconditions().at(i)->getPredicate()->getName()<<"\n";
-		}
+		cout<<" goal : "<<goalsAction->to_string()<<"\n";
 		cout<<"\n\n";
 		for (unsigned i=0; i<lastlFlu->size();++i){
 			
@@ -371,10 +364,10 @@ void Graph::generateGraph() {
 				cout<<" | "<<lastlFlu->at(i).getMembersList()->at(j)->getName();
 			}cout<<"\n";
 		}
-		cout<<"\n%%%%%\n	";*/
+		cout<<"\n%%%%%\n	";
 		if (actionUsable(goalsAction,lastlFlu)){
-			actualVertex->addAction(&goalsAction);
-			for(vector< Fluent *>::iterator it_flu = goalsAction.getPreconditions().begin(); it_flu != goalsAction.getPreconditions().end(); ++it_flu){
+			actualVertex->addAction(goalsAction);
+			for(vector< Fluent *>::iterator it_flu = goalsAction->getPreconditions().begin(); it_flu != goalsAction->getPreconditions().end(); ++it_flu){
 					edge = new Edge((*it_flu),lastVertex,actualVertex);
 					lastVertex->addEdge(edge);
 					actualVertex->addEdge(edge);
@@ -383,21 +376,21 @@ void Graph::generateGraph() {
 			goal = true;
 		} else {
 		//if any action can be engage with actul fluent we add it to actual vertex
-		for (vector<DurativeAction > ::iterator it_act = m_actions->begin(); it_act != m_actions->end();++it_act){
+		for (vector<DurativeAction *>::iterator it_act = m_actions->begin(); it_act != m_actions->end();++it_act){
 			if (actionUsable((*it_act),lastlFlu)){
-				actualVertex->addAction(&(*it_act));
-				for(unsigned i=0; i< (*it_act).getEffectsF().size();  ++i){			
-					edge = new Edge((*it_act).getEffectsF().at(i),lastVertex,actualVertex);
+				actualVertex->addAction(*it_act);
+				for(unsigned i=0; i< (*it_act)->getEffectsF().size();  ++i){			
+					edge = new Edge((*it_act)->getEffectsF().at(i),lastVertex,actualVertex);
 					lastVertex->addEdge(edge);
 					actualVertex->addEdge(edge);
 					c = true;	
 					for (vector<Fluent>::iterator it_flu = actualFlu->begin() ; it_flu != actualFlu->end() ; ++it_flu){
-						if ((*it_flu).getPredicate()->getName() == (*it_act).getEffectsF().at(i)->getPredicate()->getName()){
+						if ((*it_flu).getPredicate()->getName() == (*it_act)->getEffectsF().at(i)->getPredicate()->getName()){
 							c = false;
 						}
 					}
 					if (c) {
-						actualFlu->push_back(*(*it_act).getEffectsF().at(i));
+						actualFlu->push_back(*(*it_act)->getEffectsF().at(i));
 					}
 
 				}
@@ -410,14 +403,14 @@ void Graph::generateGraph() {
 
 
 
-bool Graph::actionUsable(DurativeAction action, vector< Fluent > * fluents){
+bool Graph::actionUsable(DurativeAction *action, vector< Fluent > * fluents){
 	//each precondition need to be in fluent list
 	bool c;
-	for (unsigned i=0;i<action.getPreconditions().size();++i){
+	for (unsigned i=0;i<action->getPreconditions().size();++i){
 		c = false;	
 		for (vector<Fluent>::iterator it_flu = fluents->begin() ; it_flu != fluents->end() ; ++it_flu){
-			if ((*it_flu).getPredicate()->getName() == action.getPreconditions().at(i)->getPredicate()->getName()){
-				if (compareVV((*it_flu).getMembersList(),action.getPreconditions().at(i)->getMembersList())){
+			if ((*it_flu).getPredicate()->getName() == action->getPreconditions().at(i)->getPredicate()->getName()){
+				if (compareVV((*it_flu).getMembersList(),action->getPreconditions().at(i)->getMembersList())){
 					c = true;
 				}
 			}
@@ -445,4 +438,12 @@ bool Graph::compareFV(vector<Member * >* v,Member * m){
 		}
 	}
 	return false;
+}
+
+DurativeAction * Graph::make_actionGoal(){
+	DurativeAction * goal = new DurativeAction((string)"Goals");
+	for(unsigned i=0;i<m_problemptr->getGoals()->size();++i){
+		cout<<"trol : "<<m_problemptr->getGoals()->at(i).first->to_string()<<"\n";
+	}
+	return goal;
 }
