@@ -67,12 +67,12 @@ int main(int argc, char **argv)
 			exit(5);
 		}
 	}
-	data->display();
+	//data->display();
 	domain = data->getDomain();
 	problem = data->getProblem();
 
 	graph = new Graph(domain, problem);
-	//graph->generateGraph();
+	graph->generateGraph();
 
 
 	return 0;
