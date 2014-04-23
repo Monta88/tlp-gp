@@ -10,19 +10,25 @@
 
 #include <iostream>
 #include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include <unistd.h>
 
 using namespace std;
 
-class sat {
+class Sat {
 public:
-	sat();
-	virtual ~sat();
+	Sat();
+	virtual ~Sat();
 	void initialize();
 
 	bool solve();
 private:
-	string solver;
+	string m_solverPath;
 	ofstream m_file;
+	FILE *m_smt2file;
+	string m_smt2String;
 
 	string m_testString = "(declare-fun t_A1 () Int)"
 "(declare-fun t_A2 () Int)"

@@ -9,17 +9,19 @@ using namespace std;
 #include <unistd.h>
 
 #include "src/graph.h"
+#include "src/tlpgp1.h"
 
 int main(int argc, char **argv)
 {
 	
     Parser parser_domain;
-	FILE *domain_file, *problem_file;
-	Data * data ;
+	FILE *domain_file = nullptr, *problem_file = nullptr;
+	Data *data = nullptr;
 	
-	Graph *graph;
-	Domain * domain;
-	Problem * problem;
+	Graph *graph = nullptr;
+	Domain * domain = nullptr;
+	Problem * problem = nullptr;
+	Tlpgp1 *tlpgp1 = nullptr;
 
 	if (argc != 3) {
 		cerr << "Usage :\n\t" << argv[0] << " domainFile.pddl problemFile.pddl" << endl;
@@ -76,6 +78,8 @@ int main(int argc, char **argv)
 	graph = new Graph(domain, problem);
 	graph->generateGraph();
 
+	tlpgp1 = new Tlpgp1(domain, problem);
+	tlpgp1->generateGraph();
 
 	return 0;
 }
