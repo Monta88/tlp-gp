@@ -9,7 +9,7 @@ endif
 
 CXXFLAGS	= -std=c++11 -Wall -g
 
-OBJS	= lex.o parse.o Data.o action.o attribute.o constant.o domain.o durative_action.o fluent.o function.o interval.o lexer.o member.o object.o planningData.o predicate.o problem.o type.o typedList.o variable.o tools.o lObjType.o edge.o vertex.o graph.o constraint.o sat.o main.o
+
 SOURCES = $(wildcard *.cpp src/*.cpp)
 OBJECTS = lex.o parse.o $(SOURCES:.cpp=.o)
 EXEC	= prog
