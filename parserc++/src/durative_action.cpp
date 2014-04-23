@@ -1,7 +1,8 @@
 #include "durative_action.h"
 #include <iostream>
 
-DurativeAction::DurativeAction(string name):m_name(name) {}
+DurativeAction::DurativeAction(string name):m_name(name) {
+}
 
 DurativeAction::~DurativeAction() {}
 
@@ -143,25 +144,25 @@ string DurativeAction::to_string(){
 	if (m_preconditions.size() > 0){
 		rep +="\n\t\tPrecondition : ";
 		for (vector< pair< Attribute,Fluent *> >::iterator it =m_preconditions.begin(); it !=m_preconditions.end();++it){
-			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string()+" ;; " ;
+			rep +="\n\t\t\t"+(*it).second->to_string()+"<->"+(*it).first.to_string()+"" ;
 		}
 	}
 	if (m_not_preconditions.size() > 0){
 		rep +="\n\t\tNegative precondition : ";
 		for (vector< pair< Attribute,Fluent *> >::iterator it =m_not_preconditions.begin(); it !=m_not_preconditions.end();++it){
-			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string();
+			rep +"\n\t\t\t"+=(*it).second->to_string()+"<->"+(*it).first.to_string();
 		}
 	}
 	if (m_effects.size() > 0){
 		rep +="\n\t\tAdd : ";
 		for (vector< pair< Attribute,Fluent *> >::iterator it =m_effects.begin(); it !=m_effects.end();++it){
-			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string();
+			rep +="\n\t\t\t"+(*it).second->to_string()+"<->"+(*it).first.to_string();
 		}
 	}
 	if (m_not_effects.size() > 0){
 		rep +="\n\t\tDelete : ";
 		for (vector< pair< Attribute,Fluent *> >::iterator it =m_not_effects.begin(); it !=m_not_effects.end();++it){
-			rep +=(*it).second->to_string()+"<->"+(*it).first.to_string();
+			rep +="\n\t\t\t"+(*it).second->to_string()+"<->"+(*it).first.to_string();
 		}
 	}
 	return rep;
@@ -183,27 +184,63 @@ string  DurativeAction::to_stringParam(){
 DurativeAction::DurativeAction(const DurativeAction &action){
 	m_name=action.getNameC();
 	m_parameters = vector<Variable>();
+	Fluent * f;
+	vector<Member *> mlist = vector<Member *>();
 	for(unsigned i =0 ; i<action.getParametersC().size(); ++i){
-		m_parameters.push_back(action.getParametersC().at(i));
+		m_parameters.push_back(Variable(action.getParametersC().at(i).getName(),*(action.getParametersC().at(i).getTypes())));
 	}
 	m_preconditions=vector< pair<Attribute, Fluent *> >();
 	for(unsigned i =0 ; i< action.getPreconditions2C().size(); ++i){
-		m_preconditions.push_back(action.getPreconditions2C().at(i));
+		for (unsigned j = 0  ;j < action.getPreconditions2C().at(i).second->getMembersList()->size() ; ++j){
+			mlist.push_back(givePointVariable(action.getPreconditions2C().at(i).second->getMembersList()->at(j)));
+		}
+		f = new Fluent(action.getPreconditions2C().at(i).second->getPredicate(),mlist);
+		m_preconditions.push_back(make_pair(action.getPreconditions2C().at(i).first,f));
+		mlist.clear();
+		mlist = vector<Member *>();
 	}
 	m_not_preconditions=vector< pair<Attribute, Fluent *> >();
 	for(unsigned i =0 ; i< action.getNotPreconditions2C().size(); ++i){
-		m_not_preconditions.push_back(action.getNotPreconditions2C().at(i));
+		for (unsigned j = 0  ;j < action.getNotPreconditions2C().at(i).second->getMembersList()->size() ; ++j){
+			mlist.push_back(givePointVariable(action.getNotPreconditions2C().at(i).second->getMembersList()->at(j)));
+		}
+		f = new Fluent(action.getNotPreconditions2C().at(i).second->getPredicate(),mlist);
+		m_not_preconditions.push_back(make_pair(action.getNotPreconditions2C().at(i).first,f));
+		mlist.clear();
+		mlist = vector<Member *>();
 	}
 	m_effects=vector< pair<Attribute, Fluent *> >();
-	for(unsigned i = 0 ; i< action.getEffectsC().size(); ++i){
-		m_effects.push_back(action.getEffectsC().at(i));
+	for(unsigned i =0 ; i< action.getEffectsC().size(); ++i){
+		for (unsigned j = 0  ;j < action.getEffectsC().at(i).second->getMembersList()->size() ; ++j){
+			mlist.push_back(givePointVariable(action.getEffectsC().at(i).second->getMembersList()->at(j)));
+		}
+		f = new Fluent(action.getEffectsC().at(i).second->getPredicate(),mlist);
+		m_effects.push_back(make_pair(action.getEffectsC().at(i).first,f));
+		mlist.clear();
+		mlist = vector<Member *>();
 	}
 	m_not_effects=vector< pair<Attribute, Fluent *> >();
 	for(unsigned i =0 ; i< action.getNotEffectsC().size(); ++i){
-		m_not_effects.push_back(action.getNotEffectsC().at(i));
+		for (unsigned j = 0  ;j < action.getNotEffectsC().at(i).second->getMembersList()->size() ; ++j){
+			for (vector<Variable >::iterator it =m_parameters.begin() ; it != m_parameters.end() ; ++it){
+				mlist.push_back(givePointVariable(action.getNotEffectsC().at(i).second->getMembersList()->at(j)));
+			}
+		}
+		f = new Fluent(action.getNotEffectsC().at(i).second->getPredicate(),mlist);
+		m_not_effects.push_back(make_pair(action.getNotEffectsC().at(i).first,f));
+		mlist.clear();
+		mlist = vector<Member *>();
 	}
 }
 
+Variable * DurativeAction::givePointVariable (Member * member){
+	for (vector<Variable >::iterator it =m_parameters.begin() ; it != m_parameters.end() ; ++it){
+		if (member->getName() == (*it).getName() ){
+			return &(*it);
+		}	
+	}
+	return new Variable();
+}
 
 vector<Variable >  DurativeAction::getParametersC()const{
 	return m_parameters;

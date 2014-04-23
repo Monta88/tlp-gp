@@ -408,7 +408,8 @@ bool Data::addGoals(vector< vector< pair< pair< vector< string > *, std::string 
 	Attribute  att;
 	
 	for (vector< vector< pair< pair< vector< string > *, std::string *> *, int >* > * >::reverse_iterator it_main = pre_GD->rbegin(); it_main != pre_GD->rend(); it_main++) {
-		for(vector< pair< pair<vector<string> *,string *> *, int> * >::reverse_iterator it = (*it_main)->rbegin(); it != (*it_main)->rend(); ++it){
+		for(vector< pair< pair<vector<string> *,string *> *, int> * >::reverse_iterator it = (*it_main)->rbegin(); it != (*it_main)->rend(); ++it){			
+			members_list = vector<Member *> ();
 			type_list = vector< vector<Type*> >();
 			for (vector<string>::reverse_iterator it_member =(*it)->first->first->rbegin(); it_member != (*it)->first->first->rend(); ++it_member){
 				if (isConstant(*it_member)) {

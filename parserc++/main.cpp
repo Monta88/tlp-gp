@@ -70,8 +70,6 @@ int main(int argc, char **argv)
 		}
 	}
 	//data->display();
-	//data->getActions()->at(0)->getParameters()->at(0).changeName("lol");
-	//cout<<" pppp"<<data->getActions()->at(0)->to_string();
 	domain = data->getDomain();
 	problem = data->getProblem();
 
