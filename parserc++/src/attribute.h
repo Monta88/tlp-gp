@@ -12,6 +12,7 @@ class Attribute {
 	public:
 		Attribute();
 		virtual ~Attribute();
+		float getTime ();
 		void addForbidden(Interval inter);
 		void addNotForbidden(Interval inter);
 		void addSupported(Interval inter);

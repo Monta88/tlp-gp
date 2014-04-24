@@ -69,6 +69,14 @@ vector< Fluent *> DurativeAction::getEffectsF(){
 	return eff;
 }
 
+vector< Fluent *> DurativeAction::getNotEffectsF(){
+	vector< Fluent *> eff =vector< Fluent *>();
+	for (vector< pair< Attribute,Fluent *> >::iterator it = m_not_effects.begin(); it != m_not_effects.end(); ++it){
+		eff.push_back((*it).second);
+	}
+	return eff;
+}	
+
 bool DurativeAction::isPredConditions(string * name,vector<vector<Type *>> types){
 	for (vector< pair< Attribute,Fluent *> >::iterator it_flu = m_preconditions.begin(); it_flu != m_preconditions.end(); ++it_flu) {
 		if (((*name) == (*it_flu).second->getPredicate()->getName() ) && (equal(types.begin(), types.end(),(*it_flu).second->getPredicate()->getTypesList()->begin()) )) {

@@ -11,12 +11,18 @@ class Vertex {
 public:
 	Vertex();
 	void addAction(DurativeAction * action);
-	void addEdge(Edge * edge);
+	void addEdget(Edge * edge);
+	void addEdgeb(Edge * edge);
+	void to_string();
+	vector<Edge *> * getEdgest();
+	vector<Edge *> * getEdgesb();
+	vector<DurativeAction *> * getActions();
 	virtual~Vertex();
 
 private:
 	vector<DurativeAction *> * m_action;
-	vector<Edge *> * m_edges;
+	vector<Edge *> * m_edgesb;
+	vector<Edge *> * m_edgest;
 };
 
 
