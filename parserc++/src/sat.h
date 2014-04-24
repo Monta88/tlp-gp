@@ -25,10 +25,11 @@ public:
 
 	bool solve();
 private:
-	string m_solverPath;
-	ofstream m_file;
-	FILE *m_smt2file;
-	string m_smt2String;
+	const char* m_solverPath;
+	ofstream m_smt2temp;
+	FILE *m_smt2Cfile;
+	const char* m_outputPath;
+	const char* m_smt2tempPath;
 
 	string m_testString = "(declare-fun t_A1 () Int)"
 "(declare-fun t_A2 () Int)"

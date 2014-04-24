@@ -41,6 +41,7 @@ void Tlpgp1::generateGraph() {
 	actions = m_domainptr->getActions();
 	//actions = data->getDomain()->getActions();
 
+	/*
 	for(auto it = goals->begin(); it != goals->end(); ++it){
 		f = (*it).first;
 		a = (*it).second;
@@ -147,7 +148,7 @@ void Tlpgp1::generateGraph() {
 	}
 	cout << "RESULT: " << vect2.size() << " " << actionUsable(&goalsAction, &inits2)<< endl;
 
-
+	*/
 	cout << "\n(generateGraph): END OF PRINT" <<endl;
 
 	constraint c (1,2,"<",(*actions)[0],(*actions)[1]);

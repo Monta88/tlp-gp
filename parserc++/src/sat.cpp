@@ -9,33 +9,29 @@
 
 Sat::Sat() {
 	// TODO Auto-generated constructor stub
-	FILE *m_smt2file = nullptr;
-	string solver = "";
-	ofstream m_file;
-	string m_smt2String ="";
+	m_solverPath = "./mathsat";
+	ofstream m_smt2temp();
+	FILE *m_smt2Cfile = nullptr;
+	m_outputPath = "~output.txt";
+	m_smt2tempPath = "~temp.smt2";
 }
 
 Sat::~Sat() {
 	// TODO Auto-generated destructor stub
-	m_file.close();
+	m_smt2temp.close();
 }
 
 void Sat::initialize(){
-	m_file.open("~temp.smt2", ios::out );
+	m_smt2temp.open("~temp.smt2", ios::out );
 
-	if (m_file.is_open()){
-		m_file << "(set-option :produce-models true)";
-		m_file << "(declare-fun t_Init () Int)";
-		m_file << "\n(declare-fun t_Goal () Int)";
+	if (m_smt2temp.is_open()){
+		m_smt2temp << "(set-option :produce-models true)";
+		m_smt2temp << "(declare-fun t_Init () Int)";
+		m_smt2temp << "\n(declare-fun t_Goal () Int)";
 
 		// TODO Add the real constraints
 		//cout << m_testString << endl;
-		m_file << m_testString ;
-
-		m_smt2String += "(declare-fun t_Init () Int)";
-		m_smt2String += "(declare-fun t_Goal () Int)";
-		m_smt2String += "(set-option :produce-models true)";
-		m_smt2String += m_testString;
+		m_smt2temp << m_testString ;
 
 	}
 	else{
@@ -45,23 +41,18 @@ void Sat::initialize(){
 }
 
 bool Sat::solve() {
-	char * line = NULL;
-	size_t len = 0;
-	ssize_t read;
+	bool isSat=false;
+	string resultLine = "";
 
 	// add the correct instructions to get an ouput from mathsat
-	m_file << "(check-sat)" ;
-	m_file << "(get-value (t_Goal t_Init))" ;
-	m_file.flush(); // synchronize the file
-
-	m_smt2String += "(check-sat)";
-	m_smt2String += "(get-value (t_Goal t_Init))";
-	//cout << m_smt2String << endl;
+	m_smt2temp << "(check-sat)" ; // check-sat before get-value !
+	m_smt2temp << "(get-value (t_Goal t_Init))" ;
+	m_smt2temp.flush(); // synchronize the file
 
 	// convert iostream to a C FILE
-	m_smt2file = fopen("~temp.smt2", "r");
-	if (m_smt2file == NULL) {
-		cerr << " cannot be opened." << endl;
+	m_smt2Cfile = fopen(m_smt2tempPath, "r");
+	if (m_smt2Cfile == NULL) {
+		cerr << "smt2Cfile cannot be opened." << endl;
 		exit(2);
 	}
 
@@ -70,23 +61,30 @@ bool Sat::solve() {
 	    // child
 
 		// redirect stdout to a file, and stdin from a another file
-		freopen ("~output.txt","w",stdout);
-		dup2(fileno(m_smt2file), STDIN_FILENO);
-		fclose(m_smt2file);
+		freopen (m_outputPath,"w",stdout);
+		dup2(fileno(m_smt2Cfile), STDIN_FILENO);
+		fclose(m_smt2Cfile);
 
 		// execute mathsat
-		execl("./mathsat",nullptr);
+		execl(m_solverPath,nullptr);
 	}
 	else{
 		//parent
 		wait(null);
 	}
 
-	// close all
-	m_file.close();
-	fclose (stdout);
+	// close files
+	m_smt2temp.close();
 
 	// read the first line of the output file which contains sat or unsat
+	ifstream outputFile (m_outputPath);
+	getline(outputFile,resultLine);
+	isSat = resultLine=="sat";
 
-	return true;
+	if(isSat)
+		cout << "\nSAT" << endl;
+	else
+		cout << "\nNOT SAT" << endl;
+
+	return isSat;
 }
