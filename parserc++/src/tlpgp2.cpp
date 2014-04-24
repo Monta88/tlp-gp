@@ -17,8 +17,9 @@ string Tlpgp2::generateGraphSmt2(){
 		bool c = true;
 		int state =0;
 		float time;
+		string get_value="(get-value (";
 		vector<pair<string,float> >  destroyAction=vector<pair<string,float> > ();
-		while(c){	
+		while(c){
 			for(vector<DurativeAction *>::iterator it = actual->getActions()->begin() ; it != actual->getActions()->end() ; ++it){
 				destroyAction=vector<pair<string,float> > ();
 				name=(*it)->getName()+"E"+to_string(state);
@@ -26,6 +27,7 @@ string Tlpgp2::generateGraphSmt2(){
 					name+=(*it2).getName();
 				}
 				file << "(declare-fun "<<name<<" () Bool )\n";
+				get_value +=name+"\n";
 				name = "t_"+name;
 				file << "(declare-fun "<<name<<" () Int )\n";
 			}
@@ -34,15 +36,14 @@ string Tlpgp2::generateGraphSmt2(){
 				for(vector<Variable >::iterator it2 = (*it)->getActionb()->getParameters()->begin() ;it2 != (*it)->getActionb()->getParameters()->end();++it2){
 					nameb+=(*it2).getName();
 				}
-				namet = (*it)->getActiont()->getName()+"E"+to_string(state);
+				namet = (*it)->getActiont()->getName()+"E"+to_string(state+1);
 				for(vector<Variable >::iterator it2 = (*it)->getActiont()->getParameters()->begin() ;it2 != (*it)->getActiont()->getParameters()->end();++it2){
 					namet+=(*it2).getName();
-				}
-				
+				}	
 				namef= (*it)->getFluent()->getPredicate()->getName();
 				for(vector<Member * >::iterator it2 = (*it)->getFluent()->getMembersList()->begin() ;it2 != (*it)->getFluent()->getMembersList()->end();++it2){
 					namef+=(*it2)->getName();
-				}
+				}	
 				name = "link_"+nameb+"."+namef+"."+namet;
 				file << "(declare-fun "<<name<<" () Bool )\n";
 				//step 2
@@ -52,13 +53,12 @@ string Tlpgp2::generateGraphSmt2(){
 				assert+="( or (not "+name+") "+namet+" )\n";
 				assert+="( or (not "+name+") ( >= (- t_"+namet+" t_"+nameb+") 0 ) )\n";
 				//step4
-				destroyAction=findDestroyAction((*it)->getFluent());
+				destroyAction=findDestroyAction((*it)->getFluent());	
 				for(vector<pair<string,float> >::iterator it2 = destroyAction.begin() ; it2 != destroyAction.end() ; ++it2){
 					namea=(*it2).first;
 					time = (*it2).second;
 					assert+="(or (not "+name+") (not "+namea+") (> (- t_"+nameb+" t_"+namea+") "+to_string((int)time)+") (< (- t_"+namet+" t_"+namea+") "+to_string((int)time)+" ) )\n";
 				}
-				
 			}
 			if (actual->getEdgest()->size() != 0){
 				actual = actual->getEdgest()->at(0)->getTop();
@@ -87,7 +87,8 @@ string Tlpgp2::generateGraphSmt2(){
 		//step 1
 		assert +=" InitsE0 GoalsE"+to_string(state-1)+" ) )\n";
 		file<<assert;
-		file<<"\n(check-sat)(get-value (t_InitsE0 t_GoalsE"+to_string(state-1)+" ) )\n(exit)\n";
+		file<<"\n(check-sat)\n";
+		file<<get_value+"t_InitsE0 t_GoalsE"+to_string(state-1)+" ) )\n(exit)\n";
 		file.close();
 	} else {
 		cerr<<"erreur a l'ouverture de "<<namefile<<endl;
@@ -103,23 +104,23 @@ vector<pair<string,float> > Tlpgp2::findDestroyAction(Fluent * f){
 	string name;
 	float t;
 	while(c){
-			for(vector<DurativeAction *>::iterator it = actual->getActions()->begin() ; it != actual->getActions()->end() ; ++it){
-				if (isdestroy((*it)->getNotEffectsF(),f)){
+			for(vector<DurativeAction *>::iterator it = actual->getActions()->begin() ; it != actual->getActions()->end() ; ++it){		
+if (isdestroy((*it)->getNotEffectsF(),f)){		
 					name = (*it)->getName()+"E"+to_string(state);
-					for(vector<Variable >::iterator it2 = (*it)->getParameters()->begin() ;it2 != (*it)->getParameters()->end();++it2){
-						name+=(*it2).getName();
+					for(unsigned int i = 0 ; i < (*it)->getParameters()->size() ;++i){
+						name+=(*it)->getParameters()->at(i).getName();
 					}
-					for(vector< pair< Attribute,Fluent *> >::iterator it2 =(*it)->getNotEffects().begin() ; it2 != (*it)->getNotEffects().end() ; ++it2){
-						if (f->getPredicate()->getName() == (*it2).second->getPredicate()->getName()){
-							if (compareVV(f->getMembersList(),(*it2).second->getMembersList() )){
-								t=(*it2).first.getTime();
+
+					for(unsigned int i = 0 ; i <(*it)->getNotEffects().size() ;++i){
+						if (f->getPredicate()->getName() == (*it)->getNotEffects().at(i).second->getPredicate()->getName()){
+							if (compareVV(f->getMembersList(),(*it)->getNotEffects().at(i).second->getMembersList() )){
+								t=(*it)->getNotEffects().at(i).first.getTime();
 								ret.push_back(make_pair(name,t));
 							}
 						}
 					}
 				}
 			}
-		
 		if (actual->getEdgest()->size() != 0){
 			actual = actual->getEdgest()->at(0)->getTop();
 		} else {

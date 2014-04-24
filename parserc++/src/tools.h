@@ -4,6 +4,10 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
+#include <unistd.h>
+#include <iostream>
+#include <string>
+#include <fstream>
 #include "type.h"
 #include "fluent.h"
 using namespace std;
@@ -15,6 +19,7 @@ class Tools {
 		virtual ~Tools();
 		bool isIn(Type* t ,vector<Type*>* v);
 		bool compareVectorType(vector<Type*>* v1,vector<Type*>* v2);
+		void solveur();
 };
 
 #endif // TOOLS_H

@@ -75,9 +75,11 @@ int main(int argc, char **argv)
 
 	graph = new Graph(domain, problem);
 	Vertex * vertex = graph->generateGraph();
-	vertex->to_string();
+	//vertex->to_string();
 	Tlpgp2 tlpgp2 = Tlpgp2(vertex);
 	tlpgp2.generateGraphSmt2();
+	Tools t = Tools();
+	t.solveur();
 	//tlpgp1 = new Tlpgp1(domain, problem);
 	//tlpgp1->generateGraph();
 

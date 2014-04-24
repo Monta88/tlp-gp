@@ -1,5 +1,4 @@
 #include "tools.h"
-#include <iostream>
 Tools::Tools(){}
 		
 Tools::~Tools(){
@@ -23,5 +22,66 @@ bool Tools::isIn(Type* t ,vector<Type*>* v){
 		}
 	}
 	return false;
+}
+
+void Tools::solveur(){
+	pid_t pid = fork();
+	if (pid == 0){
+	    // child
+
+		// redirect stdout to a file, and stdin from a another file
+		freopen ("tlpgp2Res.txt","w",stdout);
+
+		// execute mathsat
+		system("./mathsat < tlpgp2.smt2");
+	}
+	else{
+		//parent
+	wait(pid);
+	ifstream file("tlpgp2Res.txt", ios::in); 
+ 	string line;
+	const char * cline;
+	string action;
+	bool m;
+	string plan="";
+        if(file) {
+		getline(file, line);
+		if (line == "sat"){
+		       	while(getline(file, line))  {
+				m = true;
+				action="";
+				cline = line.c_str();
+				for (unsigned int i=0 ; i < line.size() ; ++i){
+					if ( m ){
+						if ( cline[i] != '(' && cline[i] != ' '){
+							action+=cline[i];
+						}
+						if ( cline[i] == 'E' ){
+							//cout<<"lol\n";
+							m = false ;
+						}
+					} else {
+						if ( cline[i] == ' '){
+							if (cline[i+1] == 't'){
+								plan +=action+"    |    ";
+								i = line.size();
+							}
+						} else {
+							action+=cline[i];
+						}
+					}
+				}
+			}
+		} else {
+			cout<<"solution not found\n";	
+		}
+	file.close();
+        }
+        else{
+                cerr << "can't open the answer solver" << endl;
+	}
+	cout<<"solution "<<plan<<"\n"<<"\nend\n";
+	}
+ 
 }
 

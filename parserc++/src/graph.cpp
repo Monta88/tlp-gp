@@ -146,6 +146,9 @@ Vertex * Graph::generateGraph() {
 		cout<<"plan "<<plan<<"\n";
 		lastVertex = actualVertex;
 		actualVertex = new Vertex();
+		for(vector<DurativeAction *>::iterator it = lastVertex->getActions()->begin();it != lastVertex->getActions()->end(); ++it){
+			actualVertex->addAction(*it);
+		}
 		for(unsigned int i = 0 ; i < actualFlu->size() ; ++i){
 			lastlFlu->push_back(actualFlu->at(i));
 		}
