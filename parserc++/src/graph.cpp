@@ -137,7 +137,7 @@ Vertex * Graph::generateGraph() {
 	Vertex * actualVertex = new Vertex();
 	Edge * edge;
 	firtVertex->addAction(initAction);
-	lastVertex = firtVertex;
+	actualVertex = firtVertex;
 	int plan=0;
 	cout<<"generation du graph :\n";
 	
@@ -146,30 +146,32 @@ Vertex * Graph::generateGraph() {
 		cout<<"plan "<<plan<<"\n";
 		lastVertex = actualVertex;
 		actualVertex = new Vertex();
-
-		lastlFlu=actualFlu;
+		for(unsigned int i = 0 ; i < actualFlu->size() ; ++i){
+			lastlFlu->push_back(actualFlu->at(i));
+		}
+		actualFlu = new vector<Fluent >();
 		if (actionUsable(goalsAction,lastlFlu)){
 			actualVertex->addAction(goalsAction);
 			for(unsigned i=0; i<goalsAction->getPreconditions().size();  ++i){			
-					edge = new Edge(goalsAction->getPreconditions().at(i),lastVertex,actualVertex);
-					lastVertex->addEdge(edge);
-					actualVertex->addEdge(edge);
+					edge = new Edge(goalsAction->getPreconditions().at(i),lastVertex,actualVertex,findAction(lastVertex,initAction,goalsAction->getPreconditions().at(i)),goalsAction);
+					lastVertex->addEdget(edge);
+					actualVertex->addEdgeb(edge);
 			}
 			goal = true;
 		} else {
 		//if any action can be engage with actul fluent we add it to actual vertex
-		for (vector<DurativeAction *>::iterator it_act = m_actions->begin(); it_act != m_actions->end();++it_act){
-			if (actionUsable((*it_act),lastlFlu)){
-				actualVertex->addAction(*it_act);
-				for(unsigned i=0; i< (*it_act)->getEffectsF().size();  ++i){
-					if (! compareFVF(actualFlu,(*it_act)->getEffectsF().at(i))) {
-						actualFlu->push_back(*(*it_act)->getEffectsF().at(i));
+		for (unsigned j = 0 ; j < m_actions->size(); ++j){
+			if (actionUsable(m_actions->at(j),lastlFlu)){
+				actualVertex->addAction(m_actions->at(j));
+				for(unsigned i=0; i< m_actions->at(j)->getEffectsF().size();  ++i){
+					if (! compareFVF(actualFlu,m_actions->at(j)->getEffectsF().at(i))) {
+						actualFlu->push_back(*m_actions->at(j)->getEffectsF().at(i));
 					}
 				}
-				for(unsigned i=0; i< (*it_act)->getPreconditions().size();  ++i){			
-					edge = new Edge((*it_act)->getPreconditions().at(i),lastVertex,actualVertex);
-					lastVertex->addEdge(edge);
-					actualVertex->addEdge(edge);
+				for(unsigned i=0; i< m_actions->at(j)->getPreconditions().size();  ++i){			
+					edge = new Edge(m_actions->at(j)->getPreconditions().at(i),lastVertex,actualVertex,findAction(lastVertex,initAction,m_actions->at(j)->getPreconditions().at(i)),m_actions->at(j));
+					lastVertex->addEdget(edge);
+					actualVertex->addEdgeb(edge);
 				}
 			}
 		}
@@ -187,9 +189,9 @@ bool Graph::actionUsable(DurativeAction *action, vector< Fluent > * fluents){
 	bool c;
 	for (unsigned i=0;i<action->getPreconditions().size();++i){
 		c = false;	
-		for (vector<Fluent>::iterator it_flu = fluents->begin() ; it_flu != fluents->end() ; ++it_flu){
-			if ((*it_flu).getPredicate()->getName() == action->getPreconditions().at(i)->getPredicate()->getName()){
-				if (compareVV((*it_flu).getMembersList(),action->getPreconditions().at(i)->getMembersList())){
+		for (unsigned j = 0 ; j < fluents->size();++j){
+			if (fluents->at(j).getPredicate()->getName() == action->getPreconditions().at(i)->getPredicate()->getName()){
+				if (compareVV(fluents->at(j).getMembersList(),action->getPreconditions().at(i)->getMembersList())){
 					c = true;
 				}
 			}
@@ -206,8 +208,8 @@ bool Graph::compareVV(vector<Member * >* v1 ,vector<Member * >*v2){
 	if (v1->size () != v2->size()){
 		return false;
 	}
-	for(vector<Member * >::iterator it_member = v1->begin(); it_member != v1->end() ; ++it_member){
-		if ( ! compareFV( v2,(*it_member))){
+	for(unsigned i = 0 ; i < v1->size(); ++i ){
+		if ( ! (v1->at(i)->getName() == v2->at(i)->getName())){
 			return false;
 		}		
 	}
@@ -221,16 +223,6 @@ bool Graph::compareFVF(vector<Fluent  >* v,Fluent * f){
 			if (compareVV(f->getMembersList(),v->at(i).getMembersList() )){
 				return true;
 			}
-		}
-	}
-	return false;
-}
-
-//true if m is in v
-bool Graph::compareFV(vector<Member * >* v,Member * m){
-	for(unsigned j =0 ; j<v->size();++j){
-		if (m->getName() == v->at(j)->getName()){
-			return true;
 		}
 	}
 	return false;
@@ -252,4 +244,28 @@ DurativeAction * Graph::make_actionInit(){
 		init->addEffect(m_problemptr->getInits()->at(i).second,m_problemptr->getInits()->at(i).first);
 	}
 	return init;
+}
+
+//find action in a plan which can create a fluent
+DurativeAction * Graph::findAction(Vertex * v,DurativeAction * initAction,Fluent * f){
+	for (unsigned i = 0 ; i < v->getActions()->size() ; ++i ){
+		if (compareFVF2(v->getActions()->at(i)->getEffectsF(),f)){
+			return v->getActions()->at(i);
+		}
+	}
+	if (compareFVF2(initAction->getEffectsF(),f)){
+			return initAction;
+	}
+	return new DurativeAction("can't do this");
+}
+
+bool Graph::compareFVF2(vector<Fluent  *> v,Fluent * f){
+	for(unsigned i =0 ; i<v.size();++i){
+		if (f->getPredicate()->getName() == v.at(i)->getPredicate()->getName()){
+			if (compareVV(f->getMembersList(),v.at(i)->getMembersList() )){
+				return true;
+			}
+		}
+	}
+	return false;
 }

@@ -46,11 +46,13 @@ public:
 	bool actionUsable(DurativeAction *action, vector< Fluent > * fluents);
 	//true if the two vector have the same members 
 	bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
-	//true if member m is in v
-	bool compareFV(vector<Member * >* v1,Member * m);
 	//true if fluent f is in v
 	bool compareFVF(vector<Fluent  >* v,Fluent * f);
-
+	bool compareFVF2(vector<Fluent  *> v,Fluent * f);
+	
+	//find action in a plan which can create a fluent
+	DurativeAction * findAction(Vertex * v,DurativeAction *initAction,Fluent * f);	
+	
 	//return an action which represent all the goal fluents ( only preconditions)
 	DurativeAction * make_actionInit();
 

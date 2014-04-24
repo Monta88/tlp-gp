@@ -10,7 +10,7 @@ using namespace std;
 
 #include "src/graph.h"
 #include "src/tlpgp1.h"
-
+#include "src/tlpgp2.h"
 int main(int argc, char **argv)
 {
 	
@@ -74,10 +74,12 @@ int main(int argc, char **argv)
 	problem = data->getProblem();
 
 	graph = new Graph(domain, problem);
-	graph->generateGraph();
-
-	tlpgp1 = new Tlpgp1(domain, problem);
-	tlpgp1->generateGraph();
+	Vertex * vertex = graph->generateGraph();
+	vertex->to_string();
+	Tlpgp2 tlpgp2 = Tlpgp2(vertex);
+	tlpgp2.generateGraphSmt2();
+	//tlpgp1 = new Tlpgp1(domain, problem);
+	//tlpgp1->generateGraph();
 
 	return 0;
 }

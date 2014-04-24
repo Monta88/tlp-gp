@@ -44,7 +44,8 @@ class DurativeAction {
 		vector< pair< Attribute,Fluent *> > getEffects();
 		vector< pair< Attribute,Fluent *> > getNotEffects();
 		
-		vector< Fluent *> getEffectsF();			
+		vector< Fluent *> getEffectsF();
+		vector< Fluent *> getNotEffectsF();			
 
 		vector<Variable > * getParameters();
 		string to_string();

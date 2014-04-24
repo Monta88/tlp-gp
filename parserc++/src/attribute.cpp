@@ -24,6 +24,19 @@ void Attribute::addNotSupported(Interval inter) {
 	m_not_supported.push_back(inter);
 }
 
+float Attribute::getTime (){
+	float ret = 0;
+	for(vector<Interval>::iterator it=m_supported.begin() ; it != m_supported.end() ; ++it){
+		if ((*it).getStart() == (*it).getEnd()){
+			if (  (*it).getEnd() > ret ){
+				ret =  (*it).getEnd();
+			}
+		}
+	}
+	return ret;
+}
+	
+
 vector<Interval> * Attribute::getForbidden() {
 	return &m_forbidden;
 }
