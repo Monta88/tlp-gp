@@ -3,26 +3,20 @@
 
 #include <vector>
 #include "durative_action.h"
-#include "edge.h"
 
 using namespace std;
-class Edge;
 class Vertex {
 public:
-	Vertex();
+	Vertex(Vertex * father);
 	void addAction(DurativeAction * action);
-	void addEdget(Edge * edge);
-	void addEdgeb(Edge * edge);
 	void to_string();
-	vector<Edge *> * getEdgest();
-	vector<Edge *> * getEdgesb();
 	vector<DurativeAction *> * getActions();
+	Vertex * getFather();
 	virtual~Vertex();
 
 private:
 	vector<DurativeAction *> * m_action;
-	vector<Edge *> * m_edgesb;
-	vector<Edge *> * m_edgest;
+	Vertex * m_father;
 };
 
 

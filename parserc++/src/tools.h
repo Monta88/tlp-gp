@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <string>
+#include <sys/wait.h>
 #include <fstream>
 #include "type.h"
 #include "fluent.h"
@@ -19,7 +20,7 @@ class Tools {
 		virtual ~Tools();
 		bool isIn(Type* t ,vector<Type*>* v);
 		bool compareVectorType(vector<Type*>* v1,vector<Type*>* v2);
-		void solveur();
+		bool solveur();
 };
 
 #endif // TOOLS_H

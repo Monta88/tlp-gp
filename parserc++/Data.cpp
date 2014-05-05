@@ -79,19 +79,21 @@ bool Data::isRequirement(int req) {
 
 bool Data::addTypes(std::vector<TypedList*> * typedList_list) {
 	// the parser is recursive so if we want the same order than in the file we need to reverse the lists
+	vector<Type*> object = vector<Type*>();
+	object.push_back(getType("Object"));
 	for (vector<TypedList*>::reverse_iterator it = typedList_list->rbegin(); it != typedList_list->rend(); ++it) {
 		vector<Type*> parents = vector<Type*> ();
 		for (vector<string>::reverse_iterator it_parent = (*it)->getTypes()->rbegin(); it_parent != (*it)->getTypes()->rend(); ++it_parent) {
 			if (!isType(*it_parent)) {
-				lexical_error("The " + (*it_parent) + " type don't exist");
-				return false;
+				m_type_list.push_back(*it_parent);
+				m_types->push_back(new Type(*it_parent,object));
 			}
 			parents.push_back(getType(*it_parent));
 		}
 		for (vector<string>::reverse_iterator it_type = (*it)->getList()->rbegin(); it_type != (*it)->getList()->rend(); ++it_type) {
 			if (isType(*it_type)) {
-				lexical_error("The " + (*it_type) + " type already exists");
-				return false;
+				//lexical_error("The " + (*it_type) + " type already exists");
+				//return false;
 			}
 			m_type_list.push_back(*it_type);
 			m_types->push_back(new Type(*it_type, parents));
@@ -897,7 +899,7 @@ float Data::getFunctionReturn(string * name, vector<string> * list_term) {
 		}
 	}
 	
-	fatal_error("You tried to get the return of \""+ *name +"\" function but couldn't find it");
+	fatal_error("You tried to get the return of \""+(*name)+"\" function but couldn't find it");
 	
 	return -1.;
 }

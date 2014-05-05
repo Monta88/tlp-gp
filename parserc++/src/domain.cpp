@@ -78,3 +78,34 @@ vector<string> Domain::listNameAction(){
 vector<DurativeAction *> * Domain::getActions(){
 	return m_actions;
 }
+
+vector<lObjType> * Domain::getConstant(){
+	Tools tools = Tools();
+	vector<lObjType> * ret = new vector<lObjType>();
+	vector<Type*>* types_obj,temp2;
+	bool marq;
+	lObjType temp;
+	for (vector<Constant *>::iterator it_const=m_constants->begin(); it_const != m_constants->end() ; ++it_const){//each constant
+		types_obj= (*it_const)->getTypes();
+		if ( ret->size() != 0){
+			marq=true;
+			for(vector<lObjType>::iterator it_ret = ret->begin() ;  it_ret != ret->end() ; ++it_ret){
+				temp2 =(*it_ret).getType();
+				if (tools.compareVectorType(&temp2,types_obj)){
+					(*it_ret).addObject( new Object( (*it_const)->getName(),*(*it_const)->getTypes() ));
+					marq=false;
+				} 
+			}
+			if(marq) {
+				temp = lObjType(*(types_obj));
+				temp.addObject(new Object((*it_const)->getName(),*((*it_const)->getTypes())));
+				ret->push_back(temp);
+			}
+		} else {
+			temp = lObjType(*(types_obj));
+			temp.addObject(new Object((*it_const)->getName(),*((*it_const)->getTypes())));
+			ret->push_back(temp);
+		}
+	}
+	return ret;		
+}

@@ -11,6 +11,8 @@
 #include "function.h"
 #include "action.h"
 #include "durative_action.h"
+#include "lObjType.h"
+#include "tools.h"
 
 using namespace std;
 
@@ -29,6 +31,7 @@ class Domain {
 		void addFunctions(vector<Function*> * functions);
 		void addActions(vector<DurativeAction*> * actions);
 		vector<DurativeAction *> * getActions();
+		vector<lObjType> * getConstant();
 	private:
 		string m_name;
 		vector<Type*> * m_types;

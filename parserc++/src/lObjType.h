@@ -18,6 +18,7 @@ class lObjType {
 		void addObject(Object * object);
 		vector<Object *> getObject();
 		vector<Type*> getType();
+		string to_string();
 		virtual ~lObjType();
 	private:
 		vector<Object *>  m_objects;

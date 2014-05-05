@@ -24,6 +24,8 @@
 #include "constraint.h"
 #include "sat.h"
 #include "attribute.h"
+#include "tlpgp2.h"
+#include "vertex.h"
 
 using namespace std;
 
@@ -34,7 +36,7 @@ public:
 	virtual ~Graph();
 
 	//retrun the first plan of the graph 
-	Vertex * generateGraph();
+	bool generateGraph();
 	
 	//return the list of object sorted to instanciated the actions
 	vector<DurativeAction *> * instanceActions();

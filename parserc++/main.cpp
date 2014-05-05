@@ -74,12 +74,12 @@ int main(int argc, char **argv)
 	problem = data->getProblem();
 
 	graph = new Graph(domain, problem);
-	Vertex * vertex = graph->generateGraph();
+	if (!graph->generateGraph()){
+		cout<<" no solution \n";
+	}
+
 	//vertex->to_string();
-	Tlpgp2 tlpgp2 = Tlpgp2(vertex);
-	tlpgp2.generateGraphSmt2();
-	Tools t = Tools();
-	t.solveur();
+	
 	//tlpgp1 = new Tlpgp1(domain, problem);
 	//tlpgp1->generateGraph();
 

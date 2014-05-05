@@ -22,3 +22,11 @@ vector<Type*>  lObjType::getType(){
 lObjType::~lObjType(){
 
 }
+
+string lObjType::to_string(){
+	string ret="lObjType : \n \tObject :\n";
+	for(vector<Object *>::iterator it = m_objects.begin() ; it != m_objects.end() ; ++it){
+		ret+="\t\t "+(*it)->getName()+"\n";
+	}
+	return ret;
+}
