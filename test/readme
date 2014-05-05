@@ -1,4 +1,5 @@
 You need to install "parallel"
+The executable "prog" must be inside /test/1
 
 Usage : ./test
 
