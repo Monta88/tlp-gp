@@ -11,6 +11,9 @@ using namespace std;
 #include "src/graph.h"
 #include "src/tlpgp1.h"
 #include "src/tlpgp2.h"
+
+int g_pid = int(getpid());
+
 int main(int argc, char **argv)
 {
 	

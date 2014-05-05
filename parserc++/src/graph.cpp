@@ -135,7 +135,7 @@ vector<DurativeAction *>* Graph::instanciation(vector<vector<Object * > > * obje
 bool Graph::generateGraph() {
 	cout<<"debut instanciations \n";
 	vector<DurativeAction *> * m_actions = instanceActions();
-	/cout<<" size action inst"<<m_actions->size()<<"\n";
+	//cout<<" size action inst"<<m_actions->size()<<"\n";
 
 	for (	vector<DurativeAction *>::iterator it = m_actions->begin() ; it != m_actions->end() ; ++it){
 		//cout<<(*it)->to_stringParam()<<"\n";
