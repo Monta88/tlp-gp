@@ -1,0 +1,20 @@
+#!/bin/bash
+
+problem="crewplanning"
+echo "problem: $problem"
+cat ./crewplanning | parallel -j 7
+echo "$problem done"
+
+#problem="crewplanning"
+#echo "problem: $problem"
+#(cd 1/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p01.pddl | grep -e 'real|user|sys'; echo 1 ) &
+#(cd 2/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p02.pddl | grep -e 'real|user|sys'; echo 2 ) &
+#(cd 3/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p03.pddl | grep -e 'real|user|sys'; echo 3 ) &
+#(cd 4/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p04.pddl | grep -e 'real|user|sys'; echo 4 ) &
+#(cd 5/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p05.pddl | grep -e 'real|user|sys'; echo 5 ) &
+#(cd 6/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p06.pddl | grep -e 'real|user|sys'; echo 6 ) &
+#(cd 7/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p07.pddl | grep -e 'real|user|sys'; echo 7 ) &
+#wait
+#echo "$problem 1-7 done"
+
+#gnome-terminal --tab -e "bash -c 'cd 1/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p01.pddl | grep -e 'real|user|sys'; echo 1'" ---tab -e "bash -c 'cd 2/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p02.pddl| grep -e 'real|user|sys'; echo 2'" --tab -e "bash -c 'cd 3/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p03.pddl| grep -e 'real|user|sys'; echo 3'" --tab -e "bash -c 'cd 4/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p04.pddl| grep -e 'real|user|sys'; echo 4'" --tab -e "bash -c 'cd 5/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p05.pddl| grep -e 'real|user|sys'; echo 5'" --tab -e "bash -c 'cd 6/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p06.pddl| grep -e 'real|user|sys'; echo 6'" --tab -e "bash -c 'cd 7/; time ./prog ../pddl/ipc2011-tempo-sat/$problem/domain/domain.pddl ../pddl/ipc2011-tempo-sat/$problem/problems/p07.pddl| grep -e 'real|user|sys'; echo 7'"

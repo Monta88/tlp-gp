@@ -1,0 +1,8 @@
+You need to install "parallel"
+
+Usage : ./test
+
+test.sh will use parallel to launch multiple tests simultaneously.
+You can adjust the number of jobs if you want.
+
+each problems must have its own file, cf "crewplanning" for an example
