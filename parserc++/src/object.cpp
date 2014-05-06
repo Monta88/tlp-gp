@@ -5,6 +5,10 @@ Object::Object(string name, vector<Type*> types): Member(name, types) {}
 
 Object::Object(): Member() {}
 
+void Object::addTypes(vector<Type*> types) {
+	m_types.insert(m_types.end(), types.begin(), types.end());
+}
+
 string Object::to_string() {
 	string str = "Object " + m_name + " - ";
 	if (m_types.size() > 0) {

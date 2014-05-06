@@ -4,6 +4,10 @@ Constant::Constant(string name, vector<Type*> types): Member(name, types) {}
 
 Constant::Constant(): Member() {}
 
+void Constant::addTypes(vector<Type*> types) {
+	m_types.insert(m_types.end(), types.begin(), types.end());
+}
+
 string Constant::to_string() {
 	string str = "Constant " + m_name + " - ";
 	if (m_types.size() > 0) {
