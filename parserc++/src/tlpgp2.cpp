@@ -1,5 +1,7 @@
 #include "tlpgp2.h"
 
+extern int g_pid;
+
 Tlpgp2::Tlpgp2(){}
 
 Tlpgp2::Tlpgp2(Vertex * graph):m_graph(graph){}
@@ -8,7 +10,8 @@ Tlpgp2::~Tlpgp2(){}
 
 string Tlpgp2::generateGraphSmt2(){
 	cout<<"traduction in smt2 clause\n";
-	string namefile = "tlpgp2.smt2";
+	//int pid = int(getpid());
+	string namefile = to_string(g_pid)+"tlpgp2.smt2";
 	ofstream file(namefile, ios::out | ios::trunc );
 	if (file){
 		file << "(set-option :produce-models true)\n";

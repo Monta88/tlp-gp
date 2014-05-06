@@ -1,4 +1,7 @@
 #include "tools.h"
+
+extern int g_pid;
+
 Tools::Tools(){}
 		
 Tools::~Tools(){
@@ -44,20 +47,25 @@ vector<Type *>* Tools::getFatherType(Type * t){
 
 bool Tools::solveur(){
 	pid_t pid = fork();
+	//int pidInt = int(getpid());
+	cout << "xxxxxxxxxx"<< g_pid <<endl;
+	string namefile = to_string(g_pid)+"tlpgp2.smt2";
+	string namefileRes = to_string(g_pid)+"tlpgp2Res.txt";
+	string mathsat = "./mathsat < "+namefile;
 	if (pid == 0){
 	    // child
 
 		// redirect stdout to a file, and stdin from a another file
-		freopen ("tlpgp2Res.txt","w",stdout);
+		freopen (namefileRes.c_str(),"w",stdout);
 
 		// execute mathsat
-		system("./mathsat < tlpgp2.smt2");
+		system(mathsat.c_str());
 		exit(0);
 	}
 	else{
 		//parent
 	wait(NULL);
-	ifstream file("tlpgp2Res.txt", ios::in); 
+	ifstream file(namefileRes, ios::in);
  	string line;
 	const char * cline;
 	string action,number;
