@@ -32,6 +32,11 @@ class Domain {
 		void addActions(vector<DurativeAction*> * actions);
 		vector<DurativeAction *> * getActions();
 		vector<lObjType> * getConstant();
+
+		const vector<Predicate*>* getPredicates(){
+			return m_predicates;
+		}
+
 	private:
 		string m_name;
 		vector<Type*> * m_types;
