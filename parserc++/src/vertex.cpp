@@ -5,7 +5,7 @@ Vertex::Vertex(Vertex * father):m_father(father){
 }
 	
 void Vertex::addAction(DurativeAction * action){ 
-	m_action->push_back(action);
+	m_action->insert(m_action->begin()+(m_action->size()),action);
 }
 	
 Vertex::~Vertex(){}

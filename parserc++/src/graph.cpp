@@ -135,13 +135,13 @@ vector<DurativeAction *>* Graph::instanciation(vector<vector<Object * > > * obje
 bool Graph::generateGraph() {
 	cout<<"debut instanciations \n";
 	vector<DurativeAction *> * m_actions = instanceActions();
-	/cout<<" size action inst"<<m_actions->size()<<"\n";
+	cout<<" size action inst"<<m_actions->size()<<"\n";
 
 	for (	vector<DurativeAction *>::iterator it = m_actions->begin() ; it != m_actions->end() ; ++it){
-		//cout<<(*it)->to_stringParam()<<"\n";
+		cout<<(*it)->to_stringParam()<<"\n";
 	}
 	cout<<"fin instanciations \n";
-	DurativeAction *goalsAction =  make_actionGoal() ;cout<<" goal "<<goalsAction->to_string()<<"\n";
+	DurativeAction *goalsAction =  make_actionGoal() ;
 	DurativeAction *initAction =  make_actionInit();
 	vector<Fluent >* lastlFlu = new vector<Fluent >();
 	vector<Fluent >* actualFlu = new vector<Fluent >();
@@ -173,6 +173,7 @@ bool Graph::generateGraph() {
 			tlpgp2 = Tlpgp2(actualVertex);	
 			tlpgp2.generateGraphSmt2();
 			t = Tools();
+			actualVertex->to_string();
 			if (t.solveur()){
 				cout<<"succes\n";
 				return true;
@@ -194,11 +195,13 @@ bool Graph::generateGraph() {
 		for(vector<Fluent >::iterator it = lastlFlu->begin() ; it != lastlFlu->end() ; ++it){
 		//	cout<<" flu : "<<(*it).to_string()<<"\n";
 		} 
-		//actualVertex->to_string();
+		actualVertex->to_string();
 		cout<<"goal can't be access\n";
 		goal =true;	
 	}
-	plan++;//cout<<"lol "<<plan<<"\n";
+	plan++;
+	
+		cout<<"lol "<<plan<<" size act  "<<actualVertex->getActions()->size()<<"\n";
 	}
 	return false;
 } 

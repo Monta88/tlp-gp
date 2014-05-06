@@ -654,24 +654,23 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 			variable_list =  vector<Member *>();
 			type_list = vector< vector<Type*> >();
 			for (vector<string>::reverse_iterator it2 =(*it)->first->first->rbegin(); it2 != (*it)->first->first->rend(); ++it2){
-				if( !(action->isVariable(*it2)) ){
-					lexical_error("In action " + action->getName() + "The variable " + (*it2) + " don't exist");
-					return false;
+				if( action->isVariable(*it2)) {
+					type_list.push_back(*(action->getVariable(*it2)->getTypes()));
+					variable_list.push_back(action->getVariable(*it2));
+				} else if (  isConstant(*it2) ){
+					type_list.push_back(*(getConstant(*it2)->getTypes()));
+					variable_list.push_back(getConstant(*it2));
+				} else {
+					lexical_error("In action " + action->getName() + " the variable " + (*it2) + " don't exist");
+					return false;	
 				}
-				type_list.push_back(*(action->getVariable(*it2)->getTypes()));
-				variable_list.push_back(action->getVariable(*it2));	
 			}
 			// predicate existence verification 
 			if(!(isPredicate((*it)->first->second,type_list))){
 				lexical_error(("In action " + action->getName() + ", the predicate  "+ *(*it)->first->second +"  don't exist").c_str());
 				return false;
-			}
-			if (isPredicate((*it)->first->second, type_list)) {
+			} else {
 				fluent = new Fluent (getPredicate((*it)->first->second, type_list),variable_list);
-			}
-			else {
-				fatal_error("Predicate \""+ *(*it)->first->second +"\" not found");
-				return false;
 			}
 			
 			att =  Attribute();
@@ -703,24 +702,23 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 					
 			type_list = vector< vector<Type*> >();
 			for (vector<string>::reverse_iterator it2 =(*it)->first->first->rbegin(); it2 != (*it)->first->first->rend(); ++it2){
-				if( !(action->isVariable(*it2)) ){
-					lexical_error("In action " + action->getName() + ", The variable " + (*it2) + " don't exist");
-					return false;
-				}
-				type_list.push_back(*(action->getVariable(*it2)->getTypes()));
-				variable_list.push_back(action->getVariable(*it2));	
+				if( action->isVariable(*it2)) {
+					type_list.push_back(*(action->getVariable(*it2)->getTypes()));
+					variable_list.push_back(action->getVariable(*it2));
+				} else if (  isConstant(*it2) ){
+					type_list.push_back(*(getConstant(*it2)->getTypes()));
+					variable_list.push_back(getConstant(*it2));
+				} else {
+					lexical_error("In action " + action->getName() + " the variable " + (*it2) + " don't exist");
+					return false;	
+				}	
 			}
 			// predicate existence verification 
 			if(!(isPredicate((*it)->first->second,type_list))){
 				lexical_error("In action " + action->getName() + ", The action  "+ *(*it)->first->second + " don't exist");
 				return false;
-			}
-			if (isPredicate((*it)->first->second, type_list)) {
+			} else {
 				fluent = new Fluent (getPredicate((*it)->first->second, type_list),variable_list);
-			}
-			else {
-				fatal_error("Predicate \""+ *(*it)->first->second +"\" not found");
-				return false;
 			}
 			
 			att =  Attribute();
