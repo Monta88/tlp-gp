@@ -9,6 +9,7 @@ using namespace std;
 #include <unistd.h>
 
 #include "src/graph.h"
+#include "src/graph2.h"
 #include "src/tlpgp1.h"
 #include "src/tlpgp2.h"
 
@@ -76,15 +77,19 @@ int main(int argc, char **argv)
 	domain = data->getDomain();
 	problem = data->getProblem();
 
+	/* TLPGP2
 	graph = new Graph(domain, problem);
 	if (!graph->generateGraph()){
 		cout<<" no solution \n";
 	}
-
+	*/
 	//vertex->to_string();
 	
 	//tlpgp1 = new Tlpgp1(domain, problem);
 	//tlpgp1->generateGraph();
+
+	Graph2 graph2 = Graph2(domain,problem);
+	graph2.generateGraph();
 
 	return 0;
 }
