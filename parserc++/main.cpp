@@ -27,7 +27,6 @@ int main(int argc, char **argv)
 	Graph *graph = nullptr;
 	Domain * domain = nullptr;
 	Problem * problem = nullptr;
-	Tlpgp1 *tlpgp1 = nullptr;
 
 	if (argc != 3) {
 		cerr << "Usage :\n\t" << argv[0] << " domainFile.pddl problemFile.pddl" << endl;
@@ -79,12 +78,14 @@ int main(int argc, char **argv)
 	domain = data->getDomain();
 	problem = data->getProblem();
 
-	/*graph = new Graph(domain, problem);
-	if (!graph->generateGraph()){
-		cout<<" no solution \n";
-	}*/
-	Graph2 graph2 = Graph2(domain, problem);
-	graph2.generateGraph();
+//	graph = new Graph(domain, problem);
+//	if (!graph->generateGraph()){
+//		cout<<" no solution \n";
+//	}
+	//Graph2 graph2 = Graph2(domain, problem);
+	//graph2.generateGraph();
+	Tlpgp1 tlpgp1 = Tlpgp1(domain, problem);
+	tlpgp1.constructGraph();
 
 	t2 = clock();	
 	cout<<"temps total : "<<(float)(t2-t1)/CLOCKS_PER_SEC<<"\n";
