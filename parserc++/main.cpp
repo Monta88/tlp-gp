@@ -51,6 +51,7 @@ int main(int argc, char **argv)
 	parser_domain.init();
 	if (parser_domain.parse() == 0) {
 		cout << "The domain was successfully parsed" << endl;
+		
 		Parser parser_problem;
 		
 		parser_problem.setData(&parser_domain);
@@ -72,7 +73,7 @@ int main(int argc, char **argv)
 			exit(5);
 		}
 	}
-	//data->display();
+	data->display();
 	domain = data->getDomain();
 	problem = data->getProblem();
 
