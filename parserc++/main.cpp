@@ -7,6 +7,7 @@ using namespace std;
 #include <stdlib.h>
 #include <string>
 #include <unistd.h>
+#include <time.h>
 
 #include "src/graph.h"
 #include "src/tlpgp1.h"
@@ -16,8 +17,9 @@ int g_pid = int(getpid());
 
 int main(int argc, char **argv)
 {
-	
-    Parser parser_domain;
+	clock_t t1, t2;
+ 	t1 = clock();	
+   	 Parser parser_domain;
 	FILE *domain_file = nullptr, *problem_file = nullptr;
 	Data *data = nullptr;
 	
@@ -81,7 +83,8 @@ int main(int argc, char **argv)
 	if (!graph->generateGraph()){
 		cout<<" no solution \n";
 	}
-
+	t2 = clock();	
+	cout<<"temps total : "<<(float)(t2-t1)/CLOCKS_PER_SEC<<"\n";
 	//vertex->to_string();
 	
 	//tlpgp1 = new Tlpgp1(domain, problem);
