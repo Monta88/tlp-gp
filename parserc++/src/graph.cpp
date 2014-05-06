@@ -186,24 +186,12 @@ bool Graph::generateGraph() {
 				}
 			}
 		}
-<<<<<<< HEAD
 		if((actualVertex->getActions()->size() - lastVertex->getActions()->size()) == 0){
 			//actualVertex->to_string();
 			cout<<"goal can't be access\n";
 			goal =true;	
 		}
 	plan++;
-=======
-	if((actualVertex->getActions()->size() - lastVertex->getActions()->size()) == 0){
-		for(vector<Fluent >::iterator it = lastlFlu->begin() ; it != lastlFlu->end() ; ++it){
-		//	cout<<" flu : "<<(*it).to_string()<<"\n";
-		} 
-		//actualVertex->to_string();
-		cout<<"goal can't be access\n";
-		goal =true;	
-	}
-	plan++;//cout<<"lol "<<plan<<"\n";
->>>>>>> 4e465372ad3bb9e6758ee600c2002a228410587c
 	}
 	return false;
 } 

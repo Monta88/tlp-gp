@@ -26,5 +26,5 @@ string Constant::to_string() {
 }
 
 string Constant::getClass(){
-	return "constant";
+	return "Constant";
 }	

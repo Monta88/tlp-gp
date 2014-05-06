@@ -200,7 +200,7 @@ DurativeAction::DurativeAction(const DurativeAction &action){
 	m_preconditions=vector< pair<Attribute, Fluent *> >();
 	for(unsigned i =0 ; i< action.getPreconditions2C().size(); ++i){
 		for (unsigned j = 0  ;j < action.getPreconditions2C().at(i).second->getMembersList()->size() ; ++j){
-			if (action.getPreconditions2C().at(i).second->getMembersList()->at(j)->getClass() == "constant"){
+			if (action.getPreconditions2C().at(i).second->getMembersList()->at(j)->getClass() == "Constant"){
 				mlist.push_back(action.getPreconditions2C().at(i).second->getMembersList()->at(j));
 			} else {
 				mlist.push_back(givePointVariable(action.getPreconditions2C().at(i).second->getMembersList()->at(j)));
@@ -214,7 +214,7 @@ DurativeAction::DurativeAction(const DurativeAction &action){
 	m_not_preconditions=vector< pair<Attribute, Fluent *> >();
 	for(unsigned i =0 ; i< action.getNotPreconditions2C().size(); ++i){
 		for (unsigned j = 0  ;j < action.getNotPreconditions2C().at(i).second->getMembersList()->size() ; ++j){
-			if (action.getNotPreconditions2C().at(i).second->getMembersList()->at(j)->getClass() == "constant"){
+			if (action.getNotPreconditions2C().at(i).second->getMembersList()->at(j)->getClass() == "Constant"){
 				mlist.push_back(action.getNotPreconditions2C().at(i).second->getMembersList()->at(j));
 			} else {
 				mlist.push_back(givePointVariable(action.getNotPreconditions2C().at(i).second->getMembersList()->at(j)));
@@ -228,7 +228,7 @@ DurativeAction::DurativeAction(const DurativeAction &action){
 	m_effects=vector< pair<Attribute, Fluent *> >();
 	for(unsigned i =0 ; i< action.getEffectsC().size(); ++i){
 		for (unsigned j = 0  ;j < action.getEffectsC().at(i).second->getMembersList()->size() ; ++j){
-			if (action.getEffectsC().at(i).second->getMembersList()->at(j)->getClass() == "constant"){
+			if (action.getEffectsC().at(i).second->getMembersList()->at(j)->getClass() == "Constant"){
 				mlist.push_back(action.getEffectsC().at(i).second->getMembersList()->at(j));
 			} else {
 				mlist.push_back(givePointVariable(action.getEffectsC().at(i).second->getMembersList()->at(j)));
@@ -242,7 +242,7 @@ DurativeAction::DurativeAction(const DurativeAction &action){
 	m_not_effects=vector< pair<Attribute, Fluent *> >();
 	for(unsigned i =0 ; i< action.getNotEffectsC().size(); ++i){
 		for (unsigned j = 0  ;j < action.getNotEffectsC().at(i).second->getMembersList()->size() ; ++j){
-			if (action.getNotEffectsC().at(i).second->getMembersList()->at(j)->getClass() == "constant"){
+			if (action.getNotEffectsC().at(i).second->getMembersList()->at(j)->getClass() == "Constant"){
 				mlist.push_back(action.getNotEffectsC().at(i).second->getMembersList()->at(j));
 			} else {
 				mlist.push_back(givePointVariable(action.getNotEffectsC().at(i).second->getMembersList()->at(j)));
