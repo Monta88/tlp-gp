@@ -6,6 +6,7 @@
 
 #include <string> 
 #include <vector>
+#include <typeinfo> 
 #include "variable.h"
 #include "fluent.h"
 #include "action.h"

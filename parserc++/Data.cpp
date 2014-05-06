@@ -77,7 +77,7 @@ bool Data::isRequirement(int req) {
 	return (find(m_requirements.begin(), m_requirements.end(), req) != m_requirements.end());
 }
 
-bool Data::addTypes(std::vector<TypedList*> * typedList_list) {
+bool Data::addTypes(vector<TypedList*> * typedList_list) {
 	// the parser is recursive so if we want the same order than in the file we need to reverse the lists
 	vector<Type*> object = vector<Type*>();
 	object.push_back(getType("Object"));
@@ -122,18 +122,21 @@ bool Data::addConstants(vector<TypedList*> * typedList_list) {
 		vector<Type*> types = vector<Type*> ();
 		for (vector<string>::reverse_iterator it_type = (*it)->getTypes()->rbegin(); it_type != (*it)->getTypes()->rend(); ++it_type) {
 			if (!isType(*it_type)) {
+				m_type_list.push_back(*it_type);
+				m_types->push_back(new Type(*it_type));
 				lexical_error("The " + (*it_type) + " type don't exist");
-				return false;
 			}
 			types.push_back(getType(*it_type));
 		}
 		for (vector<string>::reverse_iterator it_constant = (*it)->getList()->rbegin(); it_constant != (*it)->getList()->rend(); ++it_constant) {
 			if (isConstant(*it_constant)) {
+				getConstant(*it_constant)->addTypes(types);
 				lexical_error("The " + (*it_constant) + " constant already exists");
-				return false;
 			}
-			m_constant_list.push_back(*it_constant);
-			m_constants->push_back(new Constant(*it_constant, types));
+			else {
+				m_constant_list.push_back(*it_constant);
+				m_constants->push_back(new Constant(*it_constant, types));
+			}
 		}
 	}
 	return true;
@@ -166,8 +169,9 @@ bool Data::addPredicate(string * name, vector<TypedList*> * typedList_list) {
 		vector<Type*> types = vector<Type*> ();
 		for (vector<string>::reverse_iterator it_type = (*it)->getTypes()->rbegin(); it_type != (*it)->getTypes()->rend(); ++it_type) {
 			if (!isType(*it_type)) {
+				m_type_list.push_back(*it_type);
+				m_types->push_back(new Type(*it_type));
 				lexical_error("The " + (*it_type) + " type don't exist");
-				return false;
 			}
 			types.push_back(getType(*it_type));
 		}
@@ -228,13 +232,14 @@ bool Data::addFunctions(vector< pair< string*, vector<TypedList*>* >* > * functi
 	
 	for (vector<string>::reverse_iterator it_type = return_type->rbegin(); it_type != return_type->rend(); ++it_type) {
 		if (!isType(*it_type)) {
+			m_type_list.push_back(*it_type);
+			m_types->push_back(new Type(*it_type));
 			lexical_error("The " + (*it_type) + " type don't exist");
-			return false;
 		}
 		return_t.push_back(getType(*it_type));
 	}
 	
-	for (vector< pair< string*, std::vector<TypedList*>* >* >::reverse_iterator it = function_skeleton_list->rbegin(); it != function_skeleton_list->rend(); ++it) {
+	for (vector< pair< string*, vector<TypedList*>* >* >::reverse_iterator it = function_skeleton_list->rbegin(); it != function_skeleton_list->rend(); ++it) {
 		if (!addFunction((*it)->first,  return_t, (*it)->second)) {
 			success = false;
 		}
@@ -255,8 +260,9 @@ bool Data::addFunction(string * name, vector<Type*> return_type, vector<TypedLis
 		vector<Type*> types = vector<Type*> ();
 		for (vector<string>::reverse_iterator it_type = (*it)->getTypes()->rbegin(); it_type != (*it)->getTypes()->rend(); ++it_type) {
 			if (!isType(*it_type)) {
+				m_type_list.push_back(*it_type);
+				m_types->push_back(new Type(*it_type));
 				lexical_error("The " + (*it_type) + " type don't exist");
-				return false;
 			}
 			types.push_back(getType(*it_type));
 		}
@@ -321,22 +327,27 @@ bool Data::addObjects(vector<TypedList*> * typedList_list) {
 		vector<Type*> types = vector<Type*> ();
 		for (vector<string>::reverse_iterator it_type = (*it)->getTypes()->rbegin(); it_type != (*it)->getTypes()->rend(); ++it_type) {
 			if (!isType(*it_type)) {
+				m_type_list.push_back(*it_type);
+				m_types->push_back(new Type(*it_type));
 				lexical_error("The " + (*it_type) + " type don't exist");
-				return false;
 			}
 			types.push_back(getType(*it_type));
 		}
 		for (vector<string>::reverse_iterator it_object = (*it)->getList()->rbegin(); it_object != (*it)->getList()->rend(); ++it_object) {
 			if (isObject(*it_object)) {
+				getObject(*it_object)->addTypes(types);
 				lexical_error("The " + (*it_object) + " object already exists");
 				return false;
+			} else {
+				m_object_list.push_back(*it_object);
+				m_objects->push_back(new Object(*it_object, types));
 			}
-			m_object_list.push_back(*it_object);
-			m_objects->push_back(new Object(*it_object, types));
 		}
 	}
 	return true;
 }
+
+
 
 bool Data::isObject(string object) {
 	if (find(m_constant_list.begin(), m_constant_list.end(), object) != m_constant_list.end()) {
@@ -402,14 +413,14 @@ bool Data::addInit(pair< pair< vector< string > *, string *> *, bool > * literal
 	return true;
 }
 
-bool Data::addGoals(vector< vector< pair< pair< vector< string > *, std::string *> *, int >* > * > * pre_GD) { 
+bool Data::addGoals(vector< vector< pair< pair< vector< string > *, string *> *, int >* > * > * pre_GD) { 
 	vector<Member *> members_list = vector<Member *> ();
 	Member * member;
 	vector< vector<Type*> > type_list;
 	Predicate * predicate;
 	Attribute  att;
 	
-	for (vector< vector< pair< pair< vector< string > *, std::string *> *, int >* > * >::reverse_iterator it_main = pre_GD->rbegin(); it_main != pre_GD->rend(); it_main++) {
+	for (vector< vector< pair< pair< vector< string > *, string *> *, int >* > * >::reverse_iterator it_main = pre_GD->rbegin(); it_main != pre_GD->rend(); it_main++) {
 		for(vector< pair< pair<vector<string> *,string *> *, int> * >::reverse_iterator it = (*it_main)->rbegin(); it != (*it_main)->rend(); ++it){			
 			members_list = vector<Member *> ();
 			type_list = vector< vector<Type*> >();
@@ -631,7 +642,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 		for (vector<TypedList*>::reverse_iterator it = typedList_list->rbegin(); it != typedList_list->rend(); ++it){
 			types=  vector<Type *> ();				
 			for (vector<string>::reverse_iterator it2 = (*it)->getTypes()->rbegin(); it2 != (*it)->getTypes()->rend(); ++it2){
-				 if (! isType(*it2)){
+				 if (! isType(*it2)) {
 					lexical_error("The type " + (*it2) +" doesn't exist");
 					return false;
 				}
@@ -679,14 +690,28 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 				case 0b001: 	// at start
 					att.addSupported(Interval(0.,0.));
 					break;
-				case 0b010:		// at end
+				case 0b0000010:		// at end
 					att.addSupported(Interval(number,number));
 					break;
-				case 0b100: 	// over all
+				case 0b0000100: 	// over all
 					att.addSupported(Interval(0.,number));
 					break;
+				case 0b0001000: 	// supported all
+					att.addSupported(Interval(0.,number));
+					break;
+				case 0b0010000: 	// forbidden all
+					att.addForbidden(Interval(0.,number));
+					break;
+				case 0b0100000: 	// somewhere all
+					att.addSupported(Interval(0.,0.)); // wrong translation
+					lexical_error("Somwhere not supported");
+					break;
+				case 0b1000000: 	// anywhere all
+					att.addSupported(Interval(0.,0.)); // wrong translation
+					lexical_error("Anywhere not supported");
+					break;
 				default:
-					lexical_error("Something went wrong while reading time-specifiers (conditions)");
+					lexical_error("Something went wrong while reading conditions");
 					return false;
 				}
 			if  (!((*it)->second & 0b1)){
@@ -728,14 +753,33 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 				case 0b001: 	// at start
 					att.addSupported(Interval(0.,0.));
 					break;
-				case 0b010:		// at end
+				case 0b000000010:		// at end
 					att.addSupported(Interval(number,number));
 					break;
-				case 0b100: 	// over all
+				case 0b000000100:		// over all
 					att.addSupported(Interval(0.,number));
 					break;
+				case 0b000001000:		// supported all
+					att.addSupported(Interval(0.,number));
+					break;
+				case 0b000010000:		// forbidden all
+					att.addForbidden(Interval(0.,number));
+					break;
+				case 0b000100000:		// somewhere all
+					att.addSupported(Interval(0.,0.)); // wrong translation
+					lexical_error("Somwhere not supported");
+					break;
+				case 0b001000000:		// anywhere all
+					att.addSupported(Interval(0.,0.)); // wrong translation
+					lexical_error("Anywhere not supported");
+					break;
+				case 0b100000000:		// ->over all
+					att.addSupported(Interval(number,number));
+					att.addForbidden(Interval(0.,number));
+					att.addNotForbidden(Interval(0.,number, false, false));
+					break;
 				default:
-					lexical_error("Something went wrong while reading time-specifiers (effects)");
+					lexical_error("Something went wrong while reading effects");
 					return false;
 				}
 			if  (!((*it)->second & 0b1)){
@@ -899,7 +943,7 @@ float Data::getFunctionReturn(string * name, vector<string> * list_term) {
 		}
 	}
 	
-	fatal_error("You tried to get the return of \""+(*name)+"\" function but couldn't find it");
+	fatal_error("You tried to get the return of \""+ *name +"\" function but couldn't find it");
 	
 	return -1.;
 }

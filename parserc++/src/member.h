@@ -20,6 +20,7 @@ class Member {
 		string getName();
 		vector<Type*> * getTypes();
 		virtual string to_string();
+		virtual string getClass();
 	protected:
 		string m_name;
 		vector<Type*> m_types;

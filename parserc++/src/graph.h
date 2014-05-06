@@ -62,6 +62,9 @@ public:
 	DurativeAction * make_actionGoal();
 
 	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> >);
+
+	bool compareAA(vector<DurativeAction *>* v,DurativeAction * a);
+	bool compareVV2(vector<Variable  >* v1 ,vector<Variable >*v2);
 private:
 	Domain * m_domainptr;
 	Problem * m_problemptr;

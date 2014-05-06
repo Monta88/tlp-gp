@@ -32,6 +32,10 @@ string Member::to_string() {
 	return str;
 }
 
+string Member::getClass(){
+	return "Member";
+}
+
 void Member::changeName(string name){
 	m_name=name;
 }
