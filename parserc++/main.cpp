@@ -10,6 +10,7 @@ using namespace std;
 #include <time.h>
 
 #include "src/graph.h"
+#include "src/graph2.h"
 #include "src/tlpgp1.h"
 #include "src/tlpgp2.h"
 
@@ -78,10 +79,13 @@ int main(int argc, char **argv)
 	domain = data->getDomain();
 	problem = data->getProblem();
 
-	graph = new Graph(domain, problem);
+	/*graph = new Graph(domain, problem);
 	if (!graph->generateGraph()){
 		cout<<" no solution \n";
-	}
+	}*/
+	Graph2 graph2 = Graph2(domain, problem);
+	graph2.generateGraph();
+
 	t2 = clock();	
 	cout<<"temps total : "<<(float)(t2-t1)/CLOCKS_PER_SEC<<"\n";
 	//vertex->to_string();
