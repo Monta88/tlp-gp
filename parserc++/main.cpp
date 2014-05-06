@@ -1,3 +1,11 @@
+/*!
+ * \file main.cpp
+ * \brief This program parse PDDL 3.1 TE domain and problem corresponding file, then it solve the planning problem following TLP-GP1 and TLP-GP2 algorithms
+ * \author Alan BENIER, Martin LAGLEIZE, Nathan PRAT
+ * \version 1.0
+ * \date May 07th 2014
+ */
+
 #include "parser/Parser.h"
 
 using namespace std;
@@ -16,9 +24,9 @@ using namespace std;
 int g_pid = int(getpid());
 
 /*!
- * \brief this program parse PDDL 3.1 TE domain and problem corresponding file, then it solve the planning problem following TLP-GP1 and TLP-GP2 algorithms
+ * \brief This program parse PDDL 3.1 TE domain and problem corresponding file, then it solve the planning problem following TLP-GP1 and TLP-GP2 algorithms
  * \param domainFile.pddl problemFile.pddl
- * \return print the result of the planner on stdout
+ * \return Print the result of the planner on stdout
  */
 int main(int argc, char **argv)
 {
