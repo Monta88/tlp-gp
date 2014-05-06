@@ -330,13 +330,16 @@ bool Data::addObjects(vector<TypedList*> * typedList_list) {
 			if (isObject(*it_object)) {
 				lexical_error("The " + (*it_object) + " object already exists");
 				return false;
+			} else {
+				m_object_list.push_back(*it_object);
+				m_objects->push_back(new Object(*it_object, types));
 			}
-			m_object_list.push_back(*it_object);
-			m_objects->push_back(new Object(*it_object, types));
 		}
 	}
 	return true;
 }
+
+
 
 bool Data::isObject(string object) {
 	if (find(m_constant_list.begin(), m_constant_list.end(), object) != m_constant_list.end()) {

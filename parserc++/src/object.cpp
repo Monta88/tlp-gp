@@ -21,3 +21,7 @@ string Object::to_string() {
 	}
 	return str;
 }
+
+string Object::getClass(){
+	return "Object";
+}

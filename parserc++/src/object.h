@@ -12,6 +12,7 @@ class Object : public Member {
 		Object(string name, vector<Type*> types);
 		Object();
 		virtual string to_string();
+		string getClass(); 
 };
 
 #endif // OBJECT_H
