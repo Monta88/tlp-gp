@@ -12,11 +12,11 @@ Tools::~Tools(){
 // return true is the 2 vector have the same types
 bool Tools::compareVectorType(vector<Type*>* v1,vector<Type*>* v2){
 	for (vector<Type*>::iterator it = v1->begin() ; it != v1->end() ; ++it){
-		if (!isIn((*it),v2)) {
-			return false;
+		if (isIn((*it),v2)) {
+			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 bool Tools::isIn(Type* t ,vector<Type*>* v){						
@@ -30,11 +30,11 @@ bool Tools::isIn(Type* t ,vector<Type*>* v){
 
 
 bool Tools::solveur(){
-	pid_t pid = fork();
-	//int pidInt = int(getpid());
 	string namefile = to_string(g_pid)+"tlpgp2.smt2";
 	string namefileRes = to_string(g_pid)+"tlpgp2Res.txt";
 	string mathsat = "./mathsat < "+namefile;
+	cout<<"start mathsat solving"<<endl;
+	pid_t pid = fork();
 	if (pid == 0){
 	    // child
 

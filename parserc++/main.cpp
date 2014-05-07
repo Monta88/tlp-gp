@@ -75,10 +75,11 @@ int main(int argc, char **argv)
 			exit(5);
 		}
 	}
-	data->display();
+	//data->display();
 	domain = data->getDomain();
 	problem = data->getProblem();
 
+	cout<<" domaine : "<<domain->getName()<<"| probleme : "<<problem->getName()<<endl;
 	graph = new Graph(domain, problem);
 	if (!graph->generateGraph()){
 		cout<<" no solution \n";

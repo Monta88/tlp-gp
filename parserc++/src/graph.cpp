@@ -136,8 +136,11 @@ bool Graph::generateGraph() {
 	cout<<"debut instanciations \n";
 	vector<DurativeAction *> * m_actions = instanceActions();
 	cout<<"fin instanciations \n";
-	DurativeAction *goalsAction =  make_actionGoal() ;cout<<" goal "<<goalsAction->to_string()<<"\n";
-	DurativeAction *initAction =  make_actionInit();
+	for (vector<DurativeAction *>::iterator it = m_actions->begin() ; it != m_actions->end() ; ++it){
+		//cout<<" ///"<<(*it)->to_string()<<"\n";
+	}
+	DurativeAction *goalsAction =  make_actionGoal() ;
+	DurativeAction *initAction =  make_actionInit();//cout<<"lol "<<initAction->to_string()<<endl;
 	vector<Fluent >* lastlFlu = new vector<Fluent >();
 	vector<Fluent >* actualFlu = new vector<Fluent >();
 	for(unsigned i=0; i< initAction->getEffectsF().size();  ++i){
@@ -152,18 +155,17 @@ bool Graph::generateGraph() {
 	Tools t;
 	bool goal = false;
 	while(  !goal ){
-		lastVertex = actualVertex;
+		lastVertex = actualVertex;cout<<"lol "<<plan<<endl;
 		actualVertex = new Vertex(lastVertex);
-		for(vector<DurativeAction *>::iterator it = lastVertex->getActions()->begin();it != lastVertex->getActions()->end(); ++it){
-			actualVertex->addAction(*it);
-		}
 		for(unsigned int i = 0 ; i < actualFlu->size() ; ++i){
 			lastlFlu->push_back(actualFlu->at(i));
 		}
 		actualFlu = new vector<Fluent >();
+		// if we can use actiongoal we stop
 		if (actionUsable(goalsAction,lastlFlu)){
 			actualVertex->addAction(goalsAction);
 			cout<<"generation graph end with "<<plan<<" plan "<<endl;
+			//actualVertex->to_string();
 			tlpgp2 = Tlpgp2(actualVertex);
 			tlpgp2.generateGraphSmt2();
 			t = Tools();
@@ -173,23 +175,24 @@ bool Graph::generateGraph() {
 			}
 			cout<<"fail\n";
 		} 
-		//if any action can be engage with actul fluent we add it to actual vertex
+		//if any action can be engage with actaul fluent we add it to the current plan(vertex)
 		for (unsigned j = 0 ; j < m_actions->size(); ++j){
 			if (actionUsable(m_actions->at(j),lastlFlu)){
-				if (! compareAA(actualVertex->getActions(),m_actions->at(j))){
-					actualVertex->addAction(m_actions->at(j));
-					for(unsigned i=0; i< m_actions->at(j)->getEffectsF().size();  ++i){
-						if (! compareFVF(actualFlu,m_actions->at(j)->getEffectsF().at(i))) {
-							actualFlu->push_back(*m_actions->at(j)->getEffectsF().at(i));
-						}
+				actualVertex->addAction(m_actions->at(j));
+				for(unsigned i=0; i< m_actions->at(j)->getEffectsF().size();  ++i){
+					if (! compareFVF(actualFlu,m_actions->at(j)->getEffectsF().at(i))) {
+						actualFlu->push_back(*m_actions->at(j)->getEffectsF().at(i));
 					}
 				}
 			}
 		}
-		if((actualVertex->getActions()->size() - lastVertex->getActions()->size()) == 0){
-			//actualVertex->to_string();
-			cout<<"goal can't be access\n";
-			goal =true;	
+		if(((actualVertex->getActions()->size() +1 ) - lastVertex->getActions()->size()) == 0){
+			cout<<"goal can't be access"<<lastlFlu->size()<<"\n";
+			goal =true;
+			for(unsigned int i = 0 ; i < lastlFlu->size() ; ++i){
+				cout<<" lol "<<lastlFlu->at(i).to_string()<<endl;
+			
+			}	//actualVertex->to_string();
 		}
 	plan++;
 	}
@@ -243,7 +246,7 @@ bool Graph::compareFVF(vector<Fluent  >* v,Fluent * f){
 	return false;
 }
 
-//true is a is in v
+/*//true is a is in v
 bool Graph::compareAA(vector<DurativeAction *>* v,DurativeAction * a){
 	for(vector<DurativeAction *>::iterator it = v->begin() ; it != v->end() ; ++it){
 		if ((*it)->getName() == a->getName() ){
@@ -265,7 +268,7 @@ bool Graph::compareVV2(vector<Variable  >* v1 ,vector<Variable >*v2){
 		}		
 	}
 	return true;
-}
+}*/
 
 //return an action which represent all the goal fluents ( only preconditions)
 DurativeAction * Graph::make_actionGoal(){

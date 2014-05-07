@@ -10,7 +10,6 @@ Tlpgp2::~Tlpgp2(){}
 
 string Tlpgp2::generateGraphSmt2(){
 	cout<<"traduction in smt2 clause\n";
-	//int pid = int(getpid());
 	string namefile = to_string(g_pid)+"tlpgp2.smt2";
 	ofstream file(namefile, ios::out | ios::trunc );
 	if (file){
@@ -36,7 +35,8 @@ string Tlpgp2::generateGraphSmt2(){
 					file << linkPrec(name,(*it)->getPreconditions2().at(i).second,(*it)->getPreconditions2().at(i).first,actual->getFather(),state+1,&assert);
 				}
 				for(unsigned i = 0 ; i < (*it)->getEffects().size() ; ++i){
-					protectEffect(name,(*it)->getEffects().at(i).second,(*it)->getEffects().at(i).first,&assert);
+					//step 4.2
+					protectEffect(name,(*it),(*it)->getEffects().at(i).second,(*it)->getEffects().at(i).first,&assert,state);
 				}
 			}
 		state++;
@@ -70,6 +70,7 @@ string Tlpgp2::linkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * ve
 				for (unsigned i = 0 ; i < actual->getActions()->at(j)->getEffects().size() ; ++i){	
 					if ( compareVV(actual->getActions()->at(j)->getEffects().at(i).second->getMembersList(),fluent->getMembersList()) && (actual->getActions()->at(j)->getEffects().at(i).second->getPredicate()->getName() == fluent->getPredicate()->getName()) ){
 						step3 = "";
+						step4= "";
 						namea=actual->getActions()->at(j)->getName()+"E"+to_string(s);
 						for(vector<Variable >::iterator it2 = actual->getActions()->at(j)->getParameters()->begin() ;it2 != actual->getActions()->at(j)->getParameters()->end();++it2){
 							namea+=(*it2).getName();
@@ -81,14 +82,15 @@ string Tlpgp2::linkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * ve
 						if (att.getSupported()->at(inter).getStartBracket() ){
 							step3 +="( or (not "+link+") (>= (+ t_"+name+" "+to_string((int)att.getSupported()->at(inter).getStart())+")  (+ t_"+namea+" "+to_string((int)actual->getActions()->at(j)->getEffects().at(i).first.getSupported()->at(0).getStart())+" )))\n";
 						} else {
-							step3 +="( or (not "+link+") (> (+ t_"+name+" "+to_string((int)att.getSupported()->at(inter).getStart())+")  (+ t_"+namea+" "+to_string((int)actual->getActions()->at(j)->getEffects().at(i).first.getSupported()->at(0).getStart())+" )))\n";
-						}
-						step4 = protectCond(link,fluent,att,name);
+							step3 +="( or (not "+link+") (> (+ t_"+name+" "+to_string((int)att.getSupported()->at(inter).getStart())+")  (+ t_"+namea+" "+to_string((int)actual->getActions()->at(j)->getEffects().at(i).first.getSupported()->at(0).getStart())+" )))\n";		
+						}//step 4.1
+						step4 = protectCond(link,fluent,att,namea,name);
+						(*assert) +=step3+step4;
+						
 					}
 				}
 			}
 			s++;
-			(*assert) +=step3+step4;
 		}
 		
 	}
@@ -97,7 +99,7 @@ string Tlpgp2::linkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * ve
 }
 
 
-string Tlpgp2::protectCond(string link,Fluent * fluent,Attribute att,string name){
+string Tlpgp2::protectCond(string link,Fluent * fluent,Attribute att,string nameb,string namet){
 	string ret="";
 	string namea;
 	Vertex * actual = new Vertex(m_graph);
@@ -112,8 +114,8 @@ string Tlpgp2::protectCond(string link,Fluent * fluent,Attribute att,string name
 						namea+=(*it2).getName();
 					}
 					ret+="(or (not "+link+") (not "+namea+") ";
-					ret+="(< (+ t_"+namea+" "+to_string((int)actual->getActions()->at(i)->getNotEffects().at(j).first.getSupported()->at(0).getEnd())+" ) (+ t_"+name+" "+to_string((int)att.getSupported()->at(0).getStart())+")) ";
-					ret+="(< (+ t_"+name+" "+to_string((int)att.getSupported()->at(0).getEnd())+" ) (+ t_"+namea+" "+to_string((int)actual->getActions()->at(i)->getNotEffects().at(j).first.getSupported()->at(0).getEnd())+" )))";
+					ret+="(< (+ t_"+nameb+" "+to_string((int)actual->getActions()->at(i)->getNotEffects().at(j).first.getSupported()->at(0).getEnd())+" ) (+ t_"+namea+" "+to_string((int)att.getSupported()->at(0).getStart())+")) ";
+					ret+="(> (+ t_"+namet+" "+to_string((int)att.getSupported()->at(0).getStart())+" ) (+ t_"+namea+" "+to_string((int)actual->getActions()->at(i)->getNotEffects().at(j).first.getSupported()->at(0).getEnd())+" )))\n";
 				}
 			}
 		}
@@ -122,24 +124,25 @@ string Tlpgp2::protectCond(string link,Fluent * fluent,Attribute att,string name
 	return ret;
 }
 
-void Tlpgp2::protectEffect(string name,Fluent * fluent,Attribute att,string * assert){
+void Tlpgp2::protectEffect(string name,DurativeAction * a,Fluent * fluent,Attribute att,string * assert,int statep){
 	Vertex * actual = new Vertex(m_graph);
 	string namea;
 	int state = 0;
 	while(actual->getFather() != NULL ){
 		actual = actual->getFather();
 		for(unsigned int i =0 ; i < actual->getActions()->size() ; ++i ){
-			for (unsigned int j =0 ; j < actual->getActions()->at(i)->getNotEffects().size() ; ++j){
-				if ( compareVV(actual->getActions()->at(i)->getNotEffects().at(j).second->getMembersList(),fluent->getMembersList()) && (actual->getActions()->at(i)->getNotEffects().at(j).second->getPredicate()->getName() == fluent->getPredicate()->getName()) ){
-					namea=actual->getActions()->at(i)->getName()+"E"+to_string(state);
-					for(vector<Variable >::iterator it2 = actual->getActions()->at(i)->getParameters()->begin() ;it2 != actual->getActions()->at(i)->getParameters()->end();++it2){
-						namea+=(*it2).getName();
-					}	
-					(*assert)+="(or (not "+namea+") (not "+name+")";
-					(*assert)+="(< (+ t_"+namea+" "+to_string(actual->getActions()->at(i)->getNotEffects().at(j).first.getSupported()->at(0).getStart())+") (+ t_"+name+" "+to_string(att.getSupported()->at(0).getStart())+") )";
-					(*assert)+="(> (+ t_"+namea+" "+to_string(actual->getActions()->at(i)->getNotEffects().at(j).first.getSupported()->at(0).getStart())+") (+ t_"+name+" "+to_string(att.getSupported()->at(0).getStart())+") )";
+			if ( ! (a->getName() == actual->getActions()->at(i)->getName() && statep == state)){
+				for (unsigned int j =0 ; j < actual->getActions()->at(i)->getNotEffects().size() ; ++j){
+					if ( compareVV(actual->getActions()->at(i)->getNotEffects().at(j).second->getMembersList(),fluent->getMembersList()) && (actual->getActions()->at(i)->getNotEffects().at(j).second->getPredicate()->getName() == fluent->getPredicate()->getName()) ){
+						namea=actual->getActions()->at(i)->getName()+"E"+to_string(state);
+						for(vector<Variable >::iterator it2 = actual->getActions()->at(i)->getParameters()->begin() ;it2 != actual->getActions()->at(i)->getParameters()->end();++it2){
+							namea+=(*it2).getName();
+						}	
+						(*assert)+="(or (not "+namea+") (not "+name+") ";
+						(*assert)+="(not (= (+ t_"+namea+" "+to_string(actual->getActions()->at(i)->getNotEffects().at(j).first.getSupported()->at(0).getEnd())+") (+ t_"+name+" "+to_string(att.getSupported()->at(0).getStart())+") ) ) )\n";
+					}
 				}
-			}
+			} 
 		}
 	state++;
 	}

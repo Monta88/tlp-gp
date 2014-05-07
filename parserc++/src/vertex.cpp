@@ -22,7 +22,7 @@ void Vertex::to_string(){
 		vertex = vertex->getFather();
 		cout<<"\nplan : "<<state<<"nbaction : "<<vertex->getActions()->size()<<"\n";
 		for(vector<DurativeAction *>::iterator it = vertex->getActions()->begin() ; it != vertex->getActions()->end() ; ++it){
-			cout<<"action : "<<(*it)->to_string()<<"\n";
+			cout<<"action : "<<(*it)->to_string()/*to_string()*/<<"\n";
 		}
 		state++;
 	} while( vertex->getFather() != NULL );

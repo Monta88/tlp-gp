@@ -26,9 +26,10 @@ public:
 	bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
 	float findTimeEff(Fluent * f,DurativeAction * a);*/
 	string linkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * vertex,int state,string * assert);
-	string protectCond(string link,Fluent * fluent,Attribute att,string name);
+	string protectCond(string link,Fluent * fluent,Attribute att,string nameb,string namet);
 	bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
-	void protectEffect(string name,Fluent * fluent,Attribute att,string * assert);
+	void protectEffect(string name,DurativeAction * a,Fluent * fluent,Attribute att,string * assert,int statep);
+	
 private:
 	Vertex * m_graph;
 		
