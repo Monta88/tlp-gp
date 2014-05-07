@@ -18,6 +18,7 @@ using namespace std;
 #include <time.h>
 
 #include "src/graph.h"
+#include "src/graph2.h"
 #include "src/tlpgp1.h"
 #include "src/tlpgp2.h"
 
@@ -39,7 +40,6 @@ int main(int argc, char **argv)
 	Graph *graph = nullptr;
 	Domain * domain = nullptr;
 	Problem * problem = nullptr;
-	Tlpgp1 *tlpgp1 = nullptr;
 
 	// argument verification
 	if (argc != 3) {
@@ -116,11 +116,18 @@ int main(int argc, char **argv)
 	domain = data->getDomain();
 	problem = data->getProblem();
 
-	// we launch the planner (TLP-GP 2)
-	graph = new Graph(domain, problem);
-	if (!graph->generateGraph()){
-		cout<<" no solution \n";
-	}
+	// we launch the planner
+	// TLP-GP 2
+//	graph = new Graph(domain, problem);
+//	if (!graph->generateGraph()){
+//		cout<<" no solution \n";
+//	}
+	//Graph2 graph2 = Graph2(domain, problem);
+	//graph2.generateGraph();
+	// TLP-GP 1
+	Tlpgp1 tlpgp1 = Tlpgp1(domain, problem);
+	tlpgp1.constructGraph();
+	
 	t2 = clock();	
 	cout<<"temps total : "<<(float)(t2-t1)/CLOCKS_PER_SEC<<"\n";
 	//vertex->to_string();

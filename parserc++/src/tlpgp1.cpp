@@ -19,203 +19,84 @@ Tlpgp1::~Tlpgp1() {
 	// TODO Auto-generated destructor stub
 }
 
+void Tlpgp1::constructGraph() {
+	Graph2 graph2 = Graph2(m_domainptr, m_problemptr);
+	graph2.generateGraph();
+	m_vertex = graph2.getVertex();
 
-void Tlpgp1::generateGraph() {
-	vector<pair<Fluent*, Attribute> > *inits, *goals ;
-	vector<DurativeAction*> *actions ;
-	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > level0,level1,level2,level3;
-	DurativeAction goalsAction("Goals") ;
-	Sat sol;
+	//DurativeAction *act = graph2.findAction(m_vertex,graph2.getInits(),m_problemptr->getGoals()->at(1).first);
+	//cout << act->to_stringParam() <<endl;
+	//cout << graph2.getInits()->to_string() <<endl;
+	//cout << graph2.getGoals()->to_string() <<endl;
 
-	vector< Fluent *> vect ;
-	vector<pair<Attribute, Fluent*> > vect2,vect3,inits2 ;
-	Fluent *f;
-	Attribute a;
-	pair<Attribute, Fluent*> p;
+	//graph2.getVertex()->toVector();
 
-	cout << m_domainptr->getName() <<endl;
-	//data->display() ;
+	cout << m_domainptr->getPredicates()->size() <<endl;
+	vertexToActions();
+	cout<<  "gggggggggggggggggg" << m_graph.size() <<endl;
+	//cout<<	m_graph[0][0]->to_stringParam() <<endl;
+	//cout << m_graph.at(0)->to_stringParam() <<endl;
+	//cout << m_graph.at(0)[0]->to_string() <<endl;
 
-	inits = m_problemptr->getInits();
-	goals = m_problemptr->getGoals();
-	actions = m_domainptr->getActions();
-	//actions = data->getDomain()->getActions();
-
-	/*
-	for(auto it = goals->begin(); it != goals->end(); ++it){
-		f = (*it).first;
-		a = (*it).second;
-		goalsAction.addCondition(a,f);
-	}
-	cout << "GOALS: " << goalsAction.getPreconditions().size() << endl;
-
-
-	// inits2 = inits inverted
-	for(auto it = inits->begin(); it != inits->end(); ++it){
-		f = (*it).first;
-		a = (*it).second;
-		p.first = a;
-		p.second = f;
-		inits2.push_back(p);
-	}
-
-	cout << "(generateGraph) Inits : " << inits->size() << endl;
-	for(auto it = inits->begin(); it != inits->end(); ++it) //error with the first element
-		cout << "\t" << (*it).first->to_string() << endl;
-
-	cout << "(generateGraph) Goals : " << goals->size() << endl;
-	for(auto it = goals->begin(); it != goals->end(); ++it) //error with the first element
-		cout << "\t" << (*it).first->to_string() << endl;
-
-	cout << "(generateGraph) Actions : " << actions->size()<< endl;
-	for(auto it_act = actions->begin(); it_act != actions->end(); ++it_act) {//error with the first element
-		cout << "\n" <<(*it_act)->getName() << endl;
-
-		vect = (*it_act)->getPreconditions();
-		cout << "(generateGraph) preconditions size:" << vect.size() << endl;
-		for(auto it = vect.begin(); it != vect.end();++it){
-			if(vect.size() != 0)
-				cout << (*it)->to_string() <<endl;
-			//cout << "plop" <<endl;
-		}
-
-		vect2 = (*it_act)->getEffects();
-		cout << "(generateGraph) effects size:" << vect2.size() << endl;
-		for(auto it = vect2.begin(); it != vect2.end(); ++it){
-			if(vect2.size() != 0)
-				cout << (*it).second->to_string() <<endl;
-			//cout << "plop" <<endl;
-		}
-
-		vect2 = (*it_act)->getNotEffects();
-		cout << "(generateGraph) not_effects size:" << vect2.size() << endl;
-		for(auto it= vect2.begin(); it != vect2.end(); ++it){
-			if(vect2.size() != 0)
-				cout << it->second->to_string() <<endl;
-			//cout << "plop" <<endl;
+	for(int i=0; i<m_graph.size(); ++i){
+		cout<<  "ccccc " << m_graph[i].size() <<endl;
+		for(auto it = m_graph[i].begin(); it != m_graph[i].end(); ++it){
+			cout << "actionaction" << (*it)->getName() <<endl;
 		}
 	}
+	//m_vertex->to_string();
 
-	vect2.clear();
-	//vect2.insert(vect2.end(),inits2.begin(),inits2.end());
-	//vect2 = inits2;
-	cout << "\nETAPE 1: " << vect2.size() << endl;
-	for(auto it_act = actions->begin(); it_act != actions->end(); ++it_act) {
-		if(actionUsable(*it_act, &inits2)){
-			cout << (*it_act)->getName() << endl;
+	vector< Fluent *> goals = vector< Fluent *>();
+	vector< Fluent *> inits = vector< Fluent *>();
 
-			vect3 = (*it_act)->getEffects();
-			vect2.insert(vect2.end(), vect3.begin(), vect3.end());
-		}
+	//for(auto it = graph2.getGoals()->getPreconditions().begin(); it != graph2.getGoals()->getPreconditions().end(); ++it)
+		//cout << (*it)->to_string() <<endl;
+		//goals.push_back(*it);
+
+	//for(auto it = graph2.getGoals()->getNotPreconditions().begin(); it != graph2.getGoals()->getNotPreconditions().end(); ++it)
+		//cout << (*it)->to_string() <<endl;
+		//goals.push_back(*it);
+	cout<<"azzae" <<endl;;
+	cout<<m_problemptr->getGoals()->size() <<endl;;
+	for(auto it = m_problemptr->getGoals()->begin(); it != m_problemptr->getGoals()->end(); ++it){
+		cout<< (*it).first->to_string() << "  aaa  " << (*it).second.to_string() << endl;
+		goals.push_back((*it).first);
 	}
-	cout << "RESULT: " << vect2.size() << " " << actionUsable(&goalsAction, &vect2)<< endl;
+	cout<<"vvsdsd" << goals.size() <<endl;;
 
-
-	cout << "level 0: " << " " << actionUsable(&goalsAction, &vect2)<< endl;
-
-	level1 = nextLevel(actions,vect2);
-	cout << "level 1: " << " " << actionUsable(&goalsAction, &vect2)<< endl;
-	cout << ": " << level1.first.size() << " " << level1.second.size()<< endl;
-
-	level2 = nextLevel(&level1.first,level1.second);
-	cout << "level 2: " << " " << actionUsable(&goalsAction, &vect2)<< endl;
-	cout << ": " << level2.first.size() << " " << level2.second.size()<< endl;
-
-	level3 = nextLevel(&level2.first,level2.second);
-	cout << "level 2: " << " " << actionUsable(&goalsAction, &vect2)<< endl;
-	cout << ": " << level3.first.size() << " " << level3.second.size()<< endl;
-
-
-	cout << "\nETAPE 2: " << vect2.size() << endl;
-	for(auto it_act = actions->begin(); it_act != actions->end(); ++it_act) {
-		if(actionUsable(*it_act, &vect2)){
-			cout << (*it_act)->getName() << endl;
-
-			vect3 = (*it_act)->getEffects();
-			vect2.insert(vect2.end(), vect3.begin(), vect3.end());
-		}
+	for(auto it = m_problemptr->getInits()->begin(); it != m_problemptr->getInits()->end(); ++it){
+			cout<< (*it).first->to_string() << "  bbb  " << (*it).second.to_string() << endl;
+			inits.push_back((*it).first);
 	}
-	cout << "RESULT: " << vect2.size() << " " << actionUsable(&goalsAction, &inits2)<< endl;
-
-	cout << "\nETAPE 3: " << vect2.size() << endl;
-	for(auto it_act = actions->begin(); it_act != actions->end(); ++it_act) {
-		if(actionUsable(*it_act, &vect2)){
-			cout << (*it_act)->getName() << endl;
-
-			vect3 = (*it_act)->getEffects();
-			vect2.insert(vect2.end(), vect3.begin(), vect3.end());
-		}
-	}
-	cout << "RESULT: " << vect2.size() << " " << actionUsable(&goalsAction, &inits2)<< endl;
-
-	*/
-	cout << "\n(generateGraph): END OF PRINT" <<endl;
-
-	constraint c (1,2,"<",(*actions)[0],(*actions)[1]);
-	c.print();
-
-	sol.initialize();
-	sol.solve();
-
-	cout << "\n(generateGraph): END" <<endl;
+	cout<<"vdgsdsg" << inits.size() <<endl;;
 }
 
-pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > Tlpgp1::nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> > conditions){
-	vector<pair<Attribute, Fluent*> > newEffects,tempEffects;
-	vector<DurativeAction*> newActions ;
-	vector<pair<Attribute, Fluent*> >::iterator pos ;
-	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > result;
+void Tlpgp1::vertexToActions(){
+	cout << "aaaaaaaaaaaaaa" << m_vertex->getActions()->size() << endl;
+	vector<DurativeAction *> * act = m_vertex->getFather()->getActions();
+	cout << "aaaaaaaaaaaaaa" << act->size() << endl;
 
-	cout << "\nETAPE : " << conditions.size() << endl;
-	for(auto it_act = actions->begin(); it_act != actions->end(); ++it_act) {
-		if(actionUsable(*it_act, &conditions)){
-			//cout << (*it_act)->getName() << endl;
-			newActions.push_back(*it_act);
-			tempEffects = (*it_act)->getEffects() ;
+	//m_graph = vector<vector<DurativeAction* >> (10);
+	m_graph.clear();
 
-			for(auto it_eff = tempEffects.begin(); it_eff != tempEffects.end(); ++it_eff){
-				//pos = find(newEffects.begin(), newEffects.end(), it_eff) ;
-				if(pos == newEffects.end() ){
-					newEffects.push_back(*it_eff);
-				}
-			}
-			newEffects.insert(newEffects.end(),tempEffects.begin(),tempEffects.end());
-		}
-	}
+	Vertex * vertex = new Vertex(m_vertex);
+	int state=0;
+	do{
+		vertex = vertex->getFather();
+		//cout<<"\zzzzzzzzzzzzzzzz "<<state<<"nbaction : "<<vertex->getActions()->size()<<"\n";
+		/*for(vector<DurativeAction *>::iterator it = vertex->getActions()->begin() ; it != vertex->getActions()->end() ; ++it){
+			//cout<<"qqqqqqqqqqqqqq "<<(*it)->to_string()<<"\n";
+			m_graph[state].push_back(*it);
+		}*/
+		m_graph.push_back(*(vertex->getActions()));
+		state++;
 
-	result.first = newActions;
-	result.second = newEffects;
+	} while( vertex->getFather() != NULL );
 
-	return result;
+	reverse(m_graph.begin(),m_graph.end());
+	//m_graph.pop_back();
+
 }
 
-// Given a list of fluents, return if the action is activable (ie all preconditions are satisfied)
-bool Tlpgp1::actionUsable(DurativeAction* action, vector<pair<Attribute, Fluent*> > *fluents){
-	bool res=true ,res2 = true;
-	vector< Fluent *> preconditions ;
-	Fluent *fluent;
 
-	preconditions = action->getPreconditions();
-
-	//cout << "\n" << "(actionUsable)"<< action->getName();
-	//cout << preconditions.size() <<" "<< fluents->size() <<endl;
-
-	for(auto it_precond = preconditions.begin(); it_precond != preconditions.end(); ++it_precond){
-		//cout << "preconditons: " << (*it_precond)->to_string() <<endl;
-		res2 = false;
-		for(auto it_fluents = fluents->begin(); it_fluents != fluents->end(); ++it_fluents){
-			fluent = (*it_fluents).second ;
-			res2 = res2 || fluent->getPredicate()->getName()==(*it_precond)->getPredicate()->getName() ;
-			//cout << res2 <<endl;
-			//cout << fluent->getPredicate()->getName() << " " << res2 << endl;
-			//cout << "\t" << (*it_var).first->to_string() <<endl;
-		}
-		//cout << "res: " << res << " res2: " <<res2 <<endl;
-		res = (res && res2) ;;
-	}
-
-	//cout << " -> " << res ;;
-
-	return res;
-}
-
+// selectAction(vector DurativeAction*, effect)

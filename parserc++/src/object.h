@@ -12,7 +12,8 @@ class Object : public Member {
 		Object(string name, vector<Type*> types);
 		Object();
 		void addTypes(vector<Type*> types);
-		virtual string to_string();
+		string to_string();
+		string getClass(); 
 };
 
 #endif // OBJECT_H

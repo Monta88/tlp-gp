@@ -435,6 +435,8 @@ bool Data::addObjects(vector<TypedList*> * typedList_list) {
 	return true;
 }
 
+
+
 bool Data::isObject(string object) {
 	return (find(m_object_list.begin(), m_object_list.end(), object) != m_object_list.end());
 }

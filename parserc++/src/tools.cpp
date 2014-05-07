@@ -8,6 +8,7 @@ Tools::~Tools(){
 	// TODO Auto-generated destructor stub
 }
 
+
 // return true is the 2 vector have the same types
 bool Tools::compareVectorType(vector<Type*>* v1,vector<Type*>* v2){
 	for (vector<Type*>::iterator it = v1->begin() ; it != v1->end() ; ++it){
@@ -27,28 +28,10 @@ bool Tools::isIn(Type* t ,vector<Type*>* v){
 	return false;
 }
 
-/*bool Tools::isIn(Type* t ,vector<Type*>* v){		
-	vector<Type *> * fatherType = getFatherType(*it);			
-	for (vector<Type*>::iterator it = v->begin() ; it != v->end() ; ++it){
-		for (vector<Type*>::iterator it2 = getFatherType->begin() ; it2 != getFatherType->end() ; ++it2){ 
-			if ((*it)->getName() == (*it2)->getName())	{
-			return true;
-		}
-	}
-	return false;
-}
-
-vector<Type *>* Tools::getFatherType(Type * t){
-	vector<Type * > * ret = new vector<Type *>();	
-	ret->push_back(t);
-	Type *type =t;
-	while(t->
-}*/
 
 bool Tools::solveur(){
 	pid_t pid = fork();
 	//int pidInt = int(getpid());
-	cout << "xxxxxxxxxx"<< g_pid <<endl;
 	string namefile = to_string(g_pid)+"tlpgp2.smt2";
 	string namefileRes = to_string(g_pid)+"tlpgp2Res.txt";
 	string mathsat = "./mathsat < "+namefile;

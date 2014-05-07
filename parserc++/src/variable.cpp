@@ -21,3 +21,7 @@ string Variable::to_string() {
 	}
 	return str;
 }
+
+string Variable::getClass(){
+	return "Variable";
+}

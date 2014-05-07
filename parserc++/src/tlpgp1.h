@@ -14,6 +14,7 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
+#include <algorithm>
 #include "../Data.h"
 #include "problem.h"
 #include "domain.h"
@@ -23,6 +24,7 @@
 #include "lObjType.h"
 #include "constraint.h"
 #include "sat.h"
+#include "graph2.h"
 
 using namespace std;
 
@@ -32,17 +34,14 @@ public:
 	Tlpgp1(Domain *domain, Problem *problem);
 	virtual ~Tlpgp1();
 
-	vector<DurativeAction > * instanceActions();
-	vector<DurativeAction >* instanciation(vector<vector<Object * > > * objects,DurativeAction *action);
-	void generateGraph();
-	bool actionUsable(DurativeAction *action, vector<pair<Attribute, Fluent*> > *var);
-	bool actionUsable(DurativeAction action, vector< Fluent > * fluents);
-	bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
-	bool compareFV(vector<Member * >* v1,Member * m);
-	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> >);
+	void constructGraph();
+	void vertexToActions();
+
 	private:
 		Domain * m_domainptr;
 		Problem * m_problemptr;
+		Vertex *m_vertex;
+		vector<vector<DurativeAction* >> m_graph;
 };
 
 #endif /* TLPGP1_H_ */

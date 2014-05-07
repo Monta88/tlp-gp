@@ -12,7 +12,8 @@ class Constant : public Member {
 		Constant(string name, vector<Type*> types);
 		Constant();
 		void addTypes(vector<Type*> types);
-		virtual string to_string();
+		string to_string();
+		string getClass(); 
 };
 
 #endif // CONSTANT_H

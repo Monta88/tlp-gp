@@ -36,6 +36,8 @@ public:
 
 	//retrun the first plan of the graph
 	bool generateGraph();
+	Vertex* getVertex();
+
 
 	//return the list of object sorted to instanciated the actions
 	vector<DurativeAction *> * instanceActions();
@@ -61,8 +63,14 @@ public:
 	DurativeAction * make_actionGoal();
 
 	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> >);
+
+	DurativeAction* getInits();
+	DurativeAction* getGoals();
+
 private:
 	Domain * m_domainptr;
 	Problem * m_problemptr;
+	Vertex *m_vertex;
+	DurativeAction *m_inits,*m_goals;
 };
 

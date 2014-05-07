@@ -25,3 +25,6 @@ string Constant::to_string() {
 	return str;
 }
 
+string Constant::getClass(){
+	return "Constant";
+}	
