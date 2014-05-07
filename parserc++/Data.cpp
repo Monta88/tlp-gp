@@ -813,19 +813,19 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 		
 		att =  Attribute();
 		switch (((*it)->second & 0b111110) >> 1) {
-			case 0b00001: 	// at start
+			case 0b00001:		// at start
 				att.addSupported(Interval(0.,0.));
 				break;
-			case 0b00010:	// at end
+			case 0b00010:		// at end
 				att.addSupported(Interval(number,number));
 				break;
-			case 0b00100: 	// over all
+			case 0b00100:	 	// over all
 				att.addSupported(Interval(0.,number));
 				break;
-			case 0b01000: 	// supported all
+			case 0b01000:		// supported all
 				att.addSupported(Interval(0.,number));
 				break;
-			case 0b10000: 	// forbidden all
+			case 0b10000:		// forbidden all
 				att.addForbidden(Interval(0.,number));
 				break;
 			default:
@@ -867,7 +867,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 		
 		att =  Attribute();
 		switch (((*it)->second & 0b1111111110) >> 1) {
-			case 0b001: 	// at start
+			case 0b000000001:		// at start
 				att.addSupported(Interval(0.,0.));
 				break;
 			case 0b000000010:		// at end

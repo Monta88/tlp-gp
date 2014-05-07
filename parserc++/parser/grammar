@@ -1326,18 +1326,14 @@ te_timed_GD:
 		$$.timed_GD=$4.timed_GD;
 	}
 	| L_P SOMEWHERE te_interval GD R_P {	
-		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
-			(*it)->second += 1 << ($3.integer+3);
-		}
-		$$.timed_GD=$4.timed_GD;
+		Parser::fatal_error("Somewhere modality not supported yet");
 	}
 	| L_P ANYWHERE te_interval GD R_P {	
-		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
-			(*it)->second += 1 << ($3.integer+4);
-		}
-		$$.timed_GD=$4.timed_GD;
+		Parser::fatal_error("Anywhere modality not supported yet");
 	}
-	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval GD R_P
+	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval GD R_P {
+		Parser::fatal_error("Minimal-duration modality not supported yet");
+	}
 	;
 
 /* <te-da-effect> */
@@ -1385,18 +1381,14 @@ te_timed_effect:
 		$$.cond_effect=$4.cond_effect;
 	}
 	| L_P SOMEWHERE te_interval cond_effect R_P { 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
-			(*it)->second += 1 << ($3.integer+3);
-		}	
-		$$.cond_effect=$4.cond_effect;
+		Parser::fatal_error("Somewhere modality not supported yet");
 	}
 	| L_P ANYWHERE te_interval cond_effect R_P { 
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
-			(*it)->second += 1 << ($3.integer+4);
-		}	
-		$$.cond_effect=$4.cond_effect;
+		Parser::fatal_error("Anywhere modality not supported yet");
 	}
-	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval cond_effect R_P
+	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval cond_effect R_P {
+		Parser::fatal_error("Minimal-duration modality not supported yet");
+	}
 	| L_P TRANSITION_OVER te_interval cond_effect R_P { 
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
 			(*it)->second += 1 << ($3.integer+6);
