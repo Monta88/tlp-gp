@@ -1,8 +1,10 @@
-/*
- * Graph2.cpp
- *
- *  Created on: May 6, 2014
- *  Copy-pasted from graph
+/*!
+ * \file graph2.cpp
+ * \brief Contains what is needed to generate the expansion graph for tlpgp1
+ * \author Alan BENIER, Martin LAGLEIZE, Nathan PRAT
+ * \version 1.0
+ * \date May 6, 2014
+ * basically Copy-pasted from graph.cpp
  */
 
 #include "graph2.h"

@@ -1,8 +1,9 @@
-/*
- * sat.h
- *
- *  Created on: Apr 20, 2014
- *      Author: nathan
+/*!
+ * \file sat.h
+ * \brief contains what is needed to communicate with a sat solver, using smt2
+ * \author Alan BENIER, Martin LAGLEIZE, Nathan PRAT
+ * \version 1.0
+ * \date Apr 20, 2014
  */
 
 #ifndef SAT_H_
