@@ -424,7 +424,7 @@ bool Data::addObjects(vector<TypedList*> * typedList_list) {
 		for (vector<string>::reverse_iterator it_object = (*it)->getList()->rbegin(); it_object != (*it)->getList()->rend(); ++it_object) {
 			if (isObject(*it_object)) { // if the object existed, then we update its type
 				getObject(*it_object)->addTypes(types);
-				lexical_error("The " + (*it_constant) + " object already existed so its type has been updated");
+				lexical_error("The " + (*it_object) + " object already existed so its type has been updated");
 			}
 			else { // if the object didn't exist, then we create it
 				m_object_list.push_back(*it_object);
@@ -470,7 +470,7 @@ bool Data::addInit(pair< pair< vector< string > *, string *> *, bool > * literal
 				member = getObject(*it_member);
 			}
 			else { // if it isn't a constant nor an object
-				fatal_error((*it_member) + " is nor a Constant nor an Object in the init of " + *litteral->first->second);
+				fatal_error((*it_member) + " is nor a Constant nor an Object in the init of " + *literal->first->second);
 				return false;
 			}
 		}
@@ -482,7 +482,7 @@ bool Data::addInit(pair< pair< vector< string > *, string *> *, bool > * literal
 		predicate = getPredicate(literal->first->second, type_list);
 	}
 	else { // if the associated predicate doesn't exists, error
-		fatal_error("Predicate \""+ *(literal->first->second) +"\" not found in the init of " + *litteral->first->second);
+		fatal_error("Predicate \""+ *(literal->first->second) +"\" not found in the inits");
 		return false;
 	}
 	
@@ -525,7 +525,7 @@ bool Data::addGoals(vector< vector< pair< pair< vector< string > *, string *> *,
 						member = getObject(*it_member);
 					}
 					else { // if it isn't a constant nor an object
-						lexical_error((*it_member) + " is nor a Constant nor an Object in the goal of " + *(*it_main)->first->second);
+						lexical_error((*it_member) + " is nor a Constant nor an Object in the goal of " + *(*it)->first->second);
 						return false;
 					}
 				}
@@ -537,7 +537,7 @@ bool Data::addGoals(vector< vector< pair< pair< vector< string > *, string *> *,
 				predicate = getPredicate((*it)->first->second, type_list);
 			}
 			else { // if the associated predicate doesn't exists, error
-				fatal_error("Predicate \""+ *(*it)->first->second +"\" not found in the goal of " + *(*it_main)->first->second);
+				fatal_error("Predicate \""+ *(*it)->first->second +"\" not found in the goals");
 				return false;
 			}
 			
@@ -621,7 +621,7 @@ void Data::display() {
 	if (m_errors.size() != 0) {
 		cerr << "Warning : " << endl;
 		for(vector<string>::iterator it = m_errors.begin(); it != m_errors.end(); ++it)
-			cout << "\t" << (*it) << endl;
+			cerr << "\t" << (*it) << endl;
 	}
 	
 	// durative-actions and their parameters, preconditions and effects
@@ -929,7 +929,7 @@ bool Data::addInitiatedFunction(pair< vector< string > *, string *> * atomic_for
 				member = getObject(*it_member);
 			}
 			else { // if the parameter is nor an object nor a constant
-				lexical_error((*it_member) + " is nor a Constant nor an Object. The initiated function " + *atomic_formula->first->second + " won't be used");
+				lexical_error((*it_member) + " is nor a Constant nor an Object. The initiated function " + *atomic_formula->second + " won't be used");
 				return false;
 			}
 		}
