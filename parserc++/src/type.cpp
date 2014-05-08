@@ -12,7 +12,7 @@ Type::Type() {}
 Type::~Type() {}
 
 void Type::addParents(vector<Type*> parents) {
-	m_parents = parents;
+	m_parents.insert(m_parents.end(), parents.begin(), parents.end());
 }
 
 string Type::getName() {

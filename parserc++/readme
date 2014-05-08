@@ -6,3 +6,31 @@ http://bisoncpp.sourceforge.net/bisonc++man.html
 You can get them here (arch) :
 https://aur.archlinux.org/packages/bisonc%2B%2B/
 https://aur.archlinux.org/packages/flexc%2B%2B/
+
+
+Properties of the PDDL 3.1 Temporally Extended Parser :
+
+As PDDL syntax is really permissive, in some case during the parsing, some choices must have been made.
+The parser is quite permissive too and theese choices we made are more visible in the lexical analyzer (in Data).
+
+	- when a constant, an object or a type is defined several times, then the types in its different types are added in order to make an "either" type. Warning : it can generate duplicatae !
+		(ex : c1 - t1 c1 - t2 => c1 - (either t1 t2) )
+	- when a constant, an object or a type is defined with a type that doesn't exists yet, then this type is defined and added to the types list.
+	- a constant and an object can have the same name.
+	- two functions or predicates are equal if they have the same name and the same types as parameters.
+	- two actions are equal if they have the same name.
+	- if type is defined without parent, then it has no parent, but it is considered like if its parent is 'object' type.
+
+
+Most of the structure in the parser (cf. %union in grammar) are pointers in order to avoid raw copy, and optimize performances.
+
+The PDDL 3.1 Temporally Extended syntax analyzer is fully implemented. But the lexical analyzer works only on the requirements, and parts of the grammar that is used by the TLP-GP planner. Theese parts correspond in the requirements : :typing, :numeric-fluents, :durative-actions.
+
+For now, the functions doesn't parse correctly when they are used in actions' definition (the program tries to get the return of the function in the definition of the action that uses this funciton, but the function is not yet initiated) : the structure of a DurativeAction must be upgraded to transform the bounds of an Interval from a float to a float or a Function, and when the functions are initated in :init, DurativeActions must be updated in order they have no more Function in they Intervals, but only floats.
+
+In Data, we use vector<string> in local variables to make the verifications faster and easier.
+
+Our PDDL types are represented as lists of Types in order to represent both "either" and simple types (ex : (either t1 t2 t3) => vector(t1, t2, t3), and t1 => vector(t1)).
+
+About Temporally Extended modality : because we don't know how to manage timepoints, we cannot translate somewhere, anywhere and minimal-duration.
+

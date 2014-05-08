@@ -1,9 +1,11 @@
-/*
- * constraint.h
- *
- *  Created on: Apr 18, 2014
- *      Author: nathan
+/*!
+ * \file constraint.h
+ * \brief [wip][test] contains things which may be used in tlpgp1
+ * \author Alan BENIER, Martin LAGLEIZE, Nathan PRAT
+ * \version 1.0
+ * \date Apr 18, 2014
  */
+
 
 #ifndef CONSTRAINT_H_
 #define CONSTRAINT_H_

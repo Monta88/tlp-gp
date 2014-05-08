@@ -1,8 +1,10 @@
-/*
- * Graph.h
- *
- *  Created on: Apr 9, 2014
- *      Author: nathan
+/*!
+ * \file graph2.h
+ * \brief Contains what is needed to generate the expansion graph for tlpgp1
+ * \author Alan BENIER, Martin LAGLEIZE, Nathan PRAT
+ * \version 1.0
+ * \date May 6, 2014
+ * basically Copy-pasted from graph.cpp
  */
 
 #pragma once
@@ -36,6 +38,8 @@ public:
 
 	//retrun the first plan of the graph
 	bool generateGraph();
+	Vertex* getVertex();
+
 
 	//return the list of object sorted to instanciated the actions
 	vector<DurativeAction *> * instanceActions();
@@ -61,8 +65,14 @@ public:
 	DurativeAction * make_actionGoal();
 
 	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> >);
+
+	DurativeAction* getInits();
+	DurativeAction* getGoals();
+
 private:
 	Domain * m_domainptr;
 	Problem * m_problemptr;
+	Vertex *m_vertex;
+	DurativeAction *m_inits,*m_goals;
 };
 
