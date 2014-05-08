@@ -796,12 +796,16 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 		
 		// for each parameter of the fluent
 		for (vector<string>::reverse_iterator it2 =(*it)->first->first->rbegin(); it2 != (*it)->first->first->rend(); ++it2){
-			if( !(action->isVariable(*it2)) ) { // if it is not a parameter
-				lexical_error("In action " + action->getName() + " : the variable " + (*it2) + " doesn't exist");
-				return false;
-			}
-			type_list.push_back(*(action->getVariable(*it2)->getTypes()));
-			variable_list.push_back(action->getVariable(*it2));	
+			   if( action->isVariable(*it2)) {// if the parameter is a variable (?***) 
+			   	 type_list.push_back(*(action->getVariable(*it2)->getTypes()));
+			   	 variable_list.push_back(action->getVariable(*it2));
+			   } else if (  isConstant(*it2) ){// if the parameter is a constant
+			 	   type_list.push_back(*(getConstant(*it2)->getTypes()));
+			 	   variable_list.push_back(getConstant(*it2));
+			   } else { // if the parameter is nor a variable action's parameter nor a constant
+			 	   lexical_error("In action " + action->getName() + " the variable " + (*it2) + " don't exist");
+			    return false; 
+			   }	
 		}
 		
 		if(!(isPredicate((*it)->first->second, type_list))) { // if the predicate doesn't exist
@@ -850,12 +854,16 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 		
 		// for each parameter of the fluent
 		for (vector<string>::reverse_iterator it2 =(*it)->first->first->rbegin(); it2 != (*it)->first->first->rend(); ++it2) {
-			if( !(action->isVariable(*it2)) ) { // if the predicate doesn't exist
-				lexical_error("In action " + action->getName() + " : the variable " + (*it2) + " doesn't exist. The definition of this action is illed formed so it won't be used");
-				return false;
-			}
-			type_list.push_back(*(action->getVariable(*it2)->getTypes()));
-			variable_list.push_back(action->getVariable(*it2));	
+			   if( action->isVariable(*it2)) {// if the parameter is a variable (?***) 
+			   	 type_list.push_back(*(action->getVariable(*it2)->getTypes()));
+			   	 variable_list.push_back(action->getVariable(*it2));
+			   } else if (  isConstant(*it2) ){// if the parameter is a constant
+			   	 type_list.push_back(*(getConstant(*it2)->getTypes()));
+			   	 variable_list.push_back(getConstant(*it2));
+			   } else { // if the parameter is nor a variable action's parameter nor a constant
+			   	 lexical_error("In action " + action->getName() + " the variable " + (*it2) + " don't exist");
+			   	 return false; 
+			   }	
 		}
 		// predicate existence verification 
 		if(!(isPredicate((*it)->first->second,type_list))) {

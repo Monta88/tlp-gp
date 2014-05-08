@@ -133,14 +133,14 @@ vector<DurativeAction *>* Graph::instanciation(vector<vector<Object * > > * obje
 
 //retrun the first plan of the graph 
 bool Graph::generateGraph() {
-	cout<<"debut instanciations \n";
+	cout<<"start instanciations \n";
 	vector<DurativeAction *> * m_actions = instanceActions();
-	cout<<"fin instanciations \n";cout<<"pout "<<m_actions->size()<<endl;
+	cout<<"end instanciations, "<<m_actions->size()<< "instances"<<endl;
 	for (vector<DurativeAction *>::iterator it = m_actions->begin() ; it != m_actions->end() ; ++it){
-		cout<<" ///"<<(*it)->to_string()<<"\n";
+		//cout<<" ///"<<(*it)->to_string()<<"\n";
 	}
 	DurativeAction *goalsAction =  make_actionGoal() ;
-	DurativeAction *initAction =  make_actionInit();//cout<<"lol "<<initAction->to_string()<<endl;
+	DurativeAction *initAction =  make_actionInit();
 	vector<Fluent >* lastlFlu = new vector<Fluent >();
 	vector<Fluent >* actualFlu = new vector<Fluent >();
 	for(unsigned i=0; i< initAction->getEffectsF().size();  ++i){
@@ -155,7 +155,6 @@ bool Graph::generateGraph() {
 	Tools t;
 	bool goal = false;
 	while(  !goal ){
-		lastVertex = actualVertex;cout<<"lol "<<plan<<endl;
 		actualVertex = new Vertex(lastVertex);
 		for(unsigned int i = 0 ; i < actualFlu->size() ; ++i){
 			lastlFlu->push_back(actualFlu->at(i));
@@ -190,7 +189,7 @@ bool Graph::generateGraph() {
 			cout<<"goal can't be access"<<lastlFlu->size()<<"\n";
 			goal =true;
 			for(unsigned int i = 0 ; i < lastlFlu->size() ; ++i){
-				cout<<" lol "<<lastlFlu->at(i).to_string()<<endl;
+				//cout<<" lol "<<lastlFlu->at(i).to_string()<<endl;
 			
 			}	//actualVertex->to_string();
 		}

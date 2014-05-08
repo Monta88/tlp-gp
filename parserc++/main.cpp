@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 		exit(7);
 	}
 	// display the data that result of the parsing, and the errors that happened
-	data->display();
+	//data->display();
 
 	// we link the relevant data for the planner
 	domain = data->getDomain();
