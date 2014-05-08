@@ -26,6 +26,7 @@ void Vertex::to_string(){
 		}
 		state++;
 	} while( vertex->getFather() != NULL );
+	cout<<"\n****************************\n";
 }
 
 Vertex * Vertex::getFather(){

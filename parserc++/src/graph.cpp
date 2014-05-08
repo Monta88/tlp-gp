@@ -154,7 +154,9 @@ bool Graph::generateGraph() {
 	Tlpgp2 tlpgp2;
 	Tools t;
 	bool goal = false;
+	int p;
 	while(  !goal ){
+		lastVertex = actualVertex;
 		actualVertex = new Vertex(lastVertex);
 		for(unsigned int i = 0 ; i < actualFlu->size() ; ++i){
 			lastlFlu->push_back(actualFlu->at(i));
@@ -171,8 +173,9 @@ bool Graph::generateGraph() {
 			if (t.solveur()){
 				cout<<"succes\n";
 				return true;
-			}
+			} 
 			cout<<"fail\n";
+			//return true;
 		} 
 		//if any action can be engage with actaul fluent we add it to the current plan(vertex)
 		for (unsigned j = 0 ; j < m_actions->size(); ++j){
@@ -185,7 +188,12 @@ bool Graph::generateGraph() {
 				}
 			}
 		}
-		if(((actualVertex->getActions()->size() +1 ) - lastVertex->getActions()->size()) == 0){
+		if (plan == 0 ){
+			p = 1;
+		} else {
+			p =0;
+		}
+		if(((actualVertex->getActions()->size() + p ) - lastVertex->getActions()->size()) == 0){
 			cout<<"goal can't be access"<<lastlFlu->size()<<"\n";
 			goal =true;
 			for(unsigned int i = 0 ; i < lastlFlu->size() ; ++i){

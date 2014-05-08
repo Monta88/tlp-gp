@@ -30,6 +30,7 @@ string Tlpgp2::generateGraphSmt2(){
 				get_value +=name+"\n";
 				get_value +="t_"+name+"\n";
 				file << "(declare-fun t_"<<name<<" () Int )\n";
+				assert+="(>= t_"+name+" 0 )\n";
 
 				for(unsigned i = 0 ; i < (*it)->getPreconditions2().size() ; ++i){
 					file << linkPrec(name,(*it)->getPreconditions2().at(i).second,(*it)->getPreconditions2().at(i).first,actual->getFather(),state+1,&assert);
