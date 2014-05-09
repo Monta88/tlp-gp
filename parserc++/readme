@@ -13,7 +13,7 @@ Properties of the PDDL 3.1 Temporally Extended Parser :
 As PDDL syntax is really permissive, in some case during the parsing, some choices must have been made.
 The parser is quite permissive too and theese choices we made are more visible in the lexical analyzer (in Data).
 
-	- when a constant, an object or a type is defined several times, then the types in its different types are added in order to make an "either" type. Warning : it can generate duplicatae !
+	- when a constant, an object or a type is defined several times, then the types in its different types are added in order to make an "either" type, without duplicata.
 		(ex : c1 - t1 c1 - t2 => c1 - (either t1 t2) )
 	- when a constant, an object or a type is defined with a type that doesn't exists yet, then this type is defined and added to the types list.
 	- a constant and an object can have the same name.
