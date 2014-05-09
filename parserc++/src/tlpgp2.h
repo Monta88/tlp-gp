@@ -25,13 +25,15 @@ public:
 	bool isdestroy(vector<Fluent  *> v,Fluent * f);
 	bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
 	float findTimeEff(Fluent * f,DurativeAction * a);*/
-	string linkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * vertex,int state,string * assert);
+	string linkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * vertex,int state);
 	string protectCond(string link,Fluent * fluent,Attribute att,string nameb,string namet);
 	bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
-	void protectEffect(string name,DurativeAction * a,Fluent * fluent,Attribute att,string * assert,int statep);
+	void protectEffect(string name,DurativeAction * a,Fluent * fluent,Attribute att,int statep);
 	
 private:
 	Vertex * m_graph;
+	string assert;
+	string value;
 		
 };
 

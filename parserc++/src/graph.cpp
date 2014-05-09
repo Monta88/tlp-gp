@@ -175,7 +175,7 @@ bool Graph::generateGraph() {
 				return true;
 			} 
 			cout<<"fail\n";
-			//return true;
+			return true;
 		} 
 		//if any action can be engage with actaul fluent we add it to the current plan(vertex)
 		for (unsigned j = 0 ; j < m_actions->size(); ++j){

@@ -22,11 +22,11 @@
 class Parser: public ParserBase
 {
     // $insert scannerobject
-    Scanner d_scanner;
-        
-    public:
-    
-    /*!
+ 	Scanner d_scanner;
+ 		
+ 	public:
+ 
+ 	/*!
 	 * \brief Parsing function
 	 * \return 0 if nothing went wrong
 	 */
@@ -219,7 +219,6 @@ class Parser: public ParserBase
 	 *        list_term - list of parameters
 	 * \return the return of the function, and -1.0 if the function hasn't been found in m_initiated_functions
 	 */
-	float g
 	float getFunctionReturn(std::string * name, std::vector<std::string> * list_term) {
 		return m_data->getFunctionReturn(name, list_term);
 	}
