@@ -25,8 +25,8 @@ vector<Type*> * Member::getTypes() {
 
 string Member::to_string() {
 	string str = "Member " + m_name + " - ";
-	if (m_types.size() > 0) { // if it is a simple type
-		if (m_types.size() == 1) { // it has no type
+	if (m_types.size() > 0) { // if it has a type
+		if (m_types.size() == 1) { // if it is a simple type
 			str += m_types.at(0)->getName();
 		}
 		else { // if it is an either type
