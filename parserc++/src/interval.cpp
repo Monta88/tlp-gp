@@ -1,3 +1,11 @@
+/*!
+ * \file interval.cpp
+ * \brief This class represent an interval of which bounds are floats
+ * \author Alan BENIER, Martin LAGLEIZE, Nathan PRAT
+ * \version 1.0
+ * \date May 07th 2014
+ */
+
 #include "interval.h"
 #include <sstream>
 
@@ -26,6 +34,7 @@ bool Interval::getEndBracket() {
 	return m_end_bracket;
 }
 
+// this local function return the string corresponding to the float t given in parameter
 template <typename T> string tostr(const T& t) {
 	ostringstream os;
 	os<<t;
