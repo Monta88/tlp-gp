@@ -30,8 +30,8 @@ public:
 	virtual ~Attribute();
 	
 	/*!
-	 * \brief Get the duration of the list of interval that are supported
-	 * \return the duration of the list of interval that are supported
+	 * \brief Get the time when occurs the effect (defined with "at")
+	 * \return 0 if the effect occurs at the beginning of the action, else the duration of the action
 	 */
 	float getTime ();
 	

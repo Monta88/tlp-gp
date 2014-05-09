@@ -35,10 +35,10 @@ void Attribute::addNotSupported(Interval inter) {
 float Attribute::getTime() {
 	float ret = 0;
 	
-	// for each interval in m_supported
+	// for each interval in m_supported (because of the "at")
 	for(vector<Interval>::iterator it = m_supported.begin(); it != m_supported.end(); ++it) {
-		if ((*it).getStart() == (*it).getEnd()) { // if the time of start and the time of end of the current interval are equals
-			if ((*it).getEnd() > ret) { // we keep the maximum time of end
+		if ((*it).getStart() == (*it).getEnd()) { // if the time of start and the time of end of the current interval are equals (if it is an "at")
+			if ((*it).getEnd() > ret) { // we keep the maximum time
 				ret = (*it).getEnd();
 			}
 		}
