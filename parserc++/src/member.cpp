@@ -1,3 +1,11 @@
+/*!
+ * \file member.cpp
+ * \brief This class represent a PDDL constant, object or variable
+ * \author Alan BENIER, Martin LAGLEIZE, Nathan PRAT
+ * \version 1.0
+ * \date May 07th 2014
+ */
+
 #include "member.h"
 
 
@@ -17,12 +25,14 @@ vector<Type*> * Member::getTypes() {
 
 string Member::to_string() {
 	string str = "Member " + m_name + " - ";
-	if (m_types.size() > 0) {
-		if (m_types.size() == 1) {
+	if (m_types.size() > 0) { // if it has a type
+		if (m_types.size() == 1) { // if it is a simple type
 			str += m_types.at(0)->getName();
 		}
-		else {
+		else { // if it is an either type
 			str += "(either";
+			
+			// we print all the types of the either type
 			for (vector<Type*>::iterator it = m_types.begin(); it != m_types.end(); ++it) {
 				str += " " + (*it)->getName();
 			}
@@ -37,5 +47,6 @@ string Member::getClass(){
 }
 
 void Member::changeName(string name){
-	m_name=name;
+	m_name = name;
 }
+

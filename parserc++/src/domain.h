@@ -9,7 +9,6 @@
 #include "constant.h"
 #include "predicate.h"
 #include "function.h"
-#include "action.h"
 #include "durative_action.h"
 #include "lObjType.h"
 #include "tools.h"

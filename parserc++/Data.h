@@ -11,7 +11,6 @@
 
 #include <string>
 #include <vector>
-#include "src/action.h"
 #include "src/attribute.h"
 #include "src/predicate.h"
 #include "src/constant.h"
