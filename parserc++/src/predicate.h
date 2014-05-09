@@ -46,7 +46,7 @@ public:
 	virtual ~Predicate();
 	
 	/*!
-	 * \brief Get the name of the predicates
+	 * \brief Get the name of the predicate
 	 * \return the string of its name
 	 */
 	string getName();
