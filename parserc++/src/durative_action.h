@@ -9,7 +9,6 @@
 #include <typeinfo> 
 #include "variable.h"
 #include "fluent.h"
-#include "action.h"
 #include "attribute.h"
 #include "object.h"
 using namespace std;
