@@ -15,7 +15,7 @@ Constant::Constant(): Member() {}
 void Constant::addTypes(vector<Type*> types) {
 	// for each type if the either type in types
 	for (vector<Type*>::iterator it_types = types.begin(); it_types != types.end(); ++it_types) {
-		bool contains = false; // tell if the current type is already a type of the object
+		bool contains = false; // tell if the current type is already a type of the constant
 		
 		// we verify it is not in the either type m_types of the object
 		for (vector<Type*>::iterator it_m_types = m_types.begin(); (!contains) && (it_m_types != m_types.end()); ++it_m_types) {
@@ -24,7 +24,7 @@ void Constant::addTypes(vector<Type*> types) {
 			}
 		}
 		
-		if (!contains) { // if the objects didn't have this type yet
+		if (!contains) { // if the constant didn't have this type yet
 			// we add this type
 			m_types.push_back(*it_types);
 		}
