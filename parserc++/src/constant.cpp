@@ -1,3 +1,11 @@
+/*!
+ * \file constant.cpp
+ * \brief This class represent a PDDL constant, inherit from Member
+ * \author Alan BENIER, Martin LAGLEIZE, Nathan PRAT
+ * \version 1.0
+ * \date May 07th 2014
+ */
+
 #include "constant.h"
 
 Constant::Constant(string name, vector<Type*> types): Member(name, types) {}
