@@ -17,6 +17,7 @@
 
 class Variable : public Member {
 public:
+	
 	/*!
 	 * \brief Constructor
 	 */
@@ -31,7 +32,7 @@ public:
 	
 	/*!
 	 * \brief Return a string that represent the variable
-	 * \return a string " Variable variable - either type"
+	 * \return a string " Variable name - either type"
 	 */
 	string to_string();
 	

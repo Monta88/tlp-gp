@@ -16,7 +16,7 @@ Variable::Variable(): Member() {}
 string Variable::to_string() {
 	string str = "Variable " + m_name + " - ";
 	if (m_types.size() > 0) { // if it is a simple type
-		if (m_types.size() == 1) {
+		if (m_types.size() == 1) { // if it has no type
 			str += m_types.at(0)->getName();
 		}
 		else { // if it is an either type
