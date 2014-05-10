@@ -36,38 +36,42 @@ vector<DurativeAction * > * Graph::instanceActions(){
 	bool find;
 	for (vector<DurativeAction *>::iterator it_act = m_actions->begin(); it_act != m_actions-> end() ;++it_act){
 		//build list object the action need
-		for(vector<Variable >::iterator it_param = (*it_act)->getParameters()->begin() ; it_param != (*it_act)->getParameters()->end() ; ++it_param){		temp2 = vector<Object *>();
-			find = false;
-			for (vector<lObjType>::iterator it=objects->begin(); it != objects->end(); ++it){
-				temp3 =((*it).getType());	
-				if (tool.compareVectorType(&temp3,(*it_param).getTypes())) {
-					temp4=(*it).getObject();
-					for(vector<Object *>::iterator it_o = temp4.begin() ; it_o != temp4.end() ; ++it_o){
-						temp2.push_back(*it_o);
+		if ((*it_act)->getParameters()->size() != 0){
+			for(vector<Variable >::iterator it_param = (*it_act)->getParameters()->begin() ; it_param != (*it_act)->getParameters()->end() ; ++it_param){		temp2 = vector<Object *>();
+				find = false;
+				for (vector<lObjType>::iterator it=objects->begin(); it != objects->end(); ++it){
+					temp3 =((*it).getType());	
+					if (tool.compareVectorType(&temp3,(*it_param).getTypes())) {
+						temp4=(*it).getObject();
+						for(vector<Object *>::iterator it_o = temp4.begin() ; it_o != temp4.end() ; ++it_o){
+							temp2.push_back(*it_o);
+						}
+						find = true;
 					}
-					find = true;
+				}
+				if ( ! find){
+					temp2 = vector<Object * >();
+				}
+				if ( temp2.size() != 0){
+					objects_need->push_back(temp2);
 				}
 			}
-			if ( ! find){
-				temp2 = vector<Object * >();
+			if (objects_need->size() == (*it_act)->getParameters()->size()){
+				temp = instanciation(objects_need,(*it_act));
+			} else {
+				temp = new vector<DurativeAction *>();
 			}
-			if ( temp2.size() != 0){
-				objects_need->push_back(temp2);
+			for (vector<DurativeAction *>::iterator it_ins = temp->begin(); it_ins != temp->end() ; ++it_ins){
+				ret->push_back((*it_ins));
 			}
-		}
-		if (objects_need->size() == (*it_act)->getParameters()->size()){
-			temp = instanciation(objects_need,(*it_act));
-		} else {
-			temp = new vector<DurativeAction *>();
-		}
-		for (vector<DurativeAction *>::iterator it_ins = temp->begin(); it_ins != temp->end() ; ++it_ins){
-			ret->push_back((*it_ins));
-		}
 		
-		objects_need->clear();
-		temp->clear();
-		temp2.clear();
-		temp3.clear();
+			objects_need->clear();
+			temp->clear();
+			temp2.clear();
+			temp3.clear();
+		} else {
+			ret->push_back(*it_act);
+		}
 	}
 	return ret;
 }
@@ -137,7 +141,7 @@ bool Graph::generateGraph() {
 	vector<DurativeAction *> * m_actions = instanceActions();
 	cout<<"end instanciations, "<<m_actions->size()<< "instances"<<endl;
 	for (vector<DurativeAction *>::iterator it = m_actions->begin() ; it != m_actions->end() ; ++it){
-		//cout<<" ///"<<(*it)->to_string()<<"\n";
+		cout<<" ///"<<(*it)->to_stringParam()<<"\n";
 	}
 	DurativeAction *goalsAction =  make_actionGoal() ;
 	DurativeAction *initAction =  make_actionInit();
