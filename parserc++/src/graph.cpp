@@ -141,7 +141,7 @@ bool Graph::generateGraph() {
 	vector<DurativeAction *> * m_actions = instanceActions();
 	cout<<"end instanciations, "<<m_actions->size()<< "instances"<<endl;
 	for (vector<DurativeAction *>::iterator it = m_actions->begin() ; it != m_actions->end() ; ++it){
-		cout<<" ///"<<(*it)->to_stringParam()<<"\n";
+		//cout<<" ///"<<(*it)->to_stringParam()<<"\n";
 	}
 	DurativeAction *goalsAction =  make_actionGoal() ;
 	DurativeAction *initAction =  make_actionInit();

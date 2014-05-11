@@ -2,7 +2,7 @@
  * Graph.h
  *
  *  Created on: Apr 9, 2014
- *      Author: nathan
+ *     
  */
 
 #ifndef GRAPH_H_
@@ -72,3 +72,4 @@ private:
 
 
 #endif /* GRAPH_H_ */
+
