@@ -48,6 +48,7 @@ bool Tools::solveur(){
 	else{
 		//parent
 	wait(NULL);
+	cout<<"end mathsat solving"<<endl;
 	ifstream file(namefileRes, ios::in);
  	string line;
 	const char * cline;

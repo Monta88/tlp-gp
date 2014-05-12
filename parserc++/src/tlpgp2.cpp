@@ -181,6 +181,8 @@ string Tlpgp2::generateGraphSmt2(){
 	string namefile = to_string(g_pid)+"tlpgp2.smt2";
 	ofstream file(namefile, ios::out | ios::trunc );
 	DurativeAction * action;
+	m_nbClause = 0;
+	m_nbAction = 0;
 	if (file){
 		file << "(set-option :produce-models true)\n";
 		
@@ -200,6 +202,7 @@ string Tlpgp2::generateGraphSmt2(){
 				}
 				file << "(declare-fun "<<name<<" () Bool )\n";
 				file << "(declare-fun t_"<<name<<" () Int )\n";
+				m_nbAction++;
 				for(unsigned i = 0 ; i < action->getPreconditions2().size() ; ++i){
 					file << namelinkPrec(name,action->getPreconditions2().at(i).second,action->getPreconditions2().at(i).first,actual->getFather(),state+1);
 				}
@@ -209,6 +212,7 @@ string Tlpgp2::generateGraphSmt2(){
 		// now the clause tlpgp2
 		file << "(assert (and GoalsE0\n";
 		actual = new Vertex(m_graph);
+		state =0;
 		while( actual->getFather() != NULL ){	
 			actual = actual->getFather();
 			for(unsigned j = 0 ; j < actual->getActions()->size() ; ++j){
@@ -218,7 +222,7 @@ string Tlpgp2::generateGraphSmt2(){
 					name+=action->getParameters()->at(i).getName();
 				}
 				file <<"(>= t_"+name+" 0 )\n";
-
+				m_nbClause++;
 				for(unsigned i = 0 ; i < action->getPreconditions2().size() ; ++i){
 					file << linkPrec(name,action->getPreconditions2().at(i).second,action->getPreconditions2().at(i).first,actual->getFather(),state+1);
 				}
@@ -231,12 +235,13 @@ string Tlpgp2::generateGraphSmt2(){
 		}
 		file<< "InitsE"+to_string(state-1)+"\n";
 		file<<"(< t_InitsE"+to_string(state-1)+" 1 )\n))\n";	//init must be at 0
-		
+		m_nbClause+=2;
 		// and to finish what we want the solver return
 		
 		file<<"(check-sat)\n";
 		file<<"(get-value (";
 		actual = new Vertex(m_graph);
+		state =0;
 		while( actual->getFather() != NULL ){	
 			actual = actual->getFather();
 			for(unsigned j = 0 ; j < actual->getActions()->size() ; ++j){
@@ -254,7 +259,7 @@ string Tlpgp2::generateGraphSmt2(){
 		file<<" ) )\n(exit)\n";
 		file.close();
 	}
-	cout<<"end traduction\n";
+	cout<<"end traduction nb clauses : "<<m_nbClause<<" nb actions : "<<m_nbAction<<"\n";
 	return namefile;
 }
 
@@ -281,7 +286,7 @@ string Tlpgp2::namelinkPrec(string name ,Fluent * fluent ,Attribute att, Vertex 
 						}
 						link="Link_"+namea+"."+namef+"."+name;
 						ret+="(declare-fun "+link+" () Bool )\n";
-						
+						m_nbAction++;
 					}
 				}
 			}
@@ -328,6 +333,7 @@ string Tlpgp2::linkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * ve
 						ret +=protectCond(link,fluent,att,namea,name);
 
 						ret +=step3;
+						m_nbClause++;
 						
 						
 					}
@@ -338,6 +344,7 @@ string Tlpgp2::linkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * ve
 		
 	}
 	ret +=step2+")\n";
+	m_nbClause++;
 	return ret;
 }
 
@@ -359,6 +366,7 @@ string Tlpgp2::protectCond(string link,Fluent * fluent,Attribute att,string name
 					ret+="(or (not "+link+") (not "+namea+") ";
 					ret+="(< (+ t_"+nameb+" "+to_string((int)actual->getActions()->at(i)->getNotEffects().at(j).first.getSupported()->at(0).getEnd())+" ) (+ t_"+namea+" "+to_string((int)att.getSupported()->at(0).getStart())+")) ";
 					ret+="(> (+ t_"+namet+" "+to_string((int)att.getSupported()->at(0).getStart())+" ) (+ t_"+namea+" "+to_string((int)actual->getActions()->at(i)->getNotEffects().at(j).first.getSupported()->at(0).getEnd())+" )))\n";
+					m_nbClause++;
 				}
 			}
 		}
@@ -384,6 +392,7 @@ string Tlpgp2::protectEffect(string name,DurativeAction * a,Fluent * fluent,Attr
 						}	
 						ret+="(or (not "+namea+") (not "+name+") ";
 						ret+="(not (= (+ t_"+namea+" "+to_string(actual->getActions()->at(i)->getNotEffects().at(j).first.getSupported()->at(0).getEnd())+") (+ t_"+name+" "+to_string(att.getSupported()->at(0).getStart())+") ) ) )\n";
+						m_nbClause++;
 					}
 				}
 			} 

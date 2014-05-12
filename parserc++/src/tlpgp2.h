@@ -66,6 +66,8 @@ public:
 	
 private:
 	Vertex * m_graph;
+	int m_nbClause;
+	int m_nbAction ;
 		
 };
 
