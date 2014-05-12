@@ -1,12 +1,21 @@
-/* Parser PDDL */
-/* pddl_3_1.y */
-/* Authors : BENIER Alan, PRAT Nathan, LAGLEIZE Martin */
+/*!
+ * \file grammar
+ * \brief This file contains the grammar of the PDDL 3.1 Temporally Extended parser. This file is meant to be used with bisonc++. This grammar follows the one proposed by Daniel L. Kovacs. Temporally Extended is a feature proposed by Frederic Maris.
+ * \author Alan BENIER, Martin LAGLEIZE, Nathan PRAT
+ * \version 1.0
+ * \date May 07th 2014
+ */
 
+// indicate the location of the scanner (here we use flexc++)
 %scanner                ../scanner/Scanner.h
+
+// indicate the function that read the tokens, located in the scanner file
 %scanner-token-function d_scanner.lex()
 
+// indicate the rule to start with
 %start begin
 
+// union structure of the types that might be used in this parser : a rule only return one of thoose types
 %union
 {
 	int integer;
@@ -27,6 +36,7 @@
 	std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > *> * da_def_body_durationless;
 }
 
+// list of the tokens used in the definition of the rules (cf. scanner/lexer)
 %token 	L_P
 	R_P
 	L_B
@@ -396,7 +406,7 @@ structure_def:
 		if (!Parser::isRequirement(DURATIVE_ACTIONS)) Parser::lexical_error("Requirement :durative-actions is needed");
 	}*/
 	| te_durative_action_def {
-		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+		if (!Parser::isRequirement(DURATIVE_ACTIONS)) Parser::lexical_error("Requirement :durative-actions is needed");
 	}
 	| derived_def {
 		if (!Parser::isRequirement(DERIVED_PREDICATES)) Parser::lexical_error("Requirement :derived-predicates is needed");
@@ -1182,7 +1192,7 @@ te_durative_action_def:
 	;
 
 te_durative_action_def_option1:
-	te_durative_action_def_option2 { 
+	te_durative_action_def_option2 {
 		$$.da_def_body_durationless = $1.da_def_body_durationless;
 	}
 	| TIMEPOINTS L_P list_te_timepoint R_P te_durative_action_def_option2
@@ -1208,13 +1218,17 @@ te_timepoint:
 	time_specifier {
 		$$.integer = $1.integer;
 	}
-	| name
+	| name {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+	}
 	;
 
 /* <te-timealias> */
 
 te_timealias:
-	L_P te_interval_name te_interval_def R_P
+	L_P te_interval_name te_interval_def R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+	}
 	;
 
 /* <te-interval-name> */
@@ -1223,13 +1237,17 @@ te_interval_name:
 	interval {
 		$$.integer = $1.integer;
 	}
-	| name
+	| name {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+	}
 	;
 
 /* <te-interval-def> */
 
 te_interval_def:
-	bracket te_timepoint_op te_timepoint_op bracket
+	bracket te_timepoint_op te_timepoint_op bracket {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+	}
 	;
 
 /* <bracket> */
@@ -1246,7 +1264,9 @@ bracket:
 /* <te-timeconstraint> */
 
 te_timeconstraint:
-	L_P binary_comp te_timepoint_op te_timepoint_op R_P
+	L_P binary_comp te_timepoint_op te_timepoint_op R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+	}
 	;
 
 /* <te-timepoint-op> */
@@ -1256,7 +1276,9 @@ te_timepoint_op:
 		$$.integer = $1.integer;
 	}
 	| d_value
-	| L_P binary_op te_timepoint_op te_timepoint_op R_P
+	| L_P binary_op te_timepoint_op te_timepoint_op R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+	}
 	;
 
 /* <te-interval> */
@@ -1265,7 +1287,9 @@ te_interval:
 	te_interval_name {
 		$$.integer = $1.integer;
 	}
-	| te_interval_def
+	| te_interval_def {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+	}
 	;
 
 /* <te-da-GD> */
@@ -1313,25 +1337,30 @@ te_timed_GD:
 		}
 		$$.timed_GD=$4.timed_GD;
 	}
-	| L_P SUPPORTED te_interval GD R_P {	
+	| L_P SUPPORTED te_interval GD R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");	
 		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
 			(*it)->second += 1 << ($3.integer+1);
 		}
 		$$.timed_GD=$4.timed_GD;
 	}
-	| L_P FORBIDDEN te_interval GD R_P {	
+	| L_P FORBIDDEN te_interval GD R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");	
 		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
 			(*it)->second += 1 << ($3.integer+2);
 		}
 		$$.timed_GD=$4.timed_GD;
 	}
-	| L_P SOMEWHERE te_interval GD R_P {	
+	| L_P SOMEWHERE te_interval GD R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
 		Parser::fatal_error("Somewhere modality not supported yet");
 	}
-	| L_P ANYWHERE te_interval GD R_P {	
+	| L_P ANYWHERE te_interval GD R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
 		Parser::fatal_error("Anywhere modality not supported yet");
 	}
 	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval GD R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
 		Parser::fatal_error("Minimal-duration modality not supported yet");
 	}
 	;
@@ -1368,28 +1397,34 @@ te_timed_effect:
 		}	
 		$$.cond_effect=$4.cond_effect;
 	}
-	| L_P SUPPORTED te_interval cond_effect R_P { 
+	| L_P SUPPORTED te_interval cond_effect R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
 			(*it)->second += 1 << ($3.integer+1);
 		}	
 		$$.cond_effect=$4.cond_effect;
 	}
-	| L_P FORBIDDEN te_interval cond_effect R_P { 
+	| L_P FORBIDDEN te_interval cond_effect R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
 			(*it)->second += 1 << ($3.integer+2);
 		}	
 		$$.cond_effect=$4.cond_effect;
 	}
-	| L_P SOMEWHERE te_interval cond_effect R_P { 
+	| L_P SOMEWHERE te_interval cond_effect R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
 		Parser::fatal_error("Somewhere modality not supported yet");
 	}
-	| L_P ANYWHERE te_interval cond_effect R_P { 
+	| L_P ANYWHERE te_interval cond_effect R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
 		Parser::fatal_error("Anywhere modality not supported yet");
 	}
 	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval cond_effect R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
 		Parser::fatal_error("Minimal-duration modality not supported yet");
 	}
-	| L_P TRANSITION_OVER te_interval cond_effect R_P { 
+	| L_P TRANSITION_OVER te_interval cond_effect R_P {
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
 			(*it)->second += 1 << ($3.integer+6);
 		}	
