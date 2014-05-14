@@ -193,7 +193,7 @@ domain_option4:
 domain_option5:
 	domain_option6
 	| functions_def domain_option6 {
-		if (!Parser::isRequirement(FLUENTS)) Parser::lexical_error("Requirement :fluents is needed");
+		if (!Parser::isRequirement(FLUENTS)) Parser::fatal_error("Requirement :fluents is needed");
 	}
 	;
 
@@ -572,10 +572,10 @@ f_comp:
 /* <term> */
 
 term:
-	name	{
+	name {
 		$$.name = $1.name;
 	}
-	| variable	{
+	| variable {
 		$$.name = $1.name;
 	}
 	| function_term {
