@@ -1534,10 +1534,8 @@ typed_list_name:
 		// we construct the typedList that correspond to the list of names
 		$$.typedList_list = new std::vector<TypedList*> ();
 		if ($1.list_name->size() != 0) {
-			// we add the base type "object"
-			std::vector<std::string> * list_name = new std::vector<std::string> ();
-			list_name->push_back("object");
-			$$.typedList_list->push_back(new TypedList(list_name, $1.list_name));
+			// we add the empty type
+			$$.typedList_list->push_back(new TypedList(new std::vector<std::string> (), $1.list_name));
 		}
 	}
 	| nvList_name MINUS type typed_list_name {
@@ -1553,10 +1551,8 @@ typed_list_variable:
 		// we construct the typedList that correspond to the list of variables
 		$$.typedList_list = new std::vector<TypedList*> ();
 		if ($1.list_name->size() != 0) {
-			// we add the base type "object"
-			std::vector<std::string> * list_name = new std::vector<std::string> ();
-			list_name->push_back("object");
-			$$.typedList_list->push_back(new TypedList(list_name, $1.list_name));
+			// we add the empty type
+			$$.typedList_list->push_back(new TypedList(new std::vector<std::string> (), $1.list_name));
 		}
 	}
 	| nvList_variable MINUS type typed_list_variable {

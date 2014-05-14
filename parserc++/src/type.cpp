@@ -49,8 +49,8 @@ vector<Type*> * Type::getParents() {
 bool Type::isOneOfParents(string name) {
 	// for each type of the either type of the parent
 	for (vector<Type*>::iterator it = m_parents.begin(); it != m_parents.end(); ++it) {
-		// we check if the current type is the right one, or if it is one of its parents
-		if (((*it)->getName() == name)||((*it)->isOneOfParents(name))) {
+		// we check if the current type is the right one, or if it is one of its parents, and the current parent is not the same type as the current type (else it will be a stack overflow)
+		if (((*it)->getName() == name) || ((m_name != (*it)->getName()) && ((*it)->isOneOfParents(name)))) {
 			return true;
 		}
 	}
