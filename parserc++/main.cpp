@@ -121,14 +121,14 @@ int main(int argc, char **argv)
 	// TLP-GP 2
 	graph = new Graph(domain, problem);
 	if (!graph->generateGraph()){
-		cout<<" no solution \n";
+		cout<<"No solution \n";
 	}
 
 	//Tlpgp1 tlpgp1 = Tlpgp1(domain, problem);
 	//tlpgp1.constructGraph();
 	
 	t2 = clock();	
-	cout<<"temps total : "<<(float)(t2-t1)/CLOCKS_PER_SEC<<"\n";
+	cout<<"Total time : "<<(float)(t2-t1)/CLOCKS_PER_SEC<<"\n";
 	//vertex->to_string();
 
 	//tlpgp1 = new Tlpgp1(domain, problem);
