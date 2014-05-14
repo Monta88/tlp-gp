@@ -29,19 +29,6 @@ Data::Data() {
 	m_inits = new vector<pair<Fluent*, Attribute> > ();
 	m_goals = new vector<pair<Fluent*, Attribute> > ();
 	
-	// this type always exists and shouldn't be defined by the user in pddl file
-	m_types->push_back(new Type("object"));
-	m_type_list.push_back("object");
-	m_types->push_back(new Type("objects"));
-	m_type_list.push_back("objects");
-	m_types->push_back(new Type("Object"));
-	m_type_list.push_back("Object");
-	m_types->push_back(new Type("Objects"));
-	m_type_list.push_back("Objects");
-	// for functions
-	m_types->push_back(new Type("number"));
-	m_type_list.push_back("number");
-	
 	m_errors = vector<string> ();
 }
 
