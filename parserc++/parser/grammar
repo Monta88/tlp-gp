@@ -15,7 +15,7 @@
 // indicate the rule to start with
 %start begin
 
-// union structure of the types that might be used in this parser : a rule only return one of thoose types
+// union structure of the types that might be used in this parser : a rule only return one of thoose types, their name correspond to the main rule of which they are the return
 %union
 {
 	int integer;
@@ -33,6 +33,7 @@
 	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int > * > * timed_GD;
 	std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int > * > * cond_effect;
 	std::pair<std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > *> *, float> * da_def_body;
+	// same structure as da_def_body, but without de last float
 	std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> * , int >* > *> * da_def_body_durationless;
 }
 
@@ -208,10 +209,19 @@ domain_option7:
 /* <name> */
 
 name:
-	NAME {$$.name = new std::string(d_scanner.matched());}
-	| AT {$$.name = new std::string("at");}
-	| OVER {$$.name = new std::string("over");}
-	| OBJECT {$$.name = new std::string("object");}
+	NAME {
+		// d_scanner.matched() read the token that correspond to NAME which is not constant
+		$$.name = new std::string(d_scanner.matched());
+	}
+	| AT {
+		$$.name = new std::string("at");
+	}
+	| OVER {
+		$$.name = new std::string("over");
+	}
+	| OBJECT {
+		$$.name = new std::string("object");
+	}
 	;
 
 /* <require-def> */
@@ -299,14 +309,18 @@ require_key:
 	| TEMPORALLY_EXTENDED {
 		Parser::addRequirement(TEMPORALLY_EXTENDED);
 		Parser::addRequirement(DURATIVE_ACTIONS);
+		Parser::addRequirement(STRIPS);
+		Parser::addRequirement(TYPING);
+		Parser::addRequirement(NUMERIC_FLUENTS);
 	}
 	;
 
 /* <types-def> */
 types_def:
 	L_P TYPES typed_list_name R_P {
+		// we add the types contained in typed_list_name
 		if(!Parser::addTypes($3.typedList_list))
-			Parser::lexical_error("Error in :types");
+			Parser::fatal_error("Error in :types");
 	}
 	;
 
@@ -314,8 +328,9 @@ types_def:
 
 constants_def:
 	L_P CONSTANTS typed_list_name R_P {
+		// we add the constants contained in typed_list_name
 		if (!Parser::addConstants($3.typedList_list))
-			Parser::lexical_error("Error in :constants");
+			Parser::fatal_error("Error in :constants");
 	}
 	;
 
@@ -329,8 +344,9 @@ predicates_def:
 
 atomic_formula_skeleton:
 	L_P predicate typed_list_variable R_P {
+		// we add the predicate wich name is predicate and parameters are typed_list_variable
 		if (!Parser::addPredicate($2.name, $3.typedList_list)) {
-			Parser::lexical_error("Error in :predicates");
+			Parser::fatal_error("Error in :predicates");
 		}
 	}
 	;
@@ -355,6 +371,7 @@ variable:
 
 atomic_function_skeleton:
 	L_P function_symbol typed_list_variable R_P {
+		// construction of the function_skeleton
 		$$.function_skeleton = new std::pair< std::string*, std::vector<TypedList*>* > ($2.name, $3.typedList_list);
 	}
 	;
@@ -371,7 +388,7 @@ function_symbol:
 
 functions_def:
 	L_P FUNCTIONS function_typed_list_atomic_function_skeleton R_P {
-		if (!Parser::isRequirement(FLUENTS)) Parser::lexical_error("Requirement :fluents is needed");
+		if (!Parser::isRequirement(FLUENTS)) Parser::fatal_error("Requirement :fluents is not supported");
 	}
 	;
 
@@ -380,12 +397,13 @@ functions_def:
 function_type:
 	NUMBER {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		// contruction of the function return either type
 		$$.list_name = new std::vector<std::string> ();
 		$$.list_name->push_back("number");
 	}
 	| type {
 		if (!Parser::isRequirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
-		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::fatal_error("Requirement :object-fluents is not supported");
 		$$.list_name = $1.list_name;
 	}
 	;
@@ -394,7 +412,7 @@ function_type:
 
 constraints_domain:
 	L_P CONSTRAINTS con_GD R_P {
-		if (!Parser::isRequirement(CONSTRAINTS)) Parser::lexical_error("Requirement :constraints is needed");
+		if (!Parser::isRequirement(CONSTRAINTS)) Parser::fatal_error("Requirement :constraints is not supported");
 	}
 	;
 
@@ -402,14 +420,14 @@ constraints_domain:
 
 structure_def:
 	action_def
-	/*| durative_action_def {
+	/*| durative_action_def { // without Temporally Extended extension
 		if (!Parser::isRequirement(DURATIVE_ACTIONS)) Parser::lexical_error("Requirement :durative-actions is needed");
 	}*/
-	| te_durative_action_def {
+	| te_durative_action_def { // with Temporally Extended extension
 		if (!Parser::isRequirement(DURATIVE_ACTIONS)) Parser::lexical_error("Requirement :durative-actions is needed");
 	}
 	| derived_def {
-		if (!Parser::isRequirement(DERIVED_PREDICATES)) Parser::lexical_error("Requirement :derived-predicates is needed");
+		if (!Parser::isRequirement(DERIVED_PREDICATES)) Parser::fatal_error("Requirement :derived-predicates is not supported");
 	}
 	;
 
@@ -428,10 +446,14 @@ primitive_type:
 
 type:
 	primitive_type {
+		// we contruct the list of the name of the simple type
 		$$.list_name = new std::vector<std::string> ();
 		$$.list_name->push_back(*$1.name);
 	}
-	| L_P EITHER nvList_primitive_type R_P {$$.list_name = $3.list_name;}
+	| L_P EITHER nvList_primitive_type R_P {
+		// we contruct the list of the names of the either type
+		$$.list_name = $3.list_name;
+	}
 	;
 
 /* <action_def> */
@@ -466,6 +488,7 @@ action_def_body_option2:
 
 pre_GD:
 	pref_GD {
+		// we construct the list of preconditions
 		$$.pre_GD = new std::vector< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > * > ();
 		$$.pre_GD->push_back($1.timed_GD);
 	}
@@ -473,7 +496,7 @@ pre_GD:
 		$$.pre_GD = $3.pre_GD;
 	}
 	| L_P FORALL L_P typed_list_variable R_P pre_GD R_P {
-		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
+		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::fatal_error("Requirement :universal-preconditions is not supported");
 	}
 	;
 
@@ -484,7 +507,7 @@ pref_GD:
 		$$.timed_GD = $1.timed_GD;
 	}
 	| L_P PREFERENCE pref_GD_option1 {
-		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
+		if (!Parser::isRequirement(PREFERENCES)) Parser::fatal_error("Requirement :preferences is not supported");
 	}
 	;
 
@@ -502,37 +525,38 @@ pref_name:
 /* <GD> */
 
 GD:
-	atomic_formula_term	{	
-		$$.timed_GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >  ();	
-		int init = 0b0;
-		$$.timed_GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula,init) );
+	atomic_formula_term	{
+		// we contruct the list of fluents of a precondition	
+		$$.timed_GD = new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();
+		// 0b0 because the fluents are positive (and must be if you want to use TLP-GP)
+		$$.timed_GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula, 0b0) );
 	}	
 	| literal_term {
-		if (!Parser::isRequirement(NEGATIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :negative-preconditions is needed");
-		$$.timed_GD=$1.timed_GD;
+		if (!Parser::isRequirement(NEGATIVE_PRECONDITIONS)) Parser::fatal_error("Requirement :negative-preconditions is not supported");
+		$$.timed_GD = $1.timed_GD;
 	}
-	| L_P AND list_GD R_P{
-		$$.timed_GD=$3.timed_GD;
+	| L_P AND list_GD R_P {
+		$$.timed_GD = $3.timed_GD;
 	}
 	| L_P OR list_GD R_P {
-		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
+		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::fatal_error("Requirement :disjunctive-preconditions is not supported");
 	}
 	| L_P NOT GD R_P {
-		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
-		if ($3.timed_GD->front()->second & 0b01)
+		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::fatal_error("Requirement :disjunctive-preconditions is not supported");
+		if ($3.timed_GD->front()->second & 0b01) // if the fluents were negative
 			$3.timed_GD->front()->second -= 0b01;
-		else
+		else // if the fluents were positive
 			$3.timed_GD->front()->second += 0b01;
 		$$.timed_GD=$3.timed_GD;
 	}
 	| L_P IMPLY GD GD R_P {
-		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::lexical_error("Requirement :disjunctive-preconditions is needed");
+		if (!Parser::isRequirement(DISJUNCTIVE_PRECONDITIONS)) Parser::fatal_error("Requirement :disjunctive-preconditions is not supported");
 	}
 	| L_P EXISTS L_P L_P typed_list_variable R_P R_P GD R_P {
-		if (!Parser::isRequirement(EXISTENTIAL_PRECONDITIONS)) Parser::lexical_error("Requirement :existential-preconditions is needed");
+		if (!Parser::isRequirement(EXISTENTIAL_PRECONDITIONS)) Parser::fatal_error("Requirement :existential-preconditions is not supported");
 	}
 	| L_P FORALL L_P L_P typed_list_variable R_P R_P GD R_P {
-		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
+		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::fatal_error("Requirement :universal-preconditions is not supported");
 	}
 	| f_comp {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
@@ -549,13 +573,13 @@ f_comp:
 
 term:
 	name	{
-		$$.name=$1.name;
+		$$.name = $1.name;
 	}
 	| variable	{
-		$$.name=$1.name;
+		$$.name = $1.name;
 	}
 	| function_term {
-		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::fatal_error("Requirement :object-fluents is not supported");
 	}
 	;
 
@@ -563,7 +587,7 @@ term:
 
 function_term:
 	L_P function_symbol list_term R_P {
-		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::fatal_error("Requirement :object-fluents is not supported");
 	}
 	;
 
@@ -576,6 +600,7 @@ f_exp:
 	}
 	| L_P binary_op f_exp f_exp R_P {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		// the operator is respresented by an integer, please refer to binary_op rule
 		switch ($2.integer) {
 		case 1:
 			$$.number = $3.number * $4.number;
@@ -590,12 +615,13 @@ f_exp:
 			$$.number = $3.number / $4.number;
 			break;
 		default :
-			Parser::fatal_error("Unkown binary operator");
+			Parser::fatal_error("Unknown binary operator");
 		}
 	}
 	| L_P multi_op f_exp nvList_f_exp R_P {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
 		$$.number = $3.number;
+		// the operator is respresented by an integer, please refer to multi_op rule
 		switch ($2.integer) {
 		case 1:
 			for (std::vector<float>::reverse_iterator it = $4.list_float->rbegin(); it != $4.list_float->rend(); ++it) {
@@ -608,7 +634,7 @@ f_exp:
 			}
 			break;
 		default :
-			Parser::fatal_error("Unkown multi operator");
+			Parser::fatal_error("Unknown multi operator");
 		}
 	}
 	| L_P MINUS f_exp R_P {
@@ -625,6 +651,7 @@ f_exp:
 
 number:
 	NUM {
+		// we read the string corresponding to NUM and convert it to a float
 		$$.number = atof(d_scanner.matched().c_str());
 	}
 	;
@@ -633,9 +660,11 @@ number:
 
 f_head:
 	L_P function_symbol list_term R_P {
+		// we use the function function_symbol with list_term as parameters, this function with theese parameters must be initiated in :init first !
 		$$.number = Parser::getFunctionReturn($2.name, $3.list_name);
 	}
 	| function_symbol {
+		// we use the function function_symbol with no parameter, this function must be initiated in :init first !
 		$$.number = Parser::getFunctionReturn($1.name, new std::vector<std::string> ());
 	}
 	;
@@ -646,10 +675,10 @@ binary_op:
 	multi_op {
 		$$.integer = $1.integer;
 	}
-	| MINUS {
+	| MINUS { // -
 		$$.integer = 3;
 	}
-	| SLASH {
+	| SLASH { // /
 		$$.integer = 4;
 	}
 	;
@@ -657,10 +686,10 @@ binary_op:
 /* <multi-op> */
 
 multi_op:
-	STAR {
+	STAR { // *
 		$$.integer = 1;
 	}
-	| PLUS {
+	| PLUS { // +
 		$$.integer = 2;
 	}
 	;
@@ -668,19 +697,19 @@ multi_op:
 /* <binary-comp> */
 
 binary_comp:
-	GT {
+	GT { // >
 		$$.integer = 1;
 	}
-	| LT {
+	| LT { // <
 		$$.integer = 2;
 	}
-	| EQ {
+	| EQ { // =
 		$$.integer = 3;
 	}
-	| GOE {
+	| GOE { // >=
 		$$.integer = 4;
 	}
-	| LOE {
+	| LOE { // <=
 		$$.integer = 5;
 	}
 	;
@@ -696,10 +725,10 @@ effect:
 
 c_effect:
 	L_P FORALL L_P typed_list_variable R_P effect R_P {
-		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::fatal_error("Requirement :conditional-effects is not supported");
 	}
 	| L_P WHEN GD cond_effect R_P {
-		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::fatal_error("Requirement :conditional-effects is not supported");
 	}
 	| p_effect
 	;
@@ -707,24 +736,26 @@ c_effect:
 /* <p-effect> */
 
 p_effect:
-	L_P NOT atomic_formula_term R_P {	
+	L_P NOT atomic_formula_term R_P {
+		// we construct the list of effects of the current action
 		$$.timed_GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();
-		int init = 0b01;
-		$$.timed_GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> *, int > ($3.atomic_formula,init));
+		// 0b01 because the effects are negative
+		$$.timed_GD->push_back( new std::pair<std::pair< std::vector< std::string > *, std::string *> *, int > ($3.atomic_formula, 0b01));
 	}
-	| atomic_formula_term	{			
+	| atomic_formula_term {
+		// we construct the list of effects of the current action		
 		$$.timed_GD= new std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > ();
-		int init = 0b0;
-		$$.timed_GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula,init));
+		// 0b0 because the effects are positive
+		$$.timed_GD->push_back( new std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > ($1.atomic_formula, 0b0));
 	}
 	| L_P assign_op f_head f_exp {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
 	}
 	| L_P ASSIGN function_term term R_P {
-		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::fatal_error("Requirement :object-fluents is not supported");
 	}
 	| L_P ASSIGN function_term UNDEFINED R_P {
-		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::fatal_error("Requirement :object-fluents is not supported");
 	}
 	;
 
@@ -732,10 +763,10 @@ p_effect:
 
 cond_effect:
 	L_P AND list_p_effect R_P {
-		$$.cond_effect=$3.cond_effect;
+		$$.cond_effect = $3.cond_effect;
 	}
 	| p_effect {
-		$$.cond_effect=$1.cond_effect;
+		$$.cond_effect = $1.cond_effect;
 	}
 	;
 
@@ -753,8 +784,9 @@ assign_op:
 
 durative_action_def:
 	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P da_def_body R_P {
+		// we add the durative-action of which name is da_symbol, variables are in typed_list_variable, and effects and preconditions are in da_def_body
 		if(!Parser::addDurativeAction($3.name,$6.typedList_list,$8.da_def_body->second,$8.da_def_body->first->first,$8.da_def_body->first->second))
-			Parser::lexical_error("Error in :durative-action");
+			Parser::fatal_error("Error in :durative-action");
 	}
 	;
 
@@ -769,9 +801,10 @@ da_symbol:
 /* <da-def body> */
 
 da_def_body:
-	DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect { 
-		std::pair< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *> ($4.timed_GD,$6.cond_effect);
-
+	DURATION duration_constraint CONDITION emptyOr_da_GD EFFECT emptyOr_da_effect {
+		// we contsruct the pair of preconditions and effects
+		std::pair< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *>  *a = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *> ($4.timed_GD, $6.cond_effect);
+		
 		$$.da_def_body=new std::pair< std::pair< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *> *, float> (a, $2.number);
 	}
 	;
@@ -780,13 +813,13 @@ da_def_body:
 
 da_GD:
 	pref_timed_GD {
-		$$.timed_GD=$1.timed_GD;
+		$$.timed_GD = $1.timed_GD;
 	}
 	| L_P AND list_da_GD R_P {	
-		$$.timed_GD=$3.timed_GD;		
+		$$.timed_GD = $3.timed_GD;		
 	}
 	| L_P FORALL L_P typed_list_variable R_P da_GD R_P {
-		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
+		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::fatal_error("Requirement :universal-preconditions is not supported");
 	}
 	;
 
@@ -794,10 +827,10 @@ da_GD:
 
 pref_timed_GD:
 	timed_GD {
-		$$.timed_GD=$1.timed_GD;			
+		$$.timed_GD = $1.timed_GD;			
 	}
 	| L_P PREFERENCE pref_name_option1 {
-		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
+		if (!Parser::isRequirement(PREFERENCES)) Parser::fatal_error("Requirement :preferences is not supported");
 	}
 	;
 
@@ -810,13 +843,15 @@ pref_name_option1:
 
 timed_GD:
 	L_P AT time_specifier GD R_P {
-		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
+		// for each fluent of the list in GD, we put the AT specification (bit 2 : 0b10)
+		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it) {
 			(*it)->second += 1 << $3.integer;
 		}
 		$$.timed_GD=$4.timed_GD;
 	}
-	| L_P OVER interval GD R_P {	
-		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
+	| L_P OVER interval GD R_P {
+		// for each fluent of the list in GD, we put the OVER specification (bit 3 : 0b10)
+		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it) {
 			(*it)->second += 1 << $3.integer;
 		}
 		$$.timed_GD=$4.timed_GD;
@@ -826,10 +861,10 @@ timed_GD:
 /* <time-specifier> */
 
 time_specifier:
-	START {
+	START { // start
 		$$.integer = 1;
 	}
-	| END {
+	| END { // end
 		$$.integer = 2;
 	}
 	;
@@ -837,7 +872,7 @@ time_specifier:
 /* <interval> */
 
 interval:
-	ALL {
+	ALL { // all
 		$$.integer = 3;
 	}
 	;
@@ -846,13 +881,13 @@ interval:
 
 duration_constraint:
 	L_P AND nvList_simple_duration_constraint R_P {
-		if (!Parser::isRequirement(DURATION_INEQUALITIES)) Parser::lexical_error("Requirement :duration-inequalities is needed");
+		if (!Parser::isRequirement(DURATION_INEQUALITIES)) Parser::fatal_error("Requirement :duration-inequalities is not supported");
 	}
 	| L_P R_P { 
-		$$.number=0.0; 
+		$$.number = 0.0; 
 	}
 	| simple_duration_constraint {
-		$$.number=$1.number;
+		$$.number = $1.number;
 	}
 	;
 
@@ -860,10 +895,10 @@ duration_constraint:
 
 simple_duration_constraint:
 	L_P d_op Q_M_DURATION d_value R_P { 
-		$$.number=$4.number;
+		$$.number = $4.number;
 	}
 	| L_P AT time_specifier simple_duration_constraint R_P	{
-		$$.number=$4.number;
+		$$.number = $4.number;
 	}
 	;
 
@@ -871,10 +906,10 @@ simple_duration_constraint:
 
 d_op:
 	LOE {
-		if (!Parser::isRequirement(DURATION_INEQUALITIES)) Parser::lexical_error("Requirement :duration-inequalities is needed");
+		if (!Parser::isRequirement(DURATION_INEQUALITIES)) Parser::fatal_error("Requirement :duration-inequalities is not supported");
 	}
 	| GOE {
-		if (!Parser::isRequirement(DURATION_INEQUALITIES)) Parser::lexical_error("Requirement :duration-inequalities is needed");
+		if (!Parser::isRequirement(DURATION_INEQUALITIES)) Parser::fatal_error("Requirement :duration-inequalities is not supported");
 	}
 	| EQ
 	;
@@ -895,16 +930,16 @@ d_value:
 
 da_effect:
 	L_P AND list_da_effect R_P {
-		$$.cond_effect=$3.cond_effect;
+		$$.cond_effect = $3.cond_effect;
 	}
 	| timed_effect {
-		$$.cond_effect=$1.cond_effect;
+		$$.cond_effect = $1.cond_effect;
 	}
 	| L_P FORALL L_P typed_list_variable R_P da_effect R_P {
-		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::fatal_error("Requirement :conditional-effects is not supported");
 	}
 	| L_P WHEN da_GD timed_effect R_P {
-		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::fatal_error("Requirement :conditional-effects is not supported");
 	}
 	;
 
@@ -912,6 +947,7 @@ da_effect:
 
 timed_effect:
 	L_P AT time_specifier cond_effect R_P { 
+		// for each fluent of the list in cond_effect, we put the AT specification (bit 2 for start, bit 3 for end)
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
 			(*it)->second += 1 << $3.integer;
 		}	
@@ -921,8 +957,8 @@ timed_effect:
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
 	}
 	| L_P assign_op_t f_head f_exp_t R_P {
-		if (!Parser::isRequirement(CONTINUOUS_EFFECTS)) Parser::lexical_error("Requirement :continuous-effects is needed");
-		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		if (!Parser::isRequirement(CONTINUOUS_EFFECTS)) Parser::fatal_error("Requirement :continuous-effects is not supported");
+		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::fatal_error("Requirement :numeric-fluents is not supported");
 	}
 	;
 
@@ -939,7 +975,7 @@ f_exp_da:
 	| L_P multi_op f_exp_da nvList_f_exp_da R_P
 	| L_P MINUS f_exp_da R_P
 	| Q_M_DURATION  {
-		if (!Parser::isRequirement(DURATION_INEQUALITIES)) Parser::lexical_error("Requirement :duration-inequalities is needed");
+		if (!Parser::isRequirement(DURATION_INEQUALITIES)) Parser::fatal_error("Requirement :duration-inequalities is not supported");
 	}
 	| f_exp
 	;
@@ -975,10 +1011,10 @@ derived_def:
 
 problem:
 	L_P DEFINE L_P PROBLEM name R_P L_P DD_DOMAIN name R_P problem_option1 {
-		if (!Parser::isDomain($9.name)) {
-			Parser::lexical_error("Domain expected : " + (*$9.name));
+		if (!Parser::isDomain($9.name)) { // if the domain given is not the same as in the previous file
+			Parser::fatal_error("Domain expected : " + (*$9.name));
 		}
-		else {
+		else { // if it is the right domain, we add this problem
 			Parser::addProblem($5.name);
 		}
 	}
@@ -997,7 +1033,7 @@ problem_option2:
 problem_option3:
 	init goal problem_option4
 	| init goal constraints_problem problem_option4 {
-		if (!Parser::isRequirement(CONSTRAINTS)) Parser::lexical_error("Requirement :constraints is needed");
+		if (!Parser::isRequirement(CONSTRAINTS)) Parser::fatal_error("Requirement :constraints is not supported");
 	}
 	;
 
@@ -1017,8 +1053,9 @@ problem_option5:
 
 object_declaration:
 	L_P OBJECTS typed_list_name R_P {
+		// we add the objects defined in typed_list_name
 		if (!Parser::addObjects($3.typedList_list))
-			Parser::lexical_error("Error in :objects");
+			Parser::fatal_error("Error in :objects");
 	}
 	;
 
@@ -1032,21 +1069,24 @@ init:
 
 init_el:
 	literal_name {
+		// we add the fluent literal_name in inits at time 0
 		if (!Parser::addInit($1.literal, 0.))
-			Parser::lexical_error("Error in :init");
+			Parser::fatal_error("Error in :init");
 	}
 	| L_P AT number literal_name R_P {
 		if (!Parser::isRequirement(TIMED_INITIAL_LITERALS)) Parser::lexical_error("Requirement :timed-initial-literals is needed");
+		// we add the fluent literal_name in inits at time number
 		if (!Parser::addInit($4.literal, $3.number))
-			Parser::lexical_error("Error in :init");
+			Parser::fatal_error("Error in :init");
 	}
 	| L_P EQ basic_function_term number R_P {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		// we add the the initiated function basic_function_term with number as return, in inits
 		if (!Parser::addInitiatedFunction($3.atomic_formula, $4.number))
-			Parser::lexical_error("Error in :init");
+			Parser::fatal_error("Error in :init");
 	}
 	| L_P EQ basic_function_term name R_P {
-		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::lexical_error("Requirement :object-fluents is needed");
+		if (!Parser::isRequirement(OBJECT_FLUENTS)) Parser::fatal_error("Requirement :object-fluents is not supported");
 	}
 	;
 
@@ -1054,9 +1094,11 @@ init_el:
 
 basic_function_term:
 	function_symbol {
+		// we construct the function function_symbol, with no parameter
 		$$.atomic_formula = new std::pair< std::vector< std::string > *, std::string *> (new std::vector<std::string> (), $1.name);
 	}
 	| L_P function_symbol list_name R_P {
+		// we construct the function function_symbol with list_name as parameters
 		$$.atomic_formula = new std::pair< std::vector< std::string > *, std::string *> ($3.list_name, $2.name);
 	}
 	;
@@ -1065,8 +1107,9 @@ basic_function_term:
 
 goal:
 	L_P GOAL pre_GD R_P {
+		// we add in goals the list of fluents contained in pre_GD
 		if (!Parser::addGoals($3.pre_GD))
-			Parser::lexical_error("Error in :goal");
+			Parser::fatal_error("Error in :goal");
 	}
 	;
 
@@ -1074,7 +1117,7 @@ goal:
 
 constraints_problem:
 	L_P CONSTRAINTS pref_con_GD R_P {
-		if (!Parser::isRequirement(CONSTRAINTS)) Parser::lexical_error("Requirement :constraints is needed");
+		if (!Parser::isRequirement(CONSTRAINTS)) Parser::fatal_error("Requirement :constraints is not supported");
 	}
 	;
 
@@ -1083,10 +1126,10 @@ constraints_problem:
 pref_con_GD:
 	L_P AND list_pref_con_GD R_P
 	| L_P FORALL L_P typed_list_variable R_P pref_con_GD R_P {
-		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
+		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::fatal_error("Requirement :universal-preconditions is not supported");
 	}
 	| L_P PREFERENCE pref_con_GD_option1 {
-		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
+		if (!Parser::isRequirement(PREFERENCES)) Parser::fatal_error("Requirement :preferences is not supported");
 	}
 	| con_GD
 	;
@@ -1147,7 +1190,7 @@ metric_f_exp:
 	| TOTAL_TIME
 	| L_P TOTAL_TIME R_P
 	| L_P IS_VIOLATED pref_name R_P {
-		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
+		if (!Parser::isRequirement(PREFERENCES)) Parser::fatal_error("Requirement :preferences is not supported");
 	}
 	;
 
@@ -1171,6 +1214,7 @@ length_spec_option2:
 
 integer:
 	NUM {
+		// we read the string corresponding to NUM and convert it to a float
 		$$.number = atof(d_scanner.matched().c_str());
 	}
 	;
@@ -1185,9 +1229,11 @@ integer:
 
 te_durative_action_def:
 	L_P DURATIVE_ACTION da_symbol PARAMETERS L_P typed_list_variable R_P DURATION duration_constraint te_durative_action_def_option1 {
+		// we contruct the parameters of the actions (name, parameters, effects, preconditions, duration)
 		std::pair< std::pair< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *> *, float> * action_def_body = new std::pair< std::pair< std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *> *, float> ($10.da_def_body_durationless, $9.number);
-			if(!Parser::addDurativeAction($3.name, $6.typedList_list, action_def_body->second, action_def_body->first->first, action_def_body->first->second))
-			Parser::lexical_error("Error in :durative-action");
+		// then we add it in the list of actions
+		if(!Parser::addDurativeAction($3.name, $6.typedList_list, action_def_body->second, action_def_body->first->first, action_def_body->first->second))
+			Parser::fatal_error("Error in :durative-action");
 	}
 	;
 
@@ -1207,7 +1253,8 @@ te_durative_action_def_option2:
 
 te_durative_action_def_option3:
 	TIMECONSTRAINTS L_P list_te_timeconstraint R_P CONDITION emptyOr_te_da_GD EFFECT emptyOr_te_da_effect R_P
-	| CONDITION emptyOr_te_da_GD EFFECT emptyOr_te_da_effect R_P { 
+	| CONDITION emptyOr_te_da_GD EFFECT emptyOr_te_da_effect R_P {
+		// we construct the pair of preconditions and effects of the action
 		$$.da_def_body_durationless = new std::pair<std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *,std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* > *> ($2.timed_GD, $4.cond_effect);
 	}
 	;
@@ -1253,10 +1300,10 @@ te_interval_def:
 /* <bracket> */
 
 bracket:
-	L_B {
+	L_B { // [
 		$$.open = true;
 	}
-	| R_B {
+	| R_B { // ]
 		$$.open = false;
 	}
 	;
@@ -1302,7 +1349,7 @@ te_da_GD:
 		$$.timed_GD=$3.timed_GD;		
 	}
 	| L_P FORALL L_P typed_list_variable R_P te_da_GD R_P {
-		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::lexical_error("Requirement :universal-preconditions is needed");
+		if (!Parser::isRequirement(UNIVERSAL_PRECONDITIONS)) Parser::fatal_error("Requirement :universal-preconditions is not supported");
 	}
 	;
 
@@ -1313,7 +1360,7 @@ te_pref_timed_GD:
 		$$.timed_GD = $1.timed_GD;
 	}
 	| L_P PREFERENCE te_pref_timed_GD_option1 {
-		if (!Parser::isRequirement(PREFERENCES)) Parser::lexical_error("Requirement :preferences is needed");
+		if (!Parser::isRequirement(PREFERENCES)) Parser::fatal_error("Requirement :preferences is not supported");
 	}
 	;
 
@@ -1326,26 +1373,30 @@ te_pref_timed_GD_option1:
 
 te_timed_GD:
 	L_P AT te_timepoint_op GD R_P {
+		// for each fluent of the list in GD, we put the AT specification (bit 2 for start, bit 3 for end)
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
 			(*it)->second += 1 << $3.integer;
 		}
 		$$.timed_GD=$4.timed_GD;
 	}
-	| L_P OVER te_interval GD R_P {	
+	| L_P OVER te_interval GD R_P {
+		// for each fluent of the list in GD, we put the OVER specification (bit 4 for over all)
 		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
 			(*it)->second += 1 << $3.integer;
 		}
 		$$.timed_GD=$4.timed_GD;
 	}
 	| L_P SUPPORTED te_interval GD R_P {
-		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");	
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+			// for each fluent of the list in GD, we put the SUPPORTED specification (bit 5 for supported all)
 		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
 			(*it)->second += 1 << ($3.integer+1);
 		}
 		$$.timed_GD=$4.timed_GD;
 	}
 	| L_P FORBIDDEN te_interval GD R_P {
-		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");	
+		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+		// for each fluent of the list in GD, we put the FORBIDDEN specification (bit 5 for forbidden all)
 		for ( std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int >* >::iterator it=$4.timed_GD->begin(); it != $4.timed_GD->end(); ++it){
 			(*it)->second += 1 << ($3.integer+2);
 		}
@@ -1353,14 +1404,17 @@ te_timed_GD:
 	}
 	| L_P SOMEWHERE te_interval GD R_P {
 		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+		// for each fluent of the list inGD, we put the SOMEWHERE specification (bit 6 for somewhere all)
 		Parser::fatal_error("Somewhere modality not supported yet");
 	}
 	| L_P ANYWHERE te_interval GD R_P {
 		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+		// for each fluent of the list in GD, we put the ANYWHERE specification (bit 7 for anywhere all)
 		Parser::fatal_error("Anywhere modality not supported yet");
 	}
 	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval GD R_P {
 		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+		// for each fluent of the list in GD, we put the MINIMAL_DURATION specification (bit 8 for minimal-duration all)
 		Parser::fatal_error("Minimal-duration modality not supported yet");
 	}
 	;
@@ -1375,30 +1429,33 @@ te_da_effect:
 		$$.cond_effect=$1.cond_effect;
 	}
 	| L_P FORALL L_P typed_list_variable R_P te_da_effect R_P {
-		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::fatal_error("Requirement :conditional-effects is not supported");
 	}
 	| L_P WHEN da_GD te_timed_effect R_P {
-		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::lexical_error("Requirement :conditional-effects is needed");
+		if (!Parser::isRequirement(CONDITIONAL_EFFECTS)) Parser::fatal_error("Requirement :conditional-effects is not supported");
 	}
 	;
 
 /* <te-timed-effect> */
 
 te_timed_effect:
-	L_P AT te_timepoint_op cond_effect R_P { 
+	L_P AT te_timepoint_op cond_effect R_P {
+		// for each fluent of the list in cond_effect, we put the AT specification (bit 2 for start, bit 3 for end)
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
 			(*it)->second += 1 << $3.integer;
-		}	
+		}
 		$$.cond_effect=$4.cond_effect;
 	}
-	| L_P OVER te_interval cond_effect R_P { 
+	| L_P OVER te_interval cond_effect R_P {
+		// for each fluent of the list in cond_effect, we put the OVER specification (bit 4 for over all)
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
 			(*it)->second += 1 << $3.integer;
-		}	
+		}
 		$$.cond_effect=$4.cond_effect;
 	}
 	| L_P SUPPORTED te_interval cond_effect R_P {
 		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+		// for each fluent of the list in cond_effect, we put the SUPPORTED specification (bit 5 for supported all)
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
 			(*it)->second += 1 << ($3.integer+1);
 		}	
@@ -1406,25 +1463,30 @@ te_timed_effect:
 	}
 	| L_P FORBIDDEN te_interval cond_effect R_P {
 		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+		// for each fluent of the list in cond_effect, we put the FORBIDDEN specification (bit 5 for forbidden all)
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
 			(*it)->second += 1 << ($3.integer+2);
-		}	
+		}
 		$$.cond_effect=$4.cond_effect;
 	}
 	| L_P SOMEWHERE te_interval cond_effect R_P {
 		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+		// for each fluent of the list in cond_effect, we put the SOMEWHERE specification (bit 6 for somewhere all)
 		Parser::fatal_error("Somewhere modality not supported yet");
 	}
 	| L_P ANYWHERE te_interval cond_effect R_P {
 		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+		// for each fluent of the list in cond_effect, we put the ANYWHERE specification (bit 7 for anywhere all)
 		Parser::fatal_error("Anywhere modality not supported yet");
 	}
 	| L_P MINIMAL_DURATION d_value ANYWHERE te_interval cond_effect R_P {
 		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+		// for each fluent of the list in cond_effect, we put the MINIMAL_DURATION specification (bit 8 for minimal-duration all)
 		Parser::fatal_error("Minimal-duration modality not supported yet");
 	}
 	| L_P TRANSITION_OVER te_interval cond_effect R_P {
 		if (!Parser::isRequirement(TEMPORALLY_EXTENDED)) Parser::lexical_error("Requirement :temporally-extended is needed");
+		// for each fluent of the list in cond_effect, we put the TRANSITION_OVER specification (bit 9 for transition-over all)
 		for (std::vector< std::pair< std::pair< std::vector< std::string > *, std::string *> *, int > * >::iterator it = $4.cond_effect->begin(); it != $4.cond_effect->end() ; ++it){
 			(*it)->second += 1 << ($3.integer+6);
 		}	
@@ -1434,7 +1496,7 @@ te_timed_effect:
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
 	}
 	| L_P assign_op_t f_head f_exp_t R_P  {
-		if (!Parser::isRequirement(CONTINUOUS_EFFECTS)) Parser::lexical_error("Requirement :continuous-effects is needed");
+		if (!Parser::isRequirement(CONTINUOUS_EFFECTS)) Parser::fatal_error("Requirement :continuous-effects is not supported");
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
 	}
 	;
@@ -1450,14 +1512,16 @@ te_timed_effect:
 function_typed_list_atomic_function_skeleton:
 	/* empty */
 	| nvList_atomic_function_skeleton MINUS function_type function_typed_list_atomic_function_skeleton {
+		// we add the functions defined in nvList_atomic_function_skeleton with function_type as return type
 		if (!Parser::addFunctions($1.function_skeleton_list, $3.list_name)) {
-			Parser::lexical_error("Error in :function");
+			Parser::fatal_error("Error in :function");
 		}
 	}
 	| nvList_atomic_function_skeleton {
 		if (!Parser::isRequirement(NUMERIC_FLUENTS)) Parser::lexical_error("Requirement :numeric-fluents is needed");
+		// we add the functions defined in nvList_atomic_function_skeleton, with no return type
 		if (!Parser::addFunctions($1.function_skeleton_list, new std::vector<std::string> ())) {
-			Parser::lexical_error("Error in :function");
+			Parser::fatal_error("Error in :function");
 		}
 	}
 	;
@@ -1467,17 +1531,17 @@ function_typed_list_atomic_function_skeleton:
 
 typed_list_name:
 	list_name {
+		// we construct the typedList that correspond to the list of names
 		$$.typedList_list = new std::vector<TypedList*> ();
-		if ($1.list_name->size() == 0) {
-			// if end of typed_list
-		} else {
-			// if no type
+		if ($1.list_name->size() != 0) {
+			// we add the base type "object"
 			std::vector<std::string> * list_name = new std::vector<std::string> ();
 			list_name->push_back("object");
 			$$.typedList_list->push_back(new TypedList(list_name, $1.list_name));
 		}
 	}
 	| nvList_name MINUS type typed_list_name {
+		// we construct the typedList that correspond to the list of names with type as either type
 		if (!Parser::isRequirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
 		$4.typedList_list->push_back(new TypedList($3.list_name, $1.list_name));
 		$$.typedList_list = $4.typedList_list;
@@ -1486,17 +1550,17 @@ typed_list_name:
 
 typed_list_variable:
 	list_variable {
+		// we construct the typedList that correspond to the list of variables
 		$$.typedList_list = new std::vector<TypedList*> ();
-		if ($1.list_name->size() == 0) {
-			// if end of typed_list
-		} else {
-			// if no type
+		if ($1.list_name->size() != 0) {
+			// we add the base type "object"
 			std::vector<std::string> * list_name = new std::vector<std::string> ();
 			list_name->push_back("object");
 			$$.typedList_list->push_back(new TypedList(list_name, $1.list_name));
 		}
 	}
 	| nvList_variable MINUS type typed_list_variable {
+		// we construct the typedList that correspond to the list of variables with type as either type
 		if (!Parser::isRequirement(TYPING)) Parser::lexical_error("Requirement :typing is needed");
 		$4.typedList_list->push_back(new TypedList($3.list_name, $1.list_name));
 		$$.typedList_list = $4.typedList_list;
@@ -1582,7 +1646,7 @@ atomic_formula_term:
 		$$.atomic_formula= new std::pair< std::vector< std::string > *, std::string *>($3.list_name,$2.name);
 	}
 	| L_P EQ term term R_P {
-		if (!Parser::isRequirement(EQUALITY)) Parser::lexical_error("Requirement :equality is needed");
+		if (!Parser::isRequirement(EQUALITY)) Parser::fatal_error("Requirement :equality is not supported");
 	}
 	;
 
@@ -1591,7 +1655,7 @@ atomic_formula_name:
 		$$.atomic_formula = new std::pair< std::vector< std::string > *, std::string *>($3.list_name,$2.name);
 	}
 	| L_P EQ name name R_P {
-		if (!Parser::isRequirement(EQUALITY)) Parser::lexical_error("Requirement :equality is needed");
+		if (!Parser::isRequirement(EQUALITY)) Parser::fatal_error("Requirement :equality is not supported");
 	}
 	;
 
