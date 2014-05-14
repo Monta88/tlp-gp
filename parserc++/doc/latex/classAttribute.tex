@@ -1,0 +1,189 @@
+\hypertarget{classAttribute}{\section{Attribute Class Reference}
+\label{classAttribute}\index{Attribute@{Attribute}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classAttribute_a8ba4e5a507aef352563e1e56f1930e66}{\hyperlink{classAttribute_a8ba4e5a507aef352563e1e56f1930e66}{Attribute} ()}\label{classAttribute_a8ba4e5a507aef352563e1e56f1930e66}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hypertarget{classAttribute_a28ab087bb886728670e4ae5791bc2ea8}{virtual \hyperlink{classAttribute_a28ab087bb886728670e4ae5791bc2ea8}{$\sim$\+Attribute} ()}\label{classAttribute_a28ab087bb886728670e4ae5791bc2ea8}
+
+\begin{DoxyCompactList}\small\item\em Destructor -\/ virtual. \end{DoxyCompactList}\item 
+float \hyperlink{classAttribute_a06d82c170f9a71a4f3925467bcebc824}{get\+Time} ()
+\begin{DoxyCompactList}\small\item\em Get the time when occurs the effect (defined with \char`\"{}at\char`\"{}) \end{DoxyCompactList}\item 
+void \hyperlink{classAttribute_a14e5f87736aa3520b65fea9867f8faae}{add\+Forbidden} (\hyperlink{classInterval}{Interval} inter)
+\begin{DoxyCompactList}\small\item\em Add an interval to the list of interval that are forbidden. \end{DoxyCompactList}\item 
+void \hyperlink{classAttribute_a69f34ccca3ff1bb0bb747f869a9b90c6}{add\+Not\+Forbidden} (\hyperlink{classInterval}{Interval} inter)
+\begin{DoxyCompactList}\small\item\em Add an interval to the list of interval that are not forbidden. \end{DoxyCompactList}\item 
+void \hyperlink{classAttribute_ac4d46fd050a7d9f49eacf697a8f19cb9}{add\+Supported} (\hyperlink{classInterval}{Interval} inter)
+\begin{DoxyCompactList}\small\item\em Add an interval to the list of interval that are supported. \end{DoxyCompactList}\item 
+void \hyperlink{classAttribute_a285e7380f22708b78c187762319c267b}{add\+Not\+Supported} (\hyperlink{classInterval}{Interval} inter)
+\begin{DoxyCompactList}\small\item\em Add an interval to the list of interval that are not supported. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{classInterval}{Interval} $>$ $\ast$ \hyperlink{classAttribute_a22bfaccb31429589929a36244403456e}{get\+Forbidden} ()
+\begin{DoxyCompactList}\small\item\em Get the list of interval that are forbidden. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{classInterval}{Interval} $>$ $\ast$ \hyperlink{classAttribute_ad254c796d5ab86a1fdadcb62d464dc4a}{get\+Supported} ()
+\begin{DoxyCompactList}\small\item\em Get the list of interval that are supported. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{classInterval}{Interval} $>$ $\ast$ \hyperlink{classAttribute_abd13aeaa71a640c38d20e118c2fb574c}{get\+Not\+Forbidden} ()
+\begin{DoxyCompactList}\small\item\em Get the list of interval that are not forbidden. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{classInterval}{Interval} $>$ $\ast$ \hyperlink{classAttribute_a5885a1bf4129cde5e8e7b55d46fd7cda}{get\+Not\+Supported} ()
+\begin{DoxyCompactList}\small\item\em Get the list of interval that are not supported. \end{DoxyCompactList}\item 
+string \hyperlink{classAttribute_a9701171d288a295393e48eb767564a53}{to\+\_\+string} ()
+\begin{DoxyCompactList}\small\item\em Return a string that represent the attribute. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classAttribute_a14e5f87736aa3520b65fea9867f8faae}{\index{Attribute@{Attribute}!add\+Forbidden@{add\+Forbidden}}
+\index{add\+Forbidden@{add\+Forbidden}!Attribute@{Attribute}}
+\subsubsection[{add\+Forbidden}]{\setlength{\rightskip}{0pt plus 5cm}void Attribute\+::add\+Forbidden (
+\begin{DoxyParamCaption}
+\item[{{\bf Interval}}]{inter}
+\end{DoxyParamCaption}
+)}}\label{classAttribute_a14e5f87736aa3520b65fea9867f8faae}
+
+
+Add an interval to the list of interval that are forbidden. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inter} & -\/ the new interval to add in m\+\_\+forbidden \\
+\hline
+\end{DoxyParams}
+\hypertarget{classAttribute_a69f34ccca3ff1bb0bb747f869a9b90c6}{\index{Attribute@{Attribute}!add\+Not\+Forbidden@{add\+Not\+Forbidden}}
+\index{add\+Not\+Forbidden@{add\+Not\+Forbidden}!Attribute@{Attribute}}
+\subsubsection[{add\+Not\+Forbidden}]{\setlength{\rightskip}{0pt plus 5cm}void Attribute\+::add\+Not\+Forbidden (
+\begin{DoxyParamCaption}
+\item[{{\bf Interval}}]{inter}
+\end{DoxyParamCaption}
+)}}\label{classAttribute_a69f34ccca3ff1bb0bb747f869a9b90c6}
+
+
+Add an interval to the list of interval that are not forbidden. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inter} & -\/ the new interval to add in m\+\_\+not\+\_\+forbidden \\
+\hline
+\end{DoxyParams}
+\hypertarget{classAttribute_a285e7380f22708b78c187762319c267b}{\index{Attribute@{Attribute}!add\+Not\+Supported@{add\+Not\+Supported}}
+\index{add\+Not\+Supported@{add\+Not\+Supported}!Attribute@{Attribute}}
+\subsubsection[{add\+Not\+Supported}]{\setlength{\rightskip}{0pt plus 5cm}void Attribute\+::add\+Not\+Supported (
+\begin{DoxyParamCaption}
+\item[{{\bf Interval}}]{inter}
+\end{DoxyParamCaption}
+)}}\label{classAttribute_a285e7380f22708b78c187762319c267b}
+
+
+Add an interval to the list of interval that are not supported. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inter} & -\/ the new interval to add in m\+\_\+not\+\_\+supported \\
+\hline
+\end{DoxyParams}
+\hypertarget{classAttribute_ac4d46fd050a7d9f49eacf697a8f19cb9}{\index{Attribute@{Attribute}!add\+Supported@{add\+Supported}}
+\index{add\+Supported@{add\+Supported}!Attribute@{Attribute}}
+\subsubsection[{add\+Supported}]{\setlength{\rightskip}{0pt plus 5cm}void Attribute\+::add\+Supported (
+\begin{DoxyParamCaption}
+\item[{{\bf Interval}}]{inter}
+\end{DoxyParamCaption}
+)}}\label{classAttribute_ac4d46fd050a7d9f49eacf697a8f19cb9}
+
+
+Add an interval to the list of interval that are supported. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inter} & -\/ the new interval to add in m\+\_\+supported \\
+\hline
+\end{DoxyParams}
+\hypertarget{classAttribute_a22bfaccb31429589929a36244403456e}{\index{Attribute@{Attribute}!get\+Forbidden@{get\+Forbidden}}
+\index{get\+Forbidden@{get\+Forbidden}!Attribute@{Attribute}}
+\subsubsection[{get\+Forbidden}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Interval} $>$ $\ast$ Attribute\+::get\+Forbidden (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classAttribute_a22bfaccb31429589929a36244403456e}
+
+
+Get the list of interval that are forbidden. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to m\+\_\+forbidden 
+\end{DoxyReturn}
+\hypertarget{classAttribute_abd13aeaa71a640c38d20e118c2fb574c}{\index{Attribute@{Attribute}!get\+Not\+Forbidden@{get\+Not\+Forbidden}}
+\index{get\+Not\+Forbidden@{get\+Not\+Forbidden}!Attribute@{Attribute}}
+\subsubsection[{get\+Not\+Forbidden}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Interval} $>$ $\ast$ Attribute\+::get\+Not\+Forbidden (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classAttribute_abd13aeaa71a640c38d20e118c2fb574c}
+
+
+Get the list of interval that are not forbidden. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to m\+\_\+not\+\_\+forbidden 
+\end{DoxyReturn}
+\hypertarget{classAttribute_a5885a1bf4129cde5e8e7b55d46fd7cda}{\index{Attribute@{Attribute}!get\+Not\+Supported@{get\+Not\+Supported}}
+\index{get\+Not\+Supported@{get\+Not\+Supported}!Attribute@{Attribute}}
+\subsubsection[{get\+Not\+Supported}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Interval} $>$ $\ast$ Attribute\+::get\+Not\+Supported (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classAttribute_a5885a1bf4129cde5e8e7b55d46fd7cda}
+
+
+Get the list of interval that are not supported. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to m\+\_\+not\+\_\+supported 
+\end{DoxyReturn}
+\hypertarget{classAttribute_ad254c796d5ab86a1fdadcb62d464dc4a}{\index{Attribute@{Attribute}!get\+Supported@{get\+Supported}}
+\index{get\+Supported@{get\+Supported}!Attribute@{Attribute}}
+\subsubsection[{get\+Supported}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Interval} $>$ $\ast$ Attribute\+::get\+Supported (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classAttribute_ad254c796d5ab86a1fdadcb62d464dc4a}
+
+
+Get the list of interval that are supported. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to m\+\_\+supported 
+\end{DoxyReturn}
+\hypertarget{classAttribute_a06d82c170f9a71a4f3925467bcebc824}{\index{Attribute@{Attribute}!get\+Time@{get\+Time}}
+\index{get\+Time@{get\+Time}!Attribute@{Attribute}}
+\subsubsection[{get\+Time}]{\setlength{\rightskip}{0pt plus 5cm}float Attribute\+::get\+Time (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classAttribute_a06d82c170f9a71a4f3925467bcebc824}
+
+
+Get the time when occurs the effect (defined with \char`\"{}at\char`\"{}) 
+
+\begin{DoxyReturn}{Returns}
+0 if the effect occurs at the beginning of the action, else the duration of the action 
+\end{DoxyReturn}
+\hypertarget{classAttribute_a9701171d288a295393e48eb767564a53}{\index{Attribute@{Attribute}!to\+\_\+string@{to\+\_\+string}}
+\index{to\+\_\+string@{to\+\_\+string}!Attribute@{Attribute}}
+\subsubsection[{to\+\_\+string}]{\setlength{\rightskip}{0pt plus 5cm}string Attribute\+::to\+\_\+string (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classAttribute_a9701171d288a295393e48eb767564a53}
+
+
+Return a string that represent the attribute. 
+
+\begin{DoxyReturn}{Returns}
+a string \char`\"{}\mbox{[}forbidden on m\+\_\+forbidden\mbox{]} \mbox{[}supported on m\+\_\+supported\mbox{]} \mbox{[}not forbidden on m\+\_\+not\+\_\+forbidden\mbox{]} \mbox{[}not supported on m\+\_\+not\+\_\+supported\mbox{]}\char`\"{} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{attribute_8h}{attribute.\+h}\item 
+src/\hyperlink{attribute_8cpp}{attribute.\+cpp}\end{DoxyCompactItemize}

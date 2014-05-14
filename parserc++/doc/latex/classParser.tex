@@ -1,0 +1,426 @@
+\hypertarget{classParser}{\section{Parser Class Reference}
+\label{classParser}\index{Parser@{Parser}}
+}
+Inheritance diagram for Parser\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classParser}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classParser_af677db3c393c6b50d839290ad1af7d1d}{parse} ()
+\begin{DoxyCompactList}\small\item\em Parsing function. \end{DoxyCompactList}\item 
+\hypertarget{classParser_abdc68932f658c4a203aa97ab368f0d2b}{void \hyperlink{classParser_abdc68932f658c4a203aa97ab368f0d2b}{init} ()}\label{classParser_abdc68932f658c4a203aa97ab368f0d2b}
+
+\begin{DoxyCompactList}\small\item\em Init the data. \end{DoxyCompactList}\item 
+void \hyperlink{classParser_a280a5db9d433fd9a5d90aed3ec240a41}{set\+Data} (\hyperlink{classParser}{Parser} $\ast$parser)
+\begin{DoxyCompactList}\small\item\em Copy the data of another \hyperlink{classParser}{Parser} in order to parse another file (used to parse the problem file after having parsed the domain file) \end{DoxyCompactList}\item 
+\hyperlink{classData}{Data} $\ast$ \hyperlink{classParser_a6202bf4573fd50d5e052640177ca2289}{get\+Data} ()
+\begin{DoxyCompactList}\small\item\em Get the pointer to the data. \end{DoxyCompactList}\item 
+void \hyperlink{classParser_abd319a3d809d96b35da0b07160080ff1}{add\+Domain} (std\+::string $\ast$name)
+\begin{DoxyCompactList}\small\item\em Set the name of the domain. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_ae97c849415a4b6943b45d2e314a89795}{is\+Domain} (std\+::string $\ast$name)
+\begin{DoxyCompactList}\small\item\em Verify if name is the name of the domain previously parsed. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_a16caa057293d617e95e374ec3101c023}{add\+Requirement} (int req)
+\begin{DoxyCompactList}\small\item\em Add the requirement req once read in \+:requirements. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_a2963392154c748d42f9050700d28f1b3}{is\+Requirement} (int req)
+\begin{DoxyCompactList}\small\item\em Verify if the requirement req has been announced in \+:requirements. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_af729ba7522ed318d4815c05d220cf3f2}{add\+Types} (std\+::vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Add the types once read in \+:types. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_a8a0cab70a42a5864b1c88e52ea67bdbc}{add\+Constants} (std\+::vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Add the constants once read in \+:constants. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_a2bb6e04284ea6e2169672c6de405f665}{add\+Predicate} (std\+::string $\ast$name, std\+::vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Add the predicates once read in \+:predicates. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_ac19e3969c2c41180cf1ed2e9e99a780a}{add\+Functions} (std\+::vector$<$ std\+::pair$<$ std\+::string $\ast$, std\+::vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$ $>$ $\ast$ $>$ $\ast$function\+\_\+skeleton\+\_\+list, std\+::vector$<$ std\+::string $>$ $\ast$return\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Add the functions once read in \+:functions. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_ac9d6477dcb6f8d7b6995f9b1b35c5805}{add\+Durative\+Action} (std\+::string $\ast$name, std\+::vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list, float number, std\+::vector$<$ std\+::pair$<$ std\+::pair$<$ std\+::vector$<$ std\+::string $>$ $\ast$, std\+::string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$timed\+\_\+\+G\+D, std\+::vector$<$ std\+::pair$<$ std\+::pair$<$ std\+::vector$<$ std\+::string $>$ $\ast$, std\+::string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$cond\+\_\+effect)
+\begin{DoxyCompactList}\small\item\em Add adurative-\/action once read in \+:durative-\/action. \end{DoxyCompactList}\item 
+void \hyperlink{classParser_a40779a6e2c720a1415a0c824bf079b47}{add\+Problem} (std\+::string $\ast$name)
+\begin{DoxyCompactList}\small\item\em Set the name of the problem. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_a5784fcd1e2de901d7a0f12412754b724}{add\+Objects} (std\+::vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Add the objects once read in \+:objects and add the name of this object in m\+\_\+object\+\_\+list. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_aaae009ea97709247577c76937427ffef}{add\+Init} (std\+::pair$<$ std\+::pair$<$ std\+::vector$<$ std\+::string $>$ $\ast$, std\+::string $\ast$ $>$ $\ast$, bool $>$ $\ast$literal, float at)
+\begin{DoxyCompactList}\small\item\em Add an init fluent once read in \+:init. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_ac7b9f22b8589d44b28ad5170f1b9b403}{add\+Goals} (std\+::vector$<$ std\+::vector$<$ std\+::pair$<$ std\+::pair$<$ std\+::vector$<$ std\+::string $>$ $\ast$, std\+::string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$ $>$ $\ast$pre\+\_\+\+G\+D)
+\begin{DoxyCompactList}\small\item\em Add the goal fluents once read in \+:goal. \end{DoxyCompactList}\item 
+bool \hyperlink{classParser_ab243bf4f6ec47e9c10c42509d0ed14ec}{add\+Initiated\+Function} (std\+::pair$<$ std\+::vector$<$ std\+::string $>$ $\ast$, std\+::string $\ast$ $>$ $\ast$atomic\+\_\+formula, float number)
+\begin{DoxyCompactList}\small\item\em Add an initiated function once read in \+:init. \end{DoxyCompactList}\item 
+\hypertarget{classParser_a90540c5d1f12d7a5974efdf526fb6d22}{void \hyperlink{classParser_a90540c5d1f12d7a5974efdf526fb6d22}{display} ()}\label{classParser_a90540c5d1f12d7a5974efdf526fb6d22}
+
+\begin{DoxyCompactList}\small\item\em Display the data (domain variables, problem variables, and errors) in stdout. \end{DoxyCompactList}\item 
+void \hyperlink{classParser_ab2075cf762895993dc7583855350203b}{lexical\+\_\+error} (std\+::string msg)
+\begin{DoxyCompactList}\small\item\em Add a warning. \end{DoxyCompactList}\item 
+void \hyperlink{classParser_a1dd4f26466b3b3e51046cd8dfa085a4f}{fatal\+\_\+error} (std\+::string msg)
+\begin{DoxyCompactList}\small\item\em Stop the execution and print the error message on stderr. \end{DoxyCompactList}\item 
+float \hyperlink{classParser_acdaf00eb98e4f6fe1b834bc23173566c}{get\+Function\+Return} (std\+::string $\ast$name, std\+::vector$<$ std\+::string $>$ $\ast$list\+\_\+term)
+\begin{DoxyCompactList}\small\item\em Get the return of an initiated function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classParser_a8a0cab70a42a5864b1c88e52ea67bdbc}{\index{Parser@{Parser}!add\+Constants@{add\+Constants}}
+\index{add\+Constants@{add\+Constants}!Parser@{Parser}}
+\subsubsection[{add\+Constants}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::add\+Constants (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_a8a0cab70a42a5864b1c88e52ea67bdbc}
+
+
+Add the constants once read in \+:constants. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em typed\+List\+\_\+list} & -\/ list of constants \+: (constants\+List, types\+List) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong 
+\end{DoxyReturn}
+\hypertarget{classParser_abd319a3d809d96b35da0b07160080ff1}{\index{Parser@{Parser}!add\+Domain@{add\+Domain}}
+\index{add\+Domain@{add\+Domain}!Parser@{Parser}}
+\subsubsection[{add\+Domain}]{\setlength{\rightskip}{0pt plus 5cm}void Parser\+::add\+Domain (
+\begin{DoxyParamCaption}
+\item[{std\+::string $\ast$}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_abd319a3d809d96b35da0b07160080ff1}
+
+
+Set the name of the domain. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the domain \\
+\hline
+\end{DoxyParams}
+\hypertarget{classParser_ac9d6477dcb6f8d7b6995f9b1b35c5805}{\index{Parser@{Parser}!add\+Durative\+Action@{add\+Durative\+Action}}
+\index{add\+Durative\+Action@{add\+Durative\+Action}!Parser@{Parser}}
+\subsubsection[{add\+Durative\+Action}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::add\+Durative\+Action (
+\begin{DoxyParamCaption}
+\item[{std\+::string $\ast$}]{name, }
+\item[{std\+::vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list, }
+\item[{float}]{number, }
+\item[{std\+::vector$<$ std\+::pair$<$ std\+::pair$<$ std\+::vector$<$ std\+::string $>$ $\ast$, std\+::string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$}]{timed\+\_\+\+G\+D, }
+\item[{std\+::vector$<$ std\+::pair$<$ std\+::pair$<$ std\+::vector$<$ std\+::string $>$ $\ast$, std\+::string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$}]{cond\+\_\+effect}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_ac9d6477dcb6f8d7b6995f9b1b35c5805}
+
+
+Add adurative-\/action once read in \+:durative-\/action. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the durative-\/action typed\+List\+\_\+list -\/ parameters (variables) of the durative-\/action \+: (variables\+List, types\+List) timed\+\_\+\+G\+D -\/ preconditions of the durative-\/action \+: list(pair(pair(fluent\+Parameters, fluent\+Name), prec\+Type)) cond\+\_\+effect -\/ effects of the durative-\/action \+: list(pair(pair(fluent\+Parameters, fluent\+Name), effect\+Type)) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong, such as a predicate that hasn't been defined 
+\end{DoxyReturn}
+\hypertarget{classParser_ac19e3969c2c41180cf1ed2e9e99a780a}{\index{Parser@{Parser}!add\+Functions@{add\+Functions}}
+\index{add\+Functions@{add\+Functions}!Parser@{Parser}}
+\subsubsection[{add\+Functions}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::add\+Functions (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ std\+::pair$<$ std\+::string $\ast$, std\+::vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$ $>$ $\ast$ $>$ $\ast$}]{function\+\_\+skeleton\+\_\+list, }
+\item[{std\+::vector$<$ std\+::string $>$ $\ast$}]{return\+\_\+type}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_ac19e3969c2c41180cf1ed2e9e99a780a}
+
+
+Add the functions once read in \+:functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em function\+\_\+skeleton\+\_\+list} & -\/ list of the functions' pairs of name and parameters return\+\_\+type -\/ the type of the return (list for either representation) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong 
+\end{DoxyReturn}
+\hypertarget{classParser_ac7b9f22b8589d44b28ad5170f1b9b403}{\index{Parser@{Parser}!add\+Goals@{add\+Goals}}
+\index{add\+Goals@{add\+Goals}!Parser@{Parser}}
+\subsubsection[{add\+Goals}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::add\+Goals (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ std\+::vector$<$ std\+::pair$<$ std\+::pair$<$ std\+::vector$<$ std\+::string $>$ $\ast$, std\+::string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$ $>$ $\ast$}]{pre\+\_\+\+G\+D}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_ac7b9f22b8589d44b28ad5170f1b9b403}
+
+
+Add the goal fluents once read in \+:goal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pre\+\_\+\+G\+D} & -\/ list of fluents () \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong, such as a fluent of which the predicate hasn't been defined 
+\end{DoxyReturn}
+\hypertarget{classParser_aaae009ea97709247577c76937427ffef}{\index{Parser@{Parser}!add\+Init@{add\+Init}}
+\index{add\+Init@{add\+Init}!Parser@{Parser}}
+\subsubsection[{add\+Init}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::add\+Init (
+\begin{DoxyParamCaption}
+\item[{std\+::pair$<$ std\+::pair$<$ std\+::vector$<$ std\+::string $>$ $\ast$, std\+::string $\ast$ $>$ $\ast$, bool $>$ $\ast$}]{literal, }
+\item[{float}]{at}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_aaae009ea97709247577c76937427ffef}
+
+
+Add an init fluent once read in \+:init. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em literal} & -\/ fluent \+: pair(pair(parameters, name), positive) at -\/ time when this init is effctive \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong, such as a fluent of which the predicate hasn't been defined 
+\end{DoxyReturn}
+\hypertarget{classParser_ab243bf4f6ec47e9c10c42509d0ed14ec}{\index{Parser@{Parser}!add\+Initiated\+Function@{add\+Initiated\+Function}}
+\index{add\+Initiated\+Function@{add\+Initiated\+Function}!Parser@{Parser}}
+\subsubsection[{add\+Initiated\+Function}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::add\+Initiated\+Function (
+\begin{DoxyParamCaption}
+\item[{std\+::pair$<$ std\+::vector$<$ std\+::string $>$ $\ast$, std\+::string $\ast$ $>$ $\ast$}]{atomic\+\_\+formula, }
+\item[{float}]{number}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_ab243bf4f6ec47e9c10c42509d0ed14ec}
+
+
+Add an initiated function once read in \+:init. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em atomic\+\_\+formula} & -\/ name and parameters \+: pair(parameters, name) number -\/ the return of the initiated function \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong, such as a function or an object or a constant that hasn't been defined 
+\end{DoxyReturn}
+\hypertarget{classParser_a5784fcd1e2de901d7a0f12412754b724}{\index{Parser@{Parser}!add\+Objects@{add\+Objects}}
+\index{add\+Objects@{add\+Objects}!Parser@{Parser}}
+\subsubsection[{add\+Objects}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::add\+Objects (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_a5784fcd1e2de901d7a0f12412754b724}
+
+
+Add the objects once read in \+:objects and add the name of this object in m\+\_\+object\+\_\+list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em typed\+List\+\_\+list} & -\/ list of objects \+: (objects\+List, types\+List) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong 
+\end{DoxyReturn}
+\hypertarget{classParser_a2bb6e04284ea6e2169672c6de405f665}{\index{Parser@{Parser}!add\+Predicate@{add\+Predicate}}
+\index{add\+Predicate@{add\+Predicate}!Parser@{Parser}}
+\subsubsection[{add\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::add\+Predicate (
+\begin{DoxyParamCaption}
+\item[{std\+::string $\ast$}]{name, }
+\item[{std\+::vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_a2bb6e04284ea6e2169672c6de405f665}
+
+
+Add the predicates once read in \+:predicates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ the name of the predicate typed\+List\+\_\+list -\/ list of parameters \+: (variables\+List, types\+List) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong 
+\end{DoxyReturn}
+\hypertarget{classParser_a40779a6e2c720a1415a0c824bf079b47}{\index{Parser@{Parser}!add\+Problem@{add\+Problem}}
+\index{add\+Problem@{add\+Problem}!Parser@{Parser}}
+\subsubsection[{add\+Problem}]{\setlength{\rightskip}{0pt plus 5cm}void Parser\+::add\+Problem (
+\begin{DoxyParamCaption}
+\item[{std\+::string $\ast$}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_a40779a6e2c720a1415a0c824bf079b47}
+
+
+Set the name of the problem. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the problem \\
+\hline
+\end{DoxyParams}
+\hypertarget{classParser_a16caa057293d617e95e374ec3101c023}{\index{Parser@{Parser}!add\+Requirement@{add\+Requirement}}
+\index{add\+Requirement@{add\+Requirement}!Parser@{Parser}}
+\subsubsection[{add\+Requirement}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::add\+Requirement (
+\begin{DoxyParamCaption}
+\item[{int}]{req}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_a16caa057293d617e95e374ec3101c023}
+
+
+Add the requirement req once read in \+:requirements. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & -\/ Token of the requirement \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false if the requirement already exists, else true 
+\end{DoxyReturn}
+\hypertarget{classParser_af729ba7522ed318d4815c05d220cf3f2}{\index{Parser@{Parser}!add\+Types@{add\+Types}}
+\index{add\+Types@{add\+Types}!Parser@{Parser}}
+\subsubsection[{add\+Types}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::add\+Types (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_af729ba7522ed318d4815c05d220cf3f2}
+
+
+Add the types once read in \+:types. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em typed\+List\+\_\+list} & -\/ list of types \+: (types\+List, parent\+Types\+List) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong 
+\end{DoxyReturn}
+\hypertarget{classParser_a1dd4f26466b3b3e51046cd8dfa085a4f}{\index{Parser@{Parser}!fatal\+\_\+error@{fatal\+\_\+error}}
+\index{fatal\+\_\+error@{fatal\+\_\+error}!Parser@{Parser}}
+\subsubsection[{fatal\+\_\+error}]{\setlength{\rightskip}{0pt plus 5cm}void Parser\+::fatal\+\_\+error (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_a1dd4f26466b3b3e51046cd8dfa085a4f}
+
+
+Stop the execution and print the error message on stderr. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & -\/ message of the error \\
+\hline
+\end{DoxyParams}
+\hypertarget{classParser_a6202bf4573fd50d5e052640177ca2289}{\index{Parser@{Parser}!get\+Data@{get\+Data}}
+\index{get\+Data@{get\+Data}!Parser@{Parser}}
+\subsubsection[{get\+Data}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Data}$\ast$ Parser\+::get\+Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_a6202bf4573fd50d5e052640177ca2289}
+
+
+Get the pointer to the data. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to the data 
+\end{DoxyReturn}
+\hypertarget{classParser_acdaf00eb98e4f6fe1b834bc23173566c}{\index{Parser@{Parser}!get\+Function\+Return@{get\+Function\+Return}}
+\index{get\+Function\+Return@{get\+Function\+Return}!Parser@{Parser}}
+\subsubsection[{get\+Function\+Return}]{\setlength{\rightskip}{0pt plus 5cm}float Parser\+::get\+Function\+Return (
+\begin{DoxyParamCaption}
+\item[{std\+::string $\ast$}]{name, }
+\item[{std\+::vector$<$ std\+::string $>$ $\ast$}]{list\+\_\+term}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_acdaf00eb98e4f6fe1b834bc23173566c}
+
+
+Get the return of an initiated function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ the name of the function list\+\_\+term -\/ list of parameters \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the return of the function, and -\/1.\+0 if the function hasn't been found in m\+\_\+initiated\+\_\+functions 
+\end{DoxyReturn}
+\hypertarget{classParser_ae97c849415a4b6943b45d2e314a89795}{\index{Parser@{Parser}!is\+Domain@{is\+Domain}}
+\index{is\+Domain@{is\+Domain}!Parser@{Parser}}
+\subsubsection[{is\+Domain}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::is\+Domain (
+\begin{DoxyParamCaption}
+\item[{std\+::string $\ast$}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_ae97c849415a4b6943b45d2e314a89795}
+
+
+Verify if name is the name of the domain previously parsed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the domain of the problem \\
+\hline
+\end{DoxyParams}
+\hypertarget{classParser_a2963392154c748d42f9050700d28f1b3}{\index{Parser@{Parser}!is\+Requirement@{is\+Requirement}}
+\index{is\+Requirement@{is\+Requirement}!Parser@{Parser}}
+\subsubsection[{is\+Requirement}]{\setlength{\rightskip}{0pt plus 5cm}bool Parser\+::is\+Requirement (
+\begin{DoxyParamCaption}
+\item[{int}]{req}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_a2963392154c748d42f9050700d28f1b3}
+
+
+Verify if the requirement req has been announced in \+:requirements. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & -\/ Token of the requirement \\
+\hline
+\end{DoxyParams}
+\hypertarget{classParser_ab2075cf762895993dc7583855350203b}{\index{Parser@{Parser}!lexical\+\_\+error@{lexical\+\_\+error}}
+\index{lexical\+\_\+error@{lexical\+\_\+error}!Parser@{Parser}}
+\subsubsection[{lexical\+\_\+error}]{\setlength{\rightskip}{0pt plus 5cm}void Parser\+::lexical\+\_\+error (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_ab2075cf762895993dc7583855350203b}
+
+
+Add a warning. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & -\/ message of the error \\
+\hline
+\end{DoxyParams}
+\hypertarget{classParser_af677db3c393c6b50d839290ad1af7d1d}{\index{Parser@{Parser}!parse@{parse}}
+\index{parse@{parse}!Parser@{Parser}}
+\subsubsection[{parse}]{\setlength{\rightskip}{0pt plus 5cm}int Parser\+::parse (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classParser_af677db3c393c6b50d839290ad1af7d1d}
+
+
+Parsing function. 
+
+\begin{DoxyReturn}{Returns}
+0 if nothing went wrong 
+\end{DoxyReturn}
+\hypertarget{classParser_a280a5db9d433fd9a5d90aed3ec240a41}{\index{Parser@{Parser}!set\+Data@{set\+Data}}
+\index{set\+Data@{set\+Data}!Parser@{Parser}}
+\subsubsection[{set\+Data}]{\setlength{\rightskip}{0pt plus 5cm}void Parser\+::set\+Data (
+\begin{DoxyParamCaption}
+\item[{{\bf Parser} $\ast$}]{parser}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classParser_a280a5db9d433fd9a5d90aed3ec240a41}
+
+
+Copy the data of another \hyperlink{classParser}{Parser} in order to parse another file (used to parse the problem file after having parsed the domain file) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parser} & -\/ the \hyperlink{classParser}{Parser} object that contains the data to copy \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+parser/\hyperlink{Parser_8h}{Parser.\+h}\item 
+parser/parse.\+cc\end{DoxyCompactItemize}

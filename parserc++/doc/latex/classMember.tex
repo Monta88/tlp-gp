@@ -1,0 +1,153 @@
+\hypertarget{classMember}{\section{Member Class Reference}
+\label{classMember}\index{Member@{Member}}
+}
+Inheritance diagram for Member\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classMember}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classMember_a44241aa6aa9b792b550d9cc29e7ad050}{\hyperlink{classMember_a44241aa6aa9b792b550d9cc29e7ad050}{Member} ()}\label{classMember_a44241aa6aa9b792b550d9cc29e7ad050}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classMember_a932fbfb630620b979b19f24a4dc34288}{Member} (string name, vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ types)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hypertarget{classMember_a4f5d7cb8788247f65f10b5b81be4a4ab}{virtual \hyperlink{classMember_a4f5d7cb8788247f65f10b5b81be4a4ab}{$\sim$\+Member} ()}\label{classMember_a4f5d7cb8788247f65f10b5b81be4a4ab}
+
+\begin{DoxyCompactList}\small\item\em Destructor -\/ virtual. \end{DoxyCompactList}\item 
+void \hyperlink{classMember_a1ada18dd2a55fd384173796936fe286a}{change\+Name} (string name)
+\begin{DoxyCompactList}\small\item\em Change the name of the member. \end{DoxyCompactList}\item 
+string \hyperlink{classMember_acbe6a0cd073a21fb0f1da2cbfb260952}{get\+Name} ()
+\begin{DoxyCompactList}\small\item\em Get the name of the member. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ $\ast$ \hyperlink{classMember_a97087e4d42f7a4e5c0d0818748ebb614}{get\+Types} ()
+\begin{DoxyCompactList}\small\item\em Get the either type of the member. \end{DoxyCompactList}\item 
+virtual string \hyperlink{classMember_aaa0028059dd87706188ee670bd28e4f2}{to\+\_\+string} ()
+\begin{DoxyCompactList}\small\item\em Return a string that represent the member -\/ virtual. \end{DoxyCompactList}\item 
+virtual string \hyperlink{classMember_a7178ead1b2f1daa5fc5f993281ec90a4}{get\+Class} ()
+\begin{DoxyCompactList}\small\item\em Return the name of the class -\/ virtual. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+string \hyperlink{classMember_ac5030aba6f6207335cb970941c3a3f58}{m\+\_\+name}
+\item 
+\hypertarget{classMember_a9c88befc1b0d8f5df4bda265ee129dfb}{vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ {\bfseries m\+\_\+types}}\label{classMember_a9c88befc1b0d8f5df4bda265ee129dfb}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classMember_a932fbfb630620b979b19f24a4dc34288}{\index{Member@{Member}!Member@{Member}}
+\index{Member@{Member}!Member@{Member}}
+\subsubsection[{Member}]{\setlength{\rightskip}{0pt plus 5cm}Member\+::\+Member (
+\begin{DoxyParamCaption}
+\item[{string}]{name, }
+\item[{vector$<$ {\bf Type} $\ast$ $>$}]{types}
+\end{DoxyParamCaption}
+)}}\label{classMember_a932fbfb630620b979b19f24a4dc34288}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the member types -\/ either type of the member \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classMember_a1ada18dd2a55fd384173796936fe286a}{\index{Member@{Member}!change\+Name@{change\+Name}}
+\index{change\+Name@{change\+Name}!Member@{Member}}
+\subsubsection[{change\+Name}]{\setlength{\rightskip}{0pt plus 5cm}void Member\+::change\+Name (
+\begin{DoxyParamCaption}
+\item[{string}]{name}
+\end{DoxyParamCaption}
+)}}\label{classMember_a1ada18dd2a55fd384173796936fe286a}
+
+
+Change the name of the member. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ new name of the member \\
+\hline
+\end{DoxyParams}
+\hypertarget{classMember_a7178ead1b2f1daa5fc5f993281ec90a4}{\index{Member@{Member}!get\+Class@{get\+Class}}
+\index{get\+Class@{get\+Class}!Member@{Member}}
+\subsubsection[{get\+Class}]{\setlength{\rightskip}{0pt plus 5cm}string Member\+::get\+Class (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classMember_a7178ead1b2f1daa5fc5f993281ec90a4}
+
+
+Return the name of the class -\/ virtual. 
+
+\begin{DoxyReturn}{Returns}
+\char`\"{}\+Member\char`\"{} 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classConstant_aeb11c90406eb42af86ba8898fb774e1d}{Constant}, \hyperlink{classObject_a397dca51f83eef1e5fc827aed391c2cf}{Object}, and \hyperlink{classVariable_aaebc8ef1594f951323e33725abfd69b5}{Variable}.
+
+\hypertarget{classMember_acbe6a0cd073a21fb0f1da2cbfb260952}{\index{Member@{Member}!get\+Name@{get\+Name}}
+\index{get\+Name@{get\+Name}!Member@{Member}}
+\subsubsection[{get\+Name}]{\setlength{\rightskip}{0pt plus 5cm}string Member\+::get\+Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classMember_acbe6a0cd073a21fb0f1da2cbfb260952}
+
+
+Get the name of the member. 
+
+\begin{DoxyReturn}{Returns}
+the string of its name 
+\end{DoxyReturn}
+\hypertarget{classMember_a97087e4d42f7a4e5c0d0818748ebb614}{\index{Member@{Member}!get\+Types@{get\+Types}}
+\index{get\+Types@{get\+Types}!Member@{Member}}
+\subsubsection[{get\+Types}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Type} $\ast$ $>$ $\ast$ Member\+::get\+Types (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classMember_a97087e4d42f7a4e5c0d0818748ebb614}
+
+
+Get the either type of the member. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to its either type 
+\end{DoxyReturn}
+\hypertarget{classMember_aaa0028059dd87706188ee670bd28e4f2}{\index{Member@{Member}!to\+\_\+string@{to\+\_\+string}}
+\index{to\+\_\+string@{to\+\_\+string}!Member@{Member}}
+\subsubsection[{to\+\_\+string}]{\setlength{\rightskip}{0pt plus 5cm}string Member\+::to\+\_\+string (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classMember_aaa0028059dd87706188ee670bd28e4f2}
+
+
+Return a string that represent the member -\/ virtual. 
+
+\begin{DoxyReturn}{Returns}
+a string \char`\"{}\+Member name -\/ either type\char`\"{} 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classConstant_a685a4dbdc864e61c3e14a0fd974ba024}{Constant}, \hyperlink{classObject_a520e44ab90b2d66a2c5c0874e19a688d}{Object}, and \hyperlink{classVariable_a193be8605a472ddcceba928e746ffac2}{Variable}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classMember_ac5030aba6f6207335cb970941c3a3f58}{\index{Member@{Member}!m\+\_\+name@{m\+\_\+name}}
+\index{m\+\_\+name@{m\+\_\+name}!Member@{Member}}
+\subsubsection[{m\+\_\+name}]{\setlength{\rightskip}{0pt plus 5cm}string Member\+::m\+\_\+name\hspace{0.3cm}{\ttfamily [protected]}}}\label{classMember_ac5030aba6f6207335cb970941c3a3f58}
+$<$ name of the member either type of the member 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{member_8h}{member.\+h}\item 
+src/\hyperlink{member_8cpp}{member.\+cpp}\end{DoxyCompactItemize}

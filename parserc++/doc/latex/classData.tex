@@ -1,0 +1,732 @@
+\hypertarget{classData}{\section{Data Class Reference}
+\label{classData}\index{Data@{Data}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classData_af11f741cb7f587e2e495452a8905a22a}{\hyperlink{classData_af11f741cb7f587e2e495452a8905a22a}{Data} ()}\label{classData_af11f741cb7f587e2e495452a8905a22a}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hypertarget{classData_aab31956423290f0d62dcca47ab4d16dd}{virtual \hyperlink{classData_aab31956423290f0d62dcca47ab4d16dd}{$\sim$\+Data} ()}\label{classData_aab31956423290f0d62dcca47ab4d16dd}
+
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classData_adcab26af5124ec74d78fe287d5fe230b}{add\+Domain} (string $\ast$name)
+\begin{DoxyCompactList}\small\item\em Set the name of the domain. \end{DoxyCompactList}\item 
+\hyperlink{classDomain}{Domain} $\ast$ \hyperlink{classData_ab089c7118ff881bb68aea9219bf3ce71}{get\+Domain} ()
+\begin{DoxyCompactList}\small\item\em Create a pointer to the domain. \end{DoxyCompactList}\item 
+\hyperlink{classProblem}{Problem} $\ast$ \hyperlink{classData_aec1aab3dbf34f208145f9a5998b0361a}{get\+Problem} ()
+\begin{DoxyCompactList}\small\item\em Create a pointer to the problem. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_ab1bf9174e79a11a839b4c20638e900b4}{is\+Domain} (string $\ast$name)
+\begin{DoxyCompactList}\small\item\em Verify if name is the name of the domain previously parsed. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_ab7776fd08b027d7fe13aef078074c1c3}{add\+Requirement} (int req)
+\begin{DoxyCompactList}\small\item\em Add the requirement req in m\+\_\+requirement once read in \+:requirements. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a7b65c60ee62668bac343e4d375f5e6d0}{is\+Requirement} (int req)
+\begin{DoxyCompactList}\small\item\em Verify if the requirement req has been announced in \+:requirements, and stored in m\+\_\+requirements. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a7ad500e35daba61a234d65036b313daf}{add\+Types} (std\+::vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Add the types in m\+\_\+types once read in \+:types and add the name of this type in m\+\_\+type\+\_\+list. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_abef55e0e00df2b789f477a17f1f0f49b}{is\+Type} (string type)
+\begin{DoxyCompactList}\small\item\em Verify if the type type has been defined, in m\+\_\+type\+\_\+list. \end{DoxyCompactList}\item 
+\hyperlink{classType}{Type} $\ast$ \hyperlink{classData_abf4f2b05619ed894c0541c9f26cba194}{get\+Type} (string name)
+\begin{DoxyCompactList}\small\item\em Get the pointer to a type contained in m\+\_\+types. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_af7e7c80360098609c34d5eb1e2947f34}{add\+Constants} (vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Add the constants in m\+\_\+constants once read in \+:constants and add the name of this constant in m\+\_\+constant\+\_\+list. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a970cb780e68756fffeab7539712bae08}{is\+Constant} (string constant)
+\begin{DoxyCompactList}\small\item\em Verify if the constant constant has been defined, in m\+\_\+constant\+\_\+list. \end{DoxyCompactList}\item 
+\hyperlink{classConstant}{Constant} $\ast$ \hyperlink{classData_a642f5f3f6735c2b5845ba2c151b79b1f}{get\+Constant} (string constant)
+\begin{DoxyCompactList}\small\item\em Get the pointer to a constant contained in m\+\_\+constants. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a8d3815b9c9f97e6fef596c431af7dd39}{add\+Predicate} (string $\ast$name, vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Add the predicates in m\+\_\+predicates once read in \+:predicates. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a8b38b503a1026118a9dde08be92f609f}{is\+Predicate} (string $\ast$name, vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Verify if the predicate have been defined in m\+\_\+predicates. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a5b576ebad8f95406f9940e832b401d45}{is\+Predicate} (string $\ast$name, vector$<$ vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ $>$ types)
+\begin{DoxyCompactList}\small\item\em Verify if the predicate have been defined in m\+\_\+predicates. \end{DoxyCompactList}\item 
+\hyperlink{classPredicate}{Predicate} $\ast$ \hyperlink{classData_a639f1aec2b6917247a9835907a638c52}{get\+Predicate} (string $\ast$name, vector$<$ vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ $>$ types)
+\begin{DoxyCompactList}\small\item\em Get the pointer to a predicate contained in m\+\_\+predicates. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_af1c23bcc960f630dd922a2b7536f3976}{add\+Functions} (vector$<$ pair$<$ string $\ast$, vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$ $>$ $\ast$ $>$ $\ast$function\+\_\+skeleton\+\_\+list, vector$<$ string $>$ $\ast$return\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Add the functions in m\+\_\+functions once read in \+:functions. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_ab6d02279beb84726bb046dadf8190222}{add\+Function} (string $\ast$name, vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ return\+\_\+type, vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Add one function in m\+\_\+functions. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a62ef476f066455ffd3e5d9f2ffde145f}{is\+Function} (string $\ast$name, vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Verify if the function have been defined in m\+\_\+functions. \end{DoxyCompactList}\item 
+void \hyperlink{classData_a4ef55d895e6eefe77091a154edf4614d}{add\+Problem} (string $\ast$name)
+\begin{DoxyCompactList}\small\item\em Set the name of the problem. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_af3f253e6aac97be58347b71b977dab83}{add\+Objects} (vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Add the objects in m\+\_\+objects once read in \+:objects and add the name of this object in m\+\_\+object\+\_\+list. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a850db73b9a3cfada1e204853a66222dd}{is\+Object} (string object)
+\begin{DoxyCompactList}\small\item\em Verify if the object object has been defined, in m\+\_\+object\+\_\+list. \end{DoxyCompactList}\item 
+\hyperlink{classObject}{Object} $\ast$ \hyperlink{classData_a7e021783ede1baa1bfea1023d181755f}{get\+Object} (string object)
+\begin{DoxyCompactList}\small\item\em Get the pointer to a object contained in m\+\_\+objects. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a27908a242e9862807ee0ab5cb0fd26de}{add\+Init} (pair$<$ pair$<$ vector$<$ string $>$ $\ast$, string $\ast$ $>$ $\ast$, bool $>$ $\ast$literal, float at)
+\begin{DoxyCompactList}\small\item\em Add an init fluent in m\+\_\+inits once read in \+:init. \end{DoxyCompactList}\item 
+vector$<$ pair$<$ \hyperlink{classFluent}{Fluent} \\*
+$\ast$, \hyperlink{classAttribute}{Attribute} $>$ $>$ $\ast$ \hyperlink{classData_a915f723d120af4837bd5746791bfdc8a}{get\+Inits} ()
+\begin{DoxyCompactList}\small\item\em Get a pointer to the list m\+\_\+inits. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_add87185f44e1d804657c0eebeaf8ae2c}{add\+Goals} (vector$<$ vector$<$ pair$<$ pair$<$ vector$<$ string $>$ $\ast$, string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$ $>$ $\ast$pre\+\_\+\+G\+D)
+\begin{DoxyCompactList}\small\item\em Add the goal fluents in m\+\_\+goals once read in \+:goal. \end{DoxyCompactList}\item 
+vector$<$ pair$<$ \hyperlink{classFluent}{Fluent} \\*
+$\ast$, \hyperlink{classAttribute}{Attribute} $>$ $>$ $\ast$ \hyperlink{classData_a631b33415dab9a790804d289bc28ecbc}{get\+Goals} ()
+\begin{DoxyCompactList}\small\item\em Get a pointer to the list m\+\_\+goals. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a45b34ea5c6736c80751955960bca0ffe}{is\+Action} (string const $\ast$name)
+\begin{DoxyCompactList}\small\item\em Verify if the durative-\/action name has been defined, in m\+\_\+actions. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{classDurativeAction}{Durative\+Action} $\ast$ $>$ $\ast$ \hyperlink{classData_a240c4f180de6fecdc27828f7372bc097}{get\+Actions} ()
+\begin{DoxyCompactList}\small\item\em Get a pointer to the list m\+\_\+actions. \end{DoxyCompactList}\item 
+\hypertarget{classData_a636be6b2bdfbdc7c7443f8ec8f355050}{void \hyperlink{classData_a636be6b2bdfbdc7c7443f8ec8f355050}{display} ()}\label{classData_a636be6b2bdfbdc7c7443f8ec8f355050}
+
+\begin{DoxyCompactList}\small\item\em Display the data (domain variables, problem variables, and errors) in stdout. \end{DoxyCompactList}\item 
+void \hyperlink{classData_ac0f3cb4edd016d70b6e1510c7d5be6eb}{lexical\+\_\+error} (string msg)
+\begin{DoxyCompactList}\small\item\em Add a warning in the list m\+\_\+errors. \end{DoxyCompactList}\item 
+void \hyperlink{classData_aabe4046094f2f22776988fe24a174065}{fatal\+\_\+error} (string msg)
+\begin{DoxyCompactList}\small\item\em Stop the execution and print the error message on stderr. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a9683ed950f2f4417f52abdfead47224c}{add\+Durative\+Action} (string $\ast$name, vector$<$ \hyperlink{classTypedList}{Typed\+List} $\ast$ $>$ $\ast$typed\+List\+\_\+list, float number, vector$<$ pair$<$ pair$<$ vector$<$ string $>$ $\ast$, string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$timed\+\_\+\+G\+D, vector$<$ pair$<$ pair$<$ vector$<$ string $>$ $\ast$, string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$cond\+\_\+effect)
+\begin{DoxyCompactList}\small\item\em Add adurative-\/action in m\+\_\+actions once read in \+:durative-\/action. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a54b144fea33e662b4f2e461b9c741079}{add\+Initiated\+Function} (pair$<$ vector$<$ string $>$ $\ast$, string $\ast$ $>$ $\ast$atomic\+\_\+formula, float number)
+\begin{DoxyCompactList}\small\item\em Add an initiated function in m\+\_\+initiated\+\_\+functions once read in \+:init. \end{DoxyCompactList}\item 
+bool \hyperlink{classData_a81e53e623b3098f3caf6588ad2d08dc7}{is\+Function} (string $\ast$name, vector$<$ vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ $>$ types)
+\begin{DoxyCompactList}\small\item\em Verify if the function have been defined in m\+\_\+functions. \end{DoxyCompactList}\item 
+\hyperlink{classFunction}{Function} $\ast$ \hyperlink{classData_a2a24c9735e280dee849be4a5fec45c31}{get\+Function} (string $\ast$name, vector$<$ vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ $>$ types)
+\begin{DoxyCompactList}\small\item\em Get the pointer to a function contained in m\+\_\+functions. \end{DoxyCompactList}\item 
+float \hyperlink{classData_adbea20979c0d1ec1169276a336504191}{get\+Function\+Return} (string $\ast$name, vector$<$ string $>$ $\ast$list\+\_\+term)
+\begin{DoxyCompactList}\small\item\em Get the return of an initiated function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classData_af7e7c80360098609c34d5eb1e2947f34}{\index{Data@{Data}!add\+Constants@{add\+Constants}}
+\index{add\+Constants@{add\+Constants}!Data@{Data}}
+\subsubsection[{add\+Constants}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::add\+Constants (
+\begin{DoxyParamCaption}
+\item[{vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list}
+\end{DoxyParamCaption}
+)}}\label{classData_af7e7c80360098609c34d5eb1e2947f34}
+
+
+Add the constants in m\+\_\+constants once read in \+:constants and add the name of this constant in m\+\_\+constant\+\_\+list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em typed\+List\+\_\+list} & -\/ list of constants \+: (constants\+List, types\+List) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong 
+\end{DoxyReturn}
+\hypertarget{classData_adcab26af5124ec74d78fe287d5fe230b}{\index{Data@{Data}!add\+Domain@{add\+Domain}}
+\index{add\+Domain@{add\+Domain}!Data@{Data}}
+\subsubsection[{add\+Domain}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+::add\+Domain (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name}
+\end{DoxyParamCaption}
+)}}\label{classData_adcab26af5124ec74d78fe287d5fe230b}
+
+
+Set the name of the domain. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the domain \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_a9683ed950f2f4417f52abdfead47224c}{\index{Data@{Data}!add\+Durative\+Action@{add\+Durative\+Action}}
+\index{add\+Durative\+Action@{add\+Durative\+Action}!Data@{Data}}
+\subsubsection[{add\+Durative\+Action}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::add\+Durative\+Action (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name, }
+\item[{vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list, }
+\item[{float}]{number, }
+\item[{vector$<$ pair$<$ pair$<$ vector$<$ string $>$ $\ast$, string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$}]{timed\+\_\+\+G\+D, }
+\item[{vector$<$ pair$<$ pair$<$ vector$<$ string $>$ $\ast$, string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$}]{cond\+\_\+effect}
+\end{DoxyParamCaption}
+)}}\label{classData_a9683ed950f2f4417f52abdfead47224c}
+
+
+Add adurative-\/action in m\+\_\+actions once read in \+:durative-\/action. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the durative-\/action typed\+List\+\_\+list -\/ parameters (variables) of the durative-\/action \+: (variables\+List, types\+List) timed\+\_\+\+G\+D -\/ preconditions of the durative-\/action \+: list(pair(pair(fluent\+Parameters, fluent\+Name), prec\+Type)) cond\+\_\+effect -\/ effects of the durative-\/action \+: list(pair(pair(fluent\+Parameters, fluent\+Name), effect\+Type)) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong, such as a predicate that hasn't been defined 
+\end{DoxyReturn}
+\hypertarget{classData_ab6d02279beb84726bb046dadf8190222}{\index{Data@{Data}!add\+Function@{add\+Function}}
+\index{add\+Function@{add\+Function}!Data@{Data}}
+\subsubsection[{add\+Function}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::add\+Function (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name, }
+\item[{vector$<$ {\bf Type} $\ast$ $>$}]{return\+\_\+type, }
+\item[{vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list}
+\end{DoxyParamCaption}
+)}}\label{classData_ab6d02279beb84726bb046dadf8190222}
+
+
+Add one function in m\+\_\+functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the function return\+\_\+type -\/ the type of the return typed\+List\+\_\+list -\/ list of parameters of the function \+: (variables\+List, types\+List) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong 
+\end{DoxyReturn}
+\hypertarget{classData_af1c23bcc960f630dd922a2b7536f3976}{\index{Data@{Data}!add\+Functions@{add\+Functions}}
+\index{add\+Functions@{add\+Functions}!Data@{Data}}
+\subsubsection[{add\+Functions}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::add\+Functions (
+\begin{DoxyParamCaption}
+\item[{vector$<$ pair$<$ string $\ast$, vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$ $>$ $\ast$ $>$ $\ast$}]{function\+\_\+skeleton\+\_\+list, }
+\item[{vector$<$ string $>$ $\ast$}]{return\+\_\+type}
+\end{DoxyParamCaption}
+)}}\label{classData_af1c23bcc960f630dd922a2b7536f3976}
+
+
+Add the functions in m\+\_\+functions once read in \+:functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em function\+\_\+skeleton\+\_\+list} & -\/ list of the functions' pairs of name and parameters return\+\_\+type -\/ the type of the return (list for either representation) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong 
+\end{DoxyReturn}
+\hypertarget{classData_add87185f44e1d804657c0eebeaf8ae2c}{\index{Data@{Data}!add\+Goals@{add\+Goals}}
+\index{add\+Goals@{add\+Goals}!Data@{Data}}
+\subsubsection[{add\+Goals}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::add\+Goals (
+\begin{DoxyParamCaption}
+\item[{vector$<$ vector$<$ pair$<$ pair$<$ vector$<$ string $>$ $\ast$, string $\ast$ $>$ $\ast$, int $>$ $\ast$ $>$ $\ast$ $>$ $\ast$}]{pre\+\_\+\+G\+D}
+\end{DoxyParamCaption}
+)}}\label{classData_add87185f44e1d804657c0eebeaf8ae2c}
+
+
+Add the goal fluents in m\+\_\+goals once read in \+:goal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pre\+\_\+\+G\+D} & -\/ list of fluents () \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong, such as a fluent of which the predicate hasn't been defined 
+\end{DoxyReturn}
+\hypertarget{classData_a27908a242e9862807ee0ab5cb0fd26de}{\index{Data@{Data}!add\+Init@{add\+Init}}
+\index{add\+Init@{add\+Init}!Data@{Data}}
+\subsubsection[{add\+Init}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::add\+Init (
+\begin{DoxyParamCaption}
+\item[{pair$<$ pair$<$ vector$<$ string $>$ $\ast$, string $\ast$ $>$ $\ast$, bool $>$ $\ast$}]{literal, }
+\item[{float}]{at}
+\end{DoxyParamCaption}
+)}}\label{classData_a27908a242e9862807ee0ab5cb0fd26de}
+
+
+Add an init fluent in m\+\_\+inits once read in \+:init. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em literal} & -\/ fluent \+: pair(pair(parameters, name), positive) at -\/ time when this init is effctive \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong, such as a fluent of which the predicate hasn't been defined 
+\end{DoxyReturn}
+\hypertarget{classData_a54b144fea33e662b4f2e461b9c741079}{\index{Data@{Data}!add\+Initiated\+Function@{add\+Initiated\+Function}}
+\index{add\+Initiated\+Function@{add\+Initiated\+Function}!Data@{Data}}
+\subsubsection[{add\+Initiated\+Function}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::add\+Initiated\+Function (
+\begin{DoxyParamCaption}
+\item[{pair$<$ vector$<$ string $>$ $\ast$, string $\ast$ $>$ $\ast$}]{atomic\+\_\+formula, }
+\item[{float}]{number}
+\end{DoxyParamCaption}
+)}}\label{classData_a54b144fea33e662b4f2e461b9c741079}
+
+
+Add an initiated function in m\+\_\+initiated\+\_\+functions once read in \+:init. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em atomic\+\_\+formula} & -\/ name and parameters \+: pair(parameters, name) number -\/ the return of the initiated function \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong, such as a function or an object or a constant that hasn't been defined 
+\end{DoxyReturn}
+\hypertarget{classData_af3f253e6aac97be58347b71b977dab83}{\index{Data@{Data}!add\+Objects@{add\+Objects}}
+\index{add\+Objects@{add\+Objects}!Data@{Data}}
+\subsubsection[{add\+Objects}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::add\+Objects (
+\begin{DoxyParamCaption}
+\item[{vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list}
+\end{DoxyParamCaption}
+)}}\label{classData_af3f253e6aac97be58347b71b977dab83}
+
+
+Add the objects in m\+\_\+objects once read in \+:objects and add the name of this object in m\+\_\+object\+\_\+list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em typed\+List\+\_\+list} & -\/ list of objects \+: (objects\+List, types\+List) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong 
+\end{DoxyReturn}
+\hypertarget{classData_a8d3815b9c9f97e6fef596c431af7dd39}{\index{Data@{Data}!add\+Predicate@{add\+Predicate}}
+\index{add\+Predicate@{add\+Predicate}!Data@{Data}}
+\subsubsection[{add\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::add\+Predicate (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name, }
+\item[{vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list}
+\end{DoxyParamCaption}
+)}}\label{classData_a8d3815b9c9f97e6fef596c431af7dd39}
+
+
+Add the predicates in m\+\_\+predicates once read in \+:predicates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ the name of the predicate typed\+List\+\_\+list -\/ list of parameters \+: (variables\+List, types\+List) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong 
+\end{DoxyReturn}
+\hypertarget{classData_a4ef55d895e6eefe77091a154edf4614d}{\index{Data@{Data}!add\+Problem@{add\+Problem}}
+\index{add\+Problem@{add\+Problem}!Data@{Data}}
+\subsubsection[{add\+Problem}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+::add\+Problem (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name}
+\end{DoxyParamCaption}
+)}}\label{classData_a4ef55d895e6eefe77091a154edf4614d}
+
+
+Set the name of the problem. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the problem \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_ab7776fd08b027d7fe13aef078074c1c3}{\index{Data@{Data}!add\+Requirement@{add\+Requirement}}
+\index{add\+Requirement@{add\+Requirement}!Data@{Data}}
+\subsubsection[{add\+Requirement}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::add\+Requirement (
+\begin{DoxyParamCaption}
+\item[{int}]{req}
+\end{DoxyParamCaption}
+)}}\label{classData_ab7776fd08b027d7fe13aef078074c1c3}
+
+
+Add the requirement req in m\+\_\+requirement once read in \+:requirements. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & -\/ Token of the requirement \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false if the requirement already exists, else true 
+\end{DoxyReturn}
+\hypertarget{classData_a7ad500e35daba61a234d65036b313daf}{\index{Data@{Data}!add\+Types@{add\+Types}}
+\index{add\+Types@{add\+Types}!Data@{Data}}
+\subsubsection[{add\+Types}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::add\+Types (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list}
+\end{DoxyParamCaption}
+)}}\label{classData_a7ad500e35daba61a234d65036b313daf}
+
+
+Add the types in m\+\_\+types once read in \+:types and add the name of this type in m\+\_\+type\+\_\+list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em typed\+List\+\_\+list} & -\/ list of types \+: (types\+List, parent\+Types\+List) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false something went wrong 
+\end{DoxyReturn}
+\hypertarget{classData_aabe4046094f2f22776988fe24a174065}{\index{Data@{Data}!fatal\+\_\+error@{fatal\+\_\+error}}
+\index{fatal\+\_\+error@{fatal\+\_\+error}!Data@{Data}}
+\subsubsection[{fatal\+\_\+error}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+::fatal\+\_\+error (
+\begin{DoxyParamCaption}
+\item[{string}]{msg}
+\end{DoxyParamCaption}
+)}}\label{classData_aabe4046094f2f22776988fe24a174065}
+
+
+Stop the execution and print the error message on stderr. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & -\/ message of the error \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_a240c4f180de6fecdc27828f7372bc097}{\index{Data@{Data}!get\+Actions@{get\+Actions}}
+\index{get\+Actions@{get\+Actions}!Data@{Data}}
+\subsubsection[{get\+Actions}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Durative\+Action} $\ast$ $>$ $\ast$ Data\+::get\+Actions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classData_a240c4f180de6fecdc27828f7372bc097}
+
+
+Get a pointer to the list m\+\_\+actions. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to the list m\+\_\+actions 
+\end{DoxyReturn}
+\hypertarget{classData_a642f5f3f6735c2b5845ba2c151b79b1f}{\index{Data@{Data}!get\+Constant@{get\+Constant}}
+\index{get\+Constant@{get\+Constant}!Data@{Data}}
+\subsubsection[{get\+Constant}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constant} $\ast$ Data\+::get\+Constant (
+\begin{DoxyParamCaption}
+\item[{string}]{constant}
+\end{DoxyParamCaption}
+)}}\label{classData_a642f5f3f6735c2b5845ba2c151b79b1f}
+
+
+Get the pointer to a constant contained in m\+\_\+constants. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em constant} & -\/ name of the constant \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer to the constant which name is constant, or N\+U\+L\+L if it doesn't exist 
+\end{DoxyReturn}
+\hypertarget{classData_ab089c7118ff881bb68aea9219bf3ce71}{\index{Data@{Data}!get\+Domain@{get\+Domain}}
+\index{get\+Domain@{get\+Domain}!Data@{Data}}
+\subsubsection[{get\+Domain}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Domain} $\ast$ Data\+::get\+Domain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classData_ab089c7118ff881bb68aea9219bf3ce71}
+
+
+Create a pointer to the domain. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to the domain 
+\end{DoxyReturn}
+\hypertarget{classData_a2a24c9735e280dee849be4a5fec45c31}{\index{Data@{Data}!get\+Function@{get\+Function}}
+\index{get\+Function@{get\+Function}!Data@{Data}}
+\subsubsection[{get\+Function}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Function} $\ast$ Data\+::get\+Function (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name, }
+\item[{vector$<$ vector$<$ {\bf Type} $\ast$ $>$ $>$}]{types}
+\end{DoxyParamCaption}
+)}}\label{classData_a2a24c9735e280dee849be4a5fec45c31}
+
+
+Get the pointer to a function contained in m\+\_\+functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ the name of the function types -\/ list of parameters' types \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer to the function with the right name and parameters, or N\+U\+L\+L if it doesn't exist 
+\end{DoxyReturn}
+\hypertarget{classData_adbea20979c0d1ec1169276a336504191}{\index{Data@{Data}!get\+Function\+Return@{get\+Function\+Return}}
+\index{get\+Function\+Return@{get\+Function\+Return}!Data@{Data}}
+\subsubsection[{get\+Function\+Return}]{\setlength{\rightskip}{0pt plus 5cm}float Data\+::get\+Function\+Return (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name, }
+\item[{vector$<$ string $>$ $\ast$}]{list\+\_\+term}
+\end{DoxyParamCaption}
+)}}\label{classData_adbea20979c0d1ec1169276a336504191}
+
+
+Get the return of an initiated function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ the name of the function list\+\_\+term -\/ list of parameters \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the return of the function, and -\/1.\+0 if the function hasn't been found in m\+\_\+initiated\+\_\+functions 
+\end{DoxyReturn}
+\hypertarget{classData_a631b33415dab9a790804d289bc28ecbc}{\index{Data@{Data}!get\+Goals@{get\+Goals}}
+\index{get\+Goals@{get\+Goals}!Data@{Data}}
+\subsubsection[{get\+Goals}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ pair$<$ {\bf Fluent} $\ast$, {\bf Attribute} $>$ $>$ $\ast$ Data\+::get\+Goals (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classData_a631b33415dab9a790804d289bc28ecbc}
+
+
+Get a pointer to the list m\+\_\+goals. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to m\+\_\+goals 
+\end{DoxyReturn}
+\hypertarget{classData_a915f723d120af4837bd5746791bfdc8a}{\index{Data@{Data}!get\+Inits@{get\+Inits}}
+\index{get\+Inits@{get\+Inits}!Data@{Data}}
+\subsubsection[{get\+Inits}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ pair$<$ {\bf Fluent} $\ast$, {\bf Attribute} $>$ $>$ $\ast$ Data\+::get\+Inits (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classData_a915f723d120af4837bd5746791bfdc8a}
+
+
+Get a pointer to the list m\+\_\+inits. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to m\+\_\+inits 
+\end{DoxyReturn}
+\hypertarget{classData_a7e021783ede1baa1bfea1023d181755f}{\index{Data@{Data}!get\+Object@{get\+Object}}
+\index{get\+Object@{get\+Object}!Data@{Data}}
+\subsubsection[{get\+Object}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Object} $\ast$ Data\+::get\+Object (
+\begin{DoxyParamCaption}
+\item[{string}]{object}
+\end{DoxyParamCaption}
+)}}\label{classData_a7e021783ede1baa1bfea1023d181755f}
+
+
+Get the pointer to a object contained in m\+\_\+objects. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & -\/ name of the object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer to the object which name is object, or N\+U\+L\+L if it doesn't exist 
+\end{DoxyReturn}
+\hypertarget{classData_a639f1aec2b6917247a9835907a638c52}{\index{Data@{Data}!get\+Predicate@{get\+Predicate}}
+\index{get\+Predicate@{get\+Predicate}!Data@{Data}}
+\subsubsection[{get\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Predicate} $\ast$ Data\+::get\+Predicate (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name, }
+\item[{vector$<$ vector$<$ {\bf Type} $\ast$ $>$ $>$}]{types}
+\end{DoxyParamCaption}
+)}}\label{classData_a639f1aec2b6917247a9835907a638c52}
+
+
+Get the pointer to a predicate contained in m\+\_\+predicates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ the name of the predicate types -\/ list of parameters' types \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer to the predicate with the right name and parameters, or N\+U\+L\+L if it doesn't exist 
+\end{DoxyReturn}
+\hypertarget{classData_aec1aab3dbf34f208145f9a5998b0361a}{\index{Data@{Data}!get\+Problem@{get\+Problem}}
+\index{get\+Problem@{get\+Problem}!Data@{Data}}
+\subsubsection[{get\+Problem}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Problem} $\ast$ Data\+::get\+Problem (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classData_aec1aab3dbf34f208145f9a5998b0361a}
+
+
+Create a pointer to the problem. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to the problem 
+\end{DoxyReturn}
+\hypertarget{classData_abf4f2b05619ed894c0541c9f26cba194}{\index{Data@{Data}!get\+Type@{get\+Type}}
+\index{get\+Type@{get\+Type}!Data@{Data}}
+\subsubsection[{get\+Type}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Type} $\ast$ Data\+::get\+Type (
+\begin{DoxyParamCaption}
+\item[{string}]{name}
+\end{DoxyParamCaption}
+)}}\label{classData_abf4f2b05619ed894c0541c9f26cba194}
+
+
+Get the pointer to a type contained in m\+\_\+types. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the type \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer to the type which name is name, or N\+U\+L\+L if it doesn't exist 
+\end{DoxyReturn}
+\hypertarget{classData_a45b34ea5c6736c80751955960bca0ffe}{\index{Data@{Data}!is\+Action@{is\+Action}}
+\index{is\+Action@{is\+Action}!Data@{Data}}
+\subsubsection[{is\+Action}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::is\+Action (
+\begin{DoxyParamCaption}
+\item[{string const $\ast$}]{name}
+\end{DoxyParamCaption}
+)}}\label{classData_a45b34ea5c6736c80751955960bca0ffe}
+
+
+Verify if the durative-\/action name has been defined, in m\+\_\+actions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the durative-\/action \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_a970cb780e68756fffeab7539712bae08}{\index{Data@{Data}!is\+Constant@{is\+Constant}}
+\index{is\+Constant@{is\+Constant}!Data@{Data}}
+\subsubsection[{is\+Constant}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::is\+Constant (
+\begin{DoxyParamCaption}
+\item[{string}]{constant}
+\end{DoxyParamCaption}
+)}}\label{classData_a970cb780e68756fffeab7539712bae08}
+
+
+Verify if the constant constant has been defined, in m\+\_\+constant\+\_\+list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em constant} & -\/ name of the constant \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_ab1bf9174e79a11a839b4c20638e900b4}{\index{Data@{Data}!is\+Domain@{is\+Domain}}
+\index{is\+Domain@{is\+Domain}!Data@{Data}}
+\subsubsection[{is\+Domain}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::is\+Domain (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name}
+\end{DoxyParamCaption}
+)}}\label{classData_ab1bf9174e79a11a839b4c20638e900b4}
+
+
+Verify if name is the name of the domain previously parsed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the domain of the problem \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_a62ef476f066455ffd3e5d9f2ffde145f}{\index{Data@{Data}!is\+Function@{is\+Function}}
+\index{is\+Function@{is\+Function}!Data@{Data}}
+\subsubsection[{is\+Function}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::is\+Function (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name, }
+\item[{vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list}
+\end{DoxyParamCaption}
+)}}\label{classData_a62ef476f066455ffd3e5d9f2ffde145f}
+
+
+Verify if the function have been defined in m\+\_\+functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ the name of the function typed\+List\+\_\+list -\/ list of parameters \+: (variables\+List, types\+List) \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_a81e53e623b3098f3caf6588ad2d08dc7}{\index{Data@{Data}!is\+Function@{is\+Function}}
+\index{is\+Function@{is\+Function}!Data@{Data}}
+\subsubsection[{is\+Function}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::is\+Function (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name, }
+\item[{vector$<$ vector$<$ {\bf Type} $\ast$ $>$ $>$}]{types}
+\end{DoxyParamCaption}
+)}}\label{classData_a81e53e623b3098f3caf6588ad2d08dc7}
+
+
+Verify if the function have been defined in m\+\_\+functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ the name of the function types -\/ list of parameters' types \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_a850db73b9a3cfada1e204853a66222dd}{\index{Data@{Data}!is\+Object@{is\+Object}}
+\index{is\+Object@{is\+Object}!Data@{Data}}
+\subsubsection[{is\+Object}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::is\+Object (
+\begin{DoxyParamCaption}
+\item[{string}]{object}
+\end{DoxyParamCaption}
+)}}\label{classData_a850db73b9a3cfada1e204853a66222dd}
+
+
+Verify if the object object has been defined, in m\+\_\+object\+\_\+list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & -\/ name of the object \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_a8b38b503a1026118a9dde08be92f609f}{\index{Data@{Data}!is\+Predicate@{is\+Predicate}}
+\index{is\+Predicate@{is\+Predicate}!Data@{Data}}
+\subsubsection[{is\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::is\+Predicate (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name, }
+\item[{vector$<$ {\bf Typed\+List} $\ast$ $>$ $\ast$}]{typed\+List\+\_\+list}
+\end{DoxyParamCaption}
+)}}\label{classData_a8b38b503a1026118a9dde08be92f609f}
+
+
+Verify if the predicate have been defined in m\+\_\+predicates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ the name of the predicate typed\+List\+\_\+list -\/ list of parameters \+: (variables\+List, types\+List) \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_a5b576ebad8f95406f9940e832b401d45}{\index{Data@{Data}!is\+Predicate@{is\+Predicate}}
+\index{is\+Predicate@{is\+Predicate}!Data@{Data}}
+\subsubsection[{is\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::is\+Predicate (
+\begin{DoxyParamCaption}
+\item[{string $\ast$}]{name, }
+\item[{vector$<$ vector$<$ {\bf Type} $\ast$ $>$ $>$}]{types}
+\end{DoxyParamCaption}
+)}}\label{classData_a5b576ebad8f95406f9940e832b401d45}
+
+
+Verify if the predicate have been defined in m\+\_\+predicates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ the name of the predicate types -\/ list of parameters' types \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_a7b65c60ee62668bac343e4d375f5e6d0}{\index{Data@{Data}!is\+Requirement@{is\+Requirement}}
+\index{is\+Requirement@{is\+Requirement}!Data@{Data}}
+\subsubsection[{is\+Requirement}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::is\+Requirement (
+\begin{DoxyParamCaption}
+\item[{int}]{req}
+\end{DoxyParamCaption}
+)}}\label{classData_a7b65c60ee62668bac343e4d375f5e6d0}
+
+
+Verify if the requirement req has been announced in \+:requirements, and stored in m\+\_\+requirements. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & -\/ Token of the requirement \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_abef55e0e00df2b789f477a17f1f0f49b}{\index{Data@{Data}!is\+Type@{is\+Type}}
+\index{is\+Type@{is\+Type}!Data@{Data}}
+\subsubsection[{is\+Type}]{\setlength{\rightskip}{0pt plus 5cm}bool Data\+::is\+Type (
+\begin{DoxyParamCaption}
+\item[{string}]{type}
+\end{DoxyParamCaption}
+)}}\label{classData_abef55e0e00df2b789f477a17f1f0f49b}
+
+
+Verify if the type type has been defined, in m\+\_\+type\+\_\+list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & -\/ name of the type \\
+\hline
+\end{DoxyParams}
+\hypertarget{classData_ac0f3cb4edd016d70b6e1510c7d5be6eb}{\index{Data@{Data}!lexical\+\_\+error@{lexical\+\_\+error}}
+\index{lexical\+\_\+error@{lexical\+\_\+error}!Data@{Data}}
+\subsubsection[{lexical\+\_\+error}]{\setlength{\rightskip}{0pt plus 5cm}void Data\+::lexical\+\_\+error (
+\begin{DoxyParamCaption}
+\item[{string}]{msg}
+\end{DoxyParamCaption}
+)}}\label{classData_ac0f3cb4edd016d70b6e1510c7d5be6eb}
+
+
+Add a warning in the list m\+\_\+errors. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & -\/ message of the error \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{Data_8h}{Data.\+h}\item 
+\hyperlink{Data_8cpp}{Data.\+cpp}\end{DoxyCompactItemize}
