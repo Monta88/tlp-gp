@@ -751,7 +751,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 	Attribute att; // attribute associated with the current fluent
 	
 	if (isAction(name)) { // if the action already exists
-			lexical_error("The " + *name + " action already exists with the same name, so it won't be used");
+			fatal_error("The " + *name + " action already exists with the same name");
 			return false;
 	}
 	
@@ -777,7 +777,7 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 		// for each variable in the current typedList
 		for (vector<string>::reverse_iterator it2 =(*it)->getList()->rbegin(); it2 != (*it)->getList()->rend();++it2) {					
 			if (action->isVariable(*it2)) { // if the variable already is a parameter of this action (same name)
-				lexical_error("In action " + action->getName() + " : the " + (*it2) + " variable already exist. The definition of this action is illed formed so it won't be used");
+				fatal_error("In action " + action->getName() + " : the " + (*it2) + " variable already exists");
 				return false;
 			}	
 			action->addParameters( Variable(*it2,types) );					
@@ -803,13 +803,13 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 			 	   type_list.push_back(*(getConstant(*it2)->getTypes()));
 			 	   variable_list.push_back(getConstant(*it2));
 			   } else { // if the parameter is nor a variable action's parameter nor a constant
-			 	   lexical_error("In action " + action->getName() + " the variable " + (*it2) + " don't exist");
+			 	   fatal_error("In action " + action->getName() + " the variable " + (*it2) + " doesn't exist");
 			    return false; 
 			   }	
 		}
 		
 		if(!(isPredicate((*it)->first->second, type_list))) { // if the predicate doesn't exist
-			lexical_error("In action " + action->getName() + " : the predicate "+ *(*it)->first->second +" doesn't exist. The definition of this action is illed formed so it won't be used");
+			fatal_error("In action " + action->getName() + " : the predicate "+ *(*it)->first->second +" doesn't exist");
 			return false;
 		}
 		
@@ -861,13 +861,13 @@ bool Data::addDurativeAction(string * name, vector<TypedList*> * typedList_list,
 			   	 type_list.push_back(*(getConstant(*it2)->getTypes()));
 			   	 variable_list.push_back(getConstant(*it2));
 			   } else { // if the parameter is nor a variable action's parameter nor a constant
-			   	 lexical_error("In action " + action->getName() + " the variable " + (*it2) + " don't exist");
+			   	 lexical_error("In action " + action->getName() + " the variable " + (*it2) + " doesn't exist");
 			   	 return false; 
 			   }	
 		}
 		// predicate existence verification 
 		if(!(isPredicate((*it)->first->second,type_list))) {
-			lexical_error("In action " + action->getName() + " : the predicate "+ *(*it)->first->second + " doesn't exist. The definition of this action is illed formed so it won't be used");
+			fatal_error("In action " + action->getName() + " : the predicate "+ *(*it)->first->second + " doesn't exist");
 			return false;
 		}
 		
@@ -939,7 +939,7 @@ bool Data::addInitiatedFunction(pair< vector< string > *, string *> * atomic_for
 				member = getObject(*it_member);
 			}
 			else { // if the parameter is nor an object nor a constant
-				lexical_error((*it_member) + " is nor a Constant nor an Object. The initiated function " + *atomic_formula->second + " won't be used");
+				fatal_error((*it_member) + " is nor a Constant nor an Object");
 				return false;
 			}
 		}

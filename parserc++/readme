@@ -24,7 +24,7 @@ The parser is quite permissive too and theese choices we made are more visible i
 
 Most of the structure in the parser (cf. %union in grammar) are pointers in order to avoid raw copy, and optimize performances.
 
-The PDDL 3.1 Temporally Extended syntax analyzer is fully implemented. But the lexical analyzer works only on the requirements, and parts of the grammar that is used by the TLP-GP planner. Theese parts correspond in the requirements : :typing, :numeric-fluents, :durative-actions and :strips.
+The PDDL 3.1 Temporally Extended syntax analyzer is fully implemented. But the lexical analyzer works only on the requirements, and parts of the grammar that is used by the TLP-GP planner. Theese parts correspond in the requirements : :typing, :numeric-fluents, :durative-actions, :timed-initial-literals and :strips.
 
 For now, the functions doesn't parse correctly when they are used in actions' definition (the program tries to get the return of the function in the definition of the action that uses this funciton, but the function is not yet initiated) : the structure of a DurativeAction must be upgraded to transform the bounds of an Interval from a float to a float or a Function, and when the functions are initated in :init, DurativeActions must be updated in order they have no more Function in they Intervals, but only floats.
 
@@ -32,5 +32,5 @@ In Data, we use vector<string> in local variables to make the verifications fast
 
 Our PDDL types are represented as lists of Types in order to represent both "either" and simple types (ex : (either t1 t2 t3) => vector(t1, t2, t3), and t1 => vector(t1)).
 
-About Temporally Extended modality : because we don't know how to manage timepoints, we cannot translate somewhere, anywhere and minimal-duration.
+About Temporally Extended modalities : because we don't know how to manage timepoints, we cannot translate somewhere, anywhere and minimal-duration. Because of that, we can't use :timepoints, :timealiases and :timeconstraints.
 

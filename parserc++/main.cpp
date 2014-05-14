@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 	domain = data->getDomain();
 	problem = data->getProblem();
 
-	cout<<" domaine : "<<domain->getName()<<"| probleme : "<<problem->getName()<<endl;
+	cout<<"Domain : "<<domain->getName()<<"\t| Problem : "<<problem->getName()<<endl;
 
 	// we launch the planner
 	// TLP-GP 2
