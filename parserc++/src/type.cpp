@@ -47,6 +47,8 @@ vector<Type*> * Type::getParents() {
 }
 
 bool Type::isOneOfParents(string name) {
+	if (m_parents == NULL) // if the type has no parent
+		return false;
 	// for each type of the either type of the parent
 	for (vector<Type*>::iterator it = m_parents.begin(); it != m_parents.end(); ++it) {
 		// we check if the current type is the right one, or if it is one of its parents
