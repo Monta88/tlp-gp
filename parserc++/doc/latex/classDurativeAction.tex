@@ -1,0 +1,122 @@
+\hypertarget{classDurativeAction}{\section{Durative\+Action Class Reference}
+\label{classDurativeAction}\index{Durative\+Action@{Durative\+Action}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classDurativeAction_a2f29690e45c91843985212819bdb9216}{{\bfseries Durative\+Action} (string name)}\label{classDurativeAction_a2f29690e45c91843985212819bdb9216}
+
+\item 
+\hypertarget{classDurativeAction_a1cbe578c21997bc536634a8e7e07a61b}{string {\bfseries get\+Name} ()}\label{classDurativeAction_a1cbe578c21997bc536634a8e7e07a61b}
+
+\item 
+\hypertarget{classDurativeAction_a8179dcc025b0b1785aaf45950f637f1c}{void {\bfseries add\+Duration} (float duration)}\label{classDurativeAction_a8179dcc025b0b1785aaf45950f637f1c}
+
+\item 
+\hypertarget{classDurativeAction_ab66c488cd2c8c6f6de237df6330e94c9}{void {\bfseries add\+Parameters} (\hyperlink{classVariable}{Variable} parameter)}\label{classDurativeAction_ab66c488cd2c8c6f6de237df6330e94c9}
+
+\item 
+\hypertarget{classDurativeAction_a5126eba1c93a071e65d0caf8cee35e7b}{float {\bfseries get\+Duration} ()}\label{classDurativeAction_a5126eba1c93a071e65d0caf8cee35e7b}
+
+\item 
+\hypertarget{classDurativeAction_a53de39340b940f87a92e53170295ca7f}{void {\bfseries add\+Condition} (\hyperlink{classAttribute}{Attribute} att, \hyperlink{classFluent}{Fluent} $\ast$fluent)}\label{classDurativeAction_a53de39340b940f87a92e53170295ca7f}
+
+\item 
+\hypertarget{classDurativeAction_a4151be1dc10390fff5e27836bb3a2413}{void {\bfseries add\+Effect} (\hyperlink{classAttribute}{Attribute} att, \hyperlink{classFluent}{Fluent} $\ast$fluent)}\label{classDurativeAction_a4151be1dc10390fff5e27836bb3a2413}
+
+\item 
+\hypertarget{classDurativeAction_a6b5c3253a5f75604ad2c9feedd7d55b3}{void {\bfseries add\+Not\+Condition} (\hyperlink{classAttribute}{Attribute} att, \hyperlink{classFluent}{Fluent} $\ast$fluent)}\label{classDurativeAction_a6b5c3253a5f75604ad2c9feedd7d55b3}
+
+\item 
+\hypertarget{classDurativeAction_a9dffec2f6ba602dd4fdf0c73dd600f4b}{void {\bfseries add\+Not\+Effect} (\hyperlink{classAttribute}{Attribute} att, \hyperlink{classFluent}{Fluent} $\ast$fluent)}\label{classDurativeAction_a9dffec2f6ba602dd4fdf0c73dd600f4b}
+
+\item 
+\hypertarget{classDurativeAction_a706b2dcaebe118f693552e044f669317}{bool {\bfseries is\+Variable} (string name)}\label{classDurativeAction_a706b2dcaebe118f693552e044f669317}
+
+\item 
+\hypertarget{classDurativeAction_ab312dd7ef4e75f62e09dbbd2005898fc}{\hyperlink{classVariable}{Variable} $\ast$ {\bfseries get\+Variable} (string name)}\label{classDurativeAction_ab312dd7ef4e75f62e09dbbd2005898fc}
+
+\item 
+\hypertarget{classDurativeAction_a5eec26a104ce36d5f67c8ec96aeee371}{vector$<$ \hyperlink{classFluent}{Fluent} $\ast$ $>$ {\bfseries get\+Preconditions} ()}\label{classDurativeAction_a5eec26a104ce36d5f67c8ec96aeee371}
+
+\item 
+\hypertarget{classDurativeAction_ad29fec94dc012ef7d0c1389aac02e370}{bool {\bfseries is\+Pred\+Conditions} (string $\ast$name, vector$<$ vector$<$ \hyperlink{classType}{Type} $\ast$ $>$$>$)}\label{classDurativeAction_ad29fec94dc012ef7d0c1389aac02e370}
+
+\item 
+\hypertarget{classDurativeAction_aaff6af66a2be7343975d117dc93a263e}{\hyperlink{classFluent}{Fluent} $\ast$ {\bfseries get\+Pred\+Condition} (string $\ast$name, vector$<$ vector$<$ \hyperlink{classType}{Type} $\ast$ $>$$>$)}\label{classDurativeAction_aaff6af66a2be7343975d117dc93a263e}
+
+\item 
+\hypertarget{classDurativeAction_acc10d6f78ae097f35a5622c9f56183bf}{vector$<$ \hyperlink{classFluent}{Fluent} $\ast$ $>$ {\bfseries get\+Not\+Preconditions} ()}\label{classDurativeAction_acc10d6f78ae097f35a5622c9f56183bf}
+
+\item 
+\hypertarget{classDurativeAction_a71a81e7deb038e0fc14c57b9e7eb8afc}{bool {\bfseries is\+Pred\+Not\+Conditions} (string $\ast$name, vector$<$ vector$<$ \hyperlink{classType}{Type} $\ast$ $>$$>$)}\label{classDurativeAction_a71a81e7deb038e0fc14c57b9e7eb8afc}
+
+\item 
+\hypertarget{classDurativeAction_a13fcf0f4e025ec656a858a6f9f7a78a1}{\hyperlink{classFluent}{Fluent} $\ast$ {\bfseries get\+Pred\+Not\+Condition} (string $\ast$name, vector$<$ vector$<$ \hyperlink{classType}{Type} $\ast$ $>$$>$)}\label{classDurativeAction_a13fcf0f4e025ec656a858a6f9f7a78a1}
+
+\item 
+\hypertarget{classDurativeAction_a82382a2fef6b90736fae06f0f19f1043}{vector$<$ pair$<$ \hyperlink{classAttribute}{Attribute}, \\*
+\hyperlink{classFluent}{Fluent} $\ast$ $>$ $>$ {\bfseries get\+Preconditions2} ()}\label{classDurativeAction_a82382a2fef6b90736fae06f0f19f1043}
+
+\item 
+\hypertarget{classDurativeAction_a38f17e27f96ee72c76a84cc93f3ea9cb}{vector$<$ pair$<$ \hyperlink{classAttribute}{Attribute}, \\*
+\hyperlink{classFluent}{Fluent} $\ast$ $>$ $>$ {\bfseries get\+Not\+Preconditions2} ()}\label{classDurativeAction_a38f17e27f96ee72c76a84cc93f3ea9cb}
+
+\item 
+\hypertarget{classDurativeAction_abf35a960adb271d0e927e979e96e1735}{vector$<$ pair$<$ \hyperlink{classAttribute}{Attribute}, \\*
+\hyperlink{classFluent}{Fluent} $\ast$ $>$ $>$ {\bfseries get\+Effects} ()}\label{classDurativeAction_abf35a960adb271d0e927e979e96e1735}
+
+\item 
+\hypertarget{classDurativeAction_af83c8738d366161a764ee52f0535ae96}{vector$<$ pair$<$ \hyperlink{classAttribute}{Attribute}, \\*
+\hyperlink{classFluent}{Fluent} $\ast$ $>$ $>$ {\bfseries get\+Not\+Effects} ()}\label{classDurativeAction_af83c8738d366161a764ee52f0535ae96}
+
+\item 
+\hypertarget{classDurativeAction_ab2caf6a417e3b2488ac629e4cd238b78}{vector$<$ \hyperlink{classFluent}{Fluent} $\ast$ $>$ {\bfseries get\+Effects\+F} ()}\label{classDurativeAction_ab2caf6a417e3b2488ac629e4cd238b78}
+
+\item 
+\hypertarget{classDurativeAction_a85c481dadbde2b4d3d9d8188aa64e69b}{vector$<$ \hyperlink{classFluent}{Fluent} $\ast$ $>$ {\bfseries get\+Not\+Effects\+F} ()}\label{classDurativeAction_a85c481dadbde2b4d3d9d8188aa64e69b}
+
+\item 
+\hypertarget{classDurativeAction_a64263c735f86e51cc876b942d3cc71f6}{vector$<$ \hyperlink{classVariable}{Variable} $>$ $\ast$ {\bfseries get\+Parameters} ()}\label{classDurativeAction_a64263c735f86e51cc876b942d3cc71f6}
+
+\item 
+\hypertarget{classDurativeAction_a2e470b8ed1db9bd0ad66890ff6ec4c47}{string {\bfseries to\+\_\+string} ()}\label{classDurativeAction_a2e470b8ed1db9bd0ad66890ff6ec4c47}
+
+\item 
+\hypertarget{classDurativeAction_a0d97529614687778b1e2b1ffd56ca688}{string {\bfseries to\+\_\+string\+Param} ()}\label{classDurativeAction_a0d97529614687778b1e2b1ffd56ca688}
+
+\item 
+\hypertarget{classDurativeAction_aa3fa3af91c1f995c10244468af9c7160}{{\bfseries Durative\+Action} (const \hyperlink{classDurativeAction}{Durative\+Action} \&action)}\label{classDurativeAction_aa3fa3af91c1f995c10244468af9c7160}
+
+\item 
+\hypertarget{classDurativeAction_a9ae4a1bfee1889c1ef4033a36804d1d7}{vector$<$ \hyperlink{classVariable}{Variable} $>$ {\bfseries get\+Parameters\+C} () const }\label{classDurativeAction_a9ae4a1bfee1889c1ef4033a36804d1d7}
+
+\item 
+\hypertarget{classDurativeAction_a65604bf41b7a43d05a07169457ef66a1}{\hyperlink{classVariable}{Variable} $\ast$ {\bfseries give\+Point\+Variable} (\hyperlink{classMember}{Member} $\ast$member)}\label{classDurativeAction_a65604bf41b7a43d05a07169457ef66a1}
+
+\item 
+\hypertarget{classDurativeAction_acc2c6602296614e82165543da0a9a276}{string {\bfseries get\+Name\+C} () const }\label{classDurativeAction_acc2c6602296614e82165543da0a9a276}
+
+\item 
+\hypertarget{classDurativeAction_a9f24d997312b4c9f6d3891915189ea51}{vector$<$ pair$<$ \hyperlink{classAttribute}{Attribute}, \\*
+\hyperlink{classFluent}{Fluent} $\ast$ $>$ $>$ {\bfseries get\+Preconditions2\+C} () const }\label{classDurativeAction_a9f24d997312b4c9f6d3891915189ea51}
+
+\item 
+\hypertarget{classDurativeAction_ac687f39e03927f4878123065a4d900a4}{vector$<$ pair$<$ \hyperlink{classAttribute}{Attribute}, \\*
+\hyperlink{classFluent}{Fluent} $\ast$ $>$ $>$ {\bfseries get\+Not\+Preconditions2\+C} () const }\label{classDurativeAction_ac687f39e03927f4878123065a4d900a4}
+
+\item 
+\hypertarget{classDurativeAction_a7e7f80cb467b893016729b6d6029bfef}{vector$<$ pair$<$ \hyperlink{classAttribute}{Attribute}, \\*
+\hyperlink{classFluent}{Fluent} $\ast$ $>$ $>$ {\bfseries get\+Effects\+C} () const }\label{classDurativeAction_a7e7f80cb467b893016729b6d6029bfef}
+
+\item 
+\hypertarget{classDurativeAction_acbbd55cc16bd9bf90301817cc3f708f7}{vector$<$ pair$<$ \hyperlink{classAttribute}{Attribute}, \\*
+\hyperlink{classFluent}{Fluent} $\ast$ $>$ $>$ {\bfseries get\+Not\+Effects\+C} () const }\label{classDurativeAction_acbbd55cc16bd9bf90301817cc3f708f7}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/durative\+\_\+action.\+h\item 
+src/durative\+\_\+action.\+cpp\end{DoxyCompactItemize}

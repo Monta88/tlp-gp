@@ -1,0 +1,148 @@
+\hypertarget{classType}{\section{Type Class Reference}
+\label{classType}\index{Type@{Type}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classType_a78339313d36891f18427c431ea84e306}{\hyperlink{classType_a78339313d36891f18427c431ea84e306}{Type} ()}\label{classType_a78339313d36891f18427c431ea84e306}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classType_aa4810683e26c16eb59e71d28a45e558f}{Type} (string name, vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ parents)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classType_a58ff228c4b6fdace44ef1253b06dc51f}{Type} (string name)
+\begin{DoxyCompactList}\small\item\em Constructor, the parent type is set to an empty vector. \end{DoxyCompactList}\item 
+\hypertarget{classType_a79b5e86eb2dd658180797a1b798194a8}{virtual \hyperlink{classType_a79b5e86eb2dd658180797a1b798194a8}{$\sim$\+Type} ()}\label{classType_a79b5e86eb2dd658180797a1b798194a8}
+
+\begin{DoxyCompactList}\small\item\em Destructor -\/ virtual. \end{DoxyCompactList}\item 
+void \hyperlink{classType_aafd68a927632ba693e55737cb56a10ef}{add\+Parents} (vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ parents)
+\begin{DoxyCompactList}\small\item\em Add an either type to the existing either type of the parent type (doesn't duplicate) \end{DoxyCompactList}\item 
+string \hyperlink{classType_a1a1cd5b58200bf7320bfa663651d185b}{get\+Name} ()
+\begin{DoxyCompactList}\small\item\em Get the name of the type. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ $\ast$ \hyperlink{classType_a200655820e0067bca4dba0e06857af91}{get\+Parents} ()
+\begin{DoxyCompactList}\small\item\em Get the parent of the type. \end{DoxyCompactList}\item 
+bool \hyperlink{classType_ae962f493713c0aaadaa891eea97b7424}{is\+One\+Of\+Parents} (string name)
+\begin{DoxyCompactList}\small\item\em Check recursively if a type is one the type's parent, in m\+\_\+parents. \end{DoxyCompactList}\item 
+string \hyperlink{classType_ab8b2fef62ecd70ff970a0c3e301dc753}{to\+\_\+string} ()
+\begin{DoxyCompactList}\small\item\em Return a string that represent the type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classType_aa4810683e26c16eb59e71d28a45e558f}{\index{Type@{Type}!Type@{Type}}
+\index{Type@{Type}!Type@{Type}}
+\subsubsection[{Type}]{\setlength{\rightskip}{0pt plus 5cm}Type\+::\+Type (
+\begin{DoxyParamCaption}
+\item[{string}]{name, }
+\item[{vector$<$ {\bf Type} $\ast$ $>$}]{parents}
+\end{DoxyParamCaption}
+)}}\label{classType_aa4810683e26c16eb59e71d28a45e558f}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the type parents -\/ either type of the parent \\
+\hline
+\end{DoxyParams}
+\hypertarget{classType_a58ff228c4b6fdace44ef1253b06dc51f}{\index{Type@{Type}!Type@{Type}}
+\index{Type@{Type}!Type@{Type}}
+\subsubsection[{Type}]{\setlength{\rightskip}{0pt plus 5cm}Type\+::\+Type (
+\begin{DoxyParamCaption}
+\item[{string}]{name}
+\end{DoxyParamCaption}
+)}}\label{classType_a58ff228c4b6fdace44ef1253b06dc51f}
+
+
+Constructor, the parent type is set to an empty vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the object \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classType_aafd68a927632ba693e55737cb56a10ef}{\index{Type@{Type}!add\+Parents@{add\+Parents}}
+\index{add\+Parents@{add\+Parents}!Type@{Type}}
+\subsubsection[{add\+Parents}]{\setlength{\rightskip}{0pt plus 5cm}void Type\+::add\+Parents (
+\begin{DoxyParamCaption}
+\item[{vector$<$ {\bf Type} $\ast$ $>$}]{parents}
+\end{DoxyParamCaption}
+)}}\label{classType_aafd68a927632ba693e55737cb56a10ef}
+
+
+Add an either type to the existing either type of the parent type (doesn't duplicate) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em types} & -\/ either type to add to the object \\
+\hline
+\end{DoxyParams}
+\hypertarget{classType_a1a1cd5b58200bf7320bfa663651d185b}{\index{Type@{Type}!get\+Name@{get\+Name}}
+\index{get\+Name@{get\+Name}!Type@{Type}}
+\subsubsection[{get\+Name}]{\setlength{\rightskip}{0pt plus 5cm}string Type\+::get\+Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classType_a1a1cd5b58200bf7320bfa663651d185b}
+
+
+Get the name of the type. 
+
+\begin{DoxyReturn}{Returns}
+the string of the name 
+\end{DoxyReturn}
+\hypertarget{classType_a200655820e0067bca4dba0e06857af91}{\index{Type@{Type}!get\+Parents@{get\+Parents}}
+\index{get\+Parents@{get\+Parents}!Type@{Type}}
+\subsubsection[{get\+Parents}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Type} $\ast$ $>$ $\ast$ Type\+::get\+Parents (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classType_a200655820e0067bca4dba0e06857af91}
+
+
+Get the parent of the type. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to the either type of the parent 
+\end{DoxyReturn}
+\hypertarget{classType_ae962f493713c0aaadaa891eea97b7424}{\index{Type@{Type}!is\+One\+Of\+Parents@{is\+One\+Of\+Parents}}
+\index{is\+One\+Of\+Parents@{is\+One\+Of\+Parents}!Type@{Type}}
+\subsubsection[{is\+One\+Of\+Parents}]{\setlength{\rightskip}{0pt plus 5cm}bool Type\+::is\+One\+Of\+Parents (
+\begin{DoxyParamCaption}
+\item[{string}]{name}
+\end{DoxyParamCaption}
+)}}\label{classType_ae962f493713c0aaadaa891eea97b7424}
+
+
+Check recursively if a type is one the type's parent, in m\+\_\+parents. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of a the type to check in m\+\_\+parents \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true is name is one of parent's type 
+\end{DoxyReturn}
+\hypertarget{classType_ab8b2fef62ecd70ff970a0c3e301dc753}{\index{Type@{Type}!to\+\_\+string@{to\+\_\+string}}
+\index{to\+\_\+string@{to\+\_\+string}!Type@{Type}}
+\subsubsection[{to\+\_\+string}]{\setlength{\rightskip}{0pt plus 5cm}string Type\+::to\+\_\+string (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classType_ab8b2fef62ecd70ff970a0c3e301dc753}
+
+
+Return a string that represent the type. 
+
+\begin{DoxyReturn}{Returns}
+a string \char`\"{}\+Type name -\/ Parent(s) either type\char`\"{} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{type_8h}{type.\+h}\item 
+src/\hyperlink{type_8cpp}{type.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,145 @@
+\hypertarget{classFluent}{\section{Fluent Class Reference}
+\label{classFluent}\index{Fluent@{Fluent}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classFluent_a6305aaaef1dbd758c02ef9666f4e2b80}{\hyperlink{classFluent_a6305aaaef1dbd758c02ef9666f4e2b80}{Fluent} ()}\label{classFluent_a6305aaaef1dbd758c02ef9666f4e2b80}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFluent_ad70bec3e7ab68b2fb5017db6cbd56285}{Fluent} (\hyperlink{classPredicate}{Predicate} $\ast$predicate)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFluent_a16ceb20e80b8e434fc23a510d0665da5}{Fluent} (\hyperlink{classPredicate}{Predicate} $\ast$predicate, vector$<$ \hyperlink{classMember}{Member} $\ast$ $>$ members\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hypertarget{classFluent_a39d67a978f252e98968c088cd84ec5c9}{virtual \hyperlink{classFluent_a39d67a978f252e98968c088cd84ec5c9}{$\sim$\+Fluent} ()}\label{classFluent_a39d67a978f252e98968c088cd84ec5c9}
+
+\begin{DoxyCompactList}\small\item\em Destructor -\/ virtual. \end{DoxyCompactList}\item 
+\hyperlink{classPredicate}{Predicate} $\ast$ \hyperlink{classFluent_a3fafd88c616c6fb5c809cd7cac9deeab}{get\+Predicate} ()
+\begin{DoxyCompactList}\small\item\em Get the predicate linked to the fluent. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{classMember}{Member} $\ast$ $>$ $\ast$ \hyperlink{classFluent_aed2e7a624d7f5ed317e6606ad82d47d1}{get\+Members\+List} ()
+\begin{DoxyCompactList}\small\item\em Get the parameters. \end{DoxyCompactList}\item 
+void \hyperlink{classFluent_a61eb90ea4a265dc16ad7a6cb029da9d8}{add\+Member} (vector$<$ \hyperlink{classMember}{Member} $\ast$ $>$ member)
+\begin{DoxyCompactList}\small\item\em Set the parameters. \end{DoxyCompactList}\item 
+void \hyperlink{classFluent_a16dd64344cdcaba5fe63b90a531dd00e}{add\+Member} (\hyperlink{classMember}{Member} $\ast$member)
+\begin{DoxyCompactList}\small\item\em Add one parameter at the end of the list of parameters. \end{DoxyCompactList}\item 
+string \hyperlink{classFluent_a9bcbb06a1ac745f05ca580acd5aa4912}{to\+\_\+string} ()
+\begin{DoxyCompactList}\small\item\em Return a string that represent the fluent. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classFluent_ad70bec3e7ab68b2fb5017db6cbd56285}{\index{Fluent@{Fluent}!Fluent@{Fluent}}
+\index{Fluent@{Fluent}!Fluent@{Fluent}}
+\subsubsection[{Fluent}]{\setlength{\rightskip}{0pt plus 5cm}Fluent\+::\+Fluent (
+\begin{DoxyParamCaption}
+\item[{{\bf Predicate} $\ast$}]{predicate}
+\end{DoxyParamCaption}
+)}}\label{classFluent_ad70bec3e7ab68b2fb5017db6cbd56285}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em predicate} & -\/ predicate to link (can be used if the predicate doesn't have any parameters) \\
+\hline
+\end{DoxyParams}
+\hypertarget{classFluent_a16ceb20e80b8e434fc23a510d0665da5}{\index{Fluent@{Fluent}!Fluent@{Fluent}}
+\index{Fluent@{Fluent}!Fluent@{Fluent}}
+\subsubsection[{Fluent}]{\setlength{\rightskip}{0pt plus 5cm}Fluent\+::\+Fluent (
+\begin{DoxyParamCaption}
+\item[{{\bf Predicate} $\ast$}]{predicate, }
+\item[{vector$<$ {\bf Member} $\ast$ $>$}]{members\+\_\+list}
+\end{DoxyParamCaption}
+)}}\label{classFluent_a16ceb20e80b8e434fc23a510d0665da5}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em predicate} & -\/ predicate to link members\+\_\+list -\/ list of parameters \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classFluent_a61eb90ea4a265dc16ad7a6cb029da9d8}{\index{Fluent@{Fluent}!add\+Member@{add\+Member}}
+\index{add\+Member@{add\+Member}!Fluent@{Fluent}}
+\subsubsection[{add\+Member}]{\setlength{\rightskip}{0pt plus 5cm}void Fluent\+::add\+Member (
+\begin{DoxyParamCaption}
+\item[{vector$<$ {\bf Member} $\ast$ $>$}]{member}
+\end{DoxyParamCaption}
+)}}\label{classFluent_a61eb90ea4a265dc16ad7a6cb029da9d8}
+
+
+Set the parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em member} & -\/ list of parameters to set \\
+\hline
+\end{DoxyParams}
+\hypertarget{classFluent_a16dd64344cdcaba5fe63b90a531dd00e}{\index{Fluent@{Fluent}!add\+Member@{add\+Member}}
+\index{add\+Member@{add\+Member}!Fluent@{Fluent}}
+\subsubsection[{add\+Member}]{\setlength{\rightskip}{0pt plus 5cm}void Fluent\+::add\+Member (
+\begin{DoxyParamCaption}
+\item[{{\bf Member} $\ast$}]{member}
+\end{DoxyParamCaption}
+)}}\label{classFluent_a16dd64344cdcaba5fe63b90a531dd00e}
+
+
+Add one parameter at the end of the list of parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em member} & -\/ parameter to add at the end of the list \\
+\hline
+\end{DoxyParams}
+\hypertarget{classFluent_aed2e7a624d7f5ed317e6606ad82d47d1}{\index{Fluent@{Fluent}!get\+Members\+List@{get\+Members\+List}}
+\index{get\+Members\+List@{get\+Members\+List}!Fluent@{Fluent}}
+\subsubsection[{get\+Members\+List}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf Member} $\ast$ $>$ $\ast$ Fluent\+::get\+Members\+List (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classFluent_aed2e7a624d7f5ed317e6606ad82d47d1}
+
+
+Get the parameters. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to the list of parameters which is a list of members 
+\end{DoxyReturn}
+\hypertarget{classFluent_a3fafd88c616c6fb5c809cd7cac9deeab}{\index{Fluent@{Fluent}!get\+Predicate@{get\+Predicate}}
+\index{get\+Predicate@{get\+Predicate}!Fluent@{Fluent}}
+\subsubsection[{get\+Predicate}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Predicate} $\ast$ Fluent\+::get\+Predicate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classFluent_a3fafd88c616c6fb5c809cd7cac9deeab}
+
+
+Get the predicate linked to the fluent. 
+
+\begin{DoxyReturn}{Returns}
+the pointer to the predicate of this fluent 
+\end{DoxyReturn}
+\hypertarget{classFluent_a9bcbb06a1ac745f05ca580acd5aa4912}{\index{Fluent@{Fluent}!to\+\_\+string@{to\+\_\+string}}
+\index{to\+\_\+string@{to\+\_\+string}!Fluent@{Fluent}}
+\subsubsection[{to\+\_\+string}]{\setlength{\rightskip}{0pt plus 5cm}string Fluent\+::to\+\_\+string (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classFluent_a9bcbb06a1ac745f05ca580acd5aa4912}
+
+
+Return a string that represent the fluent. 
+
+\begin{DoxyReturn}{Returns}
+a string \char`\"{}\+Fluent name of the predicate -\/ names of the parameter\char`\"{}s 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{fluent_8h}{fluent.\+h}\item 
+src/\hyperlink{fluent_8cpp}{fluent.\+cpp}\end{DoxyCompactItemize}

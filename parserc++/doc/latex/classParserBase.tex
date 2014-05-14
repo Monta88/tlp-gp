@@ -1,0 +1,252 @@
+\hypertarget{classParserBase}{\section{Parser\+Base Class Reference}
+\label{classParserBase}\index{Parser\+Base@{Parser\+Base}}
+}
+Inheritance diagram for Parser\+Base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classParserBase}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+union \hyperlink{unionParserBase_1_1STYPE____}{S\+T\+Y\+P\+E\+\_\+\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classParserBase_ad5f11f6aa9de30301eeee1d00e460af2}{enum {\bfseries Tokens\+\_\+\+\_\+} \{ \\*
+{\bfseries L\+\_\+\+P} = 257, 
+{\bfseries R\+\_\+\+P}, 
+{\bfseries L\+\_\+\+B}, 
+{\bfseries R\+\_\+\+B}, 
+\\*
+{\bfseries N\+S\+\_\+\+T}, 
+{\bfseries E\+Q}, 
+{\bfseries S\+L\+A\+S\+H}, 
+{\bfseries S\+T\+A\+R}, 
+\\*
+{\bfseries P\+L\+U\+S}, 
+{\bfseries G\+T}, 
+{\bfseries L\+T}, 
+{\bfseries G\+O\+E}, 
+\\*
+{\bfseries L\+O\+E}, 
+{\bfseries N\+U\+M}, 
+{\bfseries D\+E\+F\+I\+N\+E}, 
+{\bfseries D\+O\+M\+A\+I\+N}, 
+\\*
+{\bfseries R\+E\+Q\+U\+I\+R\+E\+M\+E\+N\+T\+S}, 
+{\bfseries S\+T\+R\+I\+P\+S}, 
+{\bfseries T\+Y\+P\+I\+N\+G}, 
+{\bfseries N\+E\+G\+A\+T\+I\+V\+E\+\_\+\+P\+R\+E\+C\+O\+N\+D\+I\+T\+I\+O\+N\+S}, 
+\\*
+{\bfseries D\+I\+S\+J\+U\+N\+C\+T\+I\+V\+E\+\_\+\+P\+R\+E\+C\+O\+N\+D\+I\+T\+I\+O\+N\+S}, 
+{\bfseries E\+Q\+U\+A\+L\+I\+T\+Y}, 
+{\bfseries E\+X\+I\+S\+T\+E\+N\+T\+I\+A\+L\+\_\+\+P\+R\+E\+C\+O\+N\+D\+I\+T\+I\+O\+N\+S}, 
+{\bfseries U\+N\+I\+V\+E\+R\+S\+A\+L\+\_\+\+P\+R\+E\+C\+O\+N\+D\+I\+T\+I\+O\+N\+S}, 
+\\*
+{\bfseries Q\+U\+A\+N\+T\+I\+F\+I\+E\+D\+\_\+\+P\+R\+E\+C\+O\+N\+D\+I\+T\+I\+O\+N\+S}, 
+{\bfseries C\+O\+N\+D\+I\+T\+I\+O\+N\+A\+L\+\_\+\+E\+F\+F\+E\+C\+T\+S}, 
+{\bfseries F\+L\+U\+E\+N\+T\+S}, 
+{\bfseries N\+U\+M\+E\+R\+I\+C\+\_\+\+F\+L\+U\+E\+N\+T\+S}, 
+\\*
+{\bfseries O\+B\+J\+E\+C\+T\+\_\+\+F\+L\+U\+E\+N\+T\+S}, 
+{\bfseries A\+D\+L}, 
+{\bfseries D\+U\+R\+A\+T\+I\+V\+E\+\_\+\+A\+C\+T\+I\+O\+N\+S}, 
+{\bfseries D\+U\+R\+A\+T\+I\+O\+N\+\_\+\+I\+N\+E\+Q\+U\+A\+L\+I\+T\+I\+E\+S}, 
+\\*
+{\bfseries C\+O\+N\+T\+I\+N\+U\+O\+U\+S\+\_\+\+E\+F\+F\+E\+C\+T\+S}, 
+{\bfseries D\+E\+R\+I\+V\+E\+D\+\_\+\+P\+R\+E\+D\+I\+C\+A\+T\+E\+S}, 
+{\bfseries T\+I\+M\+E\+D\+\_\+\+I\+N\+I\+T\+I\+A\+L\+\_\+\+L\+I\+T\+E\+R\+A\+L\+S}, 
+{\bfseries P\+R\+E\+F\+E\+R\+E\+N\+C\+E\+S}, 
+\\*
+{\bfseries C\+O\+N\+S\+T\+R\+A\+I\+N\+T\+S}, 
+{\bfseries A\+C\+T\+I\+O\+N\+\_\+\+C\+O\+S\+T\+S}, 
+{\bfseries T\+E\+M\+P\+O\+R\+A\+L\+L\+Y\+\_\+\+E\+X\+T\+E\+N\+D\+E\+D}, 
+{\bfseries T\+Y\+P\+E\+S}, 
+\\*
+{\bfseries C\+O\+N\+S\+T\+A\+N\+T\+S}, 
+{\bfseries P\+R\+E\+D\+I\+C\+A\+T\+E\+S}, 
+{\bfseries F\+U\+N\+C\+T\+I\+O\+N\+S}, 
+{\bfseries N\+U\+M\+B\+E\+R}, 
+\\*
+{\bfseries O\+B\+J\+E\+C\+T}, 
+{\bfseries E\+I\+T\+H\+E\+R}, 
+{\bfseries A\+C\+T\+I\+O\+N}, 
+{\bfseries P\+A\+R\+A\+M\+E\+T\+E\+R\+S}, 
+\\*
+{\bfseries P\+R\+E\+C\+O\+N\+D\+I\+T\+I\+O\+N}, 
+{\bfseries E\+F\+F\+E\+C\+T}, 
+{\bfseries A\+N\+D}, 
+{\bfseries F\+O\+R\+A\+L\+L}, 
+\\*
+{\bfseries P\+R\+E\+F\+E\+R\+E\+N\+C\+E}, 
+{\bfseries O\+R}, 
+{\bfseries N\+O\+T}, 
+{\bfseries I\+M\+P\+L\+Y}, 
+\\*
+{\bfseries E\+X\+I\+S\+T\+S}, 
+{\bfseries W\+H\+E\+N}, 
+{\bfseries A\+S\+S\+I\+G\+N}, 
+{\bfseries U\+N\+D\+E\+F\+I\+N\+E\+D}, 
+\\*
+{\bfseries S\+C\+A\+L\+E\+\_\+\+U\+P}, 
+{\bfseries S\+C\+A\+L\+E\+\_\+\+D\+O\+W\+N}, 
+{\bfseries I\+N\+C\+R\+E\+A\+S\+E}, 
+{\bfseries D\+E\+C\+R\+E\+A\+S\+E}, 
+\\*
+{\bfseries D\+U\+R\+A\+T\+I\+V\+E\+\_\+\+A\+C\+T\+I\+O\+N}, 
+{\bfseries D\+U\+R\+A\+T\+I\+O\+N}, 
+{\bfseries C\+O\+N\+D\+I\+T\+I\+O\+N}, 
+{\bfseries A\+T}, 
+\\*
+{\bfseries O\+V\+E\+R}, 
+{\bfseries S\+U\+P\+P\+O\+R\+T\+E\+D}, 
+{\bfseries F\+O\+R\+B\+I\+D\+D\+E\+N}, 
+{\bfseries S\+O\+M\+E\+W\+H\+E\+R\+E}, 
+\\*
+{\bfseries A\+N\+Y\+W\+H\+E\+R\+E}, 
+{\bfseries M\+I\+N\+I\+M\+A\+L\+\_\+\+D\+U\+R\+A\+T\+I\+O\+N}, 
+{\bfseries T\+R\+A\+N\+S\+I\+T\+I\+O\+N\+\_\+\+O\+V\+E\+R}, 
+{\bfseries M\+I\+N\+U\+S}, 
+\\*
+{\bfseries S\+T\+A\+R\+T}, 
+{\bfseries E\+N\+D}, 
+{\bfseries A\+L\+L}, 
+{\bfseries Q\+\_\+\+M\+\_\+\+D\+U\+R\+A\+T\+I\+O\+N}, 
+\\*
+{\bfseries Q\+\_\+\+M}, 
+{\bfseries D\+E\+R\+I\+V\+E\+D}, 
+{\bfseries P\+R\+O\+B\+L\+E\+M}, 
+{\bfseries D\+D\+\_\+\+D\+O\+M\+A\+I\+N}, 
+\\*
+{\bfseries O\+B\+J\+E\+C\+T\+S}, 
+{\bfseries I\+N\+I\+T}, 
+{\bfseries G\+O\+A\+L}, 
+{\bfseries A\+L\+W\+A\+Y\+S}, 
+\\*
+{\bfseries S\+O\+M\+E\+T\+I\+M\+E}, 
+{\bfseries W\+I\+T\+H\+I\+N}, 
+{\bfseries A\+T\+\_\+\+M\+O\+S\+T\+\_\+\+O\+N\+C\+E}, 
+{\bfseries S\+O\+M\+E\+T\+I\+M\+E\+\_\+\+A\+F\+T\+E\+R}, 
+\\*
+{\bfseries S\+O\+M\+E\+T\+I\+M\+E\+\_\+\+B\+E\+F\+O\+R\+E}, 
+{\bfseries A\+L\+W\+A\+Y\+S\+\_\+\+W\+I\+T\+H\+I\+N}, 
+{\bfseries H\+O\+L\+D\+\_\+\+D\+U\+R\+I\+N\+G}, 
+{\bfseries H\+O\+L\+D\+\_\+\+A\+F\+T\+E\+R}, 
+\\*
+{\bfseries M\+E\+T\+R\+I\+C}, 
+{\bfseries M\+I\+N\+I\+M\+I\+Z\+E}, 
+{\bfseries M\+A\+X\+I\+M\+I\+Z\+E}, 
+{\bfseries T\+O\+T\+A\+L\+\_\+\+T\+I\+M\+E}, 
+\\*
+{\bfseries I\+S\+\_\+\+V\+I\+O\+L\+A\+T\+E\+D}, 
+{\bfseries L\+E\+N\+G\+T\+H}, 
+{\bfseries S\+E\+R\+I\+A\+L}, 
+{\bfseries P\+A\+R\+A\+L\+L\+E\+L}, 
+\\*
+{\bfseries T\+I\+M\+E\+P\+O\+I\+N\+T\+S}, 
+{\bfseries T\+I\+M\+E\+A\+L\+I\+A\+S\+E\+S}, 
+{\bfseries T\+I\+M\+E\+C\+O\+N\+S\+T\+R\+A\+I\+N\+T\+S}, 
+{\bfseries N\+A\+M\+E}
+ \}}\label{classParserBase_ad5f11f6aa9de30301eeee1d00e460af2}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classParserBase_ae95fb1ef8830b10706c6d4adeee6e34d}{void {\bfseries set\+Debug} (bool mode)}\label{classParserBase_ae95fb1ef8830b10706c6d4adeee6e34d}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classParserBase_a104b0cfd1ad4f2f026a42da93ac00173}{enum {\bfseries Return\+\_\+\+\_\+} \{ {\bfseries P\+A\+R\+S\+E\+\_\+\+A\+C\+C\+E\+P\+T\+\_\+\+\_\+} = 0, 
+{\bfseries P\+A\+R\+S\+E\+\_\+\+A\+B\+O\+R\+T\+\_\+\+\_\+} = 1
+ \}}\label{classParserBase_a104b0cfd1ad4f2f026a42da93ac00173}
+
+\item 
+\hypertarget{classParserBase_af81cf9396123e53eeb9f7ce75940be8e}{enum {\bfseries Error\+Recovery\+\_\+\+\_\+} \{ {\bfseries D\+E\+F\+A\+U\+L\+T\+\_\+\+R\+E\+C\+O\+V\+E\+R\+Y\+\_\+\+M\+O\+D\+E\+\_\+\+\_\+}, 
+{\bfseries U\+N\+E\+X\+P\+E\+C\+T\+E\+D\+\_\+\+T\+O\+K\+E\+N\+\_\+\+\_\+}
+ \}}\label{classParserBase_af81cf9396123e53eeb9f7ce75940be8e}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classParserBase_ad6b71fd0351cb81b3e07330ca4e7f6d8}{void {\bfseries A\+B\+O\+R\+T} () const }\label{classParserBase_ad6b71fd0351cb81b3e07330ca4e7f6d8}
+
+\item 
+\hypertarget{classParserBase_a4f4472657c7ac4798c3702fa8bd67014}{void {\bfseries A\+C\+C\+E\+P\+T} () const }\label{classParserBase_a4f4472657c7ac4798c3702fa8bd67014}
+
+\item 
+\hypertarget{classParserBase_a9fea7d8df0d5622042a9a1b2471ba276}{void {\bfseries E\+R\+R\+O\+R} () const }\label{classParserBase_a9fea7d8df0d5622042a9a1b2471ba276}
+
+\item 
+\hypertarget{classParserBase_a333e48ce916920ddcb0cb0000e7daacc}{void {\bfseries clearin} ()}\label{classParserBase_a333e48ce916920ddcb0cb0000e7daacc}
+
+\item 
+\hypertarget{classParserBase_ad3a3016e22c3ed0d41dda12b78d4cf51}{bool {\bfseries debug} () const }\label{classParserBase_ad3a3016e22c3ed0d41dda12b78d4cf51}
+
+\item 
+\hypertarget{classParserBase_ad00f3d17fe3f11ca3bcfbe025657fa8f}{void {\bfseries pop\+\_\+\+\_\+} (size\+\_\+t count=1)}\label{classParserBase_ad00f3d17fe3f11ca3bcfbe025657fa8f}
+
+\item 
+\hypertarget{classParserBase_af75b120cfb82005a308eaa421c835855}{void {\bfseries push\+\_\+\+\_\+} (size\+\_\+t next\+State)}\label{classParserBase_af75b120cfb82005a308eaa421c835855}
+
+\item 
+\hypertarget{classParserBase_a5d0072a7c7618681d52ac00451f4ccaa}{void {\bfseries pop\+Token\+\_\+\+\_\+} ()}\label{classParserBase_a5d0072a7c7618681d52ac00451f4ccaa}
+
+\item 
+\hypertarget{classParserBase_abcda272cb7ab1a2c0de7a7387963529a}{void {\bfseries push\+Token\+\_\+\+\_\+} (int token)}\label{classParserBase_abcda272cb7ab1a2c0de7a7387963529a}
+
+\item 
+\hypertarget{classParserBase_af4b7dba2ed61708384e53329e7a3796e}{void {\bfseries reduce\+\_\+\+\_\+} (P\+I\+\_\+\+\_\+ const \&production\+Info)}\label{classParserBase_af4b7dba2ed61708384e53329e7a3796e}
+
+\item 
+\hypertarget{classParserBase_a7ee84914489b1429632f722208a12033}{void {\bfseries error\+Verbose\+\_\+\+\_\+} ()}\label{classParserBase_a7ee84914489b1429632f722208a12033}
+
+\item 
+\hypertarget{classParserBase_a35fbf2a0ff5c900432b427a745cbc712}{size\+\_\+t {\bfseries top\+\_\+\+\_\+} () const }\label{classParserBase_a35fbf2a0ff5c900432b427a745cbc712}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classParserBase_a88284ecf522145ce610a5096fe26749c}{bool {\bfseries d\+\_\+debug\+\_\+\+\_\+}}\label{classParserBase_a88284ecf522145ce610a5096fe26749c}
+
+\item 
+\hypertarget{classParserBase_a8e2340de47c0abc43d282a084f831725}{size\+\_\+t {\bfseries d\+\_\+n\+Errors\+\_\+\+\_\+}}\label{classParserBase_a8e2340de47c0abc43d282a084f831725}
+
+\item 
+\hypertarget{classParserBase_a26f26893dbd34809ae62f0a4c7069ad4}{size\+\_\+t {\bfseries d\+\_\+required\+Tokens\+\_\+\+\_\+}}\label{classParserBase_a26f26893dbd34809ae62f0a4c7069ad4}
+
+\item 
+\hypertarget{classParserBase_a9d975c4ea38bc2b7055473f8f6194277}{size\+\_\+t {\bfseries d\+\_\+accepted\+Tokens\+\_\+\+\_\+}}\label{classParserBase_a9d975c4ea38bc2b7055473f8f6194277}
+
+\item 
+\hypertarget{classParserBase_a2402c51729f8f34fede586f8d319dae6}{int {\bfseries d\+\_\+token\+\_\+\+\_\+}}\label{classParserBase_a2402c51729f8f34fede586f8d319dae6}
+
+\item 
+\hypertarget{classParserBase_a2be65f718ad04a23b8acd0442b008bfd}{int {\bfseries d\+\_\+next\+Token\+\_\+\+\_\+}}\label{classParserBase_a2be65f718ad04a23b8acd0442b008bfd}
+
+\item 
+\hypertarget{classParserBase_a980e638a1405d0f318f48541ad0ada9b}{size\+\_\+t {\bfseries d\+\_\+state\+\_\+\+\_\+}}\label{classParserBase_a980e638a1405d0f318f48541ad0ada9b}
+
+\item 
+\hypertarget{classParserBase_a44b5207b10ba1ed06a4a060ff5a50f5f}{\hyperlink{unionParserBase_1_1STYPE____}{S\+T\+Y\+P\+E\+\_\+\+\_\+} $\ast$ {\bfseries d\+\_\+vsp\+\_\+\+\_\+}}\label{classParserBase_a44b5207b10ba1ed06a4a060ff5a50f5f}
+
+\item 
+\hypertarget{classParserBase_a8a05e4e641fc1f4d2e102482de8da07d}{\hyperlink{unionParserBase_1_1STYPE____}{S\+T\+Y\+P\+E\+\_\+\+\_\+} {\bfseries d\+\_\+val\+\_\+\+\_\+}}\label{classParserBase_a8a05e4e641fc1f4d2e102482de8da07d}
+
+\item 
+\hypertarget{classParserBase_a000a3b14a57cf84e85e2e0d0952648dd}{\hyperlink{unionParserBase_1_1STYPE____}{S\+T\+Y\+P\+E\+\_\+\+\_\+} {\bfseries d\+\_\+next\+Val\+\_\+\+\_\+}}\label{classParserBase_a000a3b14a57cf84e85e2e0d0952648dd}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+parser/Parserbase.\+h\item 
+parser/parse.\+cc\end{DoxyCompactItemize}

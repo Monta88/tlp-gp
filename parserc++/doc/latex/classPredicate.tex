@@ -1,0 +1,109 @@
+\hypertarget{classPredicate}{\section{Predicate Class Reference}
+\label{classPredicate}\index{Predicate@{Predicate}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classPredicate_a50088fcbd7632e6be3b2df62441535af}{\hyperlink{classPredicate_a50088fcbd7632e6be3b2df62441535af}{Predicate} ()}\label{classPredicate_a50088fcbd7632e6be3b2df62441535af}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classPredicate_a13a0daedf2d69ab8ab3b741e997bfd1e}{Predicate} (string name)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classPredicate_a69abfad91bb95f47b5467724c99217b9}{Predicate} (string name, vector$<$ vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ $>$ types\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hypertarget{classPredicate_a6209b4f29454bccd0164a743b168620f}{virtual \hyperlink{classPredicate_a6209b4f29454bccd0164a743b168620f}{$\sim$\+Predicate} ()}\label{classPredicate_a6209b4f29454bccd0164a743b168620f}
+
+\begin{DoxyCompactList}\small\item\em Destructor -\/ virtual. \end{DoxyCompactList}\item 
+string \hyperlink{classPredicate_aed6b68d13d98ca2be3d825248d4b4b4e}{get\+Name} ()
+\begin{DoxyCompactList}\small\item\em Get the name of the predicate. \end{DoxyCompactList}\item 
+vector$<$ vector$<$ \hyperlink{classType}{Type} $\ast$ $>$ $>$ $\ast$ \hyperlink{classPredicate_a3d58b4ab0d2b563c139773f54b0633ad}{get\+Types\+List} ()
+\begin{DoxyCompactList}\small\item\em Get the either types of each parameters. \end{DoxyCompactList}\item 
+string \hyperlink{classPredicate_ab83a287421fba56dbb655333e58fa9e2}{to\+\_\+string} ()
+\begin{DoxyCompactList}\small\item\em Return a string that represent the predicate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classPredicate_a13a0daedf2d69ab8ab3b741e997bfd1e}{\index{Predicate@{Predicate}!Predicate@{Predicate}}
+\index{Predicate@{Predicate}!Predicate@{Predicate}}
+\subsubsection[{Predicate}]{\setlength{\rightskip}{0pt plus 5cm}Predicate\+::\+Predicate (
+\begin{DoxyParamCaption}
+\item[{string}]{name}
+\end{DoxyParamCaption}
+)}}\label{classPredicate_a13a0daedf2d69ab8ab3b741e997bfd1e}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the predicate \\
+\hline
+\end{DoxyParams}
+\hypertarget{classPredicate_a69abfad91bb95f47b5467724c99217b9}{\index{Predicate@{Predicate}!Predicate@{Predicate}}
+\index{Predicate@{Predicate}!Predicate@{Predicate}}
+\subsubsection[{Predicate}]{\setlength{\rightskip}{0pt plus 5cm}Predicate\+::\+Predicate (
+\begin{DoxyParamCaption}
+\item[{string}]{name, }
+\item[{vector$<$ vector$<$ {\bf Type} $\ast$ $>$ $>$}]{types\+\_\+list}
+\end{DoxyParamCaption}
+)}}\label{classPredicate_a69abfad91bb95f47b5467724c99217b9}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ name of the predicate types\+\_\+list -\/ either type of each parameter \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classPredicate_aed6b68d13d98ca2be3d825248d4b4b4e}{\index{Predicate@{Predicate}!get\+Name@{get\+Name}}
+\index{get\+Name@{get\+Name}!Predicate@{Predicate}}
+\subsubsection[{get\+Name}]{\setlength{\rightskip}{0pt plus 5cm}string Predicate\+::get\+Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classPredicate_aed6b68d13d98ca2be3d825248d4b4b4e}
+
+
+Get the name of the predicate. 
+
+\begin{DoxyReturn}{Returns}
+the string of its name 
+\end{DoxyReturn}
+\hypertarget{classPredicate_a3d58b4ab0d2b563c139773f54b0633ad}{\index{Predicate@{Predicate}!get\+Types\+List@{get\+Types\+List}}
+\index{get\+Types\+List@{get\+Types\+List}!Predicate@{Predicate}}
+\subsubsection[{get\+Types\+List}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ vector$<$ {\bf Type} $\ast$ $>$ $>$ $\ast$ Predicate\+::get\+Types\+List (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classPredicate_a3d58b4ab0d2b563c139773f54b0633ad}
+
+
+Get the either types of each parameters. 
+
+\begin{DoxyReturn}{Returns}
+a pointer to list of either types of each parameters m\+\_\+types\+\_\+list 
+\end{DoxyReturn}
+\hypertarget{classPredicate_ab83a287421fba56dbb655333e58fa9e2}{\index{Predicate@{Predicate}!to\+\_\+string@{to\+\_\+string}}
+\index{to\+\_\+string@{to\+\_\+string}!Predicate@{Predicate}}
+\subsubsection[{to\+\_\+string}]{\setlength{\rightskip}{0pt plus 5cm}string Predicate\+::to\+\_\+string (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classPredicate_ab83a287421fba56dbb655333e58fa9e2}
+
+
+Return a string that represent the predicate. 
+
+\begin{DoxyReturn}{Returns}
+a string \char`\"{}\+Predicate name -\/ either type of each parameter\char`\"{} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{predicate_8h}{predicate.\+h}\item 
+src/\hyperlink{predicate_8cpp}{predicate.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,275 @@
+\hypertarget{classScannerBase}{\section{Scanner\+Base Class Reference}
+\label{classScannerBase}\index{Scanner\+Base@{Scanner\+Base}}
+}
+Inheritance diagram for Scanner\+Base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classScannerBase}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structScannerBase_1_1StreamStruct}{Stream\+Struct}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classScannerBase_a5c7a457813088d6b87650032becad324}{enum {\bfseries Start\+Condition\+\_\+\+\_\+} \{ {\bfseries I\+N\+I\+T\+I\+A\+L}
+ \}}\label{classScannerBase_a5c7a457813088d6b87650032becad324}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classScannerBase_a52dace818f491ca943e37e5dafd4c61a}{{\bfseries Scanner\+Base} (\hyperlink{classScannerBase}{Scanner\+Base} const \&other)=delete}\label{classScannerBase_a52dace818f491ca943e37e5dafd4c61a}
+
+\item 
+\hypertarget{classScannerBase_a8bba721b91214ec1c7f08d8602789ee9}{\hyperlink{classScannerBase}{Scanner\+Base} \& {\bfseries operator=} (\hyperlink{classScannerBase}{Scanner\+Base} const \&rhs)=delete}\label{classScannerBase_a8bba721b91214ec1c7f08d8602789ee9}
+
+\item 
+\hypertarget{classScannerBase_a77130b2ae81f92960bfd49c7fcf05d8d}{bool {\bfseries debug} () const }\label{classScannerBase_a77130b2ae81f92960bfd49c7fcf05d8d}
+
+\item 
+\hypertarget{classScannerBase_ab23eaadc4d45bdc3b67226f9010e836b}{std\+::string const \& {\bfseries filename} () const }\label{classScannerBase_ab23eaadc4d45bdc3b67226f9010e836b}
+
+\item 
+\hypertarget{classScannerBase_a13c5167ad30e8d89b181ceb40b91a9b7}{std\+::string const \& {\bfseries matched} () const }\label{classScannerBase_a13c5167ad30e8d89b181ceb40b91a9b7}
+
+\item 
+\hypertarget{classScannerBase_ad9ad6a5818e6f37d05e6c8b06afcd90b}{size\+\_\+t {\bfseries length} () const }\label{classScannerBase_ad9ad6a5818e6f37d05e6c8b06afcd90b}
+
+\item 
+\hypertarget{classScannerBase_ab55926b7d06e99f1d3a8cd410cc544aa}{size\+\_\+t {\bfseries line\+Nr} () const }\label{classScannerBase_ab55926b7d06e99f1d3a8cd410cc544aa}
+
+\item 
+\hypertarget{classScannerBase_aef0df93b2a8d97fb61a5d282bddad859}{void {\bfseries set\+Debug} (bool on\+Off)}\label{classScannerBase_aef0df93b2a8d97fb61a5d282bddad859}
+
+\item 
+\hypertarget{classScannerBase_a6248d6f0d8ac1926a3666a1542390370}{void {\bfseries switch\+Ostream} (std\+::ostream \&out)}\label{classScannerBase_a6248d6f0d8ac1926a3666a1542390370}
+
+\item 
+\hypertarget{classScannerBase_a8afc45efc1ed7b3d3c72ed10abf9042e}{void {\bfseries switch\+Ostream} (std\+::string const \&outfilename)}\label{classScannerBase_a8afc45efc1ed7b3d3c72ed10abf9042e}
+
+\item 
+\hypertarget{classScannerBase_a4055b5f788140f12de27708c2a451860}{void {\bfseries switch\+Streams} (std\+::istream \&in, std\+::ostream \&out=std\+::cout)}\label{classScannerBase_a4055b5f788140f12de27708c2a451860}
+
+\item 
+\hypertarget{classScannerBase_af2124b7be3b7ff080409983ed54704f3}{void {\bfseries switch\+Istream} (std\+::string const \&infilename)}\label{classScannerBase_af2124b7be3b7ff080409983ed54704f3}
+
+\item 
+\hypertarget{classScannerBase_ac5badcfe2ac5fb640a8c18b2fe8c4a41}{void {\bfseries switch\+Streams} (std\+::string const \&infilename, std\+::string const \&outfilename)}\label{classScannerBase_ac5badcfe2ac5fb640a8c18b2fe8c4a41}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classScannerBase_aba19fcbdd61aaa668cd65fd00ef856f5}{enum {\bfseries Leave\+\_\+\+\_\+} }\label{classScannerBase_aba19fcbdd61aaa668cd65fd00ef856f5}
+
+\item 
+\hypertarget{classScannerBase_aeca9da0ddb2e5928570501a6354d7fca}{enum {\bfseries Action\+Type\+\_\+\+\_\+} \{ \\*
+{\bfseries C\+O\+N\+T\+I\+N\+U\+E}, 
+{\bfseries E\+C\+H\+O\+\_\+\+C\+H}, 
+{\bfseries E\+C\+H\+O\+\_\+\+F\+I\+R\+S\+T}, 
+{\bfseries M\+A\+T\+C\+H}, 
+\\*
+{\bfseries R\+E\+T\+U\+R\+N}
+ \}}\label{classScannerBase_aeca9da0ddb2e5928570501a6354d7fca}
+
+\item 
+\hypertarget{classScannerBase_a6b05193c90b76c2923c127381f3f487a}{enum {\bfseries Post\+Enum\+\_\+\+\_\+} \{ {\bfseries E\+N\+D}, 
+{\bfseries P\+O\+P}, 
+{\bfseries R\+E\+T\+U\+R\+N}, 
+{\bfseries W\+I\+P}
+ \}}\label{classScannerBase_a6b05193c90b76c2923c127381f3f487a}
+
+\item 
+\hypertarget{classScannerBase_a05438c73aa59e8fdcd61d6c46087d3fd}{enum \+: bool \{ {\bfseries s\+\_\+interactive\+\_\+\+\_\+} = false
+ \}}\label{classScannerBase_a05438c73aa59e8fdcd61d6c46087d3fd}
+
+\item 
+\hypertarget{classScannerBase_ace58cd1a2ba5ff08fb6c6460cabe6f2e}{enum \+: size\+\_\+t \{ {\bfseries s\+\_\+range\+Of\+E\+O\+F\+\_\+\+\_\+} = 57, 
+{\bfseries s\+\_\+fin\+Idx\+\_\+\+\_\+} = 58, 
+{\bfseries s\+\_\+n\+Rules\+\_\+\+\_\+} = 113, 
+{\bfseries s\+\_\+max\+Sizeof\+Stream\+Stack\+\_\+\+\_\+} = 10
+ \}}\label{classScannerBase_ace58cd1a2ba5ff08fb6c6460cabe6f2e}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classScannerBase_a314e6672cca5961b1cf293017c2778e8}{{\bfseries Scanner\+Base} (std\+::istream \&in, std\+::ostream \&out)}\label{classScannerBase_a314e6672cca5961b1cf293017c2778e8}
+
+\item 
+\hypertarget{classScannerBase_adab6f6482546225266827314d4faa4cd}{{\bfseries Scanner\+Base} (std\+::string const \&infilename, std\+::string const \&outfilename)}\label{classScannerBase_adab6f6482546225266827314d4faa4cd}
+
+\item 
+\hypertarget{classScannerBase_af594ada5dd8676cfeb8adb5c2aef6ef5}{Start\+Condition\+\_\+\+\_\+ {\bfseries start\+Condition} () const }\label{classScannerBase_af594ada5dd8676cfeb8adb5c2aef6ef5}
+
+\item 
+\hypertarget{classScannerBase_a01dfe058b5b337e03aed1012ad9dc002}{bool {\bfseries pop\+Stream} ()}\label{classScannerBase_a01dfe058b5b337e03aed1012ad9dc002}
+
+\item 
+\hypertarget{classScannerBase_aa6adde433468e75c4c10b69bca1049d9}{std\+::ostream \& {\bfseries out} ()}\label{classScannerBase_aa6adde433468e75c4c10b69bca1049d9}
+
+\item 
+\hypertarget{classScannerBase_a29c66509f23640290421589481d8a388}{void {\bfseries begin} (Start\+Condition\+\_\+\+\_\+ start\+Condition)}\label{classScannerBase_a29c66509f23640290421589481d8a388}
+
+\item 
+\hypertarget{classScannerBase_a911243f589c4eaa97578fa6f37916e75}{void {\bfseries echo} () const }\label{classScannerBase_a911243f589c4eaa97578fa6f37916e75}
+
+\item 
+\hypertarget{classScannerBase_a186091b02e0982d066a1b187c5bc6894}{void {\bfseries leave} (int ret\+Value) const }\label{classScannerBase_a186091b02e0982d066a1b187c5bc6894}
+
+\item 
+\hypertarget{classScannerBase_a18d6405c9ccd130c8176326f728841b2}{void {\bfseries accept} (size\+\_\+t n\+Chars=0)}\label{classScannerBase_a18d6405c9ccd130c8176326f728841b2}
+
+\item 
+\hypertarget{classScannerBase_ae1cdca0b7158f331448e744496ef2ccd}{void {\bfseries redo} (size\+\_\+t n\+Chars=0)}\label{classScannerBase_ae1cdca0b7158f331448e744496ef2ccd}
+
+\item 
+\hypertarget{classScannerBase_aac0eac4274996b1dbe96c25b7a72c291}{void {\bfseries more} ()}\label{classScannerBase_aac0eac4274996b1dbe96c25b7a72c291}
+
+\item 
+\hypertarget{classScannerBase_aaac7ba2745723f9c32fe73be62ccabe7}{void {\bfseries push} (size\+\_\+t ch)}\label{classScannerBase_aaac7ba2745723f9c32fe73be62ccabe7}
+
+\item 
+\hypertarget{classScannerBase_a560981768e4742beca13cd499ac2aee6}{void {\bfseries push} (std\+::string const \&txt)}\label{classScannerBase_a560981768e4742beca13cd499ac2aee6}
+
+\item 
+\hypertarget{classScannerBase_a6f27a6435c98c739507207f17e71bc86}{std\+::vector$<$ \hyperlink{structScannerBase_1_1StreamStruct}{Stream\+Struct} $>$ const \& {\bfseries stream\+Stack} () const }\label{classScannerBase_a6f27a6435c98c739507207f17e71bc86}
+
+\item 
+\hypertarget{classScannerBase_a7a5b3ba90f7c325382b7e8b740f68b84}{void {\bfseries push\+Stream} (std\+::istream \&cur\+Stream)}\label{classScannerBase_a7a5b3ba90f7c325382b7e8b740f68b84}
+
+\item 
+\hypertarget{classScannerBase_abd859aa5cf970c528f9619e4a7dcdd3d}{void {\bfseries push\+Stream} (std\+::string const \&cur\+Name)}\label{classScannerBase_abd859aa5cf970c528f9619e4a7dcdd3d}
+
+\item 
+\hypertarget{classScannerBase_abef7b7162ed50674ceb6e8ea97997ecd}{void {\bfseries set\+Filename} (std\+::string const \&name)}\label{classScannerBase_abef7b7162ed50674ceb6e8ea97997ecd}
+
+\item 
+\hypertarget{classScannerBase_a255420f4d51d5ffcb8c6a2447e92b4db}{void {\bfseries set\+Matched} (std\+::string const \&text)}\label{classScannerBase_a255420f4d51d5ffcb8c6a2447e92b4db}
+
+\item 
+\hypertarget{classScannerBase_a22a9d4fa2238f4e805943f8fe8f771db}{Action\+Type\+\_\+\+\_\+ {\bfseries action\+Type\+\_\+\+\_\+} (size\+\_\+t range)}\label{classScannerBase_a22a9d4fa2238f4e805943f8fe8f771db}
+
+\item 
+\hypertarget{classScannerBase_abacd35ee1ba9ef1afddba760bcf73e24}{bool {\bfseries return\+\_\+\+\_\+} ()}\label{classScannerBase_abacd35ee1ba9ef1afddba760bcf73e24}
+
+\item 
+\hypertarget{classScannerBase_a0dc1bb7170d2c62164e8aaaa4fdb4bfa}{size\+\_\+t {\bfseries matched\+\_\+\+\_\+} (size\+\_\+t ch)}\label{classScannerBase_a0dc1bb7170d2c62164e8aaaa4fdb4bfa}
+
+\item 
+\hypertarget{classScannerBase_a9cdbc8de197e589b53b9d813cb398427}{size\+\_\+t {\bfseries get\+Range\+\_\+\+\_\+} (int ch)}\label{classScannerBase_a9cdbc8de197e589b53b9d813cb398427}
+
+\item 
+\hypertarget{classScannerBase_a7f1dbe1f9c0bc8ad210eeff600d87818}{size\+\_\+t {\bfseries get\+\_\+\+\_\+} ()}\label{classScannerBase_a7f1dbe1f9c0bc8ad210eeff600d87818}
+
+\item 
+\hypertarget{classScannerBase_ad686a6aad34bb9eb160ea71f3ceff6cd}{size\+\_\+t {\bfseries state\+\_\+\+\_\+} () const }\label{classScannerBase_ad686a6aad34bb9eb160ea71f3ceff6cd}
+
+\item 
+\hypertarget{classScannerBase_ad57bbe8f2362d83aee7203979eaf5b4b}{void {\bfseries continue\+\_\+\+\_\+} (int ch)}\label{classScannerBase_ad57bbe8f2362d83aee7203979eaf5b4b}
+
+\item 
+\hypertarget{classScannerBase_ae3297769b30f01d67734a5d73c19edf3}{void {\bfseries echo\+Ch\+\_\+\+\_\+} (size\+\_\+t ch)}\label{classScannerBase_ae3297769b30f01d67734a5d73c19edf3}
+
+\item 
+\hypertarget{classScannerBase_ad23055462d6988c8d68cb5876846333a}{void {\bfseries echo\+First\+\_\+\+\_\+} (size\+\_\+t ch)}\label{classScannerBase_ad23055462d6988c8d68cb5876846333a}
+
+\item 
+\hypertarget{classScannerBase_a3cb757b8ea955d005524b441400d4307}{void {\bfseries update\+Finals\+\_\+\+\_\+} ()}\label{classScannerBase_a3cb757b8ea955d005524b441400d4307}
+
+\item 
+\hypertarget{classScannerBase_ac74c722b9ed9350c2579de9a278e8917}{void {\bfseries no\+Return\+\_\+\+\_\+} ()}\label{classScannerBase_ac74c722b9ed9350c2579de9a278e8917}
+
+\item 
+\hypertarget{classScannerBase_a9f3016ad3dd153084338996814517860}{void {\bfseries print\+\_\+\+\_\+} () const }\label{classScannerBase_a9f3016ad3dd153084338996814517860}
+
+\item 
+\hypertarget{classScannerBase_a93bc4ebf1066dcc078f92ca46c2ac06c}{void {\bfseries push\+Front\+\_\+\+\_\+} (size\+\_\+t ch)}\label{classScannerBase_a93bc4ebf1066dcc078f92ca46c2ac06c}
+
+\item 
+\hypertarget{classScannerBase_a68143fa375f40372a20a341fbd29add8}{void {\bfseries reset\+\_\+\+\_\+} ()}\label{classScannerBase_a68143fa375f40372a20a341fbd29add8}
+
+\item 
+\hypertarget{classScannerBase_ae47bc161d7895da37aae6365b4c8cef7}{void {\bfseries switch\+Stream\+\_\+\+\_\+} (std\+::istream \&in, size\+\_\+t line\+Nr)}\label{classScannerBase_ae47bc161d7895da37aae6365b4c8cef7}
+
+\item 
+\hypertarget{classScannerBase_a9635171f8d89e43eaa6bb035e302e2a3}{void {\bfseries lopf\+\_\+\+\_\+} (size\+\_\+t tail)}\label{classScannerBase_a9635171f8d89e43eaa6bb035e302e2a3}
+
+\item 
+\hypertarget{classScannerBase_a7002587b47a5f2d1e4be6a530c7076a7}{void {\bfseries lop1\+\_\+\+\_\+} (int lop\+S\+C)}\label{classScannerBase_a7002587b47a5f2d1e4be6a530c7076a7}
+
+\item 
+\hypertarget{classScannerBase_a93a25cf1505db9a9a0f3dd4fb9a40c51}{void {\bfseries lop2\+\_\+\+\_\+} ()}\label{classScannerBase_a93a25cf1505db9a9a0f3dd4fb9a40c51}
+
+\item 
+\hypertarget{classScannerBase_a812266cffb3ddd6f1ff64d2ee8151e78}{void {\bfseries lop3\+\_\+\+\_\+} ()}\label{classScannerBase_a812266cffb3ddd6f1ff64d2ee8151e78}
+
+\item 
+\hypertarget{classScannerBase_abf3fb2a9582ea160dd19439667997a95}{void {\bfseries lop4\+\_\+\+\_\+} ()}\label{classScannerBase_abf3fb2a9582ea160dd19439667997a95}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classScannerBase_a9dcc3f8c186983bc1ea3d7541e231c8b}{static std\+::string {\bfseries istream\+Name\+\_\+\+\_\+} ()}\label{classScannerBase_a9dcc3f8c186983bc1ea3d7541e231c8b}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classScannerBase_a642557896ede13c5abcf760451d8f4e4}{std\+::istream $\ast$ {\bfseries d\+\_\+in\+\_\+\+\_\+}}\label{classScannerBase_a642557896ede13c5abcf760451d8f4e4}
+
+\item 
+\hypertarget{classScannerBase_a72375048231dd617b0cf5bc9e6082eb2}{int {\bfseries d\+\_\+token\+\_\+\+\_\+}}\label{classScannerBase_a72375048231dd617b0cf5bc9e6082eb2}
+
+\item 
+\hypertarget{classScannerBase_aabb7825e2871ae7562dbe7e4af52b612}{int const ($\ast$ {\bfseries d\+\_\+dfa\+Base\+\_\+\+\_\+} )\mbox{[}60\mbox{]}}\label{classScannerBase_aabb7825e2871ae7562dbe7e4af52b612}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classScannerBase_ab685af9cad317918294c24eb6dc8deb7}{static int const {\bfseries s\+\_\+dfa\+\_\+\+\_\+} \mbox{[}$\,$\mbox{]}\mbox{[}60\mbox{]}}\label{classScannerBase_ab685af9cad317918294c24eb6dc8deb7}
+
+\item 
+\hypertarget{classScannerBase_ac6b8b447499524147c97f3eccf9760fd}{static int const ($\ast$\mbox{[}$\,$\mbox{]} {\bfseries s\+\_\+dfa\+Base\+\_\+\+\_\+} )\mbox{[}60\mbox{]}}\label{classScannerBase_ac6b8b447499524147c97f3eccf9760fd}
+
+\item 
+static size\+\_\+t const {\bfseries s\+\_\+ranges\+\_\+\+\_\+} \mbox{[}$\,$\mbox{]}
+\item 
+\hypertarget{classScannerBase_a57a3ac6c72eff17211c2e58fc4eafb80}{static size\+\_\+t const {\bfseries s\+\_\+rf\+\_\+\+\_\+} \mbox{[}$\,$\mbox{]}\mbox{[}2\mbox{]}}\label{classScannerBase_a57a3ac6c72eff17211c2e58fc4eafb80}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classScannerBase_a900ba43aca6a632d3eb27a17b3f34834}{\index{Scanner\+Base@{Scanner\+Base}!s\+\_\+ranges\+\_\+\+\_\+@{s\+\_\+ranges\+\_\+\+\_\+}}
+\index{s\+\_\+ranges\+\_\+\+\_\+@{s\+\_\+ranges\+\_\+\+\_\+}!Scanner\+Base@{Scanner\+Base}}
+\subsubsection[{s\+\_\+ranges\+\_\+\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t const Scanner\+Base\+::s\+\_\+ranges\+\_\+\+\_\+\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}}\label{classScannerBase_a900ba43aca6a632d3eb27a17b3f34834}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+\{
+     0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+     3, 3, 3, 3, 3, 3, 3, 4, 5, 5, 6, 7, 7, 7, 7, 8, 9,10,11,12,13,14,15,16,16,
+    16,16,16,16,16,16,16,16,17,18,19,20,21,22,23,24,24,24,24,24,24,24,24,24,24,
+    24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,25,26,27,28,28,29,30,31,32,
+    33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,56,
+    56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,
+    56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,
+    56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,
+    56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,
+    56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,
+    56,56,56,56,56,56,
+\}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+scanner/Scannerbase.\+h\item 
+scanner/lex.\+cc\end{DoxyCompactItemize}
