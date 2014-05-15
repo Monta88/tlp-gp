@@ -42,8 +42,8 @@ int main(int argc, char **argv)
 	Problem * problem = nullptr;
 
 	// argument verification
-	if (argc != 3) {
-		cerr << "Usage :\n\t" << argv[0] << " domainFile.pddl problemFile.pddl" << endl;
+	if (argc != 4) {
+		cerr << "Usage :\n\t" << argv[0] << " domainFile.pddl problemFile.pddl 1|2" << endl;
 		exit(1);
 	}
 
@@ -119,13 +119,18 @@ int main(int argc, char **argv)
 
 	// we launch the planner
 	// TLP-GP 2
-	graph = new Graph(domain, problem);
-	if (!graph->generateGraph()){
-		cout<<"No solution \n";
+	if(string(argv[3]) == "2"){
+		graph = new Graph(domain, problem);
+		if (!graph->generateGraph()){
+			cout<<"No solution \n";
+		}
 	}
-
-	//Tlpgp1 tlpgp1 = Tlpgp1(domain, problem);
-	//tlpgp1.constructGraph();
+	else if(string(argv[3]) == "1"){
+		Tlpgp1 tlpgp1 = Tlpgp1(domain, problem);
+		tlpgp1.constructGraph();
+	}
+	else
+		cerr <<" last argument must be 1 or 2" << endl;
 	
 	t2 = clock();	
 	cout<<"Total time : "<<(float)(t2-t1)/CLOCKS_PER_SEC<<"\n";
