@@ -16,6 +16,8 @@
 #include <string>
 #include <unistd.h>
 
+#include"constraint.h"
+
 using namespace std;
 
 class Sat {
@@ -23,6 +25,9 @@ public:
 	Sat();
 	virtual ~Sat();
 	void initialize();
+	void addConstraint(Constraint *constraint);
+	void addFun(string name);
+	void postDeclareFun();
 
 	bool solve();
 private:

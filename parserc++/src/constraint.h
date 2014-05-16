@@ -22,16 +22,23 @@
 
 namespace std {
 
-class constraint {
+class Constraint {
 public:
-	constraint(int timeLeft, int timeRight, string comparison, DurativeAction *actionLeft, DurativeAction *actionRight);
-	virtual ~constraint();
+	Constraint(string nameLeft, int timeLeft, string comparison, string nameRight, int timeRight);
+	Constraint();
+	virtual ~Constraint();
 	void print();
+	const string& getComparison() const;
+	const string& getNameLeft() const;
+	const string& getNameRight() const;
+	int getTimeLeft() const;
+	int getTimeRight() const;
+
 private:
 	int m_timeLeft,m_timeRight;
-	string m_comparison;
+	string m_comparison,m_nameLeft,m_nameRight;
 	DurativeAction *m_actionLeft, *m_actionRight;
-	vector<constraint> m_constraints;
+	vector<Constraint> m_constraints;
 };
 
 } /* namespace std */

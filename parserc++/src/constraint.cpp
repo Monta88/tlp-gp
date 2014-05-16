@@ -11,22 +11,54 @@
 
 namespace std {
 
-constraint::constraint(int timeLeft, int timeRight, string comparison, DurativeAction *actionLeft, DurativeAction *actionRight) {
+Constraint::Constraint() {
+	// TODO Auto-generated constructor stub
+	m_timeLeft = 0;
+	m_timeRight = 0;
+	m_comparison = "";
+	m_nameLeft = "";
+	m_nameRight = "";
+	m_actionLeft=nullptr;
+	m_actionRight=nullptr;
+}
+
+Constraint::Constraint(string nameLeft, int timeLeft, string comparison, string nameRight, int timeRight) {
 	// TODO Auto-generated constructor stub
 	m_timeLeft = timeLeft;
 	m_timeRight = timeRight;
 	m_comparison = comparison;
-	m_actionLeft = actionLeft;
-	m_actionRight = actionRight;
-	m_constraints = vector<constraint>();
+	m_nameLeft = nameLeft;
+	m_nameRight = nameRight;
+	m_actionLeft=nullptr;
+	m_actionRight=nullptr;
 }
 
-constraint::~constraint() {
+Constraint::~Constraint() {
 	// TODO Auto-generated destructor stub
 }
 
-void constraint::print(){
-	cout << "constraint: " << m_actionLeft->getName()<<"+"<<m_timeLeft<<" "<<m_comparison<<" "<< m_actionRight->getName()<<"+"<<m_timeRight<<endl;
+void Constraint::print(){
+	cout << "constraint: " << m_nameLeft << " + " <<m_timeLeft << " " <<m_comparison<< " "<< m_nameRight<< " + "<< m_timeRight <<endl;
+}
+
+const string& Constraint::getComparison() const {
+	return m_comparison;
+}
+
+const string& Constraint::getNameLeft() const {
+	return m_nameLeft;
+}
+
+const string& Constraint::getNameRight() const {
+	return m_nameRight;
+}
+
+int Constraint::getTimeLeft() const {
+	return m_timeLeft;
+}
+
+int Constraint::getTimeRight() const {
+	return m_timeRight;
 }
 
 } /* namespace std */

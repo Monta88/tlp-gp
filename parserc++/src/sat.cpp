@@ -27,12 +27,16 @@ void Sat::initialize(){
 
 	if (m_smt2temp.is_open()){
 		m_smt2temp << "(set-option :produce-models true)";
-		m_smt2temp << "(declare-fun t_Init () Int)";
+		m_smt2temp << "\n(declare-fun t_Init () Int)";
 		m_smt2temp << "\n(declare-fun t_Goal () Int)";
+		m_smt2temp << "\n(declare-fun  Init () Bool)";
+		m_smt2temp << "\n(declare-fun  Goal () Bool)";
 
-		// TODO Add the real constraints
-		//cout << m_testString << endl;
-		m_smt2temp << m_testString ;
+		//TODO remove for real declare-fun
+		m_smt2temp << "\n(declare-fun a () Bool )";
+		m_smt2temp << "\n(declare-fun t_a () Int )";
+		m_smt2temp << "\n(declare-fun b () Bool )";
+		m_smt2temp << "\n(declare-fun t_b () Int )";
 
 	}
 	else{
@@ -41,13 +45,30 @@ void Sat::initialize(){
 	}
 }
 
+void Sat::addConstraint(Constraint *constraint){
+	m_smt2temp <<  "\n(" << constraint->getComparison() << " (+ t_"
+			<< constraint->getNameLeft() << " " << constraint->getTimeLeft() << ") (+ t_"
+			<< constraint->getNameRight() << " " << constraint->getTimeRight() << "))" ;
+}
+
+void Sat::addFun(string name){
+	m_smt2temp << "(declare-fun "<<name<<" () Bool )\n";
+	m_smt2temp << "(declare-fun t_"<<name<<" () Int )\n";
+}
+
+void Sat::postDeclareFun(){
+	m_smt2temp << "(assert (and Init Goal" ;
+	m_smt2temp << "\n(>= t_Goal 0 )" ;
+	m_smt2temp << "\n(>= t_Goal t_Init)";
+}
+
 bool Sat::solve() {
 	bool isSat=false;
 	string resultLine = "";
 
 	// add the correct instructions to get an ouput from mathsat
-	m_smt2temp << "(check-sat)" ; // check-sat before get-value !
-	m_smt2temp << "(get-value (t_Goal t_Init))" ;
+	m_smt2temp << "))\n(check-sat)" ; // check-sat before get-value !
+	m_smt2temp << "\n(get-value (t_Goal t_Init))" ;
 	m_smt2temp.flush(); // synchronize the file
 
 	// convert iostream to a C FILE
@@ -59,7 +80,7 @@ bool Sat::solve() {
 
 	// create a fork because it is the easyest way to capture the output of "exec"
 	if (fork() == 0){
-	    // child
+		// child
 
 		// redirect stdout to a file, and stdin from a another file
 		freopen (m_outputPath,"w",stdout);
@@ -71,7 +92,7 @@ bool Sat::solve() {
 	}
 	else{
 		//parent
-		wait(null);
+		wait(NULL);
 	}
 
 	// close files
