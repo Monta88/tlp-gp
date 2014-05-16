@@ -63,12 +63,22 @@ private:
 	/*!< graph converted by vertexToActions */
 	vector<vector<DurativeAction*>> m_graph;
 
+	Sat sat;
+
 	/*!
 	* \brief select an action producing a given effect at a given level
 	* return the action and the level
 	* if we are looking for an action which produces "e" for level "i", use sameLevel=true;
 	*/
 	pair<DurativeAction* , int> selectAction(Fluent *effect, int level, bool sameLevel);
+
+	void removeGoals(Fluent *fluent, vector<Fluent*> *goals);
+
+	void printGoals(vector<Fluent*> *goals);
+
+	void printConstraints(vector<Constraint> *constraints);
+
+	void declareFun(Sat *s);
 };
 
 #endif /* TLPGP1_H_ */
