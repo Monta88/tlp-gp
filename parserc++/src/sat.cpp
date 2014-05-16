@@ -33,9 +33,9 @@ void Sat::initialize(){
 		m_smt2temp << "\n(declare-fun  Goal () Bool)";
 
 		//TODO remove for real declare-fun
-		m_smt2temp << "\n(declare-fun a () Bool )";
+		//m_smt2temp << "\n(declare-fun a () Bool )";
 		m_smt2temp << "\n(declare-fun t_a () Int )";
-		m_smt2temp << "\n(declare-fun b () Bool )";
+		//m_smt2temp << "\n(declare-fun b () Bool )";
 		m_smt2temp << "\n(declare-fun t_b () Int )";
 
 	}
@@ -52,7 +52,7 @@ void Sat::addConstraint(Constraint *constraint){
 }
 
 void Sat::addFun(string name){
-	m_smt2temp << "(declare-fun "<<name<<" () Bool )\n";
+	//m_smt2temp << "(declare-fun "<<name<<" () Bool )\n";
 	m_smt2temp << "(declare-fun t_"<<name<<" () Int )\n";
 }
 
