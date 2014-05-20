@@ -126,8 +126,8 @@ int main(int argc, char **argv)
 		}
 	}
 	else if(string(argv[3]) == "1"){
-		Tlpgp1 tlpgp1 = Tlpgp1(domain, problem);
-		tlpgp1.constructGraph();
+		Tlpgp1 *tlpgp1 = new Tlpgp1(domain, problem);
+		tlpgp1->constructGraph();
 	}
 	else
 		cerr <<" last argument must be 1 or 2" << endl;
