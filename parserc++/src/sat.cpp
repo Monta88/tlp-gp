@@ -11,7 +11,7 @@
 Sat::Sat() {
 	// TODO Auto-generated constructor stub
 	m_solverPath = "./mathsat";
-	ofstream m_smt2temp();
+	ofstream m_smt2temp;
 	FILE *m_smt2Cfile = nullptr;
 	m_outputPath = "~output.txt";
 	m_smt2tempPath = "~temp.smt2";
@@ -19,7 +19,7 @@ Sat::Sat() {
 
 Sat::~Sat() {
 	// TODO Auto-generated destructor stub
-	m_smt2temp.close();
+	//m_smt2temp.close();
 }
 
 void Sat::initialize(){
