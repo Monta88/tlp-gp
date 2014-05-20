@@ -26,6 +26,7 @@ public:
 	virtual ~Sat();
 	void initialize();
 	void addConstraint(Constraint *constraint);
+	void addConstraints(vector<Constraint> *constraints);
 	void addFun(string name);
 	void postDeclareFun();
 

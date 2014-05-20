@@ -19,7 +19,7 @@ Sat::Sat() {
 
 Sat::~Sat() {
 	// TODO Auto-generated destructor stub
-	//m_smt2temp.close();
+	m_smt2temp.close();
 }
 
 void Sat::initialize(){
@@ -51,24 +51,32 @@ void Sat::addConstraint(Constraint *constraint){
 			<< constraint->getNameRight() << " " << constraint->getTimeRight() << "))" ;
 }
 
+void Sat::addConstraints(vector<Constraint> *constraints){
+	for(auto it_c = constraints->begin(); it_c != constraints->end(); ++it_c){
+		addConstraint(&*it_c);
+	}
+}
+
 void Sat::addFun(string name){
 	//m_smt2temp << "(declare-fun "<<name<<" () Bool )\n";
 	m_smt2temp << "(declare-fun t_"<<name<<" () Int )\n";
 }
 
 void Sat::postDeclareFun(){
-	m_smt2temp << "(assert (and Init Goal" ;
+	//m_smt2temp << "(assert (and Init Goal" ;
+	m_smt2temp << "(assert (and (>= t_Goal t_Init)" ;
 	m_smt2temp << "\n(>= t_Goal 0 )" ;
-	m_smt2temp << "\n(>= t_Goal t_Init)";
+	//m_smt2temp << "\n(>= t_Goal t_Init)";
 }
 
 bool Sat::solve() {
 	bool isSat=false;
 	string resultLine = "";
+	string control ="\n))(check-sat)(get-value (t_Goal t_Init))";
 
 	// add the correct instructions to get an ouput from mathsat
-	m_smt2temp << "))\n(check-sat)" ; // check-sat before get-value !
-	m_smt2temp << "\n(get-value (t_Goal t_Init))" ;
+	//m_smt2temp << "\n))(check-sat)" ; // check-sat before get-value !
+	m_smt2temp << control ;
 	m_smt2temp.flush(); // synchronize the file
 
 	// convert iostream to a C FILE
@@ -96,7 +104,7 @@ bool Sat::solve() {
 	}
 
 	// close files
-	m_smt2temp.close();
+	//m_smt2temp.close();
 
 	// read the first line of the output file which contains sat or unsat
 	ifstream outputFile (m_outputPath);
@@ -107,6 +115,11 @@ bool Sat::solve() {
 		cout << "\nSAT" << endl;
 	else
 		cout << "\nNOT SAT" << endl;
+
+	//we need to remove the "control" line because we will call sat.solve several times
+	long pos = m_smt2temp.tellp();
+	m_smt2temp.seekp(pos-control.length());
+	m_smt2temp.write ("",0);
 
 	return isSat;
 }
