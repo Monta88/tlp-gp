@@ -12,6 +12,8 @@ public:
 	void to_string();
 	vector<DurativeAction *> * getActions();
 	Vertex * getFather();
+	void addFather(Vertex * vertex);
+	void addActions(vector<DurativeAction *> * actions);
 	virtual~Vertex();
 
 private:

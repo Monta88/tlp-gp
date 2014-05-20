@@ -31,11 +31,24 @@ using namespace std;
 
 class Graph {
 public:
+
+	/*!
+	 * \brief Constructor
+	 */
 	Graph();
+
+	/*!
+	 * \brief Constructor
+	 * \param domain - action's definitions 
+	 *        problem - init, goals and objects's definitions
+	 */
 	Graph(Domain *domain, Problem * problem);
 	virtual ~Graph();
 
-	//retrun the first plan of the graph 
+	/*!
+	 * brief 
+	 *retrun the first plan of the graph 
+	 */
 	bool generateGraph();
 	
 	//return the list of object sorted to instanciated the actions
@@ -46,8 +59,6 @@ public:
 
 	//true if the action(which is already instanciated) preconditions are satisfiable by the fluents
 	bool actionUsable(DurativeAction *action, vector< Fluent > * fluents);
-	//true if the two vector have the same members 
-	bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
 	//true if fluent f is in v
 	bool compareFVF(vector<Fluent  >* v,Fluent * f);
 	bool compareFVF2(vector<Fluent  *> v,Fluent * f);
@@ -63,8 +74,6 @@ public:
 
 	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> >);
 
-	bool compareAA(vector<DurativeAction *>* v,DurativeAction * a);
-	bool compareVV2(vector<Variable  >* v1 ,vector<Variable >*v2);
 private:
 	Domain * m_domainptr;
 	Problem * m_problemptr;

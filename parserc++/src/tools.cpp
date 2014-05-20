@@ -28,6 +28,50 @@ bool Tools::isIn(Type* t ,vector<Type*>* v){
 	return false;
 }
 
+//true if the two vector have the same members 
+bool Tools::compareVV(vector<Member * >* v1 ,vector<Member * >*v2){
+	if (v1->size () != v2->size()){
+		return false;
+	}
+	for(unsigned i = 0 ; i < v1->size(); ++i ){
+		if ( ! (v1->at(i)->getName() == v2->at(i)->getName())){
+			return false;
+		}		
+	}
+	return true;
+}
+
+bool Tools::compareVV2(vector<Variable  >* v1 ,vector<Variable  >*v2){
+	if (v1->size () != v2->size()){
+		return false;
+	}
+	for(unsigned i = 0 ; i < v1->size(); ++i ){
+		if ( ! (v1->at(i).getName() == v2->at(i).getName())){
+			return false;
+		}		
+	}
+	return true;
+}
+
+
+bool Tools::compareActionVaction(DurativeAction * action,vector<DurativeAction * >* v){
+	for(unsigned i = 0 ; i < v->size(); ++i){
+		if (compareAA(action,v->at(i))){
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
+bool Tools::compareAA(DurativeAction * a1 , DurativeAction * a2){
+	if ( (a1->getName() == a2->getName()) && (compareVV2(a1->getParameters(),a2->getParameters() )) ){
+		return true;
+	}
+	
+	return false;
+}
 
 bool Tools::solveur(){
 	string namefile = to_string(g_pid)+"tlpgp2.smt2";

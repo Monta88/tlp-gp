@@ -7,6 +7,19 @@ Vertex::Vertex(Vertex * father):m_father(father){
 void Vertex::addAction(DurativeAction * action){ 
 	m_action->push_back(action);
 }
+
+Vertex * Vertex::getFather(){
+	return m_father;
+}
+
+void Vertex::addFather(Vertex * vertex){
+	m_father = vertex;
+}
+
+
+void Vertex::addActions(vector<DurativeAction *> * actions){
+	m_action =actions;
+}
 	
 Vertex::~Vertex(){}
 
@@ -29,6 +42,4 @@ void Vertex::to_string(){
 	cout<<"\n****************************\n";
 }
 
-Vertex * Vertex::getFather(){
-	return m_father;
-}
+

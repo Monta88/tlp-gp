@@ -203,7 +203,7 @@ bool Graph::generateGraph() {
 			for(unsigned int i = 0 ; i < lastlFlu->size() ; ++i){
 				//cout<<" lol "<<lastlFlu->at(i).to_string()<<endl;
 			
-			}	//actualVertex->to_string();
+			}	
 		}
 	plan++;
 	}
@@ -215,12 +215,13 @@ bool Graph::generateGraph() {
 bool Graph::actionUsable(DurativeAction *action, vector< Fluent > * fluents){
 	//each precondition need to be in fluent list
 	bool c;
+	Tools tool=Tools();
 	for (unsigned i=0;i<action->getPreconditions().size();++i){
 		c = false;	
 		for (unsigned j = 0 ; j < fluents->size();++j){
 			//if (action->getName() == "ColorFeeder-Feed-Letter-0
 			if (fluents->at(j).getPredicate()->getName() == action->getPreconditions().at(i)->getPredicate()->getName()){
-				if (compareVV(fluents->at(j).getMembersList(),action->getPreconditions().at(i)->getMembersList())){
+				if (tool.compareVV(fluents->at(j).getMembersList(),action->getPreconditions().at(i)->getMembersList())){
 					c = true;
 				}
 			}
@@ -232,24 +233,14 @@ bool Graph::actionUsable(DurativeAction *action, vector< Fluent > * fluents){
 	return true;
 }	
 
-//true if the two vector have the same members 
-bool Graph::compareVV(vector<Member * >* v1 ,vector<Member * >*v2){
-	if (v1->size () != v2->size()){
-		return false;
-	}
-	for(unsigned i = 0 ; i < v1->size(); ++i ){
-		if ( ! (v1->at(i)->getName() == v2->at(i)->getName())){
-			return false;
-		}		
-	}
-	return true;
-}
+
 
 //true if f is in v
 bool Graph::compareFVF(vector<Fluent  >* v,Fluent * f){
+	Tools tool = Tools();
 	for(unsigned i =0 ; i<v->size();++i){
 		if (f->getPredicate()->getName() == v->at(i).getPredicate()->getName()){
-			if (compareVV(f->getMembersList(),v->at(i).getMembersList() )){
+			if (tool.compareVV(f->getMembersList(),v->at(i).getMembersList() )){
 				return true;
 			}
 		}
@@ -257,29 +248,6 @@ bool Graph::compareFVF(vector<Fluent  >* v,Fluent * f){
 	return false;
 }
 
-/*//true is a is in v
-bool Graph::compareAA(vector<DurativeAction *>* v,DurativeAction * a){
-	for(vector<DurativeAction *>::iterator it = v->begin() ; it != v->end() ; ++it){
-		if ((*it)->getName() == a->getName() ){
-			if ( compareVV2((*it)->getParameters(),a->getParameters())){
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-bool Graph::compareVV2(vector<Variable  >* v1 ,vector<Variable >*v2){
-	if (v1->size () != v2->size()){
-		return false;
-	}
-	for(unsigned i = 0 ; i < v1->size(); ++i ){
-		if ( ! (v1->at(i).getName() == v2->at(i).getName())){
-			return false;
-		}		
-	}
-	return true;
-}*/
 
 //return an action which represent all the goal fluents ( only preconditions)
 DurativeAction * Graph::make_actionGoal(){
@@ -313,14 +281,16 @@ DurativeAction * Graph::findAction(Vertex * v,DurativeAction * initAction,Fluent
 }
 
 bool Graph::compareFVF2(vector<Fluent  *> v,Fluent * f){
+	Tools tool = Tools();
 	for(unsigned i =0 ; i<v.size();++i){
 		if (f->getPredicate()->getName() == v.at(i)->getPredicate()->getName()){
-			if (compareVV(f->getMembersList(),v.at(i)->getMembersList() )){
+			if (tool.compareVV(f->getMembersList(),v.at(i)->getMembersList() )){
 				return true;
 			}
 		}
 	}
 	return false;
 }
+
 
 
