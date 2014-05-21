@@ -43,6 +43,7 @@ public:
 	 *        problem - init, goals and objects's definitions
 	 */
 	Graph2(Domain *domain, Problem * problem);
+
 	virtual ~Graph2();
 
 	/*!
@@ -54,7 +55,7 @@ public:
 private:
 	/*!
 	 * brief 
-	 *return the list of object sorted to instanciated the actions
+	 *return all the instanciation with all the objects combinaison
 	 */
 	vector<DurativeAction *> * instanceActions();
 	/*!
