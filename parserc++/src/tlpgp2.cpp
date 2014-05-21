@@ -183,7 +183,8 @@ string Tlpgp2::generateGraphSmt2(){
 	ofstream file(namefile, ios::out | ios::trunc );
 	DurativeAction * action;
 	m_nbClause = 0;
-	m_nbAction = 0;
+	m_nbVariableProp = 0;
+	m_nbVariableReal = 0;
 	//m_graph->to_string();
 	realGraph();
 	//cout<<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
@@ -207,7 +208,8 @@ string Tlpgp2::generateGraphSmt2(){
 				}
 				file << "(declare-fun "<<name<<" () Bool )\n";
 				file << "(declare-fun t_"<<name<<" () Int )\n";
-				m_nbAction++;
+				m_nbVariableProp++;
+				m_nbVariableReal++;
 				for(unsigned i = 0 ; i < action->getPreconditions2().size() ; ++i){
 					file << namelinkPrec(name,action->getPreconditions2().at(i).second,action->getPreconditions2().at(i).first,actual->getFather(),state+1);
 				}
@@ -264,14 +266,13 @@ string Tlpgp2::generateGraphSmt2(){
 		file<<" ) )\n(exit)\n";
 		file.close();
 	}
-	cout<<"end traduction nb clauses : "<<m_nbClause<<" nb actions : "<<m_nbAction<<"\n";
+	cout<<"end traduction nb clauses : "<<m_nbClause<<" nb Variables propositionnels : "<<m_nbVariableProp<<"nb Variables réelle :"<<m_nbVariableReal<<"\n";
 	return namefile;
 }
 
 string Tlpgp2::namelinkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * vertex,int state){
 	string ret="";
 	string namea,namef,link;
-	string get_value="(get-value (";
 	namef= fluent->getPredicate()->getName();
 	for(vector<Member * >::iterator it =fluent->getMembersList()->begin() ;it != fluent->getMembersList()->end();++it){
 		namef+=(*it)->getName();
@@ -291,7 +292,7 @@ string Tlpgp2::namelinkPrec(string name ,Fluent * fluent ,Attribute att, Vertex 
 						}
 						link="Link_"+namea+"."+namef+"."+name;
 						ret+="(declare-fun "+link+" () Bool )\n";
-						m_nbAction++;
+						m_nbVariableProp++;
 					}
 				}
 			}
@@ -307,7 +308,6 @@ string Tlpgp2::linkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * ve
 	string step2 ="( or  (not "+name+") ";
 	string step3,step4;
 	string namea,namef,link;
-	string get_value="(get-value (";
 	namef= fluent->getPredicate()->getName();
 	for(vector<Member * >::iterator it =fluent->getMembersList()->begin() ;it != fluent->getMembersList()->end();++it){
 		namef+=(*it)->getName();
@@ -338,7 +338,7 @@ string Tlpgp2::linkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * ve
 						ret +=protectCond(link,fluent,att,namea,name);
 
 						ret +=step3;
-						m_nbClause++;
+						m_nbClause+=3;
 						
 						
 					}

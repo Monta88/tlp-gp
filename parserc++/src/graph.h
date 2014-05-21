@@ -51,30 +51,55 @@ public:
 	 */
 	bool generateGraph();
 	
-	//return the list of object sorted to instanciated the actions
+private:
+	/*!
+	 * brief 
+	 *return the list of object sorted to instanciated the actions
+	 */
 	vector<DurativeAction *> * instanceActions();
-
-	// all the objects must be usefull  , return all the action instanciated with all the objects combinaisons 
+	/*!
+	 * brief 
+	 * all the objects must be usefull  
+	 * return all the action instanciated with all the objects combinaisons 
+	 */
 	vector<DurativeAction *>* instanciation(vector<vector<Object * > > * objects,DurativeAction *action);
 
-	//true if the action(which is already instanciated) preconditions are satisfiable by the fluents
+	/*!
+	 * brief
+	 *return true if the action(which is already instanciated) preconditions are satisfiable by the fluents
+	 */
 	bool actionUsable(DurativeAction *action, vector< Fluent > * fluents);
-	//true if fluent f is in v
+
+	/*!
+	 * brief
+	 *true if fluent f is in v
+	 */
 	bool compareFVF(vector<Fluent  >* v,Fluent * f);
+
+	/*!
+	 * brief
+	 *true if fluent f is in v
+	 */
 	bool compareFVF2(vector<Fluent  *> v,Fluent * f);
 	
-	//find action in a plan which can create a fluent
+	/*!
+	 * brief
+	 *find action in a plan which can create a fluent
+	 */
 	DurativeAction * findAction(Vertex * v,DurativeAction *initAction,Fluent * f);	
-	
-	//return an action which represent all the goal fluents ( only preconditions)
+
+	/*!
+	 * brief
+	 *return an action which represent all the goal fluents ( only preconditions)
+	 */
 	DurativeAction * make_actionInit();
-
-	//return an action which represent all the inits fluents ( only effects)
+	
+	/*!
+	 * brief
+	 *return an action which represent all the inits fluents ( only effects)
+	 */
 	DurativeAction * make_actionGoal();
-
-	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> >);
-
-private:
+	
 	Domain * m_domainptr;
 	Problem * m_problemptr;
 };

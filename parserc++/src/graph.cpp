@@ -170,7 +170,7 @@ bool Graph::generateGraph() {
 		if (actionUsable(goalsAction,lastlFlu)){
 			actualVertex->addAction(goalsAction);
 			cout<<"generation graph end with "<<plan<<" plan "<<endl;
-			//actualVertex->to_string();
+			actualVertex->to_string();
 			tlpgp2 = Tlpgp2(actualVertex);
 			tlpgp2.generateGraphSmt2();
 			t = Tools();

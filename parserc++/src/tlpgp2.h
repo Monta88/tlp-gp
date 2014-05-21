@@ -33,7 +33,8 @@ private:
 	Vertex * m_graph;
 	Vertex * m_realGraph;
 	int m_nbClause;
-	int m_nbAction ;
+	int m_nbVariableProp;
+	int m_nbVariableReal;
 	
 		
 };
