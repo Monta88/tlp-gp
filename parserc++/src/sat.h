@@ -17,6 +17,7 @@
 #include <unistd.h>
 
 #include"constraint.h"
+#include"intervalAgenda.h"
 
 using namespace std;
 
@@ -27,6 +28,8 @@ public:
 	void initialize();
 	void addConstraint(Constraint *constraint);
 	void addConstraints(vector<Constraint> *constraints);
+	void addIntervalConstraint(IntervalAgenda interleft, IntervalAgenda interright);
+	void addDisjonctiveConstraint(Constraint *left, Constraint *right);
 	void addFun(string name);
 	void postDeclareFun();
 

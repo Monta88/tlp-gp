@@ -24,7 +24,7 @@ namespace std {
 
 class Constraint {
 public:
-	Constraint(string nameLeft, int timeLeft, string comparison, string nameRight, int timeRight);
+	Constraint(string nameLeft, float timeLeft, string comparison, string nameRight, float timeRight);
 	Constraint();
 	virtual ~Constraint();
 	void print();
@@ -35,7 +35,7 @@ public:
 	int getTimeRight() const;
 
 private:
-	int m_timeLeft,m_timeRight;
+	float m_timeLeft,m_timeRight;
 	string m_comparison,m_nameLeft,m_nameRight;
 	DurativeAction *m_actionLeft, *m_actionRight;
 	vector<Constraint> m_constraints;

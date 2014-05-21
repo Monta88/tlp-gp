@@ -22,7 +22,7 @@ Constraint::Constraint() {
 	m_actionRight=nullptr;
 }
 
-Constraint::Constraint(string nameLeft, int timeLeft, string comparison, string nameRight, int timeRight) {
+Constraint::Constraint(string nameLeft, float timeLeft, string comparison, string nameRight, float timeRight) {
 	// TODO Auto-generated constructor stub
 	m_timeLeft = timeLeft;
 	m_timeRight = timeRight;

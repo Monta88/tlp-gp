@@ -27,6 +27,7 @@
 #include "constraint.h"
 #include "sat.h"
 #include "graph1.h"
+#include "intervalAgenda.h"
 
 using namespace std;
 
@@ -70,7 +71,7 @@ private:
 	* return the action and the level
 	* if we are looking for an action which produces "e" for level "i", use sameLevel=true;
 	*/
-	pair<DurativeAction* , int> selectAction(Fluent *effect, int level, bool sameLevel);
+	pair<DurativeAction* , int> getActionByEffect(Fluent *effect, int level, bool sameLevel, DurativeAction* act);
 
 	void removeGoals(Fluent *fluent, vector<Fluent*> *goals);
 
@@ -79,6 +80,11 @@ private:
 	void printConstraints(vector<Constraint> *constraints);
 
 	void declareFun(Sat *s);
+
+	// add an interval to the agenda of effectName
+	bool addToAgenda(vector<pair<string, vector<IntervalAgenda>>> *agenda, string effectName, IntervalAgenda *inter);
+
+	vector<IntervalAgenda> getIntervalsFromAgenda(vector<pair<string, vector<IntervalAgenda>>> *agenda, string effectName);
 };
 
 #endif /* TLPGP1_H_ */

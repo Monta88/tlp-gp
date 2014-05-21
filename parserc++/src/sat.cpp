@@ -51,6 +51,26 @@ void Sat::addConstraint(Constraint *constraint){
 			<< constraint->getNameRight() << " " << constraint->getTimeRight() << "))" ;
 }
 
+/*
+ * [τ s (A)+δ 1 , τ s (B)+δ 2 ] et
+[τ s (C)+δ 3 , τ s (D)+δ 4 ] sur lesquels une proposition et sa négation sont respectivement vraies
+peuvent être disjonctives. Dans le cas général, ces contraintes sont de la forme
+(τ s (B)+δ 2 ≤ τ s (C)+δ 3 ) ∨ (τ s (D)+δ 4 ≤ τ s (A)+δ 1 ).
+ *
+ */
+void Sat::addIntervalConstraint(IntervalAgenda interleft, IntervalAgenda interright){
+	//m_smt2temp << "\n (or (" << interleft.getLeftAction()
+}
+
+void Sat::addDisjonctiveConstraint(Constraint *left, Constraint *right){
+	m_smt2temp <<  "\n(or (" << left->getComparison() << " (+ t_"
+				<< left->getNameLeft() << " " << left->getTimeLeft() << ") (+ t_"
+				<< left->getNameRight() << " " << left->getTimeRight() << "))"
+				<<  "(" << right->getComparison() << " (+ t_"
+				<< right->getNameLeft() << " " << right->getTimeLeft() << ") (+ t_"
+				<< right->getNameRight() << " " << right->getTimeRight() << ")))" ;
+}
+
 void Sat::addConstraints(vector<Constraint> *constraints){
 	for(auto it_c = constraints->begin(); it_c != constraints->end(); ++it_c){
 		addConstraint(&*it_c);
