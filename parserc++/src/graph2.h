@@ -1,13 +1,12 @@
-/*!
- * \file graph2.h
- * \brief Contains what is needed to generate the expansion graph for tlpgp1
- * \author Alan BENIER, Martin LAGLEIZE, Nathan PRAT
- * \version 1.0
- * \date May 6, 2014
- * basically Copy-pasted from graph.cpp
+/*
+ * Graph.h
+ *
+ *  Created on: Apr 9, 2014
+ *     
  */
 
-#pragma once
+#ifndef GRAPH_H_
+#define GRAPH_H_
 
 #include <iostream>
 #include <stdio.h>
@@ -32,47 +31,79 @@ using namespace std;
 
 class Graph2 {
 public:
+
+	/*!
+	 * \brief Constructor
+	 */
 	Graph2();
+
+	/*!
+	 * \brief Constructor
+	 * \param domain - action's definitions 
+	 *        problem - init, goals and objects's definitions
+	 */
 	Graph2(Domain *domain, Problem * problem);
 	virtual ~Graph2();
 
-	//retrun the first plan of the graph
+	/*!
+	 * brief 
+	 *retrun the first plan of the graph 
+	 */
 	bool generateGraph();
-	Vertex* getVertex();
-
-
-	//return the list of object sorted to instanciated the actions
+	
+private:
+	/*!
+	 * brief 
+	 *return the list of object sorted to instanciated the actions
+	 */
 	vector<DurativeAction *> * instanceActions();
-
-	// all the objects must be usefull  , return all the action instanciated with all the objects combinaisons
+	/*!
+	 * brief 
+	 * all the objects must be usefull  
+	 * return all the action instanciated with all the objects combinaisons 
+	 */
 	vector<DurativeAction *>* instanciation(vector<vector<Object * > > * objects,DurativeAction *action);
 
-	//true if the action(which is already instanciated) preconditions are satisfiable by the fluents
+	/*!
+	 * brief
+	 *return true if the action(which is already instanciated) preconditions are satisfiable by the fluents
+	 */
 	bool actionUsable(DurativeAction *action, vector< Fluent > * fluents);
-	//true if the two vector have the same members
-	bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
-	//true if fluent f is in v
+
+	/*!
+	 * brief
+	 *true if fluent f is in v
+	 */
 	bool compareFVF(vector<Fluent  >* v,Fluent * f);
+
+	/*!
+	 * brief
+	 *true if fluent f is in v
+	 */
 	bool compareFVF2(vector<Fluent  *> v,Fluent * f);
+	
+	/*!
+	 * brief
+	 *find action in a plan which can create a fluent
+	 */
+	DurativeAction * findAction(Vertex * v,DurativeAction *initAction,Fluent * f);	
 
-	//find action in a plan which can create a fluent
-	DurativeAction * findAction(Vertex * v,DurativeAction *initAction,Fluent * f);
-
-	//return an action which represent all the goal fluents ( only preconditions)
+	/*!
+	 * brief
+	 *return an action which represent all the goal fluents ( only preconditions)
+	 */
 	DurativeAction * make_actionInit();
-
-	//return an action which represent all the inits fluents ( only effects)
+	
+	/*!
+	 * brief
+	 *return an action which represent all the inits fluents ( only effects)
+	 */
 	DurativeAction * make_actionGoal();
-
-	pair< vector<DurativeAction*>, vector<pair<Attribute, Fluent*>> > nextLevel(vector<DurativeAction*> *actions,vector<pair<Attribute, Fluent*> >);
-
-	DurativeAction* getInits();
-	DurativeAction* getGoals();
-
-private:
+	
 	Domain * m_domainptr;
 	Problem * m_problemptr;
-	Vertex *m_vertex;
-	DurativeAction *m_inits,*m_goals;
 };
+
+
+#endif /* GRAPH_H_ */
 

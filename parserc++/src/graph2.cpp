@@ -1,13 +1,11 @@
-/*!
- * \file graph2.cpp
- * \brief Contains what is needed to generate the expansion graph for tlpgp1
- * \author Alan BENIER, Martin LAGLEIZE, Nathan PRAT
- * \version 1.0
- * \date May 6, 2014
- * basically Copy-pasted from graph.cpp
+/*
+ * Graph.cpp
+ *
+ *  Created on: Apr 9, 2014
  */
 
 #include "graph2.h"
+
 
 Graph2::Graph2(Domain *domain, Problem *problem):m_domainptr(domain), m_problemptr(problem){}
 
@@ -29,7 +27,7 @@ vector<DurativeAction * > * Graph2::instanceActions(){
 	for (vector<lObjType>::iterator it = templObj->begin() ;it != templObj->end() ; ++it){
 		objects->push_back(*it);
 	}
-	vector<DurativeAction * >* ret = new vector<DurativeAction *>();
+	vector<DurativeAction * >* ret = new vector<DurativeAction *>();	
 	vector<DurativeAction *>* temp ;
 	vector<vector<Object * > >*objects_need = new vector<vector<Object * > >();
 	vector<Object * > temp2,temp4;
@@ -38,38 +36,42 @@ vector<DurativeAction * > * Graph2::instanceActions(){
 	bool find;
 	for (vector<DurativeAction *>::iterator it_act = m_actions->begin(); it_act != m_actions-> end() ;++it_act){
 		//build list object the action need
-		for(vector<Variable >::iterator it_param = (*it_act)->getParameters()->begin() ; it_param != (*it_act)->getParameters()->end() ; ++it_param){		temp2 = vector<Object *>();
-			find = false;
-			for (vector<lObjType>::iterator it=objects->begin(); it != objects->end(); ++it){
-				temp3 =((*it).getType());	
-				if (tool.compareVectorType(&temp3,(*it_param).getTypes())) {
-					temp4=(*it).getObject();
-					for(vector<Object *>::iterator it_o = temp4.begin() ; it_o != temp4.end() ; ++it_o){
-						temp2.push_back(*it_o);
+		if ((*it_act)->getParameters()->size() != 0){
+			for(vector<Variable >::iterator it_param = (*it_act)->getParameters()->begin() ; it_param != (*it_act)->getParameters()->end() ; ++it_param){		temp2 = vector<Object *>();
+				find = false;
+				for (vector<lObjType>::iterator it=objects->begin(); it != objects->end(); ++it){
+					temp3 =((*it).getType());	
+					if (tool.compareVectorType(&temp3,(*it_param).getTypes())) {
+						temp4=(*it).getObject();
+						for(vector<Object *>::iterator it_o = temp4.begin() ; it_o != temp4.end() ; ++it_o){
+							temp2.push_back(*it_o);
+						}
+						find = true;
 					}
-					find = true;
+				}
+				if ( ! find){
+					temp2 = vector<Object * >();
+				}
+				if ( temp2.size() != 0){
+					objects_need->push_back(temp2);
 				}
 			}
-		if ( ! find){
-				temp2 = vector<Object * >();
+			if (objects_need->size() == (*it_act)->getParameters()->size()){
+				temp = instanciation(objects_need,(*it_act));
+			} else {
+				temp = new vector<DurativeAction *>();
 			}
-			if ( temp2.size() != 0){
-				objects_need->push_back(temp2);
+			for (vector<DurativeAction *>::iterator it_ins = temp->begin(); it_ins != temp->end() ; ++it_ins){
+				ret->push_back((*it_ins));
 			}
-		}
-		if (objects_need->size() == (*it_act)->getParameters()->size()){
-			temp = instanciation(objects_need,(*it_act));
+		
+			objects_need->clear();
+			temp->clear();
+			temp2.clear();
+			temp3.clear();
 		} else {
-			temp = new vector<DurativeAction *>();
+			ret->push_back(*it_act);
 		}
-		for (vector<DurativeAction *>::iterator it_ins = temp->begin(); it_ins != temp->end() ; ++it_ins){
-			ret->push_back((*it_ins));
-		}
-
-		objects_need->clear();
-		temp->clear();
-		temp2.clear();
-		temp3.clear();
 	}
 	return ret;
 }
@@ -94,9 +96,9 @@ vector<DurativeAction *>* Graph2::instanciation(vector<vector<Object * > > * obj
 		i =0;
 		instance =  vector<Object  >();
 		for (vector<vector<Object * >  >::iterator it = objects->begin() ; it != objects->end() ; ++it ){
-			instance.push_back(*((*it).at(tab[i])));
+			instance.push_back(*((*it).at(tab[i])));	
 			i++;
-
+			
 		}
 		all_instance->push_back(instance);
 		i=0;
@@ -130,23 +132,19 @@ vector<DurativeAction *>* Graph2::instanciation(vector<vector<Object * > > * obj
 	instance.clear();
 	all_instance->clear();
 	return ret;
-
+	
 }
 
-//retrun the first plan of the graph
+//retrun the first plan of the graph 
 bool Graph2::generateGraph() {
-	cout<<"debut instanciations \n";
+	cout<<"start instanciations \n";
 	vector<DurativeAction *> * m_actions = instanceActions();
-	//cout<<" size action inst"<<m_actions->size()<<"\n";
-
-	for (	vector<DurativeAction *>::iterator it = m_actions->begin() ; it != m_actions->end() ; ++it){
-		//cout<<(*it)->to_stringParam()<<"\n";
+	cout<<"end instanciations, "<<m_actions->size()<< "instances"<<endl;
+	for (vector<DurativeAction *>::iterator it = m_actions->begin() ; it != m_actions->end() ; ++it){
+		//cout<<" ///"<<(*it)->to_stringParam()<<"\n";
 	}
-	cout<<"fin instanciations \n";
-	DurativeAction *goalsAction =  make_actionGoal() ;cout<<" goal "<<goalsAction->to_string()<<"\n";
-	m_goals = goalsAction;
+	DurativeAction *goalsAction =  make_actionGoal() ;
 	DurativeAction *initAction =  make_actionInit();
-	m_inits = initAction;
 	vector<Fluent >* lastlFlu = new vector<Fluent >();
 	vector<Fluent >* actualFlu = new vector<Fluent >();
 	for(unsigned i=0; i< initAction->getEffectsF().size();  ++i){
@@ -157,31 +155,33 @@ bool Graph2::generateGraph() {
 	actualVertex->addAction(initAction);
 	int plan=0;
 	cout<<"generation du graph :\n";
-
+	Tlpgp2 tlpgp2;
+	Tools t;
 	bool goal = false;
+	int p;
 	while(  !goal ){
 		lastVertex = actualVertex;
 		actualVertex = new Vertex(lastVertex);
-		for(vector<DurativeAction *>::iterator it = lastVertex->getActions()->begin();it != lastVertex->getActions()->end(); ++it){
-			actualVertex->addAction(*it);
-		}
 		for(unsigned int i = 0 ; i < actualFlu->size() ; ++i){
 			lastlFlu->push_back(actualFlu->at(i));
 		}
 		actualFlu = new vector<Fluent >();
-		actualVertex = new Vertex(lastVertex);
+		// if we can use actiongoal we stop
 		if (actionUsable(goalsAction,lastlFlu)){
-			//actualVertex->addAction(goalsAction);
-			cout<<"generation graph end with "<<plan<<" plans "<<"\n";
-			goal = true;
-			cout << "generateGraph2 end" <<endl;
-			//actualVertex->to_string();
-			Vertex *endVertex = new Vertex(actualVertex);
-			endVertex->addAction(goalsAction);
-			m_vertex = endVertex;
-
-		}
-		//if any action can be engage with actul fluent we add it to actual vertex
+			actualVertex->addAction(goalsAction);
+			cout<<"generation graph end with "<<plan<<" plan "<<endl;
+			actualVertex->to_string();
+			tlpgp2 = Tlpgp2(actualVertex);
+			tlpgp2.generateGraphSmt2();
+			t = Tools();
+			if (t.solveur()){
+				cout<<"succes\n";
+				return true;
+			} 
+			cout<<"fail\n";
+			return true;
+		} 
+		//if any action can be engage with actaul fluent we add it to the current plan(vertex)
 		for (unsigned j = 0 ; j < m_actions->size(); ++j){
 			if (actionUsable(m_actions->at(j),lastlFlu)){
 				actualVertex->addAction(m_actions->at(j));
@@ -192,65 +192,62 @@ bool Graph2::generateGraph() {
 				}
 			}
 		}
-		if((actualVertex->getActions()->size() - lastVertex->getActions()->size()) == 0){
-			for(vector<Fluent >::iterator it = lastlFlu->begin() ; it != lastlFlu->end() ; ++it){
-				//	cout<<" flu : "<<(*it).to_string()<<"\n";
-			}
-			//actualVertex->to_string();
-			cout<<"goal can't be access\n";
-			goal =true;
+		if (plan == 0 ){
+			p = 1;
+		} else {
+			p =0;
 		}
-		plan++;//cout<<"lol "<<plan<<"\n";
+		if(((actualVertex->getActions()->size() + p ) - lastVertex->getActions()->size()) == 0){
+			cout<<"goal can't be access"<<lastlFlu->size()<<"\n";
+			goal =true;
+			for(unsigned int i = 0 ; i < lastlFlu->size() ; ++i){
+				//cout<<" lol "<<lastlFlu->at(i).to_string()<<endl;
+			
+			}	
+		}
+	plan++;
 	}
 	return false;
-
-}
+} 
 
 
 //true if the action(which is already instanciated) preconditions are satisfiable by the fluents
 bool Graph2::actionUsable(DurativeAction *action, vector< Fluent > * fluents){
 	//each precondition need to be in fluent list
 	bool c;
+	Tools tool=Tools();
 	for (unsigned i=0;i<action->getPreconditions().size();++i){
-		c = false;
+		c = false;	
 		for (unsigned j = 0 ; j < fluents->size();++j){
+			//if (action->getName() == "ColorFeeder-Feed-Letter-0
 			if (fluents->at(j).getPredicate()->getName() == action->getPreconditions().at(i)->getPredicate()->getName()){
-				if (compareVV(fluents->at(j).getMembersList(),action->getPreconditions().at(i)->getMembersList())){
+				if (tool.compareVV(fluents->at(j).getMembersList(),action->getPreconditions().at(i)->getMembersList())){
 					c = true;
 				}
 			}
 		}
 		if (!c) {
-			return false;
-		}
+			return false;	
+		}	
 	}
 	return true;
-}
+}	
 
-//true if the two vector have the same members
-bool Graph2::compareVV(vector<Member * >* v1 ,vector<Member * >*v2){
-	if (v1->size () != v2->size()){
-		return false;
-	}
-	for(unsigned i = 0 ; i < v1->size(); ++i ){
-		if ( ! (v1->at(i)->getName() == v2->at(i)->getName())){
-			return false;
-		}
-	}
-	return true;
-}
+
 
 //true if f is in v
 bool Graph2::compareFVF(vector<Fluent  >* v,Fluent * f){
+	Tools tool = Tools();
 	for(unsigned i =0 ; i<v->size();++i){
 		if (f->getPredicate()->getName() == v->at(i).getPredicate()->getName()){
-			if (compareVV(f->getMembersList(),v->at(i).getMembersList() )){
+			if (tool.compareVV(f->getMembersList(),v->at(i).getMembersList() )){
 				return true;
 			}
 		}
 	}
 	return false;
 }
+
 
 //return an action which represent all the goal fluents ( only preconditions)
 DurativeAction * Graph2::make_actionGoal(){
@@ -278,15 +275,16 @@ DurativeAction * Graph2::findAction(Vertex * v,DurativeAction * initAction,Fluen
 		}
 	}
 	if (compareFVF2(initAction->getEffectsF(),f)){
-		return initAction;
+			return initAction;
 	}
 	return new DurativeAction("can't do this");
 }
 
 bool Graph2::compareFVF2(vector<Fluent  *> v,Fluent * f){
+	Tools tool = Tools();
 	for(unsigned i =0 ; i<v.size();++i){
 		if (f->getPredicate()->getName() == v.at(i)->getPredicate()->getName()){
-			if (compareVV(f->getMembersList(),v.at(i)->getMembersList() )){
+			if (tool.compareVV(f->getMembersList(),v.at(i)->getMembersList() )){
 				return true;
 			}
 		}
@@ -294,14 +292,5 @@ bool Graph2::compareFVF2(vector<Fluent  *> v,Fluent * f){
 	return false;
 }
 
-Vertex* Graph2::getVertex(){
-	return m_vertex;
-}
 
-DurativeAction* Graph2::getInits(){
-	return m_inits;
-}
 
-DurativeAction* Graph2::getGoals(){
-	return m_goals;
-}

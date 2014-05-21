@@ -26,7 +26,7 @@
 #include "lObjType.h"
 #include "constraint.h"
 #include "sat.h"
-#include "graph2.h"
+#include "graph1.h"
 
 using namespace std;
 
@@ -58,12 +58,12 @@ private:
 	Vertex *m_vertex;
 
 	/*!< graph2 : will be use to access some functions*/
-	Graph2 m_graph2;
+	Graph1 m_graph2;
 
 	/*!< graph converted by vertexToActions */
 	vector<vector<DurativeAction*>> m_graph;
 
-	Sat sat;
+	Sat m_sat;
 
 	/*!
 	* \brief select an action producing a given effect at a given level

@@ -22,7 +22,7 @@ Tlpgp1::~Tlpgp1() {
 }
 
 void Tlpgp1::constructGraph() {
-	Graph2 m_graph2 = Graph2(m_domainptr, m_problemptr);
+	Graph1 m_graph2 = Graph1(m_domainptr, m_problemptr);
 	m_graph2.generateGraph();
 	m_vertex = m_graph2.getVertex();
 	Fluent *f; //temp
@@ -98,10 +98,10 @@ void Tlpgp1::constructGraph() {
 	Constraint c;
 	vector<Constraint> constraints;
 
-	sat.initialize();
+	m_sat.initialize();
 
-	declareFun(&sat);
-	sat.postDeclareFun();
+	declareFun(&m_sat);
+	m_sat.postDeclareFun();
 
 	cout << "ENTERING TLPGP1 CORE LOOP " << lvl << endl;
 	// Tant que Buts ≠ ∅
@@ -220,8 +220,8 @@ void Tlpgp1::constructGraph() {
 			//sat.initialize();
 			//declareFun(&sat);
 			//sat.postDeclareFun();
-			sat.addConstraints(&constraints);
-			sat.solve();
+			m_sat.addConstraints(&constraints);
+			m_sat.solve();
 		}
 
 		goals = tempGoals;

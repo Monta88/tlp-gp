@@ -17,7 +17,7 @@ using namespace std;
 #include <unistd.h>
 #include <time.h>
 
-#include "src/graph.h"
+#include "src/graph1.h"
 #include "src/graph2.h"
 #include "src/tlpgp1.h"
 #include "src/tlpgp2.h"
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 	FILE *domain_file = nullptr, *problem_file = nullptr;
 	Data *data = nullptr;
 
-	Graph *graph = nullptr;
+	Graph2 *graph2 = nullptr;
 	Domain * domain = nullptr;
 	Problem * problem = nullptr;
 
@@ -120,8 +120,8 @@ int main(int argc, char **argv)
 	// we launch the planner
 	// TLP-GP 2
 	if(string(argv[3]) == "2"){
-		graph = new Graph(domain, problem);
-		if (!graph->generateGraph()){
+		graph2 = new Graph2(domain, problem);
+		if (!graph2->generateGraph()){
 			cout<<"No solution \n";
 		}
 	}
