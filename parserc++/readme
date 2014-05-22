@@ -8,7 +8,7 @@ https://aur.archlinux.org/packages/bisonc%2B%2B/
 https://aur.archlinux.org/packages/flexc%2B%2B/
 
 
-Properties of the PDDL 3.1 Temporally Extended Parser :
+******************************Properties of the PDDL 3.1 Temporally Extended Parser **********************************************************
 
 As PDDL syntax is really permissive, in some case during the parsing, some choices must have been made.
 The parser is quite permissive too and theese choices we made are more visible in the lexical analyzer (in Data).
@@ -33,4 +33,21 @@ In Data, we use vector<string> in local variables to make the verifications fast
 Our PDDL types are represented as lists of Types in order to represent both "either" and simple types (ex : (either t1 t2 t3) => vector(t1, t2, t3), and t1 => vector(t1)).
 
 About Temporally Extended modalities : because we don't know how to manage timepoints, we cannot translate somewhere, anywhere and minimal-duration. Because of that, we can't use :timepoints, :timealiases and :timeconstraints.
+
+
+
+************************************************************Change solver************************************************************
+To use another solver :
+	- put the exe in /parcerc++
+	- change the variable "solvername" in /parcerc++/src/tools.cpp line 77
+	- reed the file Res***.txt
+	-only mathsat answer can be analyse
+
+
+*************************************************Tlpgp2***********************************************************************
+To solve a planification problem with tlpgp2 they are successive step:
+	-parser domain and problem (grammar and data)
+	-graph construction (graph2)
+	-in graph2.cpp : method generateGraph() call : -generatesmt2 which write the clauses and viariable in a .smt2 (tlpgp2)
+						       -solveur which call the solver and can analyse the anwser
 

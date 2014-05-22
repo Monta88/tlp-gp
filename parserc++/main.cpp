@@ -43,9 +43,14 @@ int main(int argc, char **argv)
 
 	// argument verification
 	if (argc != 4) {
-		cerr << "Usage :\n\t" << argv[0] << " domainFile.pddl problemFile.pddl 1|2" << endl;
+		cerr << "Usage :\n\t" << argv[0] << " need three paramaters ( example : ./prog domain.pddl problem.pddl 2" << endl;
 		exit(1);
 	}
+
+	if (string(argv[3]) != "2" && string(argv[3]) != "1"){
+		cerr << "Usage :\n\t" << argv[0] << " domainFile.pddl problemFile.pddl 1|2" << endl;
+		exit(1);
+	}	
 
 	// file verification
 	if ((domain_file = fopen(argv[1], "r")) == NULL) {

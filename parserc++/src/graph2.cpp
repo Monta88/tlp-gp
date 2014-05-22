@@ -178,7 +178,6 @@ bool Graph2::generateGraph() {
 		if (actionUsable(goalsAction,lastlFlu)){
 			actualVertex->addAction(goalsAction);
 			cout<<"generation graph end with "<<plan<<" plan "<<endl;
-			actualVertex->to_string();
 			tlpgp2 = Tlpgp2(actualVertex);
 			tlpgp2.generateSmt2();
 			t = Tools();
@@ -187,7 +186,7 @@ bool Graph2::generateGraph() {
 				return true;
 			} 
 			cout<<"fail\n";
-			return true;
+			return true;//have to return false to retry with more plan , don't forget to cancel the last plan
 		} 
 		//if any action can be engage with actaul fluent we add it to the current plan(vertex)
 		for (unsigned j = 0 ; j < m_actions->size(); ++j){

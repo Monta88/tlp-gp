@@ -74,10 +74,11 @@ bool Tools::compareAA(DurativeAction * a1 , DurativeAction * a2){
 }
 
 bool Tools::solveur(){
+	string solvername= "mathsat";
 	string namefile = to_string(g_pid)+"tlpgp2.smt2";
 	string namefileRes = to_string(g_pid)+"tlpgp2Res.txt";
-	string mathsat = "./mathsat < "+namefile;
-	cout<<"start mathsat solving"<<endl;
+	string solver = "./"+solvername+"< "+namefile;
+	cout<<"start "<<solvername<<" solving"<<endl;
 	pid_t pid = fork();
 	if (pid == 0){
 	    // child
@@ -86,91 +87,93 @@ bool Tools::solveur(){
 		freopen (namefileRes.c_str(),"w",stdout);
 
 		// execute mathsat
-		system(mathsat.c_str());
+		system(solver.c_str());
 		exit(0);
 	}
 	else{
 		//parent
 	wait(NULL);
-	cout<<"end mathsat solving"<<endl;
-	ifstream file(namefileRes, ios::in);
- 	string line;
-	const char * cline;
-	string action,number;
-	bool m,n,o;
-	vector<pair<string,int> > plan=vector<pair<string,int> >();
-        if(file) {
-		getline(file, line);
-		if (line == "sat"){
-		       	while(getline(file, line))  {
-				cline = line.c_str();
-				n = true;
-				for (unsigned int i=0 ; i < line.size() ; ++i){
-					if (cline[i] == '(' && cline[i+1] == 't' && cline[i+2] == '_'){
-						i = line.size();
-						n = false;
-					}
-				}
-				m = true;
-				action="";
-				if ( n ){
+	cout<<"end "<<solvername<<" solving"<<endl;
+	if ( solvername == "mathsat" ){
+		ifstream file(namefileRes, ios::in);
+	 	string line;
+		const char * cline;
+		string action,number;
+		bool m,n,o;
+		vector<pair<string,int> > plan=vector<pair<string,int> >();
+		if(file) {
+			getline(file, line);
+			if (line == "sat"){
+			       	while(getline(file, line))  {
+					cline = line.c_str();
+					n = true;
 					for (unsigned int i=0 ; i < line.size() ; ++i){
-						if ( m ){
-							if ( cline[i] != '(' && cline[i] != ' '){
-								action+=cline[i];
-							}
-							if ( cline[i] == 'E' ){
-								//cout<<"lol\n";
-								m = false ;
-							}
-						} else {
-							if ( cline[i] == ' '){
-								if (cline[i+1] == 't'){
-									i = line.size();
-									getline(file, line);
-									number="";
-									o = true;
-									cline = line.c_str();
-									for (unsigned int j=0 ; j < line.size() ; ++j){
-										if ( o ){
-											if (cline[j] == ' ' && (cline[j+1] == '0' || cline[j+1] == '1' || cline[j+1] == '2' || cline[j+1] == '3' || cline[j+1] == '4' || cline[j+1] == '5' || cline[j+1] == '6' || cline[j+1] == '7' || cline[j+1] == '8' || cline[j+1] == '9')){
-												o = false;
-											}
-											if (cline[j] == ' ' && cline[j+1] == '(' && cline[j+2] != 't'){
-												j=j+3;
-												o = false;
-											}
-										} else {
-											if ( cline[j] != ')'){
-												number+=cline[j];
+						if (cline[i] == '(' && cline[i+1] == 't' && cline[i+2] == '_'){
+							i = line.size();
+							n = false;
+						}
+					}
+					m = true;
+					action="";
+					if ( n ){
+						for (unsigned int i=0 ; i < line.size() ; ++i){
+							if ( m ){
+								if ( cline[i] != '(' && cline[i] != ' '){
+									action+=cline[i];
+								}
+								if ( cline[i] == 'E' ){
+									//cout<<"lol\n";
+									m = false ;
+								}
+							} else {
+								if ( cline[i] == ' '){
+									if (cline[i+1] == 't'){
+										i = line.size();
+										getline(file, line);
+										number="";
+										o = true;
+										cline = line.c_str();
+										for (unsigned int j=0 ; j < line.size() ; ++j){
+											if ( o ){
+												if (cline[j] == ' ' && (cline[j+1] == '0' || cline[j+1] == '1' || cline[j+1] == '2' || cline[j+1] == '3' || cline[j+1] == '4' || cline[j+1] == '5' || cline[j+1] == '6' || cline[j+1] == '7' || cline[j+1] == '8' || cline[j+1] == '9')){
+													o = false;
+												}
+												if (cline[j] == ' ' && cline[j+1] == '(' && cline[j+2] != 't'){
+													j=j+3;
+													o = false;
+												}
 											} else {
-												j = line.size();
+												if ( cline[j] != ')'){
+													number+=cline[j];
+												} else {
+													j = line.size();
+												}
 											}
 										}
-									}
-									plan.push_back(make_pair(action,atoi(number.c_str())));
+										plan.push_back(make_pair(action,atoi(number.c_str())));
+									} else {
+										i = line.size();						
+									}							
 								} else {
-									i = line.size();						
-								}							
-							} else {
-								action+=cline[i];
+									action+=cline[i];
+								}
 							}
 						}
 					}
 				}
+			} else {
+				return false;
 			}
-		} else {
-			return false;
+		cout<<"solution : \n";
+		for(vector<pair<string,int> >::iterator it = plan.begin() ; it != plan.end() ; ++it){
+			cout<<(*it).first<<" at "<<(*it).second<<"\n";
 		}
-	cout<<"solution : \n";
-	for(vector<pair<string,int> >::iterator it = plan.begin() ; it != plan.end() ; ++it){
-		cout<<(*it).first<<" at "<<(*it).second<<"\n";
-	}
-	file.close();
-        }
-        else{
-                cerr << "can't open the answer solver" << endl;
-	}
+		file.close();
+		}
+		else{
+		        cerr << "can't open the answer solver" << endl;
+		}
+	} 
 	return true;
 	}
  

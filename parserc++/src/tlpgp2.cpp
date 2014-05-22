@@ -95,7 +95,7 @@ string Tlpgp2::generateSmt2(){
 		file<<" ) )\n(exit)\n";
 		file.close();
 	}
-	cout<<"end traduction nb clauses : "<<m_nbClause<<" nb Variables propositionnels : "<<m_nbVariableProp<<"nb Variables réelle :"<<m_nbVariableReal<<"\n";
+	cout<<"end traduction nb clauses : "<<m_nbClause<<" nb Variables propositionnels : "<<m_nbVariableProp<<" nb Variables réelle :"<<m_nbVariableReal<<"\n";
 	return namefile;
 }
 

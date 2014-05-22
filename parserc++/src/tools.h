@@ -22,11 +22,12 @@ class Tools {
 		bool isIn(Type* t ,vector<Type*>* v);
 		bool compareVectorType(vector<Type*>* v1,vector<Type*>* v2);
 		bool compareActionVaction(DurativeAction * action,vector<DurativeAction * >* v);
-		bool solveur();
 		//true if the two vector have the same members 
 		bool compareVV(vector<Member * >* v1 ,vector<Member * >*v2);
 		bool compareVV2(vector<Variable  >* v1 ,vector<Variable  >*v2);
 		bool compareAA(DurativeAction * a1 , DurativeAction * a2);
+		
+		bool solveur();
 };
 
 #endif // TOOLS_H
