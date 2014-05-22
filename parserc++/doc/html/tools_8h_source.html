@@ -100,28 +100,35 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="type_8h.html">type.h</a>&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="fluent_8h.html">fluent.h</a>&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">using namespace </span>std;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;durative_action.h&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">using namespace </span>std;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classTools.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="classTools.html">Tools</a> {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <a class="code" href="classTools.html">Tools</a>();</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="classTools.html">Tools</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordtype">bool</span> isIn(<a class="code" href="classType.html">Type</a>* t ,vector&lt;Type*&gt;* v);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordtype">bool</span> compareVectorType(vector&lt;Type*&gt;* v1,vector&lt;Type*&gt;* v2);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keywordtype">bool</span> solveur();</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;};</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif // TOOLS_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="ttc" id="classTools_html"><div class="ttname"><a href="classTools.html">Tools</a></div><div class="ttdef"><b>Definition:</b> tools.h:17</div></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classTools.html">   18</a></span>&#160;<span class="keyword">class </span><a class="code" href="classTools.html">Tools</a> {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="classTools.html">Tools</a>();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">virtual</span> ~<a class="code" href="classTools.html">Tools</a>();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordtype">bool</span> isIn(<a class="code" href="classType.html">Type</a>* t ,vector&lt;Type*&gt;* v);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keywordtype">bool</span> compareVectorType(vector&lt;Type*&gt;* v1,vector&lt;Type*&gt;* v2);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keywordtype">bool</span> compareActionVaction(<a class="code" href="classDurativeAction.html">DurativeAction</a> * action,vector&lt;DurativeAction * &gt;* v);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keywordtype">bool</span> solveur();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="comment">//true if the two vector have the same members </span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordtype">bool</span> compareVV(vector&lt;Member * &gt;* v1 ,vector&lt;Member * &gt;*v2);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordtype">bool</span> compareVV2(vector&lt;Variable  &gt;* v1 ,vector&lt;Variable  &gt;*v2);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordtype">bool</span> compareAA(<a class="code" href="classDurativeAction.html">DurativeAction</a> * a1 , <a class="code" href="classDurativeAction.html">DurativeAction</a> * a2);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;};</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#endif // TOOLS_H</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="ttc" id="classTools_html"><div class="ttname"><a href="classTools.html">Tools</a></div><div class="ttdef"><b>Definition:</b> tools.h:18</div></div>
+<div class="ttc" id="classDurativeAction_html"><div class="ttname"><a href="classDurativeAction.html">DurativeAction</a></div><div class="ttdef"><b>Definition:</b> durative_action.h:17</div></div>
 <div class="ttc" id="fluent_8h_html"><div class="ttname"><a href="fluent_8h.html">fluent.h</a></div><div class="ttdoc">This class represent a fluent, which is a predicate of which parameters have been set...</div></div>
 <div class="ttc" id="classType_html"><div class="ttname"><a href="classType.html">Type</a></div><div class="ttdef"><b>Definition:</b> type.h:21</div></div>
 <div class="ttc" id="type_8h_html"><div class="ttname"><a href="type_8h.html">type.h</a></div><div class="ttdoc">This class represent a PDDL type. </div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 14 2014 17:52:43 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu May 22 2014 15:12:21 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

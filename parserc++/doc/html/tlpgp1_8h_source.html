@@ -98,48 +98,85 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;algorithm&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;../Data.h&quot;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;problem.h&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;domain.h&quot;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;edge.h&quot;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;vertex.h&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;tools.h&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;lObjType.h&quot;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="constraint_8h.html">constraint.h</a>&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="sat_8h.html">sat.h</a>&quot;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="graph2_8h.html">graph2.h</a>&quot;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">using namespace </span>std;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;../Data.h&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;problem.h&quot;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;domain.h&quot;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;edge.h&quot;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;vertex.h&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;tools.h&quot;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;lObjType.h&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="constraint_8h.html">constraint.h</a>&quot;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="sat_8h.html">sat.h</a>&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;graph1.h&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="intervalAgenda_8h.html">intervalAgenda.h</a>&quot;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classTlpgp1.html">   32</a></span>&#160;<span class="keyword">class </span><a class="code" href="classTlpgp1.html">Tlpgp1</a> {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="classTlpgp1.html">Tlpgp1</a>();</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="classTlpgp1.html">Tlpgp1</a>(<a class="code" href="classDomain.html">Domain</a> *domain, <a class="code" href="classProblem.html">Problem</a> *problem);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classTlpgp1.html">Tlpgp1</a>();</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">void</span> constructGraph();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span> vertexToActions();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="classDomain.html">Domain</a> * m_domainptr;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="classProblem.html">Problem</a> * m_problemptr;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="classVertex.html">Vertex</a> *m_vertex;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    vector&lt;vector&lt;DurativeAction*&gt;&gt; m_graph;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TLPGP1_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">using namespace </span>std;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classTlpgp1.html">   34</a></span>&#160;<span class="keyword">class </span><a class="code" href="classTlpgp1.html">Tlpgp1</a> {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="classTlpgp1.html">Tlpgp1</a>();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="classTlpgp1.html">Tlpgp1</a>(<a class="code" href="classDomain.html">Domain</a> *domain, <a class="code" href="classProblem.html">Problem</a> *problem);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classTlpgp1.html">Tlpgp1</a>();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">void</span> constructGraph();</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span> vertexToActions();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="classDomain.html">Domain</a> * m_domainptr;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="classProblem.html">Problem</a> * m_problemptr;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="classVertex.html">Vertex</a> *m_vertex;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="classGraph1.html">Graph1</a> m_graph2;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    vector&lt;vector&lt;DurativeAction*&gt;&gt; m_graph;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="classSat.html">Sat</a> m_sat;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    pair&lt;DurativeAction* , int&gt; getActionByEffect(<a class="code" href="classFluent.html">Fluent</a> *effect, <span class="keywordtype">int</span> level, <span class="keywordtype">bool</span> sameLevel, <a class="code" href="classDurativeAction.html">DurativeAction</a>* act);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> removeGoals(<a class="code" href="classFluent.html">Fluent</a> *fluent, vector&lt;Fluent*&gt; *goals);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span> printGoals(vector&lt;Fluent*&gt; *goals);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> printConstraints(vector&lt;Constraint&gt; *constraints);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span> declareFun(<a class="code" href="classSat.html">Sat</a> *s);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">string</span> fluentToAgendaName(<a class="code" href="classFluent.html">Fluent</a> *f);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">string</span> actionToName(<a class="code" href="classDurativeAction.html">DurativeAction</a> *act, <span class="keywordtype">int</span> level);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">string</span> actionNameToName(<span class="keywordtype">string</span> name);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="classDurativeAction.html">DurativeAction</a>* getActionByName(<span class="keywordtype">string</span> name);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">// add an interval to the agenda of effectName</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">bool</span> addToAgenda(vector&lt;pair&lt;<span class="keywordtype">string</span>, vector&lt;IntervalAgenda&gt;&gt;&gt; *agenda, <span class="keywordtype">string</span> effectName, <a class="code" href="classIntervalAgenda.html">IntervalAgenda</a> *inter);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    vector&lt;IntervalAgenda&gt; getIntervalsFromAgenda(vector&lt;pair&lt;<span class="keywordtype">string</span>, vector&lt;IntervalAgenda&gt;&gt;&gt; *agenda, <span class="keywordtype">string</span> effectName);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;};</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TLPGP1_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classIntervalAgenda_html"><div class="ttname"><a href="classIntervalAgenda.html">IntervalAgenda</a></div><div class="ttdef"><b>Definition:</b> intervalAgenda.h:19</div></div>
+<div class="ttc" id="intervalAgenda_8h_html"><div class="ttname"><a href="intervalAgenda_8h.html">intervalAgenda.h</a></div><div class="ttdoc">The class represents what we will put in the tlpgp1&#39;s agenda. </div></div>
 <div class="ttc" id="classProblem_html"><div class="ttname"><a href="classProblem.html">Problem</a></div><div class="ttdef"><b>Definition:</b> problem.h:18</div></div>
-<div class="ttc" id="graph2_8h_html"><div class="ttname"><a href="graph2_8h.html">graph2.h</a></div><div class="ttdoc">Contains what is needed to generate the expansion graph for tlpgp1. </div></div>
+<div class="ttc" id="classFluent_html"><div class="ttname"><a href="classFluent.html">Fluent</a></div><div class="ttdef"><b>Definition:</b> fluent.h:23</div></div>
+<div class="ttc" id="classDurativeAction_html"><div class="ttname"><a href="classDurativeAction.html">DurativeAction</a></div><div class="ttdef"><b>Definition:</b> durative_action.h:17</div></div>
 <div class="ttc" id="constraint_8h_html"><div class="ttname"><a href="constraint_8h.html">constraint.h</a></div><div class="ttdoc">[wip][test] contains things which may be used in tlpgp1 </div></div>
+<div class="ttc" id="classGraph1_html"><div class="ttname"><a href="classGraph1.html">Graph1</a></div><div class="ttdef"><b>Definition:</b> graph1.h:33</div></div>
 <div class="ttc" id="classDomain_html"><div class="ttname"><a href="classDomain.html">Domain</a></div><div class="ttdef"><b>Definition:</b> domain.h:19</div></div>
 <div class="ttc" id="sat_8h_html"><div class="ttname"><a href="sat_8h.html">sat.h</a></div><div class="ttdoc">contains what is needed to communicate with a sat solver, using smt2 </div></div>
-<div class="ttc" id="classTlpgp1_html"><div class="ttname"><a href="classTlpgp1.html">Tlpgp1</a></div><div class="ttdef"><b>Definition:</b> tlpgp1.h:32</div></div>
+<div class="ttc" id="classSat_html"><div class="ttname"><a href="classSat.html">Sat</a></div><div class="ttdef"><b>Definition:</b> sat.h:24</div></div>
+<div class="ttc" id="classTlpgp1_html"><div class="ttname"><a href="classTlpgp1.html">Tlpgp1</a></div><div class="ttdef"><b>Definition:</b> tlpgp1.h:34</div></div>
 <div class="ttc" id="classVertex_html"><div class="ttname"><a href="classVertex.html">Vertex</a></div><div class="ttdef"><b>Definition:</b> vertex.h:8</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 14 2014 17:52:43 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu May 22 2014 15:12:21 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

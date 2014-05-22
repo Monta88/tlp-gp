@@ -87,91 +87,73 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">tlpgp2.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">#ifndef TLPGP2_H_</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">#define TLPGP2_H_</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">#include &lt;ostream&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">#include &lt;fstream&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">#include &lt;stdlib.h&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">#include &lt;unistd.h&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">#include &quot;vertex.h&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">#include &quot;edge.h&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">#include &quot;attribute.h&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">using namespace std;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">class Tlpgp2 {</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">public: </span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">    Tlpgp2();</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">    Tlpgp2(Vertex * vertex);</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">    virtual ~Tlpgp2();</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">    string generateGraphSmt2();</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">    string linkPrec(string name ,Fluent * fluent ,Attribute att, Vertex * vertex,int state);</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">    string protectCond(string link,Fluent * fluent,Attribute att,string nameb,string namet);</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">    bool compareVV(vector&lt;Member * &gt;* v1 ,vector&lt;Member * &gt;*v2);</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">    void protectEffect(string name,DurativeAction * a,Fluent * fluent,Attribute att,int statep);</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">private:</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">    Vertex * m_graph;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">    string assert;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">    string value;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">};</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#ifndef TLPGP2_H_</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define TLPGP2_H_</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;ostream&gt;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#include &quot;vertex.h&quot;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#include &quot;edge.h&quot;</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="attribute_8h.html">attribute.h</a>&quot;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">//using namespace std;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef TLPGP2_H_</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define TLPGP2_H_</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;ostream&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;vertex.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;edge.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="attribute_8h.html">attribute.h</a>&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;tools.h&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//using namespace std;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classTlpgp2.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="classTlpgp2.html">Tlpgp2</a> {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">public</span>: </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="classTlpgp2.html#a09cb5a4ad75ed046755d903792950b0e">Tlpgp2</a>();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="classTlpgp2.html#a09cb5a4ad75ed046755d903792950b0e">Tlpgp2</a>(<a class="code" href="classVertex.html">Vertex</a> * vertex);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classTlpgp2.html">Tlpgp2</a>();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">string</span> <a class="code" href="classTlpgp2.html#aca2819a3f0cef407fad92f5ae4c2fb85">generateSmt2</a>();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">string</span> namelinkPrec(<span class="keywordtype">string</span> name ,<a class="code" href="classFluent.html">Fluent</a> * fluent ,<a class="code" href="classAttribute.html">Attribute</a> att, <a class="code" href="classVertex.html">Vertex</a> * vertex,<span class="keywordtype">int</span> state);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">string</span> linkPrec(<span class="keywordtype">string</span> name ,<a class="code" href="classFluent.html">Fluent</a> * fluent ,<a class="code" href="classAttribute.html">Attribute</a> att, <a class="code" href="classVertex.html">Vertex</a> * vertex,<span class="keywordtype">int</span> state);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classTlpgp2.html">   55</a></span>&#160;<span class="keyword">class </span><a class="code" href="classTlpgp2.html">Tlpgp2</a> {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">public</span>: </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="classTlpgp2.html">Tlpgp2</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="classTlpgp2.html">Tlpgp2</a>(<a class="code" href="classVertex.html">Vertex</a> * vertex);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classTlpgp2.html">Tlpgp2</a>();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">string</span> generateGraphSmt2();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">string</span> namelinkPrec(<span class="keywordtype">string</span> name ,<a class="code" href="classFluent.html">Fluent</a> * fluent ,<a class="code" href="classAttribute.html">Attribute</a> att, <a class="code" href="classVertex.html">Vertex</a> * vertex,<span class="keywordtype">int</span> state);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">string</span> linkPrec(<span class="keywordtype">string</span> name ,<a class="code" href="classFluent.html">Fluent</a> * fluent ,<a class="code" href="classAttribute.html">Attribute</a> att, <a class="code" href="classVertex.html">Vertex</a> * vertex,<span class="keywordtype">int</span> state);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">string</span> protectCond(<span class="keywordtype">string</span> link,<a class="code" href="classFluent.html">Fluent</a> * fluent,<a class="code" href="classAttribute.html">Attribute</a> att,<span class="keywordtype">string</span> nameb,<span class="keywordtype">string</span> namet);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">bool</span> compareVV(vector&lt;Member * &gt;* v1 ,vector&lt;Member * &gt;*v2);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">string</span> protectEffect(<span class="keywordtype">string</span> name,<a class="code" href="classDurativeAction.html">DurativeAction</a> * a,<a class="code" href="classFluent.html">Fluent</a> * fluent,<a class="code" href="classAttribute.html">Attribute</a> att,<span class="keywordtype">int</span> statep);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="classVertex.html">Vertex</a> * m_graph;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">int</span> m_nbClause;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">int</span> m_nbAction ;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;};</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TLPGP2_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">string</span> protectCond(<span class="keywordtype">string</span> link,<a class="code" href="classFluent.html">Fluent</a> * fluent,<a class="code" href="classAttribute.html">Attribute</a> att,<span class="keywordtype">string</span> nameb,<span class="keywordtype">string</span> namet);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">bool</span> compareVV(vector&lt;Member * &gt;* v1 ,vector&lt;Member * &gt;*v2);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">string</span> protectEffect(<span class="keywordtype">string</span> name,<a class="code" href="classDurativeAction.html">DurativeAction</a> * a,<a class="code" href="classFluent.html">Fluent</a> * fluent,<a class="code" href="classAttribute.html">Attribute</a> att,<span class="keywordtype">int</span> statep);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> realGraph();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> actionsNeeded(<a class="code" href="classFluent.html">Fluent</a> * fluent ,<a class="code" href="classAttribute.html">Attribute</a> att, <a class="code" href="classVertex.html">Vertex</a> * vertex, <a class="code" href="classVertex.html">Vertex</a>  rvertex);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="classVertex.html">Vertex</a> * m_graph;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="classVertex.html">Vertex</a> * m_realGraph;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">int</span> m_nbClause;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">int</span> m_nbVariableProp;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">int</span> m_nbVariableReal;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;};</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TLPGP2_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="classAttribute_html"><div class="ttname"><a href="classAttribute.html">Attribute</a></div><div class="ttdef"><b>Definition:</b> attribute.h:19</div></div>
 <div class="ttc" id="classFluent_html"><div class="ttname"><a href="classFluent.html">Fluent</a></div><div class="ttdef"><b>Definition:</b> fluent.h:23</div></div>
 <div class="ttc" id="attribute_8h_html"><div class="ttname"><a href="attribute_8h.html">attribute.h</a></div><div class="ttdoc">This class represent a PDDL Temporally Extended attribute (invented by Frederic Maris), which are the main feature of the interval of preconditions and effects of PDDL durative-actions. </div></div>
 <div class="ttc" id="classDurativeAction_html"><div class="ttname"><a href="classDurativeAction.html">DurativeAction</a></div><div class="ttdef"><b>Definition:</b> durative_action.h:17</div></div>
-<div class="ttc" id="classTlpgp2_html"><div class="ttname"><a href="classTlpgp2.html">Tlpgp2</a></div><div class="ttdef"><b>Definition:</b> tlpgp2.h:55</div></div>
+<div class="ttc" id="classTlpgp2_html"><div class="ttname"><a href="classTlpgp2.html">Tlpgp2</a></div><div class="ttdef"><b>Definition:</b> tlpgp2.h:19</div></div>
+<div class="ttc" id="classTlpgp2_html_a09cb5a4ad75ed046755d903792950b0e"><div class="ttname"><a href="classTlpgp2.html#a09cb5a4ad75ed046755d903792950b0e">Tlpgp2::Tlpgp2</a></div><div class="ttdeci">Tlpgp2()</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> tlpgp2.cpp:6</div></div>
+<div class="ttc" id="classTlpgp2_html_aca2819a3f0cef407fad92f5ae4c2fb85"><div class="ttname"><a href="classTlpgp2.html#aca2819a3f0cef407fad92f5ae4c2fb85">Tlpgp2::generateSmt2</a></div><div class="ttdeci">string generateSmt2()</div><div class="ttdef"><b>Definition:</b> tlpgp2.cpp:12</div></div>
 <div class="ttc" id="classVertex_html"><div class="ttname"><a href="classVertex.html">Vertex</a></div><div class="ttdef"><b>Definition:</b> vertex.h:8</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 14 2014 17:52:43 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu May 22 2014 15:12:21 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>
