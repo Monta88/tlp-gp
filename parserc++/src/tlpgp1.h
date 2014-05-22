@@ -81,6 +81,14 @@ private:
 
 	void declareFun(Sat *s);
 
+	string fluentToAgendaName(Fluent *f);
+
+	string actionToName(DurativeAction *act, int level);
+
+	string actionNameToName(string name);
+
+	DurativeAction* getActionByName(string name);
+
 	// add an interval to the agenda of effectName
 	bool addToAgenda(vector<pair<string, vector<IntervalAgenda>>> *agenda, string effectName, IntervalAgenda *inter);
 

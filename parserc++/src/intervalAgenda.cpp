@@ -35,11 +35,12 @@ IntervalAgenda::~IntervalAgenda() {
 }
 
 string IntervalAgenda::toString() {
-	string res = "";
+	string res = string(200,'a');
+	res.clear();
 	if(m_rightAction != "")
-		res += m_leftBracket+" "+m_leftAction+" "+to_string(m_timeLeft)+" ; "+m_rightAction+" "+to_string(m_timeRight)+ " "+m_rightBracket;
+		res += m_leftBracket+" "+m_leftAction+" + "+to_string(m_timeLeft)+" ; "+m_rightAction+" + "+to_string(m_timeRight)+ " "+m_rightBracket;
 	else
-		res += m_leftBracket+" "+m_leftAction+" "+to_string(m_timeLeft)+m_rightBracket;
+		res += m_leftBracket+" "+m_leftAction+" + "+to_string(m_timeLeft)+m_rightBracket;
 	return res;
 }
 

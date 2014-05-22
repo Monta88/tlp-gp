@@ -91,7 +91,7 @@ void Tlpgp1::constructGraph() {
 	//Fin pour;*/
 
 	auto pos = goals.begin();
-	pair<DurativeAction*, int> p(nullptr, -2), b(nullptr, -2);
+	pair<DurativeAction*, int> actA(nullptr, -2), actB(nullptr, -2);
 	vector<Fluent *> tempGoals = vector<Fluent *>();
 	int lvl = m_graph.size();
 	vector<Member *> mlist = vector<Member *>();
@@ -112,6 +112,7 @@ void Tlpgp1::constructGraph() {
 
 	cout << "ENTERING TLPGP1 CORE LOOP " << lvl << endl;
 	lvl--;
+	lvl--; //TODO remove
 	// Tant que Buts ≠ ∅
 	while (goals.size() != 0) {
 		cout << "IN THE LOOP" << endl;
@@ -123,13 +124,13 @@ void Tlpgp1::constructGraph() {
 		//Pour chaque précondition p d’une action B, p ∈ Buts :
 		constraints = vector<Constraint>();
 		for (auto it_goals = goals.begin(); it_goals != goals.end(); ++it_goals) {
-			b = getActionByEffect(*it_goals, lvl, true, nullptr);
-			if (b.second == -1) {
+			cout << "effet(it_goals) oo:" << (*it_goals)->to_string() << endl;
+			actB = getActionByEffect(*it_goals, lvl, true, nullptr);
+			if (actB.second == -1) {
 				cout << "catastrophe&&&&" << endl;
-				//break;
+				break;
 			}
-			cout << "effet oo:" << (*it_goals)->to_string() << endl;
-			cout << "action oo:" << b.first->to_string() << endl;
+			cout << "action oo:" << actB.first->to_string() << endl;
 
 			//constraints = vector<Constraint>();
 			//sat.initialize();
@@ -157,36 +158,37 @@ void Tlpgp1::constructGraph() {
 			// loop on b.getPreconditions()?
 
 			backtrack:
+			// if backtracking, select ANOTHER action
 
-			p = getActionByEffect(*it_goals, lvl, false, b.first);
-			if (p.second == -1) {
+			actA = getActionByEffect(*it_goals, lvl, false, actB.first);
+			if (actA.second == -1) {
 				cout << "catastrophe" << endl;
-				//break;
+				break;
 			}
 			//for(auto it_bPreconds = b.first->getPreconditions().begin(); it_bPreconds != b.first->getPreconditions().end(); ++it_bPreconds){
-
 			//}
-			float duration = p.first->getEffects().at(0).first.getTime();
+
+			float duration = actA.first->getEffects().at(0).first.getTime();
 			//float duration = p.first->getDuration() //-> always 0?
 			cout << "effet opo:" << (*it_goals)->to_string() << endl;
-			cout << "b action opo:" << b.first->to_string() << endl;
-			cout << "selected action opo:  ::duration:: " << duration << " && "<< p.first->to_string() << endl;
+			cout << "b action opo:" << actB.first->to_string() << endl;
+			cout << "selected action opo:  ::duration:: " << duration << " && "<< actA.first->to_string() << endl;
 
 			//cout << p.first->to_string() <<" grre "<< p.second<<endl;
 
 			//Buts ← Buts ∪ Pre(A) ;
-			cout << p.first->getPreconditions2().size() << endl;
+			cout << "Pre(A).size() " << actA.first->getPreconditions2().size() << endl;
 			//for(auto it_precondA = p.first->getPreconditions().begin(); it_precondA != p.first->getPreconditions().end(); ++it_precondA){
-			for (int i = 0; i < p.first->getPreconditions2().size(); ++i) {
+			for (int i = 0; i < actA.first->getPreconditions2().size(); ++i) {
 				cout << "ttt " << endl;
 				mlist =
-						*p.first->getPreconditions2().at(i).second->getMembersList();
+						*actA.first->getPreconditions2().at(i).second->getMembersList();
 				f =
 						new Fluent(
-								p.first->getPreconditions2().at(i).second->getPredicate(),
+								actA.first->getPreconditions2().at(i).second->getPredicate(),
 								mlist);
 				//cout << f->to_string() <<endl; //=fluent
-				a = p.first->getPreconditions2().at(i).first;
+				a = actA.first->getPreconditions2().at(i).first;
 				//cout << a.to_string() <<endl; //=supported on
 
 				tempGoals.push_back(f);
@@ -200,15 +202,20 @@ void Tlpgp1::constructGraph() {
 			//c = Constraint("a", 1, "<", "b", 2);
 			//c.print();
 			string nameLeft = "", nameRight = "";
-			nameLeft += p.first->getName() + "E" + to_string(p.second); // Action a is one level below action b
-			for (unsigned k = 0; k < p.first->getParameters()->size(); ++k) {
-				nameLeft += p.first->getParameters()->at(k).getName();
-			}
-
-			nameRight += b.first->getName() + "E" + to_string(b.second);
-			for (unsigned k = 0; k < b.first->getParameters()->size(); ++k) {
-				nameRight += b.first->getParameters()->at(k).getName();
-			}
+			nameLeft = actionToName(actA.first, actA.second);
+			/*nameLeft += actA.first->getName() + "LVL" + to_string(actA.second); // Action a is one level below action b
+			for (unsigned k = 0; k < actA.first->getParameters()->size(); ++k) {
+				nameLeft += actA.first->getParameters()->at(k).getName();
+			}*/
+			cout << "nameLeft " << nameLeft << " vs " << actionToName(actA.first, actA.second) <<endl;
+			cout << "tonameleft " << actionNameToName(nameLeft) <<endl;
+			cout << "actionleft " << getActionByName(actionNameToName(nameLeft))->to_string() <<endl;
+			/*nameRight += actB.first->getName() + "LVL" + to_string(actB.second);
+			for (unsigned k = 0; k < actB.first->getParameters()->size(); ++k) {
+				nameRight += actB.first->getParameters()->at(k).getName();
+			}*/
+			nameRight = actionToName(actB.first, actB.second);
+			cout << "nameRight " << nameRight << " vs " << actionToName(actB.first, actB.second) <<endl;
 
 			//c = Constraint(nameLeft, p.first->getDuration(), "<", nameRight, 0);
 			c = Constraint(nameLeft, duration, "<", nameRight, 0);
@@ -222,6 +229,8 @@ void Tlpgp1::constructGraph() {
 
 			//Poser un intervalle I de maintien de précondition à Agenda(p) ;
 			// ex: [ts(C3)+1; tG ] a agenda de p
+			string agendaP = fluentToAgendaName(*it_goals);
+			cout << " agendaP " << agendaP << endl;
 			inter = new IntervalAgenda('[', nameLeft, duration, nameRight, 0, ']');
 			addToAgenda(&addAgenda,(*it_goals)->getPredicate()->getName(),inter);
 			cout << "inter fgt: " << inter->toString() <<endl;
@@ -237,28 +246,44 @@ void Tlpgp1::constructGraph() {
 			(τ s (B)+δ 2 ≤ τ s (C)+δ 3 ) ∨ (τ s (D)+δ 4 ≤ τ s (A)+δ 1 ).
 			 *
 			 */
-			vector<IntervalAgenda> tempAgenda = getIntervalsFromAgenda(&delAgenda, (*it_goals)->getPredicate()->getName());
+			//vector<IntervalAgenda> tempAgenda = getIntervalsFromAgenda(&delAgenda, (*it_goals)->getPredicate()->getName());
+			vector<IntervalAgenda> tempAgenda = getIntervalsFromAgenda(&delAgenda, agendaP);
 			Constraint *leftC,*rightC;
 			if(tempAgenda.size() != 0){
+				cout << "lll " << endl;
 				for(auto it_inter = tempAgenda.begin(); it_inter != tempAgenda.end(); ++it_inter){
 					leftC = new Constraint(inter->getRightAction(), inter->getTimeRight(), "<", (*it_inter).getLeftAction(), (*it_inter).getTimeLeft());
 					rightC = new Constraint((*it_inter).getRightAction(), (*it_inter).getTimeRight(), "<", inter->getLeftAction(), inter->getTimeLeft());
 					m_sat.addDisjonctiveConstraint(leftC,rightC);
 				}
 			}
+			else{
+				cout << "nope lll " << endl;
+			}
 
 			//Pour chaque effet e de A, (sauf pour p lorsque le label de p est un
 			//singleton) :
-			for( auto it_effects = p.first->getEffectsF().begin(); it_effects != p.first->getEffectsF().end(); ++it_effects){
+			cout << " yupjk " << actA.first->getEffectsF().size() << endl;
+			cout << " yupjk " << actA.first->getEffectsF().at(0)->to_string() << endl;
+			//for( auto it_effects = actA.first->getEffectsF().begin(); it_effects != actA.first->getEffectsF().end(); ++it_effects){
+			for( int i = 0; i < actA.first->getEffectsF().size(); ++i){
 				//Ajouter un intervalle I d’apparition de la proposition e à Agenda(e) ;
 				// [ts(C3)+1] est ajouté à Agenda(¬b) pour prendre en compte l'apparition de l'effet ¬b.
-				addToAgenda(&addAgenda,(*it_effects)->getPredicate()->getName(),inter);
+				//string agendaE =""+actA.first->getEffectsF().at(0)->getPredicate()->getName()+actA.first->getEffectsF().at(0)->getMembersList()->at(0)->getName();
+				//string agendaE = fluentToAgendaName(*it_effects);
+				string agendaE = fluentToAgendaName(actA.first->getEffectsF().at(i));
+				cout << " agendaE " << agendaE << endl;
+				//addToAgenda(&addAgenda,(*it_effects)->getPredicate()->getName(),inter);
+				addToAgenda(&addAgenda,agendaE,inter);
 
 				//Pour chaque intervalle I’ de Agenda(¬e) :
 				//Poser une contrainte interdisant le recouvrement de I et I’.
-				vector<IntervalAgenda> tempAgenda = getIntervalsFromAgenda(&delAgenda, (*it_effects)->getPredicate()->getName());
+				//vector<IntervalAgenda> tempAgenda = getIntervalsFromAgenda(&delAgenda, (*it_effects)->getPredicate()->getName());
+				vector<IntervalAgenda> tempAgenda = getIntervalsFromAgenda(&delAgenda, agendaE);
 				Constraint *leftC,*rightC;
+				cout << " tempAgenda.size() " << tempAgenda.size() << endl;
 				if(tempAgenda.size() != 0){
+					cout << " dsgsd dsf inloop" << endl;
 					for(auto it_inter = tempAgenda.begin(); it_inter != tempAgenda.end(); ++it_inter){
 						leftC = new Constraint(inter->getRightAction(), inter->getTimeRight(), "<", (*it_inter).getLeftAction(), (*it_inter).getTimeLeft());
 						rightC = new Constraint((*it_inter).getRightAction(), (*it_inter).getTimeRight(), "<", inter->getLeftAction(), inter->getTimeLeft());
@@ -271,7 +296,7 @@ void Tlpgp1::constructGraph() {
 
 
 			//cout << "constraints size xxaz " << constraints.size() << endl;
-			//printConstraints(&constraints);
+			printConstraints(&constraints);
 
 			//Vérifier la consistance de Contraintes (appel au solveur DTP) ;
 			//action A ;
@@ -337,6 +362,17 @@ vector<IntervalAgenda> Tlpgp1::getIntervalsFromAgenda(vector<pair<string, vector
 			return (*it).second;
 		}
 	}
+	return vector<IntervalAgenda>();
+}
+
+string Tlpgp1::fluentToAgendaName(Fluent *f){
+	//cout << "(fluentToAgendaName) "<< f->to_string();
+	string res = "";
+	res += f->getPredicate()->getName();
+	for(auto it = f->getMembersList()->begin(); it != f->getMembersList()->end(); ++it){
+		res += (*it)->getName();
+	}
+	return res;
 }
 
 void Tlpgp1::vertexToActions() {
@@ -366,10 +402,49 @@ void Tlpgp1::vertexToActions() {
 
 }
 
+//TODO actionname = actionToName(DurativeAction *act, int level)
+string Tlpgp1::actionToName(DurativeAction *act, int level){
+	string res = "";
+	res += act->getName()+"LVL"+to_string(level);
+	for (unsigned k = 0; k < act->getParameters()->size(); ++k) {
+		res += act->getParameters()->at(k).getName();
+	}
+	return res;
+}
+
+
+
+//TODO ? DurativeAction* ~= actionNameToAction(string name)
+//std::size_t found = str.find(str2);
+//  if (found!=std::string::npos)
+//    std::cout << "first 'needle' found at: " << found << '\n';
+string Tlpgp1::actionNameToName(string name){
+	size_t found = name.find("LVL");
+	if (found != string::npos){
+		return string(name,0,found);
+	}
+	return "";
+}
+
+DurativeAction* Tlpgp1::getActionByName(string actionname){
+	//string name = actionNameToName(actionname);
+	for (int i = 0; i < m_graph.size(); ++i) {
+		for (int j = 0; j < m_graph.at(i).size(); ++j) {
+			if(m_graph.at(i).at(j)->getName() == actionname){
+				/*for(auto it = m_graph.at(i).at(j)->getParameters()->begin(); it != m_graph.at(i).at(j)->getParameters()->end(); ++it){
+
+				}*/
+				return m_graph.at(i).at(j);
+			}
+		}
+	}
+	return nullptr;
+}
+
+//TODO string Tlpgp1::getActionByEffect(Fluent *effect, bool sameLevel, vector<DurativeAction*> forbiddenActions) {
 pair<DurativeAction*, int> Tlpgp1::getActionByEffect(Fluent *effect, int level, bool sameLevel, DurativeAction* act) {
 	if (sameLevel) {
-		for (auto it_act = m_graph.at(level).begin();
-				it_act != m_graph.at(level).end(); it_act++) {
+		for (auto it_act = m_graph.at(level).begin(); it_act != m_graph.at(level).end(); it_act++){
 			if (m_graph2.compareFVF2((*it_act)->getEffectsF(), effect))
 				return make_pair(*it_act, level);
 		}
@@ -382,7 +457,8 @@ pair<DurativeAction*, int> Tlpgp1::getActionByEffect(Fluent *effect, int level, 
 					return make_pair(*it_act, level - 1);
 			}
 		}
-		return make_pair(nullptr, -1);
+		//return make_pair(nullptr, -1); //TODO remove (debug)
+		return make_pair(act, -2);
 	}
 }
 
@@ -434,6 +510,6 @@ void Tlpgp1::declareFun(Sat *s) {
 			s->addFun(name);
 		}
 	}
-	cin >> name;
+	//cin >> name;
 }
 
