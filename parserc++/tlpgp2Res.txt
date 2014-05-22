@@ -1,5 +1,0 @@
-sat
-( (GoalsE0 true)
-  (t_GoalsE0 0)
-  (InitsE1 true)
-  (t_InitsE1 0) )
